@@ -1,4 +1,4 @@
 # hdbscan
 Clustering tools
 
-testing
+Also we will attempt to extend HDBSCAN to be parameter free.
