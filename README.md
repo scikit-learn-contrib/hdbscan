@@ -1,6 +1,4 @@
 # hdbscan
-Clustering tools
 
-Also we will attempt to extend HDBSCAN to be parameter free.
-
-SJA test
+A clustering tool that supports density based clustering where clusters may have variable density. Initial development stage; more to follow later ...
+ 
