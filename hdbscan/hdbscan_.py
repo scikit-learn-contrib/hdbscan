@@ -11,11 +11,14 @@ HDBSCAN: Hierarchical Density-Based Spatial Clustering
 import warnings
 
 import numpy as np
-import pandas as pd
 
-from ..base import BaseEstimator, ClusterMixin
-from ..metrics import pairwise_distances
-from ..utils import check_array, check_consistent_length
+from sklearn.base import BaseEstimator, ClusterMixin
+from sklearn.metrics import pairwise_distances
+try:
+    from sklearn.utils import check_array
+except ImportError:
+    from sklearn.utils import check_arrays
+    check_array = check_arrays
 
 from ._hdbscan_linkage import single_linkage
 from ._hdbscan_tree import (get_points,
@@ -50,9 +53,13 @@ def mutual_reachability(distance_matrix, min_points=5):
     """
     dim = distance_matrix.shape[0]
     min_points = min(dim - 1, min_points)
-    core_distances = np.partition(distance_matrix, 
-                                  min_points, 
-                                  axis=0)[min_points]
+    try:
+        core_distances = np.partition(distance_matrix, 
+                                      min_points, 
+                                      axis=0)[min_points]
+    except AttributeError:
+        core_distances = np.sort(distance_matrix,
+                                 axis=0)[min_points]        
                                   
     stage1 = np.where(core_distances > distance_matrix, 
                       core_distances, distance_matrix)
