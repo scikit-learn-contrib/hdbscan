@@ -45,7 +45,7 @@ configuration = {
     'maintainer_email' : 'leland.mcinnes@gmail.com',
     'license' : 'BSD',
     'packages' : ['hdbscan'],
-    'install_requires' : ['sklearn>=0.16',
+    'install_requires' : ['scikit-learn>=0.16',
                           'cython >= 0.17'],
     'ext_modules' : [_hdbscan_tree, _hdbscan_linkage],
     'cmdclass' : {'build_ext' : build_ext}
@@ -54,7 +54,7 @@ configuration = {
 if not HAVE_CYTHON:
     _hdbscan_tree.sources[0] = '_hdbscan_tree.c'
     _hdbscan_linkage.sources[0] = '_hdbscan_linkage.c'
-    configuration['install_requires'] = ['sklearn>=0.16']
+    configuration['install_requires'] = ['scikit-learn>=0.16']
 
 setup(**configuration)
  
