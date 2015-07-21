@@ -46,7 +46,7 @@ hdb_labels = hdb.labels_
 hdb_elapsed_time = time.time() - hdb_t1
 
 db_t1 = time.time()
-db = DBSCAN().fit(X)
+db = DBSCAN(eps=0.1).fit(X)
 db_labels = db.labels_
 db_elapsed_time = time.time() - db_t1
 
