@@ -142,8 +142,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2):
 class HDBSCAN(BaseEstimator, ClusterMixin):
     """Perform HDBSCAN clustering from vector array or distance matrix.
     
-    HDBSCAN - Hierarchical Desnity-Based Spatial Clustering of Applications
-    with Nopise. Performs DBSCAN over vvarying epsilon values and integrates 
+    HDBSCAN - Hierarchical Density-Based Spatial Clustering of Applications
+    with Noise. Performs DBSCAN over varying epsilon values and integrates 
     the result to find a clustering that gives the best stability over epsilon.
     This allows HDBSCAN to find clusters of varying densities (unlike DBSCAN),
     and be more robust to parameter selection.
