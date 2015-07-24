@@ -34,10 +34,10 @@ Fast install
 
 For a manual install get this package:
 
-  wget https://github.com/lmcinnes/hdbscan/archive/master.zip
-  unzip master.zip
-  rm master.zip
-  cd hdbscan-master
+|  wget https://github.com/lmcinnes/hdbscan/archive/master.zip
+|  unzip master.zip
+|  rm master.zip
+|  cd hdbscan-master
 
 Install the requirements
 
