@@ -47,9 +47,10 @@ def make_var_density_blobs(n_samples=750, centers=[[0,0]], cluster_std=[0.5], ra
 # of the algorithms, but not too big to avoid too long running times
 n_samples = 1500
 noisy_circles = datasets.make_circles(n_samples=n_samples, factor=.5,
-                                      noise=.15)
-noisy_moons = datasets.make_moons(n_samples=n_samples, noise=.15)
-blobs = np.vstack((datasets.make_blobs(n_samples=n_samples-100, random_state=8)[0], np.random.rand(100, 2)))
+                                      noise=.08)
+noisy_moons = datasets.make_moons(n_samples=n_samples, noise=.10)
+blobs = datasets.make_blobs(n_samples=n_samples-200, random_state=8)
+noisy_blobs = np.vstack((blobs[0], 25.0*np.random.rand(200, 2)-[10.0,10.0])), np.hstack((blobs[1], -1*np.ones(200))) 
 varying_blobs = make_var_density_blobs(n_samples,
                                        centers=[[1, 1],
                                                 [-1, -1],
@@ -71,7 +72,7 @@ plt.subplots_adjust(left=.02, right=.98, bottom=.001, top=.96, wspace=.05,
 
 plot_num = 1
 
-datasets = [noisy_circles, noisy_moons, blobs, varying_blobs, no_structure]
+datasets = [noisy_circles, noisy_moons, noisy_blobs, varying_blobs, no_structure]
 for i_dataset, dataset in enumerate(datasets):
     X, y = dataset
     # normalize dataset for easier parameter selection
