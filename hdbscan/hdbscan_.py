@@ -142,7 +142,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2):
     stability_dict = compute_stability(condensed_tree)
     cluster_list = get_clusters(condensed_tree, stability_dict, new_points)
     
-    labels = -1 * np.ones(distance_matrix.shape[0])
+    labels = -1 * np.ones(distance_matrix.shape[0], dtype=int)
     for index, cluster in enumerate(cluster_list):
         labels[cluster] = index
     return labels
