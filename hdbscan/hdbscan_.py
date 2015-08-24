@@ -14,6 +14,7 @@ import numpy as np
 
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import pairwise_distances
+from scipy.spatial.distance import pdist, squareform
 try:
     from sklearn.utils import check_array
 except ImportError:
@@ -123,7 +124,14 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2):
             raise TypeError('Minkowski metric given but no p value supplied!')
         if p < 0:
             raise ValueError('Minkowski metric with negative p value is not defined!')
-        distance_matrix = pairwise_distances(X, metric=metric, p=p)
+        if X.shape[0] > 32000:
+            # sklearn pairwise_distance segfaults for large comparisons
+            distance_matrix = squareform(pdist(X, metric=metric, p=p))
+        else:
+            distance_matrix = pairwise_distances(X, metric=metric, p=p)
+    elif metric != 'precomputed' and X.shape[0] > 32000:
+        # sklearn pairwise_distance segfaults for large comparisons
+        distance_matrix = squareform(pdist(X, metric=metric, p=p))
     else:
         distance_matrix = pairwise_distances(X, metric=metric)
         
