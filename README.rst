@@ -24,28 +24,43 @@ supports input in a variety of formats: an array (or pandas dataframe, or
 sparse matrix) of shape `(num_samples x num_features)`; an array (or sparse matrix)
 giving a distance matrix between samples.
 
+.. code:: python
+
+    import hdbscan
+    
+    clusterer = hdbscan.HDBSCAN(min_cluster_size=10)
+    cluster_labels = clusterer.fit_predict(data)
+
 ----------
 Installing
 ----------
 
 Fast install
 
-  pip install hdbscan
+.. code:: bash
+
+    pip install hdbscan
 
 For a manual install get this package:
 
-|  wget https://github.com/lmcinnes/hdbscan/archive/master.zip
-|  unzip master.zip
-|  rm master.zip
-|  cd hdbscan-master
+.. code:: bash
+
+    wget https://github.com/lmcinnes/hdbscan/archive/master.zip
+    unzip master.zip
+    rm master.zip
+    cd hdbscan-master
 
 Install the requirements
 
-  sudo pip install -r requirements.txt
+.. code:: bash
+
+    sudo pip install -r requirements.txt
 
 Install the package
 
-  python setup.py install
+.. code:: bash
+
+    python setup.py install
 
 ---------
 Licensing
