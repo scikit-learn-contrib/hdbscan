@@ -259,6 +259,22 @@ class CondensedTree (object):
         return axis
 
     def to_pandas(self):
+        """Return a pandas dataframe representation of the condensed tree.
+
+        Each row of the dataframe corresponds to an edge in the tree.
+        The columns of the dataframe are `parent`, `child`, `lambda`
+        and `child_size`. 
+
+        The `parent` and `child` are the ids of the
+        parent and child nodes in the tree. Node ids less than the number 
+        of points in the original dataset represent idividual points, while
+        ids greater than the number of points are clusters.
+
+        The `lambda` value is the value (1/distance) at which the `child`
+        node leaves the cluster.
+
+        The `child_size` is the number of points in the `child` node.
+        """
         try:
             from pandas import DataFrame, Series
         except ImportError:
@@ -269,6 +285,16 @@ class CondensedTree (object):
         return result
 
     def to_networkx(self):
+        """Return a NetworkX DiGraph object representing the condensed tree.
+
+        Edge weights in the graph are the lamba values at which child nodes
+        'leave' the parent cluster.
+
+        Nodes have a `size` attribute attached giving the number of points
+        that are in the cluster (or 1 if it is a singleton point) at the
+        point of cluster creation (fewer points may be in the cluster at
+        larger lambda values).
+        """
         try:
             from networkx import DiGraph, set_node_attributes
         except ImportError:
