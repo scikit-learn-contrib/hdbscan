@@ -16,12 +16,12 @@ CB_RIGHT = 1
 CB_BOTTOM = 2
 CB_TOP = 3
 
-def get_leaves(condensed_tree):
+def _get_leaves(condensed_tree):
     cluster_tree = condensed_tree[condensed_tree['child_size'] > 1]
     clusters = cluster_tree['child']
     return [c for c in clusters if len(cluster_tree[cluster_tree['parent'] == c]) == 0]
 
-def bfs_from_cluster_tree(tree, bfs_root):
+def _bfs_from_cluster_tree(tree, bfs_root):
     result = []
     to_process = [bfs_root]
 
@@ -66,7 +66,7 @@ class CondensedTree (object):
                         `line_xs` x coordinates for horiontal dendrogram lines
                         `line_ys` y coordinates for horiontal dendrogram lines
         """
-        leaves = get_leaves(self._raw_tree)
+        leaves = _get_leaves(self._raw_tree)
         last_leaf = self._raw_tree['parent'].max()
         root = self._raw_tree['parent'].min()
 
@@ -177,7 +177,7 @@ class CondensedTree (object):
                 is_cluster[node] = False
                 stability[node] = subtree_stability
             else:
-                for sub_node in bfs_from_cluster_tree(cluster_tree, node):
+                for sub_node in _bfs_from_cluster_tree(cluster_tree, node):
                     if sub_node != node:
                         is_cluster[sub_node] = False
 
