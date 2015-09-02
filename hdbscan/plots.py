@@ -7,9 +7,10 @@ hdbscan.plots: Use matplotlib to display plots of internal
 #
 # License: BSD 3 clause
 
-from ._hdbscan_tree import compute_stability
-
 import numpy as np
+
+from scipy.cluster.hierarchy import dendrogram
+from ._hdbscan_tree import compute_stability
 
 CB_LEFT = 0
 CB_RIGHT = 1
@@ -349,14 +350,56 @@ class CondensedTree (object):
         set_node_attributes(result, 'size', dict(self._raw_tree[['child', 'child_size']]))
 
         return result
+
+def _line_width(y, linkage):
+    if y == 0.0:
+        return 1.0
+    else:
+        return linkage[linkage.T[2] == y][0,3]
                     
 class SingleLinkageTree (object):
 
     def __init__(self, linkage):
         self._linkage = linkage
 
-    def plot(self):
-        pass
+    def plot(self, axis=None):
+        dendrogram_data = dendrogram(self._linkage)
+        X = dendrogram_data['icoord']
+        Y = dendrogram_data['dcoord']
+
+        try:
+            import matplotlib.pyplot as plt
+        except ImportError:
+            raise ImportError('You must install the matplotlib library to plot the single linkage tree.')
+
+        if axis is None:
+            axis = plt.gca()
+
+        linewidths = [(_line_width(y[0], self._linkage),
+                       _line_width(y[1], self._linkage))
+                      for y in Y]
+
+        for x, y, lw in zip(X, Y, linewidths):
+            left_x = x[:2]
+            right_x = x[2:]
+            left_y = y[:2]
+            right_y = y[2:]
+            horizontal_x = x[1:3]
+            horizontal_y = y[1:3]
+
+            axis.plot(left_x, left_y, color='k', linewidth=np.log2(1+lw[0]),
+                      solid_joinstyle='miter', solid_capstyle='butt')
+            axis.plot(right_x, right_y, color='k', linewidth=np.log2(1+lw[1]),
+                      solid_joinstyle='miter', solid_capstyle='butt')
+            axis.plot(horizontal_x, horizontal_y, color='k', linewidth=1.0,
+                      solid_joinstyle='miter', solid_capstyle='butt')
+
+        axis.set_xticks([])
+        for side in ('right', 'top', 'bottom'):
+            axis.spines[side].set_visible(False)
+        axis.set_ylabel('distance')
+
+        return axis
 
     def to_pandas(self):
         pass
