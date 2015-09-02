@@ -350,3 +350,30 @@ class CondensedTree (object):
 
         return result
                     
+class SingleLinkageTree (object):
+
+    def __init__(self, linkage):
+        self._linkage = linkage
+
+    def plot(self):
+        pass
+
+    def to_pandas(self):
+        pass
+
+    def to_networkx(self):
+        pass
+
+class MinimalSpanningTree (object):
+
+    def __init__(self, mst):
+        self._mst = mst
+
+    def plot(self):
+        pass
+
+    def to_pandas(self):
+        pass
+
+    def to_networkx(self):
+        pass
