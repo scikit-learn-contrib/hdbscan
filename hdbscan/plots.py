@@ -43,11 +43,11 @@ class CondensedTree (object):
 
         Parameters
         ----------
-        leaf_separation : float 
+        leaf_separation : float, optional
                           How far apart to space the final leaves of the 
                           dendrogram. (default 1)
 
-        log_size : boolean
+        log_size : boolean, optional
                    Use log scale for the 'size' of clusters (i.e. number of
                    points in the cluster at a given lambda value).
                    (default False)
@@ -196,29 +196,29 @@ class CondensedTree (object):
 
         Parameters
         ----------
-        leaf_separation : float
+        leaf_separation : float, optional
                           How far apart to space the final leaves of the 
                           dendrogram. (default 1)
 
-        cmap : string or matplotlib colormap
+        cmap : string or matplotlib colormap, optional
                The matplotlib colormap to use to color the cluster bars.
                (default Blues)
 
-        select_clusters : boolean
+        select_clusters : boolean, optional
                           Whether to draw ovals highlighting which cluster
                           bar represent the clusters that were selected by
                           HDBSCAN as the final clusters. (default False)
 
-        axis : matplotlib axis or None
+        axis : matplotlib axis or None, optional
                The matplotlib axis to render to. If None then a new axis
                will be generated. The rendered axis will be returned.
                (default None)
 
-        colorbar : boolean
+        colorbar : boolean, optional
                    Whether to draw a matplotlib colorbar displaying the range
                    of cluster sizes as per the colormap. (default True)
 
-        log_size : boolean
+        log_size : boolean, optional
                    Use log scale for the 'size' of clusters (i.e. number of
                    points in the cluster at a given lambda value).
                    (default False)
@@ -310,7 +310,7 @@ class CondensedTree (object):
 
         The `parent` and `child` are the ids of the
         parent and child nodes in the tree. Node ids less than the number 
-        of points in the original dataset represent idividual points, while
+        of points in the original dataset represent individual points, while
         ids greater than the number of points are clusters.
 
         The `lambda` value is the value (1/distance) at which the `child`
@@ -363,6 +363,36 @@ class SingleLinkageTree (object):
         self._linkage = linkage
 
     def plot(self, axis=None, truncate_mode=None, p=0, vary_line_width=True):
+        """Plot a dendrogram of the single linkage tree.
+
+        Parameters
+        ----------
+        truncate_mode : str, optional
+                        The dendrogram can be hard to read when the original 
+                        observation matrix from which the linkage is derived 
+                        is large. Truncation is used to condense the dendrogram. 
+                        There are several modes:
+
+        ``None/'none'``
+                No truncation is performed (Default).
+    
+        ``'lastp'``
+                The last p non-singleton formed in the linkage are the only 
+                non-leaf nodes in the linkage; they correspond to rows 
+                Z[n-p-2:end] in Z. All other non-singleton clusters are 
+                contracted into leaf nodes.
+
+        ``'level'/'mtica'``
+                No more than p levels of the dendrogram tree are displayed. 
+                This corresponds to Mathematica(TM) behavior.
+
+        p : int, optional
+            The ``p`` parameter for ``truncate_mode``.
+
+        vary_line_width : boolean, optional
+            Draw downward branches of the dendrogram with line thickness that 
+            varies depending on the size of the cluster.
+        """
         dendrogram_data = dendrogram(self._linkage, p=p, truncate_mode=truncate_mode, no_plot=True)
         X = dendrogram_data['icoord']
         Y = dendrogram_data['dcoord']
@@ -405,6 +435,22 @@ class SingleLinkageTree (object):
         return axis
 
     def to_pandas(self):
+        """Return a pandas dataframe representation of the single linkage tree.
+
+        Each row of the dataframe corresponds to an edge in the tree.
+        The columns of the dataframe are `parent`, `left_child`, 
+        `right_child`, `distance` and `size`.
+
+        The `parent`, `left_child` and `right_child` are the ids of the
+        parent and child nodes in the tree. Node ids less than the number 
+        of points in the original dataset represent individual points, while
+        ids greater than the number of points are clusters.
+
+        The `distance` value is the at which the child nodes merge to form
+        the parent node.
+
+        The `size` is the number of points in the `parent` node.
+        """
         try:
             from pandas import DataFrame, Series
         except ImportError:
@@ -426,6 +472,14 @@ class SingleLinkageTree (object):
         return result
 
     def to_networkx(self):
+        """Return a NetworkX DiGraph object representing the single linkage tree.
+
+        Edge weights in the graph are the distance values at which child nodes
+        merge to form the parent cluster.
+
+        Nodes have a `size` attribute attached giving the number of points
+        that are in the cluster.
+        """
         try:
             from networkx import DiGraph, set_node_attributes
         except ImportError:
