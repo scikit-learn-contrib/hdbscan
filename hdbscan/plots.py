@@ -362,8 +362,8 @@ class SingleLinkageTree (object):
     def __init__(self, linkage):
         self._linkage = linkage
 
-    def plot(self, axis=None):
-        dendrogram_data = dendrogram(self._linkage)
+    def plot(self, axis=None, truncate_mode=None, p=0, vary_line_width=True):
+        dendrogram_data = dendrogram(self._linkage, p=p, truncate_mode=truncate_mode, no_plot=True)
         X = dendrogram_data['icoord']
         Y = dendrogram_data['dcoord']
 
@@ -375,9 +375,12 @@ class SingleLinkageTree (object):
         if axis is None:
             axis = plt.gca()
 
-        linewidths = [(_line_width(y[0], self._linkage),
-                       _line_width(y[1], self._linkage))
-                      for y in Y]
+        if vary_line_width:
+            linewidths = [(_line_width(y[0], self._linkage),
+                           _line_width(y[1], self._linkage))
+                          for y in Y]
+        else:
+            linewidths = [1.0] * len(Y)
 
         for x, y, lw in zip(X, Y, linewidths):
             left_x = x[:2]
@@ -402,10 +405,45 @@ class SingleLinkageTree (object):
         return axis
 
     def to_pandas(self):
-        pass
+        try:
+            from pandas import DataFrame, Series
+        except ImportError:
+            raise ImportError('You must have pandas installed to export pandas DataFrames')
+
+        max_node = 2 * self._linkage.shape[0]
+        num_points = max_node - (self._linkage.shape[0] - 1)
+
+        parent_array = np.arange(num_points, max_node)
+
+        result = DataFrame({
+            'parent' : parent_array,
+            'left_child' : self._linkage[0],
+            'right_child' : self._linkage[1],
+            'distance' : self._linkage[2],
+            'size' : self._linkage[3]
+        })
+
+        return result
 
     def to_networkx(self):
-        pass
+        try:
+            from networkx import DiGraph, set_node_attributes
+        except ImportError:
+            raise ImportError('You must have networkx installed to export networkx graphs')
+
+        max_node = 2 * self._linkage.shape[0]
+        num_points = max_node - (self._linkage.shape[0] - 1)
+
+        result = DiGraph()
+        for parent, row in enumerate(self._linkage, num_points):
+            result.add_edge(parent, row[0], weight=row[2])
+            result.add_edge(parent, row[1], weight=row[2])
+
+        size_dict = {parent : row[3] for parent, row in enumerate(self._linkage, num_points)}
+        set_node_attributes(result, 'size', size_dict)
+
+        return result
+
 
 class MinimalSpanningTree (object):
 
