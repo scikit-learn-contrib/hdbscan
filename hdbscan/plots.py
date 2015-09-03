@@ -499,7 +499,7 @@ class SingleLinkageTree (object):
         return result
 
 
-class MinimalSpanningTree (object):
+class MinimumSpanningTree (object):
 
     def __init__(self, mst):
         self._mst = mst

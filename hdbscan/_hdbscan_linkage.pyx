@@ -8,7 +8,7 @@ cimport cython
 import numpy as np
 cimport numpy as np
 
-cdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
+cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
                                np.ndarray[np.double_t, ndim=2] distance_matrix):
 
     cdef np.ndarray[np.int64_t, ndim=1] node_labels
@@ -82,7 +82,7 @@ cdef class UnionFind (object):
             p, self.parent[p] = self.parent[p], n
         return n
         
-cdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L, 
+cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L, 
                                            do_fast_find=True):
 
     cdef np.ndarray[np.double_t, ndim=2] result

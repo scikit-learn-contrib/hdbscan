@@ -15,18 +15,20 @@ import numpy as np
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import pairwise_distances
 from scipy.spatial.distance import pdist, squareform
+from sklearn.neighbors import KDTree
 try:
     from sklearn.utils import check_array
 except ImportError:
     from sklearn.utils import check_arrays
     check_array = check_arrays
 
-from ._hdbscan_linkage import single_linkage
+from ._hdbscan_linkage import single_linkage, mst_linkage_core, label
 from ._hdbscan_tree import (get_points,
                             condense_tree, 
                             compute_stability, 
                             get_clusters)
-                           
+from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
+  
 def mutual_reachability(distance_matrix, min_points=5):
     """Compute the weighted adjacency matrix of the mutual reachability
     graph of a distance matrix.
@@ -68,6 +70,24 @@ def mutual_reachability(distance_matrix, min_points=5):
                       core_distances.T, stage1.T).T
     return result.astype(np.double)
 
+def kdtree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5):
+    dim = distance_matrix.shape[0]
+    min_points = min(dim - 1, min_points)
+
+    if metric == 'minkowski':
+        tree = KDTree(X, metric=metric, p=p)
+    else:
+        tree = KDTree(X, metric=metric)
+
+    core_distances = tree.query(X, k=min_points)[0][:,-1]
+
+    stage1 = np.where(core_distances > distance_matrix, 
+                      core_distances, distance_matrix)
+    result = np.where(core_distances > stage1.T,
+                      core_distances.T, stage1.T).T
+    return result.astype(np.double)
+
+
 def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2):
     """Perform HDBSCAN clustering from a vector array or distance matrix.
     
@@ -100,6 +120,9 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2):
     -------
     labels : array [n_samples]
         Cluster labels for each point.  Noisy samples are given the label -1.
+
+    condensed_tree : record array
+        The condensed cluster hierarchy used to generate clusters.
         
     References
     ----------
@@ -135,17 +158,30 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2):
     else:
         distance_matrix = pairwise_distances(X, metric=metric)
         
-    mutual_reachability_graph = mutual_reachability(distance_matrix,
-                                                    min_samples)
-    raw_tree = single_linkage(mutual_reachability_graph)
-    condensed_tree, new_points = condense_tree(raw_tree, get_points(raw_tree), min_cluster_size)
+    if metric in KDTree.valid_metrics and X.shape[1] < 8:
+        mutual_reachability = kdtree_mutual_reachability(X, 
+                                                         distance_matrix,
+                                                         metric,
+                                                         p=p,
+                                                         min_points=min_samples)
+    else:
+        mutual_reachability = mutual_reachability(distance_matrix,
+                                                  min_samples)
+
+    min_spanning_tree = mst_linkage_core(mutual_reachability)
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
+    
+    single_linkage_tree = label(min_spanning_tree)
+    condensed_tree, new_points = condense_tree(single_linkage_tree, 
+                                               get_points(single_linkage_tree),
+                                               min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
     cluster_list = get_clusters(condensed_tree, stability_dict, new_points)
     
     labels = -1 * np.ones(distance_matrix.shape[0], dtype=int)
     for index, cluster in enumerate(cluster_list):
         labels[cluster] = index
-    return labels
+    return labels, condensed_tree, single_linkage_tree, min_spanning_tree
 
 class HDBSCAN(BaseEstimator, ClusterMixin):
     """Perform HDBSCAN clustering from vector array or distance matrix.
@@ -197,6 +233,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             
         self.metric = metric
         self.p = p
+
+        self._condensed_tree = None
+        self._single_linkage_tree = None
+        self._min_spanning_tree = None
         
     def fit(self, X, y=None):
         """Perform HDBSCAN clustering from features or distance matrix.
@@ -209,7 +249,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             ``metric='precomputed'``.
         """
         X = check_array(X, accept_sparse='csr')
-        self.labels_ = hdbscan(X, **self.get_params())
+        (self.labels_, 
+         self._condensed_tree, 
+         self._single_linkage_tree,
+         self._min_spanning_tree) = hdbscan(X, **self.get_params())
         return self
         
     def fit_predict(self, X, y=None):
@@ -229,3 +272,24 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         """
         self.fit(X)
         return self.labels_
+
+    @property
+    def condensed_tree(self):
+        if self._condensed_tree is not None:
+            return CondensedTree(self._condensed_tree)
+        else:
+            return None
+
+    @property
+    def single_linkage_tree(self):
+        if self._condensed_tree is not None:
+            return SingleLinkageTree(self._single_linkage_tree)
+        else:
+            return None
+
+    @property
+    def minimum_spanning_tree(self):
+        if self._min_spanning_tree is not None:
+            return MinimumSpanningTree(self._min_spanning_tree)
+        else:
+            return None
