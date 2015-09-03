@@ -9,9 +9,9 @@ except ImportError as e:
     from setuptools import setup, Extension
     from setuptools.command.build_ext import build_ext
 
-_hdbscan_tree = Extension('hdbscan/_hdbscan_tree',
+_hdbscan_tree = Extension('hdbscan._hdbscan_tree',
                           sources=['hdbscan/_hdbscan_tree.pyx'])
-_hdbscan_linkage = Extension('hdbscan/_hdbscan_linkage',
+_hdbscan_linkage = Extension('hdbscan._hdbscan_linkage',
                              sources=['hdbscan/_hdbscan_linkage.pyx'])
 
 def readme():
@@ -48,7 +48,9 @@ configuration = {
     'install_requires' : ['scikit-learn>=0.16',
                           'cython >= 0.17'],
     'ext_modules' : [_hdbscan_tree, _hdbscan_linkage],
-    'cmdclass' : {'build_ext' : build_ext}
+    'cmdclass' : {'build_ext' : build_ext},
+    'test_suite' : 'nose.collector',
+    'tests_require' : ['nose'],
     }
 
 if not HAVE_CYTHON:
