@@ -35,7 +35,90 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
         current_labels = current_labels[label_filter]
         left = current_distances[label_filter]
         right = distance_matrix[current_node][current_labels]
-        current_distances = np.where(left < right, left, right)
+        # current_distances = np.where(left < right, left, right)
+        for j in range(len(left)):
+            if left[j] < right[j]:
+                current_distances[j] = left[j]
+            else:
+                current_distances[j] = right[j]
+        current_distances = current_distances[:-1]
+        
+        new_node_index = np.argmin(current_distances)
+        new_node = current_labels[new_node_index]
+        result[i - 1, 0] = <double> current_node
+        result[i - 1, 1] = <double> new_node
+        result[i - 1, 2] = current_distances[new_node_index]
+        current_node = new_node
+        
+    return result
+
+cdef void select_distances(
+    np.ndarray[np.double_t, ndim=1] pdist_matrix,
+    np.ndarray[np.int_t, ndim=1] col_select,
+    np.ndarray[np.int64_t, ndim=1] current_labels,
+    np.ndarray[np.double_t, ndim=1] result_buffer,
+    int row_num,
+    int dim
+):
+
+    cdef np.ndarray[np.int_t, ndim=1] col_selection
+
+    cdef int i
+    cdef int n_labels = len(current_labels)
+    cdef int row_start
+
+    col_selection = col_select - (dim - row_num)
+
+    if row_num == 0:
+        row_start = 0
+    else:
+        row_start = col_select[row_num - 1]
+
+    for i in range(n_labels):
+        if current_labels[i] < row_num:
+            result_buffer[i] = pdist_matrix[col_selection[current_labels[i]]]
+        else:
+            break
+
+    result_buffer[i:n_labels] = pdist_matrix[current_labels[i:] - (row_num + 1) + row_start]
+    return
+    
+
+cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_pdist(
+                               np.ndarray[np.double_t, ndim=1] pdist_matrix):
+
+    cdef np.ndarray[np.int64_t, ndim=1] node_labels
+    cdef np.ndarray[np.int64_t, ndim=1] current_labels
+    cdef np.ndarray[np.double_t, ndim=1] current_distances
+    cdef np.ndarray[np.double_t, ndim=1] left
+    cdef np.ndarray[np.double_t, ndim=1] right
+    cdef np.ndarray[np.int_t, ndim=1] col_select
+    cdef np.ndarray[np.double_t, ndim=2] result
+    
+    cdef np.ndarray label_filter
+    
+    cdef int current_node
+    cdef int new_node_index
+    cdef int new_node
+    cdef int i
+    cdef int dim
+
+    dim = int((1 + np.sqrt(1 + 8 * pdist_matrix.shape[0])) / 2.0)
+    col_select = np.cumsum(np.arange(dim - 1, 0, -1))
+    
+    result = np.zeros((dim - 1, 3))
+    node_labels = np.arange(dim, dtype=np.int64)
+    current_node = 0
+    current_distances = np.infty * np.ones(dim)
+    current_labels = node_labels
+    right = np.empty(dim, dtype=np.double)
+    for i in range(1,node_labels.shape[0]):
+        label_filter = current_labels != current_node
+        current_labels = current_labels[label_filter]
+        left = current_distances[label_filter]
+        #right = fill_row(pdist_matrix, current_node, dim, col_select)[current_labels]
+        select_distances(pdist_matrix, col_select, current_labels, right, current_node, dim)
+        current_distances = np.where(left < right[:len(current_labels)], left, right[:len(current_labels)])
         
         new_node_index = np.argmin(current_distances)
         new_node = current_labels[new_node_index]
