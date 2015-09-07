@@ -13,6 +13,8 @@ _hdbscan_tree = Extension('hdbscan._hdbscan_tree',
                           sources=['hdbscan/_hdbscan_tree.pyx'])
 _hdbscan_linkage = Extension('hdbscan._hdbscan_linkage',
                              sources=['hdbscan/_hdbscan_linkage.pyx'])
+_hdbscan_reachability = Extension('hdbscan._hdbscan_reachability',
+                                  sources=['hdbscan/_hdbscan_reachability.pyx'])
 
 def readme():
     with open('README.rst') as readme_file:
@@ -47,7 +49,7 @@ configuration = {
     'packages' : ['hdbscan'],
     'install_requires' : ['scikit-learn>=0.16',
                           'cython >= 0.17'],
-    'ext_modules' : [_hdbscan_tree, _hdbscan_linkage],
+    'ext_modules' : [_hdbscan_tree, _hdbscan_linkage, _hdbscan_reachability],
     'cmdclass' : {'build_ext' : build_ext},
     'test_suite' : 'nose.collector',
     'tests_require' : ['nose'],
