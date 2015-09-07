@@ -35,13 +35,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
         current_labels = current_labels[label_filter]
         left = current_distances[label_filter]
         right = distance_matrix[current_node][current_labels]
-        # current_distances = np.where(left < right, left, right)
-        for j in range(len(left)):
-            if left[j] < right[j]:
-                current_distances[j] = left[j]
-            else:
-                current_distances[j] = right[j]
-        current_distances = current_distances[:-1]
+        current_distances = np.where(left < right, left, right)
         
         new_node_index = np.argmin(current_distances)
         new_node = current_labels[new_node_index]
