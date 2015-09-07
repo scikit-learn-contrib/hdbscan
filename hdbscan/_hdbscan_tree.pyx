@@ -16,24 +16,27 @@ cpdef np.ndarray get_points(np.ndarray[np.double_t, ndim=2] hierarchy):
 
     cdef int max_node
     cdef int num_points
+    cdef int dim
     cdef int node
     cdef int parent
-    cdef np.ndarray[np.double_t, ndim=1] row
-    cdef np.ndarray result
+    cdef np.ndarray[list, ndim=1] result
+    cdef int i
     cdef int left_child
     cdef int right_child
 
-    max_node = 2 * hierarchy.shape[0]
-    num_points = max_node - (hierarchy.shape[0] - 1)
+    dim = hierarchy.shape[0]
+    max_node = 2 * dim
+    num_points = max_node - (dim - 1)
 
     result = np.empty(max_node + 1, dtype=object)
 
     for node in range(num_points):
         result[node] = [node]
 
-    for parent, row in enumerate(hierarchy, num_points):
-        left_child = <int> row[0]
-        right_child = <int> row[1]
+    for i in range(dim):
+        parent = i + num_points
+        left_child = <int> hierarchy[i,0]
+        right_child = <int> hierarchy[i,1]
         result[parent] = result[left_child] + result[right_child]
 
     return result
