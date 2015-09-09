@@ -19,7 +19,7 @@ cpdef np.ndarray get_points(np.ndarray[np.double_t, ndim=2] hierarchy):
     cdef long long dim
     cdef long long node
     cdef long long parent
-    cdef np.ndarray[list, ndim=1] result
+    cdef np.ndarray[tuple, ndim=1] result
     cdef long long i
     cdef long long left_child
     cdef long long right_child
@@ -31,7 +31,7 @@ cpdef np.ndarray get_points(np.ndarray[np.double_t, ndim=2] hierarchy):
     result = np.empty(max_node + 1, dtype=object)
 
     for node in range(num_points):
-        result[node] = [node]
+        result[node] = (node,)
 
     for i in range(dim):
         parent = i + num_points
@@ -118,12 +118,12 @@ cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                              if right >= num_points else 1)
         
         if left_count > min_cluster_size and right_count > min_cluster_size:
-            new_points.append(points[left])
+            new_points.append(list(points[left]))
             relabel[left] = next_label
             next_label += 1
             result_list.append((relabel[node], relabel[left], lambda_value, left_count))
             
-            new_points.append(points[right])
+            new_points.append(list(points[right]))
             relabel[right] = next_label
             next_label += 1
             result_list.append((relabel[node], relabel[right], lambda_value, right_count))
