@@ -1370,6 +1370,7 @@ static char __pyx_k_int64[] = "int64";
 static char __pyx_k_numpy[] = "numpy";
 static char __pyx_k_range[] = "range";
 static char __pyx_k_zeros[] = "zeros";
+static char __pyx_k_astype[] = "astype";
 static char __pyx_k_import[] = "__import__";
 static char __pyx_k_lambda[] = "lambda";
 static char __pyx_k_object[] = "object";
@@ -1403,6 +1404,7 @@ static PyObject *__pyx_n_s_Pyx_CFunc_long__long____object;
 static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_n_s_ValueError;
 static PyObject *__pyx_n_s_array;
+static PyObject *__pyx_n_s_astype;
 static PyObject *__pyx_n_s_axis;
 static PyObject *__pyx_n_s_cfunc_to_py;
 static PyObject *__pyx_n_s_child;
@@ -1848,6 +1850,8 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
   Py_ssize_t __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
   PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1923,7 +1927,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
  * 
  *     while to_process:             # <<<<<<<<<<<<<<
  *         result.extend(to_process)
- *         to_process = [int(x - num_points) for x in
+ *         to_process = [x - num_points for x in
  */
   while (1) {
     __pyx_t_3 = (__pyx_v_to_process != Py_None) && (PyList_GET_SIZE(__pyx_v_to_process) != 0);
@@ -1933,7 +1937,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
  * 
  *     while to_process:
  *         result.extend(to_process)             # <<<<<<<<<<<<<<
- *         to_process = [int(x - num_points) for x in
+ *         to_process = [x - num_points for x in
  *                           to_process if x >= num_points]
  */
     __pyx_t_4 = __Pyx_PyList_Extend(__pyx_v_result, __pyx_v_to_process); if (unlikely(__pyx_t_4 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -1941,7 +1945,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
     /* "hdbscan/_hdbscan_tree.pyx":64
  *     while to_process:
  *         result.extend(to_process)
- *         to_process = [int(x - num_points) for x in             # <<<<<<<<<<<<<<
+ *         to_process = [x - num_points for x in             # <<<<<<<<<<<<<<
  *                           to_process if x >= num_points]
  *         if to_process:
  */
@@ -1950,10 +1954,10 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
 
     /* "hdbscan/_hdbscan_tree.pyx":65
  *         result.extend(to_process)
- *         to_process = [int(x - num_points) for x in
+ *         to_process = [x - num_points for x in
  *                           to_process if x >= num_points]             # <<<<<<<<<<<<<<
  *         if to_process:
- *             to_process = hierarchy[to_process,:2].flatten().tolist()
+ *             to_process = hierarchy[to_process,:2].flatten().astype(np.int64).tolist()
  */
     if (unlikely(__pyx_v_to_process == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
@@ -1981,7 +1985,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
         /* "hdbscan/_hdbscan_tree.pyx":64
  *     while to_process:
  *         result.extend(to_process)
- *         to_process = [int(x - num_points) for x in             # <<<<<<<<<<<<<<
+ *         to_process = [x - num_points for x in             # <<<<<<<<<<<<<<
  *                           to_process if x >= num_points]
  *         if to_process:
  */
@@ -1990,11 +1994,8 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
         __pyx_t_6 = PyNumber_Subtract(__pyx_v_x, __pyx_t_7); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __pyx_t_7 = PyNumber_Int(__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_7);
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_6))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_7))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         goto __pyx_L7;
       }
       __pyx_L7:;
@@ -2004,10 +2005,10 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
     __pyx_t_2 = 0;
 
     /* "hdbscan/_hdbscan_tree.pyx":66
- *         to_process = [int(x - num_points) for x in
+ *         to_process = [x - num_points for x in
  *                           to_process if x >= num_points]
  *         if to_process:             # <<<<<<<<<<<<<<
- *             to_process = hierarchy[to_process,:2].flatten().tolist()
+ *             to_process = hierarchy[to_process,:2].flatten().astype(np.int64).tolist()
  * 
  */
     __pyx_t_3 = (__pyx_v_to_process != Py_None) && (PyList_GET_SIZE(__pyx_v_to_process) != 0);
@@ -2016,7 +2017,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
       /* "hdbscan/_hdbscan_tree.pyx":67
  *                           to_process if x >= num_points]
  *         if to_process:
- *             to_process = hierarchy[to_process,:2].flatten().tolist()             # <<<<<<<<<<<<<<
+ *             to_process = hierarchy[to_process,:2].flatten().astype(np.int64).tolist()             # <<<<<<<<<<<<<<
  * 
  *     return result
  */
@@ -2028,11 +2029,37 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
       __Pyx_INCREF(__pyx_slice_);
       __Pyx_GIVEREF(__pyx_slice_);
       PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_slice_);
-      __pyx_t_6 = PyObject_GetItem(((PyObject *)__pyx_v_hierarchy), __pyx_t_7); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_8 = PyObject_GetItem(((PyObject *)__pyx_v_hierarchy), __pyx_t_7); if (unlikely(__pyx_t_8 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __Pyx_GOTREF(__pyx_t_8);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_flatten); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __pyx_t_8 = NULL;
+      if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_7))) {
+        __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
+        if (likely(__pyx_t_8)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+          __Pyx_INCREF(__pyx_t_8);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_7, function);
+        }
+      }
+      if (__pyx_t_8) {
+        __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      } else {
+        __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      }
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_flatten); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_astype); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_int64); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __pyx_t_6 = NULL;
       if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_7))) {
@@ -2044,13 +2071,21 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
           __Pyx_DECREF_SET(__pyx_t_7, function);
         }
       }
-      if (__pyx_t_6) {
-        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      if (!__pyx_t_6) {
+        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+        __Pyx_GOTREF(__pyx_t_1);
       } else {
-        __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_9);
+        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_6); __pyx_t_6 = NULL;
+        __Pyx_GIVEREF(__pyx_t_8);
+        PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_8);
+        __pyx_t_8 = 0;
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       }
-      __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_tolist); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
@@ -2082,7 +2117,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
   }
 
   /* "hdbscan/_hdbscan_tree.pyx":69
- *             to_process = hierarchy[to_process,:2].flatten().tolist()
+ *             to_process = hierarchy[to_process,:2].flatten().astype(np.int64).tolist()
  * 
  *     return result             # <<<<<<<<<<<<<<
  * 
@@ -2107,6 +2142,8 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_9);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_hierarchy.rcbuffer->pybuffer);
@@ -7208,6 +7245,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
   {&__pyx_n_s_array, __pyx_k_array, sizeof(__pyx_k_array), 0, 0, 1, 1},
+  {&__pyx_n_s_astype, __pyx_k_astype, sizeof(__pyx_k_astype), 0, 0, 1, 1},
   {&__pyx_n_s_axis, __pyx_k_axis, sizeof(__pyx_k_axis), 0, 0, 1, 1},
   {&__pyx_n_s_cfunc_to_py, __pyx_k_cfunc_to_py, sizeof(__pyx_k_cfunc_to_py), 0, 0, 1, 1},
   {&__pyx_n_s_child, __pyx_k_child, sizeof(__pyx_k_child), 0, 0, 1, 1},
@@ -7274,7 +7312,7 @@ static int __Pyx_InitCachedConstants(void) {
   /* "hdbscan/_hdbscan_tree.pyx":67
  *                           to_process if x >= num_points]
  *         if to_process:
- *             to_process = hierarchy[to_process,:2].flatten().tolist()             # <<<<<<<<<<<<<<
+ *             to_process = hierarchy[to_process,:2].flatten().astype(np.int64).tolist()             # <<<<<<<<<<<<<<
  * 
  *     return result
  */

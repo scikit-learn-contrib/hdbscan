@@ -61,10 +61,10 @@ cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy, long lon
 
     while to_process:
         result.extend(to_process)
-        to_process = [int(x - num_points) for x in 
+        to_process = [x - num_points for x in 
                           to_process if x >= num_points]
         if to_process:
-            to_process = hierarchy[to_process,:2].flatten().tolist()
+            to_process = hierarchy[to_process,:2].flatten().astype(np.int64).tolist()
 
     return result
         
