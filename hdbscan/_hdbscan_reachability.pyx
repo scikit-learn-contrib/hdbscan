@@ -68,15 +68,15 @@ def kdtree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5):
     return result
 
 
-cpdef np.ndarray[np.double_t, ndim=1] kdtree_pdist_mutual_reachability(np.ndarray X, object metric, int p=2, int min_points=5):
+cpdef np.ndarray[np.double_t, ndim=1] kdtree_pdist_mutual_reachability(np.ndarray X, object metric, long long p=2, long long min_points=5):
     
-    cdef int dim
+    cdef long long dim
     cdef object tree
     cdef np.ndarray[np.double_t, ndim=1] core_distances
     cdef np.ndarray[np.double_t, ndim=1] dists
     cdef np.ndarray[np.double_t, ndim=1] result
-    cdef int i
-    cdef int result_pos
+    cdef long long i
+    cdef long long result_pos
 
     dim = X.shape[0]
     min_points = min(dim - 1, min_points)

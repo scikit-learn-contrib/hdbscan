@@ -14,15 +14,15 @@ cpdef np.ndarray get_points(np.ndarray[np.double_t, ndim=2] hierarchy):
     providing a list of points for each node in the hierarchy tree.
     """
 
-    cdef int max_node
-    cdef int num_points
-    cdef int dim
-    cdef int node
-    cdef int parent
+    cdef long long max_node
+    cdef long long num_points
+    cdef long long dim
+    cdef long long node
+    cdef long long parent
     cdef np.ndarray[list, ndim=1] result
-    cdef int i
-    cdef int left_child
-    cdef int right_child
+    cdef long long i
+    cdef long long left_child
+    cdef long long right_child
 
     dim = hierarchy.shape[0]
     max_node = 2 * dim
@@ -35,22 +35,22 @@ cpdef np.ndarray get_points(np.ndarray[np.double_t, ndim=2] hierarchy):
 
     for i in range(dim):
         parent = i + num_points
-        left_child = <int> hierarchy[i,0]
-        right_child = <int> hierarchy[i,1]
+        left_child = <long long> hierarchy[i,0]
+        right_child = <long long> hierarchy[i,1]
         result[parent] = result[left_child] + result[right_child]
 
     return result
 
-cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy, int bfs_root):
+cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy, long long bfs_root):
 
     """
     Perform a breadth first search on a tree in scipy hclust format.
     """
     
     cdef list to_process
-    cdef int max_node
-    cdef int num_points
-    cdef int dim
+    cdef long long max_node
+    cdef long long num_points
+    cdef long long dim
 
     dim = hierarchy.shape[0]
     max_node = 2 * dim
@@ -70,11 +70,11 @@ cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy, int bfs_
         
 cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                           np.ndarray points,
-                          int min_cluster_size=10):
+                          long long min_cluster_size=10):
 
-    cdef int root
-    cdef int num_points
-    cdef int next_label
+    cdef long long root
+    cdef long long num_points
+    cdef long long next_label
     cdef list node_list
     cdef list result_list
     cdef list new_points
@@ -83,13 +83,13 @@ cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     cdef np.ndarray[np.int_t, ndim=1] ignore
     cdef np.ndarray[np.double_t, ndim=1] children
 
-    cdef int node
-    cdef int sub_node
-    cdef int left
-    cdef int right
+    cdef long long node
+    cdef long long sub_node
+    cdef long long left
+    cdef long long right
     cdef double lambda_value
-    cdef int left_count
-    cdef int right_count
+    cdef long long left_count
+    cdef long long right_count
     
     root = 2 * hierarchy.shape[0]
     num_points = root // 2 + 1
@@ -109,12 +109,12 @@ cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
             continue
             
         children = hierarchy[node - num_points]
-        left = <int> children[0]
-        right = <int> children[1]
+        left = <long long> children[0]
+        right = <long long> children[1]
         lambda_value = 1.0 / children[2] if children[2] > 0.0 else np.inf
-        left_count = <int> (hierarchy[left - num_points][3] 
+        left_count = <long long> (hierarchy[left - num_points][3] 
                             if left >= num_points else 1)
-        right_count = <int> (hierarchy[right - num_points][3] 
+        right_count = <long long> (hierarchy[right - num_points][3] 
                              if right >= num_points else 1)
         
         if left_count > min_cluster_size and right_count > min_cluster_size:
@@ -161,8 +161,8 @@ cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                                        ]), new_points
 
 
-cdef int keyfunc(row):
-    return <int> row[0]
+cdef long long keyfunc(row):
+    return <long long> row[0]
  
 cpdef dict compute_stability(np.ndarray condensed_tree):
 
@@ -171,8 +171,8 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
     cdef np.ndarray selection
     cdef list birth_pairs
     cdef dict births
-    cdef int from_i
-    cdef int to_i
+    cdef long long from_i
+    cdef long long to_i
 
     result = {}
     sorted_child_data = np.sort(condensed_tree[['child', 'lambda']], axis=0)
@@ -189,7 +189,7 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
                            condensed_tree['child_size'][selection])
     return result
 
-cdef list bfs_from_cluster_tree(np.ndarray tree, int bfs_root):
+cdef list bfs_from_cluster_tree(np.ndarray tree, long long bfs_root):
 
     cdef list result
     cdef list to_process
@@ -213,9 +213,9 @@ cpdef list get_clusters(np.ndarray tree, dict stability, list points):
     cdef np.ndarray child_selection
     cdef dict is_cluster
     cdef float subtree_stability
-    cdef int node
-    cdef int sub_node
-    cdef int cluster
+    cdef long long node
+    cdef long long sub_node
+    cdef long long cluster
 
     # Assume clusters are ordered by numeric id equivalent to
     # a topological sort of the tree; This is valid given the

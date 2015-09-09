@@ -20,10 +20,10 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
     
     cdef np.ndarray label_filter
     
-    cdef int current_node
-    cdef int new_node_index
-    cdef int new_node
-    cdef int i
+    cdef long long current_node
+    cdef long long new_node_index
+    cdef long long new_node
+    cdef long long i
     
     result = np.zeros((distance_matrix.shape[0] - 1, 3))
     node_labels = np.arange(distance_matrix.shape[0], dtype=np.int64)
@@ -51,15 +51,15 @@ cdef void select_distances(
     np.ndarray[np.int_t, ndim=1] col_select,
     np.ndarray[np.int64_t, ndim=1] current_labels,
     np.ndarray[np.double_t, ndim=1] result_buffer,
-    int row_num,
-    int dim
+    long long row_num,
+    long long dim
 ):
 
     cdef np.ndarray[np.int_t, ndim=1] col_selection
 
-    cdef int i
-    cdef int n_labels = len(current_labels)
-    cdef int row_start
+    cdef long long i
+    cdef long long n_labels = len(current_labels)
+    cdef long long row_start
 
     col_selection = col_select - (dim - row_num)
 
@@ -91,11 +91,11 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_pdist(
     
     cdef np.ndarray label_filter
     
-    cdef int current_node
-    cdef int new_node_index
-    cdef int new_node
-    cdef int i
-    cdef int dim
+    cdef long long current_node
+    cdef long long new_node_index
+    cdef long long new_node
+    cdef long long i
+    cdef long long dim
 
     dim = int((1 + np.sqrt(1 + 8 * pdist_matrix.shape[0])) / 2.0)
     col_select = np.cumsum(np.arange(dim - 1, 0, -1))
@@ -127,7 +127,7 @@ cdef class UnionFind (object):
 
     cdef np.ndarray parent
     cdef np.ndarray size
-    cdef int next_label
+    cdef long long next_label
     
     def __init__(self, N):
         self.parent = -1 * np.ones(2 * N - 1, dtype=np.int64)
@@ -135,7 +135,7 @@ cdef class UnionFind (object):
         self.size = np.hstack((np.ones(N, dtype=np.int64),
                                np.zeros(N-1, dtype=np.int64)))
                                
-    cdef void union(self, int m, int n):
+    cdef void union(self, long long m, long long n):
         self.size[self.next_label] = self.size[m] + self.size[n]
         self.parent[m] = self.next_label
         self.parent[n] = self.next_label
@@ -144,13 +144,13 @@ cdef class UnionFind (object):
         
         return
         
-    cdef int find(self, int n):
+    cdef long long find(self, long long n):
         while self.parent[n] != -1:
             n = self.parent[n]
         return n
         
-    cdef int fast_find(self, int n):
-        cdef int p
+    cdef long long fast_find(self, long long n):
+        cdef long long p
         p = n
         while self.parent[n] != -1:
             n = self.parent[n]
@@ -164,7 +164,7 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L,
 
     cdef np.ndarray[np.double_t, ndim=2] result
 
-    cdef int N, a, aa, b, bb, idx
+    cdef long long N, a, aa, b, bb, idx
     cdef float delta
     
     result = np.zeros((L.shape[0], L.shape[1] + 1))
