@@ -68,8 +68,7 @@ cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy, long lon
 
     return result
         
-cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
-                          np.ndarray points,
+cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                           long long min_cluster_size=10):
 
     cdef long long root
@@ -77,7 +76,6 @@ cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     cdef long long next_label
     cdef list node_list
     cdef list result_list
-    cdef list new_points
 
     cdef np.ndarray[np.int64_t, ndim=1] relabel
     cdef np.ndarray[np.int_t, ndim=1] ignore
@@ -100,8 +98,6 @@ cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     relabel = np.empty(len(node_list), dtype=np.int64)
     relabel[root] = num_points
     result_list = []
-    new_points = [[x] for x in range(num_points)]
-    new_points.append(points[root])
     ignore = np.zeros(len(node_list), dtype=np.int)
     
     for node in node_list:
@@ -118,12 +114,10 @@ cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                              if right >= num_points else 1)
         
         if left_count > min_cluster_size and right_count > min_cluster_size:
-            new_points.append(list(points[left]))
             relabel[left] = next_label
             next_label += 1
             result_list.append((relabel[node], relabel[left], lambda_value, left_count))
             
-            new_points.append(list(points[right]))
             relabel[right] = next_label
             next_label += 1
             result_list.append((relabel[node], relabel[right], lambda_value, right_count))
@@ -158,7 +152,7 @@ cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                                         ('child', int),
                                         ('lambda', float),
                                         ('child_size', int)
-                                       ]), new_points
+                                       ])
 
 
 cdef long long keyfunc(row):
@@ -192,18 +186,43 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
 cdef list bfs_from_cluster_tree(np.ndarray tree, long long bfs_root):
 
     cdef list result
-    cdef list to_process
+    cdef np.ndarray[np.int64_t, ndim=1] to_process
 
     result = []
-    to_process = [bfs_root]
+    to_process = np.array([bfs_root])
     
-    while to_process:
-        result.extend(to_process)
-        to_process = tree['child'][np.in1d(tree['parent'], to_process)].tolist()
+    while to_process.shape[0] > 0:
+        result.extend(to_process.tolist())
+        to_process = tree['child'][np.in1d(tree['parent'], to_process)]
 
     return result
 
-cpdef list get_clusters(np.ndarray tree, dict stability, list points):
+cdef list get_cluster_points(np.ndarray tree, long long cluster, long long num_points):
+
+    cdef list result
+    cdef list to_process
+    cdef list next_to_process
+    cdef long long num_to_process
+    cdef long long in_process
+
+    result = []
+    to_process = [cluster]
+    next_to_process = []
+
+    while to_process:
+        num_to_process = len(to_process)
+        for i in range(num_to_process):
+            in_process = to_process[i]
+            if in_process < num_points:
+                result.append(in_process)
+            else:
+                next_to_process.extend(tree['child'][tree['parent'] == in_process].tolist())
+        to_process = next_to_process
+        next_to_process = []
+
+    return result
+
+cpdef list get_clusters(np.ndarray tree, dict stability):
     """
     The tree is assumed to have numeric node ids such that a reverse numeric
     sort is equivalent to a topological sort.
@@ -216,6 +235,7 @@ cpdef list get_clusters(np.ndarray tree, dict stability, list points):
     cdef long long node
     cdef long long sub_node
     cdef long long cluster
+    cdef long long num_points
 
     # Assume clusters are ordered by numeric id equivalent to
     # a topological sort of the tree; This is valid given the
@@ -224,6 +244,7 @@ cpdef list get_clusters(np.ndarray tree, dict stability, list points):
     node_list = sorted(stability.keys(), reverse=True)[:-1] # (exclude root)
     cluster_tree = tree[tree['child_size'] > 1]
     is_cluster = {cluster:True for cluster in node_list}
+    num_points = np.max(tree[tree['child_size'] == 1]['child']) + 1
 
     for node in node_list:
         child_selection = (cluster_tree['parent'] == node)
@@ -237,7 +258,7 @@ cpdef list get_clusters(np.ndarray tree, dict stability, list points):
                 if sub_node != node:
                     is_cluster[sub_node] = False
 
-    return [points[cluster] for cluster in is_cluster if is_cluster[cluster]]
+    return [get_cluster_points(tree, cluster, num_points) for cluster in is_cluster if is_cluster[cluster]]
 
     
     

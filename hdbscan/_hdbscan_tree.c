@@ -468,7 +468,7 @@ static const char *__pyx_filename;
 static const char *__pyx_f[] = {
   "hdbscan/_hdbscan_tree.pyx",
   "__init__.pxd",
-  "hdbscan/stringsource",
+  "stringsource",
   "type.pxd",
 };
 #define IS_UNSIGNED(type) (((type) -1) > 0)
@@ -507,7 +507,7 @@ typedef struct {
 } __Pyx_BufFmt_Context;
 
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":726
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":726
  * # in Cython to enable them only on the right systems.
  * 
  * ctypedef npy_int8       int8_t             # <<<<<<<<<<<<<<
@@ -516,7 +516,7 @@ typedef struct {
  */
 typedef npy_int8 __pyx_t_5numpy_int8_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":727
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":727
  * 
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t             # <<<<<<<<<<<<<<
@@ -525,7 +525,7 @@ typedef npy_int8 __pyx_t_5numpy_int8_t;
  */
 typedef npy_int16 __pyx_t_5numpy_int16_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":728
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":728
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t             # <<<<<<<<<<<<<<
@@ -534,7 +534,7 @@ typedef npy_int16 __pyx_t_5numpy_int16_t;
  */
 typedef npy_int32 __pyx_t_5numpy_int32_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":729
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":729
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t
  * ctypedef npy_int64      int64_t             # <<<<<<<<<<<<<<
@@ -543,7 +543,7 @@ typedef npy_int32 __pyx_t_5numpy_int32_t;
  */
 typedef npy_int64 __pyx_t_5numpy_int64_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":733
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":733
  * #ctypedef npy_int128     int128_t
  * 
  * ctypedef npy_uint8      uint8_t             # <<<<<<<<<<<<<<
@@ -552,7 +552,7 @@ typedef npy_int64 __pyx_t_5numpy_int64_t;
  */
 typedef npy_uint8 __pyx_t_5numpy_uint8_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":734
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":734
  * 
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t             # <<<<<<<<<<<<<<
@@ -561,7 +561,7 @@ typedef npy_uint8 __pyx_t_5numpy_uint8_t;
  */
 typedef npy_uint16 __pyx_t_5numpy_uint16_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":735
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":735
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t             # <<<<<<<<<<<<<<
@@ -570,7 +570,7 @@ typedef npy_uint16 __pyx_t_5numpy_uint16_t;
  */
 typedef npy_uint32 __pyx_t_5numpy_uint32_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":736
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":736
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t
  * ctypedef npy_uint64     uint64_t             # <<<<<<<<<<<<<<
@@ -579,7 +579,7 @@ typedef npy_uint32 __pyx_t_5numpy_uint32_t;
  */
 typedef npy_uint64 __pyx_t_5numpy_uint64_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":740
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":740
  * #ctypedef npy_uint128    uint128_t
  * 
  * ctypedef npy_float32    float32_t             # <<<<<<<<<<<<<<
@@ -588,7 +588,7 @@ typedef npy_uint64 __pyx_t_5numpy_uint64_t;
  */
 typedef npy_float32 __pyx_t_5numpy_float32_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":741
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":741
  * 
  * ctypedef npy_float32    float32_t
  * ctypedef npy_float64    float64_t             # <<<<<<<<<<<<<<
@@ -597,7 +597,7 @@ typedef npy_float32 __pyx_t_5numpy_float32_t;
  */
 typedef npy_float64 __pyx_t_5numpy_float64_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":750
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":750
  * # The int types are mapped a bit surprising --
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t             # <<<<<<<<<<<<<<
@@ -606,7 +606,7 @@ typedef npy_float64 __pyx_t_5numpy_float64_t;
  */
 typedef npy_long __pyx_t_5numpy_int_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":751
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":751
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   long_t             # <<<<<<<<<<<<<<
@@ -615,7 +615,7 @@ typedef npy_long __pyx_t_5numpy_int_t;
  */
 typedef npy_longlong __pyx_t_5numpy_long_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":752
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":752
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   long_t
  * ctypedef npy_longlong   longlong_t             # <<<<<<<<<<<<<<
@@ -624,7 +624,7 @@ typedef npy_longlong __pyx_t_5numpy_long_t;
  */
 typedef npy_longlong __pyx_t_5numpy_longlong_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":754
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":754
  * ctypedef npy_longlong   longlong_t
  * 
  * ctypedef npy_ulong      uint_t             # <<<<<<<<<<<<<<
@@ -633,7 +633,7 @@ typedef npy_longlong __pyx_t_5numpy_longlong_t;
  */
 typedef npy_ulong __pyx_t_5numpy_uint_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":755
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":755
  * 
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulong_t             # <<<<<<<<<<<<<<
@@ -642,7 +642,7 @@ typedef npy_ulong __pyx_t_5numpy_uint_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulong_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":756
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":756
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulong_t
  * ctypedef npy_ulonglong  ulonglong_t             # <<<<<<<<<<<<<<
@@ -651,7 +651,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulong_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":758
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":758
  * ctypedef npy_ulonglong  ulonglong_t
  * 
  * ctypedef npy_intp       intp_t             # <<<<<<<<<<<<<<
@@ -660,7 +660,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
  */
 typedef npy_intp __pyx_t_5numpy_intp_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":759
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":759
  * 
  * ctypedef npy_intp       intp_t
  * ctypedef npy_uintp      uintp_t             # <<<<<<<<<<<<<<
@@ -669,7 +669,7 @@ typedef npy_intp __pyx_t_5numpy_intp_t;
  */
 typedef npy_uintp __pyx_t_5numpy_uintp_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":761
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":761
  * ctypedef npy_uintp      uintp_t
  * 
  * ctypedef npy_double     float_t             # <<<<<<<<<<<<<<
@@ -678,7 +678,7 @@ typedef npy_uintp __pyx_t_5numpy_uintp_t;
  */
 typedef npy_double __pyx_t_5numpy_float_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":762
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":762
  * 
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t             # <<<<<<<<<<<<<<
@@ -687,7 +687,7 @@ typedef npy_double __pyx_t_5numpy_float_t;
  */
 typedef npy_double __pyx_t_5numpy_double_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":763
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":763
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t
  * ctypedef npy_longdouble longdouble_t             # <<<<<<<<<<<<<<
@@ -719,7 +719,7 @@ typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 /*--- Type declarations ---*/
 struct __pyx_obj___pyx_scope_struct____Pyx_CFunc_long__long____object___to_py;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":765
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":765
  * ctypedef npy_longdouble longdouble_t
  * 
  * ctypedef npy_cfloat      cfloat_t             # <<<<<<<<<<<<<<
@@ -728,7 +728,7 @@ struct __pyx_obj___pyx_scope_struct____Pyx_CFunc_long__long____object___to_py;
  */
 typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":766
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":766
  * 
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t             # <<<<<<<<<<<<<<
@@ -737,7 +737,7 @@ typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":767
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":767
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t
  * ctypedef npy_clongdouble clongdouble_t             # <<<<<<<<<<<<<<
@@ -746,7 +746,7 @@ typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
  */
 typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":769
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":769
  * ctypedef npy_clongdouble clongdouble_t
  * 
  * ctypedef npy_cdouble     complex_t             # <<<<<<<<<<<<<<
@@ -759,9 +759,9 @@ struct __pyx_opt_args_7hdbscan_13_hdbscan_tree_condense_tree;
 /* "hdbscan/_hdbscan_tree.pyx":71
  *     return result
  * 
- * cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,             # <<<<<<<<<<<<<<
- *                           np.ndarray points,
+ * cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,             # <<<<<<<<<<<<<<
  *                           long long min_cluster_size=10):
+ * 
  */
 struct __pyx_opt_args_7hdbscan_13_hdbscan_tree_condense_tree {
   int __pyx_n;
@@ -927,22 +927,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
 
 static CYTHON_INLINE PY_LONG_LONG __Pyx_div_PY_LONG_LONG(PY_LONG_LONG, PY_LONG_LONG); /* proto */
 
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE int __Pyx_PyList_Append(PyObject* list, PyObject* x) {
-    PyListObject* L = (PyListObject*) list;
-    Py_ssize_t len = Py_SIZE(list);
-    if (likely(L->allocated > len) & likely(len > (L->allocated >> 1))) {
-        Py_INCREF(x);
-        PyList_SET_ITEM(list, len, x);
-        Py_SIZE(list) = len+1;
-        return 0;
-    }
-    return PyList_Append(list, x);
-}
-#else
-#define __Pyx_PyList_Append(L,x) PyList_Append(L,x)
-#endif
-
 #define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck) \
     (__Pyx_fits_Py_ssize_t(i, type, is_signed) ? \
     __Pyx_GetItemInt_Fast(o, (Py_ssize_t)i, is_list, wraparound, boundscheck) : \
@@ -968,14 +952,30 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
   #define __PYX_FORCE_INIT_THREADS 0
 #endif
 
-static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
-    Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE int __Pyx_PyList_Append(PyObject* list, PyObject* x) {
+    PyListObject* L = (PyListObject*) list;
+    Py_ssize_t len = Py_SIZE(list);
+    if (likely(L->allocated > len) & likely(len > (L->allocated >> 1))) {
+        Py_INCREF(x);
+        PyList_SET_ITEM(list, len, x);
+        Py_SIZE(list) = len+1;
+        return 0;
+    }
+    return PyList_Append(list, x);
+}
+#else
+#define __Pyx_PyList_Append(L,x) PyList_Append(L,x)
+#endif
 
 static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
 
 static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[], \
     PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args, \
     const char* function_name);
+
+static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
+    Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
 
 static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
@@ -1299,11 +1299,12 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, cha
 static PyTypeObject *__pyx_ptype___pyx_scope_struct____Pyx_CFunc_long__long____object___to_py = 0;
 static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_points(PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObject *, PY_LONG_LONG); /*proto*/
-static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_7hdbscan_13_hdbscan_tree_condense_tree *__pyx_optional_args); /*proto*/
+static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_7hdbscan_13_hdbscan_tree_condense_tree *__pyx_optional_args); /*proto*/
 static PY_LONG_LONG __pyx_f_7hdbscan_13_hdbscan_tree_keyfunc(PyObject *); /*proto*/
 static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_cluster_tree(PyArrayObject *, PY_LONG_LONG); /*proto*/
-static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
+static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_cluster_points(PyArrayObject *, PY_LONG_LONG, PY_LONG_LONG); /*proto*/
+static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__Pyx_CFunc_long__long____object___to_py(PY_LONG_LONG (*)(PyObject *)); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5numpy_double_t = { "double_t", NULL, sizeof(__pyx_t_5numpy_double_t), { 0 }, 0, 'R', 0, 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_object = { "tuple object", NULL, sizeof(PyObject *), { 0 }, 0, 'O', 0, 0 };
@@ -1320,9 +1321,9 @@ static PyObject *__pyx_builtin_sorted;
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_get_points(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_hierarchy); /* proto */
-static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_2condense_tree(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_hierarchy, PyArrayObject *__pyx_v_points, PY_LONG_LONG __pyx_v_min_cluster_size); /* proto */
+static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_2condense_tree(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_hierarchy, PY_LONG_LONG __pyx_v_min_cluster_size); /* proto */
 static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_4compute_stability(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_condensed_tree); /* proto */
-static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_6get_clusters(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_tree, PyObject *__pyx_v_stability, PyObject *__pyx_v_points); /* proto */
+static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_6get_clusters(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_tree, PyObject *__pyx_v_stability); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_pf_11cfunc_dot_to_py_40__Pyx_CFunc_long__long____object___to_py_wrap(PyObject *__pyx_self, PyObject *__pyx_v_row); /* proto */
@@ -1375,7 +1376,6 @@ static char __pyx_k_import[] = "__import__";
 static char __pyx_k_lambda[] = "lambda";
 static char __pyx_k_object[] = "object";
 static char __pyx_k_parent[] = "parent";
-static char __pyx_k_points[] = "points";
 static char __pyx_k_sorted[] = "sorted";
 static char __pyx_k_tolist[] = "tolist";
 static char __pyx_k_flatten[] = "flatten";
@@ -1435,7 +1435,6 @@ static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_n_s_object;
 static PyObject *__pyx_n_s_parent;
-static PyObject *__pyx_n_s_points;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_reverse;
 static PyObject *__pyx_n_s_row;
@@ -2121,7 +2120,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
  * 
  *     return result             # <<<<<<<<<<<<<<
  * 
- * cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
+ * cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_result);
@@ -2165,20 +2164,19 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(PyArrayObje
 /* "hdbscan/_hdbscan_tree.pyx":71
  *     return result
  * 
- * cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,             # <<<<<<<<<<<<<<
- *                           np.ndarray points,
+ * cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,             # <<<<<<<<<<<<<<
  *                           long long min_cluster_size=10):
+ * 
  */
 
 static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_3condense_tree(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *__pyx_v_hierarchy, PyArrayObject *__pyx_v_points, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_7hdbscan_13_hdbscan_tree_condense_tree *__pyx_optional_args) {
+static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *__pyx_v_hierarchy, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_7hdbscan_13_hdbscan_tree_condense_tree *__pyx_optional_args) {
   PY_LONG_LONG __pyx_v_min_cluster_size = ((PY_LONG_LONG)10);
   PY_LONG_LONG __pyx_v_root;
   PY_LONG_LONG __pyx_v_num_points;
   PY_LONG_LONG __pyx_v_next_label;
   PyObject *__pyx_v_node_list = 0;
   PyObject *__pyx_v_result_list = 0;
-  PyObject *__pyx_v_new_points = 0;
   PyArrayObject *__pyx_v_relabel = 0;
   PyArrayObject *__pyx_v_ignore = 0;
   PyArrayObject *__pyx_v_children = 0;
@@ -2189,7 +2187,6 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
   double __pyx_v_lambda_value;
   PY_LONG_LONG __pyx_v_left_count;
   PY_LONG_LONG __pyx_v_right_count;
-  PY_LONG_LONG __pyx_v_x;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_children;
   __Pyx_Buffer __pyx_pybuffer_children;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_hierarchy;
@@ -2198,7 +2195,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
   __Pyx_Buffer __pyx_pybuffer_ignore;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_relabel;
   __Pyx_Buffer __pyx_pybuffer_relabel;
-  PyObject *__pyx_r = NULL;
+  PyArrayObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -2212,23 +2209,23 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
   PyObject *__pyx_t_10 = NULL;
   PyObject *__pyx_t_11 = NULL;
   PY_LONG_LONG __pyx_t_12;
-  PY_LONG_LONG __pyx_t_13;
+  PyArrayObject *__pyx_t_13 = NULL;
   PY_LONG_LONG __pyx_t_14;
   int __pyx_t_15;
-  PyArrayObject *__pyx_t_16 = NULL;
-  int __pyx_t_17;
-  int __pyx_t_18;
-  PyArrayObject *__pyx_t_19 = NULL;
+  int __pyx_t_16;
+  PY_LONG_LONG __pyx_t_17;
+  PyArrayObject *__pyx_t_18 = NULL;
+  long __pyx_t_19;
   long __pyx_t_20;
-  long __pyx_t_21;
-  double __pyx_t_22;
+  double __pyx_t_21;
+  long __pyx_t_22;
   long __pyx_t_23;
-  long __pyx_t_24;
-  __pyx_t_5numpy_double_t __pyx_t_25;
-  double __pyx_t_26;
+  __pyx_t_5numpy_double_t __pyx_t_24;
+  double __pyx_t_25;
+  PY_LONG_LONG __pyx_t_26;
   PY_LONG_LONG __pyx_t_27;
-  PY_LONG_LONG __pyx_t_28;
-  PyObject *__pyx_t_29 = NULL;
+  PyObject *__pyx_t_28 = NULL;
+  int __pyx_t_29;
   PY_LONG_LONG __pyx_t_30;
   PY_LONG_LONG __pyx_t_31;
   PY_LONG_LONG __pyx_t_32;
@@ -2278,7 +2275,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
   }
   __pyx_pybuffernd_hierarchy.diminfo[0].strides = __pyx_pybuffernd_hierarchy.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_hierarchy.diminfo[0].shape = __pyx_pybuffernd_hierarchy.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_hierarchy.diminfo[1].strides = __pyx_pybuffernd_hierarchy.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_hierarchy.diminfo[1].shape = __pyx_pybuffernd_hierarchy.rcbuffer->pybuffer.shape[1];
 
-  /* "hdbscan/_hdbscan_tree.pyx":94
+  /* "hdbscan/_hdbscan_tree.pyx":92
  *     cdef long long right_count
  * 
  *     root = 2 * hierarchy.shape[0]             # <<<<<<<<<<<<<<
@@ -2287,7 +2284,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
   __pyx_v_root = (2 * (__pyx_v_hierarchy->dimensions[0]));
 
-  /* "hdbscan/_hdbscan_tree.pyx":95
+  /* "hdbscan/_hdbscan_tree.pyx":93
  * 
  *     root = 2 * hierarchy.shape[0]
  *     num_points = root // 2 + 1             # <<<<<<<<<<<<<<
@@ -2296,7 +2293,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
   __pyx_v_num_points = (__Pyx_div_PY_LONG_LONG(__pyx_v_root, 2) + 1);
 
-  /* "hdbscan/_hdbscan_tree.pyx":96
+  /* "hdbscan/_hdbscan_tree.pyx":94
  *     root = 2 * hierarchy.shape[0]
  *     num_points = root // 2 + 1
  *     next_label = num_points + 1             # <<<<<<<<<<<<<<
@@ -2305,57 +2302,57 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
   __pyx_v_next_label = (__pyx_v_num_points + 1);
 
-  /* "hdbscan/_hdbscan_tree.pyx":98
+  /* "hdbscan/_hdbscan_tree.pyx":96
  *     next_label = num_points + 1
  * 
  *     node_list = bfs_from_hierarchy(hierarchy, root)             # <<<<<<<<<<<<<<
  * 
  *     relabel = np.empty(len(node_list), dtype=np.int64)
  */
-  __pyx_t_1 = __pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(((PyArrayObject *)__pyx_v_hierarchy), __pyx_v_root); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(((PyArrayObject *)__pyx_v_hierarchy), __pyx_v_root); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_node_list = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":100
+  /* "hdbscan/_hdbscan_tree.pyx":98
  *     node_list = bfs_from_hierarchy(hierarchy, root)
  * 
  *     relabel = np.empty(len(node_list), dtype=np.int64)             # <<<<<<<<<<<<<<
  *     relabel[root] = num_points
  *     result_list = []
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (unlikely(__pyx_v_node_list == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_3 = PyList_GET_SIZE(__pyx_v_node_list); if (unlikely(__pyx_t_3 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyList_GET_SIZE(__pyx_v_node_list); if (unlikely(__pyx_t_3 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_int64); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_int64); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_6) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_6) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_7 = ((PyArrayObject *)__pyx_t_6);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -2371,116 +2368,79 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
       }
     }
     __pyx_pybuffernd_relabel.diminfo[0].strides = __pyx_pybuffernd_relabel.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_relabel.diminfo[0].shape = __pyx_pybuffernd_relabel.rcbuffer->pybuffer.shape[0];
-    if (unlikely(__pyx_t_8 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(__pyx_t_8 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_7 = 0;
   __pyx_v_relabel = ((PyArrayObject *)__pyx_t_6);
   __pyx_t_6 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":101
+  /* "hdbscan/_hdbscan_tree.pyx":99
  * 
  *     relabel = np.empty(len(node_list), dtype=np.int64)
  *     relabel[root] = num_points             # <<<<<<<<<<<<<<
  *     result_list = []
- *     new_points = [[x] for x in range(num_points)]
+ *     ignore = np.zeros(len(node_list), dtype=np.int)
  */
   __pyx_t_12 = __pyx_v_root;
   if (__pyx_t_12 < 0) __pyx_t_12 += __pyx_pybuffernd_relabel.diminfo[0].shape;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_12, __pyx_pybuffernd_relabel.diminfo[0].strides) = __pyx_v_num_points;
 
-  /* "hdbscan/_hdbscan_tree.pyx":102
+  /* "hdbscan/_hdbscan_tree.pyx":100
  *     relabel = np.empty(len(node_list), dtype=np.int64)
  *     relabel[root] = num_points
  *     result_list = []             # <<<<<<<<<<<<<<
- *     new_points = [[x] for x in range(num_points)]
- *     new_points.append(points[root])
+ *     ignore = np.zeros(len(node_list), dtype=np.int)
+ * 
  */
-  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_v_result_list = ((PyObject*)__pyx_t_6);
   __pyx_t_6 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":103
+  /* "hdbscan/_hdbscan_tree.pyx":101
  *     relabel[root] = num_points
  *     result_list = []
- *     new_points = [[x] for x in range(num_points)]             # <<<<<<<<<<<<<<
- *     new_points.append(points[root])
- *     ignore = np.zeros(len(node_list), dtype=np.int)
- */
-  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_13 = __pyx_v_num_points;
-  for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
-    __pyx_v_x = __pyx_t_14;
-    __pyx_t_1 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_x); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_1);
-    PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
-    __pyx_t_1 = 0;
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_6, (PyObject*)__pyx_t_4))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  }
-  __pyx_v_new_points = ((PyObject*)__pyx_t_6);
-  __pyx_t_6 = 0;
-
-  /* "hdbscan/_hdbscan_tree.pyx":104
- *     result_list = []
- *     new_points = [[x] for x in range(num_points)]
- *     new_points.append(points[root])             # <<<<<<<<<<<<<<
- *     ignore = np.zeros(len(node_list), dtype=np.int)
- * 
- */
-  __pyx_t_6 = __Pyx_GetItemInt(((PyObject *)__pyx_v_points), __pyx_v_root, PY_LONG_LONG, 1, __Pyx_PyInt_From_PY_LONG_LONG, 0, 1, 0); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_new_points, __pyx_t_6); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-
-  /* "hdbscan/_hdbscan_tree.pyx":105
- *     new_points = [[x] for x in range(num_points)]
- *     new_points.append(points[root])
  *     ignore = np.zeros(len(node_list), dtype=np.int)             # <<<<<<<<<<<<<<
  * 
  *     for node in node_list:
  */
-  __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   if (unlikely(__pyx_v_node_list == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_3 = PyList_GET_SIZE(__pyx_v_node_list); if (unlikely(__pyx_t_3 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_6 = PyInt_FromSsize_t(__pyx_t_3); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyList_GET_SIZE(__pyx_v_node_list); if (unlikely(__pyx_t_3 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyInt_FromSsize_t(__pyx_t_3); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_6);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6);
   __pyx_t_6 = 0;
-  __pyx_t_6 = PyDict_New(); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyDict_New(); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_int); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_int); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_dtype, __pyx_t_5) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_dtype, __pyx_t_5) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_4, __pyx_t_6); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_16 = ((PyArrayObject *)__pyx_t_5);
+  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_13 = ((PyArrayObject *)__pyx_t_5);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_ignore.rcbuffer->pybuffer);
-    __pyx_t_8 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_ignore.rcbuffer->pybuffer, (PyObject*)__pyx_t_16, &__Pyx_TypeInfo_nn___pyx_t_5numpy_int_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack);
+    __pyx_t_8 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_ignore.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_5numpy_int_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack);
     if (unlikely(__pyx_t_8 < 0)) {
       PyErr_Fetch(&__pyx_t_11, &__pyx_t_10, &__pyx_t_9);
       if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_ignore.rcbuffer->pybuffer, (PyObject*)__pyx_v_ignore, &__Pyx_TypeInfo_nn___pyx_t_5numpy_int_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
@@ -2491,13 +2451,13 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
       }
     }
     __pyx_pybuffernd_ignore.diminfo[0].strides = __pyx_pybuffernd_ignore.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_ignore.diminfo[0].shape = __pyx_pybuffernd_ignore.rcbuffer->pybuffer.shape[0];
-    if (unlikely(__pyx_t_8 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(__pyx_t_8 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_16 = 0;
+  __pyx_t_13 = 0;
   __pyx_v_ignore = ((PyArrayObject *)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":107
+  /* "hdbscan/_hdbscan_tree.pyx":103
  *     ignore = np.zeros(len(node_list), dtype=np.int)
  * 
  *     for node in node_list:             # <<<<<<<<<<<<<<
@@ -2506,67 +2466,67 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
   if (unlikely(__pyx_v_node_list == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_5 = __pyx_v_node_list; __Pyx_INCREF(__pyx_t_5); __pyx_t_3 = 0;
   for (;;) {
     if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_5)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_6 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_3); __Pyx_INCREF(__pyx_t_6); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_3); __Pyx_INCREF(__pyx_t_6); __pyx_t_3++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_6 = PySequence_ITEM(__pyx_t_5, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PySequence_ITEM(__pyx_t_5, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     #endif
-    __pyx_t_13 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_6); if (unlikely((__pyx_t_13 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_14 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_6); if (unlikely((__pyx_t_14 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_v_node = __pyx_t_13;
+    __pyx_v_node = __pyx_t_14;
 
-    /* "hdbscan/_hdbscan_tree.pyx":108
+    /* "hdbscan/_hdbscan_tree.pyx":104
  * 
  *     for node in node_list:
  *         if ignore[node] or node < num_points:             # <<<<<<<<<<<<<<
  *             continue
  * 
  */
-    __pyx_t_13 = __pyx_v_node;
-    if (__pyx_t_13 < 0) __pyx_t_13 += __pyx_pybuffernd_ignore.diminfo[0].shape;
-    __pyx_t_18 = ((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int_t *, __pyx_pybuffernd_ignore.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_ignore.diminfo[0].strides)) != 0);
-    if (!__pyx_t_18) {
+    __pyx_t_14 = __pyx_v_node;
+    if (__pyx_t_14 < 0) __pyx_t_14 += __pyx_pybuffernd_ignore.diminfo[0].shape;
+    __pyx_t_16 = ((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int_t *, __pyx_pybuffernd_ignore.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_ignore.diminfo[0].strides)) != 0);
+    if (!__pyx_t_16) {
     } else {
-      __pyx_t_17 = __pyx_t_18;
-      goto __pyx_L8_bool_binop_done;
+      __pyx_t_15 = __pyx_t_16;
+      goto __pyx_L6_bool_binop_done;
     }
-    __pyx_t_18 = ((__pyx_v_node < __pyx_v_num_points) != 0);
-    __pyx_t_17 = __pyx_t_18;
-    __pyx_L8_bool_binop_done:;
-    if (__pyx_t_17) {
+    __pyx_t_16 = ((__pyx_v_node < __pyx_v_num_points) != 0);
+    __pyx_t_15 = __pyx_t_16;
+    __pyx_L6_bool_binop_done:;
+    if (__pyx_t_15) {
 
-      /* "hdbscan/_hdbscan_tree.pyx":109
+      /* "hdbscan/_hdbscan_tree.pyx":105
  *     for node in node_list:
  *         if ignore[node] or node < num_points:
  *             continue             # <<<<<<<<<<<<<<
  * 
  *         children = hierarchy[node - num_points]
  */
-      goto __pyx_L5_continue;
+      goto __pyx_L3_continue;
     }
 
-    /* "hdbscan/_hdbscan_tree.pyx":111
+    /* "hdbscan/_hdbscan_tree.pyx":107
  *             continue
  * 
  *         children = hierarchy[node - num_points]             # <<<<<<<<<<<<<<
  *         left = <long long> children[0]
  *         right = <long long> children[1]
  */
-    __pyx_t_14 = (__pyx_v_node - __pyx_v_num_points);
-    __pyx_t_6 = __Pyx_GetItemInt(((PyObject *)__pyx_v_hierarchy), __pyx_t_14, PY_LONG_LONG, 1, __Pyx_PyInt_From_PY_LONG_LONG, 0, 1, 0); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 111; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_17 = (__pyx_v_node - __pyx_v_num_points);
+    __pyx_t_6 = __Pyx_GetItemInt(((PyObject *)__pyx_v_hierarchy), __pyx_t_17, PY_LONG_LONG, 1, __Pyx_PyInt_From_PY_LONG_LONG, 0, 1, 0); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_6);
-    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 111; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_19 = ((PyArrayObject *)__pyx_t_6);
+    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_18 = ((PyArrayObject *)__pyx_t_6);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_children.rcbuffer->pybuffer);
-      __pyx_t_8 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_children.rcbuffer->pybuffer, (PyObject*)__pyx_t_19, &__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack);
+      __pyx_t_8 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_children.rcbuffer->pybuffer, (PyObject*)__pyx_t_18, &__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack);
       if (unlikely(__pyx_t_8 < 0)) {
         PyErr_Fetch(&__pyx_t_9, &__pyx_t_10, &__pyx_t_11);
         if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_children.rcbuffer->pybuffer, (PyObject*)__pyx_v_children, &__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
@@ -2577,48 +2537,48 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
         }
       }
       __pyx_pybuffernd_children.diminfo[0].strides = __pyx_pybuffernd_children.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_children.diminfo[0].shape = __pyx_pybuffernd_children.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_8 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 111; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(__pyx_t_8 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_19 = 0;
+    __pyx_t_18 = 0;
     __Pyx_XDECREF_SET(__pyx_v_children, ((PyArrayObject *)__pyx_t_6));
     __pyx_t_6 = 0;
 
-    /* "hdbscan/_hdbscan_tree.pyx":112
+    /* "hdbscan/_hdbscan_tree.pyx":108
  * 
  *         children = hierarchy[node - num_points]
  *         left = <long long> children[0]             # <<<<<<<<<<<<<<
  *         right = <long long> children[1]
  *         lambda_value = 1.0 / children[2] if children[2] > 0.0 else np.inf
  */
-    __pyx_t_20 = 0;
-    if (__pyx_t_20 < 0) __pyx_t_20 += __pyx_pybuffernd_children.diminfo[0].shape;
-    __pyx_v_left = ((PY_LONG_LONG)(*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_children.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_children.diminfo[0].strides)));
+    __pyx_t_19 = 0;
+    if (__pyx_t_19 < 0) __pyx_t_19 += __pyx_pybuffernd_children.diminfo[0].shape;
+    __pyx_v_left = ((PY_LONG_LONG)(*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_children.rcbuffer->pybuffer.buf, __pyx_t_19, __pyx_pybuffernd_children.diminfo[0].strides)));
 
-    /* "hdbscan/_hdbscan_tree.pyx":113
+    /* "hdbscan/_hdbscan_tree.pyx":109
  *         children = hierarchy[node - num_points]
  *         left = <long long> children[0]
  *         right = <long long> children[1]             # <<<<<<<<<<<<<<
  *         lambda_value = 1.0 / children[2] if children[2] > 0.0 else np.inf
  *         left_count = <long long> (hierarchy[left - num_points][3]
  */
-    __pyx_t_21 = 1;
-    if (__pyx_t_21 < 0) __pyx_t_21 += __pyx_pybuffernd_children.diminfo[0].shape;
-    __pyx_v_right = ((PY_LONG_LONG)(*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_children.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_children.diminfo[0].strides)));
+    __pyx_t_20 = 1;
+    if (__pyx_t_20 < 0) __pyx_t_20 += __pyx_pybuffernd_children.diminfo[0].shape;
+    __pyx_v_right = ((PY_LONG_LONG)(*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_children.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_children.diminfo[0].strides)));
 
-    /* "hdbscan/_hdbscan_tree.pyx":114
+    /* "hdbscan/_hdbscan_tree.pyx":110
  *         left = <long long> children[0]
  *         right = <long long> children[1]
  *         lambda_value = 1.0 / children[2] if children[2] > 0.0 else np.inf             # <<<<<<<<<<<<<<
  *         left_count = <long long> (hierarchy[left - num_points][3]
  *                             if left >= num_points else 1)
  */
-    __pyx_t_23 = 2;
-    if (__pyx_t_23 < 0) __pyx_t_23 += __pyx_pybuffernd_children.diminfo[0].shape;
-    if ((((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_children.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_children.diminfo[0].strides)) > 0.0) != 0)) {
-      __pyx_t_24 = 2;
-      if (__pyx_t_24 < 0) __pyx_t_24 += __pyx_pybuffernd_children.diminfo[0].shape;
-      __pyx_t_25 = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_children.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_children.diminfo[0].strides));
-      if (unlikely(__pyx_t_25 == 0)) {
+    __pyx_t_22 = 2;
+    if (__pyx_t_22 < 0) __pyx_t_22 += __pyx_pybuffernd_children.diminfo[0].shape;
+    if ((((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_children.rcbuffer->pybuffer.buf, __pyx_t_22, __pyx_pybuffernd_children.diminfo[0].strides)) > 0.0) != 0)) {
+      __pyx_t_23 = 2;
+      if (__pyx_t_23 < 0) __pyx_t_23 += __pyx_pybuffernd_children.diminfo[0].shape;
+      __pyx_t_24 = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_children.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_children.diminfo[0].strides));
+      if (unlikely(__pyx_t_24 == 0)) {
         #ifdef WITH_THREAD
         PyGILState_STATE __pyx_gilstate_save = PyGILState_Ensure();
         #endif
@@ -2626,22 +2586,22 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
         #ifdef WITH_THREAD
         PyGILState_Release(__pyx_gilstate_save);
         #endif
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_22 = (1.0 / __pyx_t_25);
+      __pyx_t_21 = (1.0 / __pyx_t_24);
     } else {
-      __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_inf); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_inf); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_26 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_26 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_22 = __pyx_t_26;
+      __pyx_t_25 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_25 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_21 = __pyx_t_25;
     }
-    __pyx_v_lambda_value = __pyx_t_22;
+    __pyx_v_lambda_value = __pyx_t_21;
 
-    /* "hdbscan/_hdbscan_tree.pyx":116
+    /* "hdbscan/_hdbscan_tree.pyx":112
  *         lambda_value = 1.0 / children[2] if children[2] > 0.0 else np.inf
  *         left_count = <long long> (hierarchy[left - num_points][3]
  *                             if left >= num_points else 1)             # <<<<<<<<<<<<<<
@@ -2650,28 +2610,28 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
     if (((__pyx_v_left >= __pyx_v_num_points) != 0)) {
 
-      /* "hdbscan/_hdbscan_tree.pyx":115
+      /* "hdbscan/_hdbscan_tree.pyx":111
  *         right = <long long> children[1]
  *         lambda_value = 1.0 / children[2] if children[2] > 0.0 else np.inf
  *         left_count = <long long> (hierarchy[left - num_points][3]             # <<<<<<<<<<<<<<
  *                             if left >= num_points else 1)
  *         right_count = <long long> (hierarchy[right - num_points][3]
  */
-      __pyx_t_27 = (__pyx_v_left - __pyx_v_num_points);
-      __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_hierarchy), __pyx_t_27, PY_LONG_LONG, 1, __Pyx_PyInt_From_PY_LONG_LONG, 0, 1, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_1, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_26 = (__pyx_v_left - __pyx_v_num_points);
+      __pyx_t_4 = __Pyx_GetItemInt(((PyObject *)__pyx_v_hierarchy), __pyx_t_26, PY_LONG_LONG, 1, __Pyx_PyInt_From_PY_LONG_LONG, 0, 1, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 111; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_4, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 111; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_27 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_6); if (unlikely((__pyx_t_27 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_26 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_6); if (unlikely((__pyx_t_26 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 111; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_14 = __pyx_t_27;
+      __pyx_t_17 = __pyx_t_26;
     } else {
-      __pyx_t_14 = 1;
+      __pyx_t_17 = 1;
     }
-    __pyx_v_left_count = ((PY_LONG_LONG)__pyx_t_14);
+    __pyx_v_left_count = ((PY_LONG_LONG)__pyx_t_17);
 
-    /* "hdbscan/_hdbscan_tree.pyx":118
+    /* "hdbscan/_hdbscan_tree.pyx":114
  *                             if left >= num_points else 1)
  *         right_count = <long long> (hierarchy[right - num_points][3]
  *                              if right >= num_points else 1)             # <<<<<<<<<<<<<<
@@ -2680,73 +2640,58 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
     if (((__pyx_v_right >= __pyx_v_num_points) != 0)) {
 
-      /* "hdbscan/_hdbscan_tree.pyx":117
+      /* "hdbscan/_hdbscan_tree.pyx":113
  *         left_count = <long long> (hierarchy[left - num_points][3]
  *                             if left >= num_points else 1)
  *         right_count = <long long> (hierarchy[right - num_points][3]             # <<<<<<<<<<<<<<
  *                              if right >= num_points else 1)
  * 
  */
-      __pyx_t_27 = (__pyx_v_right - __pyx_v_num_points);
-      __pyx_t_6 = __Pyx_GetItemInt(((PyObject *)__pyx_v_hierarchy), __pyx_t_27, PY_LONG_LONG, 1, __Pyx_PyInt_From_PY_LONG_LONG, 0, 1, 0); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 117; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_26 = (__pyx_v_right - __pyx_v_num_points);
+      __pyx_t_6 = __Pyx_GetItemInt(((PyObject *)__pyx_v_hierarchy), __pyx_t_26, PY_LONG_LONG, 1, __Pyx_PyInt_From_PY_LONG_LONG, 0, 1, 0); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_6, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 117; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_6, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_27 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_1); if (unlikely((__pyx_t_27 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 117; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_14 = __pyx_t_27;
+      __pyx_t_26 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_4); if (unlikely((__pyx_t_26 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_17 = __pyx_t_26;
     } else {
-      __pyx_t_14 = 1;
+      __pyx_t_17 = 1;
     }
-    __pyx_v_right_count = ((PY_LONG_LONG)__pyx_t_14);
+    __pyx_v_right_count = ((PY_LONG_LONG)__pyx_t_17);
 
-    /* "hdbscan/_hdbscan_tree.pyx":120
+    /* "hdbscan/_hdbscan_tree.pyx":116
  *                              if right >= num_points else 1)
  * 
  *         if left_count > min_cluster_size and right_count > min_cluster_size:             # <<<<<<<<<<<<<<
- *             new_points.append(list(points[left]))
- *             relabel[left] = next_label
- */
-    __pyx_t_18 = ((__pyx_v_left_count > __pyx_v_min_cluster_size) != 0);
-    if (__pyx_t_18) {
-    } else {
-      __pyx_t_17 = __pyx_t_18;
-      goto __pyx_L11_bool_binop_done;
-    }
-    __pyx_t_18 = ((__pyx_v_right_count > __pyx_v_min_cluster_size) != 0);
-    __pyx_t_17 = __pyx_t_18;
-    __pyx_L11_bool_binop_done:;
-    if (__pyx_t_17) {
-
-      /* "hdbscan/_hdbscan_tree.pyx":121
- * 
- *         if left_count > min_cluster_size and right_count > min_cluster_size:
- *             new_points.append(list(points[left]))             # <<<<<<<<<<<<<<
  *             relabel[left] = next_label
  *             next_label += 1
  */
-      __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_points), __pyx_v_left, PY_LONG_LONG, 1, __Pyx_PyInt_From_PY_LONG_LONG, 0, 1, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = PySequence_List(__pyx_t_1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_new_points, __pyx_t_6); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 121; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_16 = ((__pyx_v_left_count > __pyx_v_min_cluster_size) != 0);
+    if (__pyx_t_16) {
+    } else {
+      __pyx_t_15 = __pyx_t_16;
+      goto __pyx_L9_bool_binop_done;
+    }
+    __pyx_t_16 = ((__pyx_v_right_count > __pyx_v_min_cluster_size) != 0);
+    __pyx_t_15 = __pyx_t_16;
+    __pyx_L9_bool_binop_done:;
+    if (__pyx_t_15) {
 
-      /* "hdbscan/_hdbscan_tree.pyx":122
+      /* "hdbscan/_hdbscan_tree.pyx":117
+ * 
  *         if left_count > min_cluster_size and right_count > min_cluster_size:
- *             new_points.append(list(points[left]))
  *             relabel[left] = next_label             # <<<<<<<<<<<<<<
  *             next_label += 1
  *             result_list.append((relabel[node], relabel[left], lambda_value, left_count))
  */
-      __pyx_t_14 = __pyx_v_left;
-      if (__pyx_t_14 < 0) __pyx_t_14 += __pyx_pybuffernd_relabel.diminfo[0].shape;
-      *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_relabel.diminfo[0].strides) = __pyx_v_next_label;
+      __pyx_t_17 = __pyx_v_left;
+      if (__pyx_t_17 < 0) __pyx_t_17 += __pyx_pybuffernd_relabel.diminfo[0].shape;
+      *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_relabel.diminfo[0].strides) = __pyx_v_next_label;
 
-      /* "hdbscan/_hdbscan_tree.pyx":123
- *             new_points.append(list(points[left]))
+      /* "hdbscan/_hdbscan_tree.pyx":118
+ *         if left_count > min_cluster_size and right_count > min_cluster_size:
  *             relabel[left] = next_label
  *             next_label += 1             # <<<<<<<<<<<<<<
  *             result_list.append((relabel[node], relabel[left], lambda_value, left_count))
@@ -2754,60 +2699,45 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
       __pyx_v_next_label = (__pyx_v_next_label + 1);
 
-      /* "hdbscan/_hdbscan_tree.pyx":124
+      /* "hdbscan/_hdbscan_tree.pyx":119
  *             relabel[left] = next_label
  *             next_label += 1
  *             result_list.append((relabel[node], relabel[left], lambda_value, left_count))             # <<<<<<<<<<<<<<
  * 
- *             new_points.append(list(points[right]))
+ *             relabel[right] = next_label
  */
-      __pyx_t_27 = __pyx_v_node;
-      if (__pyx_t_27 < 0) __pyx_t_27 += __pyx_pybuffernd_relabel.diminfo[0].shape;
-      __pyx_t_6 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_28 = __pyx_v_left;
-      if (__pyx_t_28 < 0) __pyx_t_28 += __pyx_pybuffernd_relabel.diminfo[0].shape;
-      __pyx_t_1 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_28, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_4 = PyFloat_FromDouble(__pyx_v_lambda_value); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_26 = __pyx_v_node;
+      if (__pyx_t_26 < 0) __pyx_t_26 += __pyx_pybuffernd_relabel.diminfo[0].shape;
+      __pyx_t_4 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_left_count); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_27 = __pyx_v_left;
+      if (__pyx_t_27 < 0) __pyx_t_27 += __pyx_pybuffernd_relabel.diminfo[0].shape;
+      __pyx_t_6 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_1 = PyFloat_FromDouble(__pyx_v_lambda_value); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_left_count); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_29 = PyTuple_New(4); if (unlikely(!__pyx_t_29)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_29);
-      __Pyx_GIVEREF(__pyx_t_6);
-      PyTuple_SET_ITEM(__pyx_t_29, 0, __pyx_t_6);
-      __Pyx_GIVEREF(__pyx_t_1);
-      PyTuple_SET_ITEM(__pyx_t_29, 1, __pyx_t_1);
+      __pyx_t_28 = PyTuple_New(4); if (unlikely(!__pyx_t_28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_28);
       __Pyx_GIVEREF(__pyx_t_4);
-      PyTuple_SET_ITEM(__pyx_t_29, 2, __pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_28, 0, __pyx_t_4);
+      __Pyx_GIVEREF(__pyx_t_6);
+      PyTuple_SET_ITEM(__pyx_t_28, 1, __pyx_t_6);
+      __Pyx_GIVEREF(__pyx_t_1);
+      PyTuple_SET_ITEM(__pyx_t_28, 2, __pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_2);
-      PyTuple_SET_ITEM(__pyx_t_29, 3, __pyx_t_2);
+      PyTuple_SET_ITEM(__pyx_t_28, 3, __pyx_t_2);
+      __pyx_t_4 = 0;
       __pyx_t_6 = 0;
       __pyx_t_1 = 0;
-      __pyx_t_4 = 0;
       __pyx_t_2 = 0;
-      __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_result_list, __pyx_t_29); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 124; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_29); __pyx_t_29 = 0;
+      __pyx_t_29 = __Pyx_PyList_Append(__pyx_v_result_list, __pyx_t_28); if (unlikely(__pyx_t_29 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_28); __pyx_t_28 = 0;
 
-      /* "hdbscan/_hdbscan_tree.pyx":126
+      /* "hdbscan/_hdbscan_tree.pyx":121
  *             result_list.append((relabel[node], relabel[left], lambda_value, left_count))
  * 
- *             new_points.append(list(points[right]))             # <<<<<<<<<<<<<<
- *             relabel[right] = next_label
- *             next_label += 1
- */
-      __pyx_t_29 = __Pyx_GetItemInt(((PyObject *)__pyx_v_points), __pyx_v_right, PY_LONG_LONG, 1, __Pyx_PyInt_From_PY_LONG_LONG, 0, 1, 0); if (unlikely(__pyx_t_29 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-      __Pyx_GOTREF(__pyx_t_29);
-      __pyx_t_2 = PySequence_List(__pyx_t_29); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_29); __pyx_t_29 = 0;
-      __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_new_points, __pyx_t_2); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-      /* "hdbscan/_hdbscan_tree.pyx":127
- * 
- *             new_points.append(list(points[right]))
  *             relabel[right] = next_label             # <<<<<<<<<<<<<<
  *             next_label += 1
  *             result_list.append((relabel[node], relabel[right], lambda_value, right_count))
@@ -2816,8 +2746,8 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
       if (__pyx_t_30 < 0) __pyx_t_30 += __pyx_pybuffernd_relabel.diminfo[0].shape;
       *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_30, __pyx_pybuffernd_relabel.diminfo[0].strides) = __pyx_v_next_label;
 
-      /* "hdbscan/_hdbscan_tree.pyx":128
- *             new_points.append(list(points[right]))
+      /* "hdbscan/_hdbscan_tree.pyx":122
+ * 
  *             relabel[right] = next_label
  *             next_label += 1             # <<<<<<<<<<<<<<
  *             result_list.append((relabel[node], relabel[right], lambda_value, right_count))
@@ -2825,7 +2755,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
       __pyx_v_next_label = (__pyx_v_next_label + 1);
 
-      /* "hdbscan/_hdbscan_tree.pyx":129
+      /* "hdbscan/_hdbscan_tree.pyx":123
  *             relabel[right] = next_label
  *             next_label += 1
  *             result_list.append((relabel[node], relabel[right], lambda_value, right_count))             # <<<<<<<<<<<<<<
@@ -2834,91 +2764,91 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
       __pyx_t_31 = __pyx_v_node;
       if (__pyx_t_31 < 0) __pyx_t_31 += __pyx_pybuffernd_relabel.diminfo[0].shape;
-      __pyx_t_2 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_31, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_28 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_31, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_28);
       __pyx_t_32 = __pyx_v_right;
       if (__pyx_t_32 < 0) __pyx_t_32 += __pyx_pybuffernd_relabel.diminfo[0].shape;
-      __pyx_t_29 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_32, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_29)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_29);
-      __pyx_t_4 = PyFloat_FromDouble(__pyx_v_lambda_value); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_1 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_right_count); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_32, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_1 = PyFloat_FromDouble(__pyx_v_lambda_value); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = PyTuple_New(4); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_right_count); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_4 = PyTuple_New(4); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_GIVEREF(__pyx_t_28);
+      PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_28);
       __Pyx_GIVEREF(__pyx_t_2);
-      PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2);
-      __Pyx_GIVEREF(__pyx_t_29);
-      PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_29);
-      __Pyx_GIVEREF(__pyx_t_4);
-      PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_2);
       __Pyx_GIVEREF(__pyx_t_1);
-      PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_t_1);
+      PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_t_1);
+      __Pyx_GIVEREF(__pyx_t_6);
+      PyTuple_SET_ITEM(__pyx_t_4, 3, __pyx_t_6);
+      __pyx_t_28 = 0;
       __pyx_t_2 = 0;
-      __pyx_t_29 = 0;
-      __pyx_t_4 = 0;
       __pyx_t_1 = 0;
-      __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_result_list, __pyx_t_6); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      goto __pyx_L10;
+      __pyx_t_6 = 0;
+      __pyx_t_29 = __Pyx_PyList_Append(__pyx_v_result_list, __pyx_t_4); if (unlikely(__pyx_t_29 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      goto __pyx_L8;
     }
 
-    /* "hdbscan/_hdbscan_tree.pyx":131
+    /* "hdbscan/_hdbscan_tree.pyx":125
  *             result_list.append((relabel[node], relabel[right], lambda_value, right_count))
  * 
  *         elif left_count <= min_cluster_size and right_count <= min_cluster_size:             # <<<<<<<<<<<<<<
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):
  *                 if sub_node < num_points:
  */
-    __pyx_t_18 = ((__pyx_v_left_count <= __pyx_v_min_cluster_size) != 0);
-    if (__pyx_t_18) {
+    __pyx_t_16 = ((__pyx_v_left_count <= __pyx_v_min_cluster_size) != 0);
+    if (__pyx_t_16) {
     } else {
-      __pyx_t_17 = __pyx_t_18;
-      goto __pyx_L13_bool_binop_done;
+      __pyx_t_15 = __pyx_t_16;
+      goto __pyx_L11_bool_binop_done;
     }
-    __pyx_t_18 = ((__pyx_v_right_count <= __pyx_v_min_cluster_size) != 0);
-    __pyx_t_17 = __pyx_t_18;
-    __pyx_L13_bool_binop_done:;
-    if (__pyx_t_17) {
+    __pyx_t_16 = ((__pyx_v_right_count <= __pyx_v_min_cluster_size) != 0);
+    __pyx_t_15 = __pyx_t_16;
+    __pyx_L11_bool_binop_done:;
+    if (__pyx_t_15) {
 
-      /* "hdbscan/_hdbscan_tree.pyx":132
+      /* "hdbscan/_hdbscan_tree.pyx":126
  * 
  *         elif left_count <= min_cluster_size and right_count <= min_cluster_size:
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):             # <<<<<<<<<<<<<<
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  */
-      __pyx_t_6 = __pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(((PyArrayObject *)__pyx_v_hierarchy), __pyx_v_left); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_6);
-      if (unlikely(__pyx_t_6 == Py_None)) {
+      __pyx_t_4 = __pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(((PyArrayObject *)__pyx_v_hierarchy), __pyx_v_left); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_4);
+      if (unlikely(__pyx_t_4 == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_1 = __pyx_t_6; __Pyx_INCREF(__pyx_t_1); __pyx_t_33 = 0;
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_6 = __pyx_t_4; __Pyx_INCREF(__pyx_t_6); __pyx_t_33 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       for (;;) {
-        if (__pyx_t_33 >= PyList_GET_SIZE(__pyx_t_1)) break;
+        if (__pyx_t_33 >= PyList_GET_SIZE(__pyx_t_6)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_33); __Pyx_INCREF(__pyx_t_6); __pyx_t_33++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_33); __Pyx_INCREF(__pyx_t_4); __pyx_t_33++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_33); __pyx_t_33++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_6);
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_6, __pyx_t_33); __pyx_t_33++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_4);
         #endif
-        __pyx_t_34 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_6); if (unlikely((__pyx_t_34 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+        __pyx_t_34 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_4); if (unlikely((__pyx_t_34 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __pyx_v_sub_node = __pyx_t_34;
 
-        /* "hdbscan/_hdbscan_tree.pyx":133
+        /* "hdbscan/_hdbscan_tree.pyx":127
  *         elif left_count <= min_cluster_size and right_count <= min_cluster_size:
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):
  *                 if sub_node < num_points:             # <<<<<<<<<<<<<<
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  *                 ignore[sub_node] = True
  */
-        __pyx_t_17 = ((__pyx_v_sub_node < __pyx_v_num_points) != 0);
-        if (__pyx_t_17) {
+        __pyx_t_15 = ((__pyx_v_sub_node < __pyx_v_num_points) != 0);
+        if (__pyx_t_15) {
 
-          /* "hdbscan/_hdbscan_tree.pyx":134
+          /* "hdbscan/_hdbscan_tree.pyx":128
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))             # <<<<<<<<<<<<<<
@@ -2927,33 +2857,33 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
           __pyx_t_34 = __pyx_v_node;
           if (__pyx_t_34 < 0) __pyx_t_34 += __pyx_pybuffernd_relabel.diminfo[0].shape;
-          __pyx_t_6 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_34, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_6);
-          __pyx_t_4 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_sub_node); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_4 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_34, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_29 = PyFloat_FromDouble(__pyx_v_lambda_value); if (unlikely(!__pyx_t_29)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_29);
-          __pyx_t_2 = PyTuple_New(4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_sub_node); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_1);
+          __pyx_t_2 = PyFloat_FromDouble(__pyx_v_lambda_value); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_2);
-          __Pyx_GIVEREF(__pyx_t_6);
-          PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_6);
+          __pyx_t_28 = PyTuple_New(4); if (unlikely(!__pyx_t_28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_28);
           __Pyx_GIVEREF(__pyx_t_4);
-          PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_4);
-          __Pyx_GIVEREF(__pyx_t_29);
-          PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_t_29);
+          PyTuple_SET_ITEM(__pyx_t_28, 0, __pyx_t_4);
+          __Pyx_GIVEREF(__pyx_t_1);
+          PyTuple_SET_ITEM(__pyx_t_28, 1, __pyx_t_1);
+          __Pyx_GIVEREF(__pyx_t_2);
+          PyTuple_SET_ITEM(__pyx_t_28, 2, __pyx_t_2);
           __Pyx_INCREF(__pyx_int_1);
           __Pyx_GIVEREF(__pyx_int_1);
-          PyTuple_SET_ITEM(__pyx_t_2, 3, __pyx_int_1);
-          __pyx_t_6 = 0;
+          PyTuple_SET_ITEM(__pyx_t_28, 3, __pyx_int_1);
           __pyx_t_4 = 0;
-          __pyx_t_29 = 0;
-          __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_result_list, __pyx_t_2); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-          goto __pyx_L17;
+          __pyx_t_1 = 0;
+          __pyx_t_2 = 0;
+          __pyx_t_29 = __Pyx_PyList_Append(__pyx_v_result_list, __pyx_t_28); if (unlikely(__pyx_t_29 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_DECREF(__pyx_t_28); __pyx_t_28 = 0;
+          goto __pyx_L15;
         }
-        __pyx_L17:;
+        __pyx_L15:;
 
-        /* "hdbscan/_hdbscan_tree.pyx":135
+        /* "hdbscan/_hdbscan_tree.pyx":129
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  *                 ignore[sub_node] = True             # <<<<<<<<<<<<<<
@@ -2964,7 +2894,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
         if (__pyx_t_35 < 0) __pyx_t_35 += __pyx_pybuffernd_ignore.diminfo[0].shape;
         *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int_t *, __pyx_pybuffernd_ignore.rcbuffer->pybuffer.buf, __pyx_t_35, __pyx_pybuffernd_ignore.diminfo[0].strides) = 1;
 
-        /* "hdbscan/_hdbscan_tree.pyx":132
+        /* "hdbscan/_hdbscan_tree.pyx":126
  * 
  *         elif left_count <= min_cluster_size and right_count <= min_cluster_size:
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):             # <<<<<<<<<<<<<<
@@ -2972,46 +2902,46 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  */
       }
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-      /* "hdbscan/_hdbscan_tree.pyx":137
+      /* "hdbscan/_hdbscan_tree.pyx":131
  *                 ignore[sub_node] = True
  * 
  *             for sub_node in bfs_from_hierarchy(hierarchy, right):             # <<<<<<<<<<<<<<
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  */
-      __pyx_t_1 = __pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(((PyArrayObject *)__pyx_v_hierarchy), __pyx_v_right); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_1);
-      if (unlikely(__pyx_t_1 == Py_None)) {
+      __pyx_t_6 = __pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(((PyArrayObject *)__pyx_v_hierarchy), __pyx_v_right); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      if (unlikely(__pyx_t_6 == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_33 = 0;
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_28 = __pyx_t_6; __Pyx_INCREF(__pyx_t_28); __pyx_t_33 = 0;
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       for (;;) {
-        if (__pyx_t_33 >= PyList_GET_SIZE(__pyx_t_2)) break;
+        if (__pyx_t_33 >= PyList_GET_SIZE(__pyx_t_28)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_33); __Pyx_INCREF(__pyx_t_1); __pyx_t_33++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_28, __pyx_t_33); __Pyx_INCREF(__pyx_t_6); __pyx_t_33++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_33); __pyx_t_33++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_1);
+        __pyx_t_6 = PySequence_ITEM(__pyx_t_28, __pyx_t_33); __pyx_t_33++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_6);
         #endif
-        __pyx_t_36 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_1); if (unlikely((__pyx_t_36 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __pyx_t_36 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_6); if (unlikely((__pyx_t_36 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __pyx_v_sub_node = __pyx_t_36;
 
-        /* "hdbscan/_hdbscan_tree.pyx":138
+        /* "hdbscan/_hdbscan_tree.pyx":132
  * 
  *             for sub_node in bfs_from_hierarchy(hierarchy, right):
  *                 if sub_node < num_points:             # <<<<<<<<<<<<<<
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  *                 ignore[sub_node] = True
  */
-        __pyx_t_17 = ((__pyx_v_sub_node < __pyx_v_num_points) != 0);
-        if (__pyx_t_17) {
+        __pyx_t_15 = ((__pyx_v_sub_node < __pyx_v_num_points) != 0);
+        if (__pyx_t_15) {
 
-          /* "hdbscan/_hdbscan_tree.pyx":139
+          /* "hdbscan/_hdbscan_tree.pyx":133
  *             for sub_node in bfs_from_hierarchy(hierarchy, right):
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))             # <<<<<<<<<<<<<<
@@ -3020,33 +2950,33 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
           __pyx_t_36 = __pyx_v_node;
           if (__pyx_t_36 < 0) __pyx_t_36 += __pyx_pybuffernd_relabel.diminfo[0].shape;
-          __pyx_t_1 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_36, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_29 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_sub_node); if (unlikely(!__pyx_t_29)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_29);
-          __pyx_t_4 = PyFloat_FromDouble(__pyx_v_lambda_value); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_6 = PyTuple_New(4); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_6 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_36, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_6);
+          __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_sub_node); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_2);
+          __pyx_t_1 = PyFloat_FromDouble(__pyx_v_lambda_value); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_1);
+          __pyx_t_4 = PyTuple_New(4); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_4);
+          __Pyx_GIVEREF(__pyx_t_6);
+          PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6);
+          __Pyx_GIVEREF(__pyx_t_2);
+          PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_2);
           __Pyx_GIVEREF(__pyx_t_1);
-          PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
-          __Pyx_GIVEREF(__pyx_t_29);
-          PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_29);
-          __Pyx_GIVEREF(__pyx_t_4);
-          PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_t_4);
+          PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_t_1);
           __Pyx_INCREF(__pyx_int_1);
           __Pyx_GIVEREF(__pyx_int_1);
-          PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_int_1);
+          PyTuple_SET_ITEM(__pyx_t_4, 3, __pyx_int_1);
+          __pyx_t_6 = 0;
+          __pyx_t_2 = 0;
           __pyx_t_1 = 0;
-          __pyx_t_29 = 0;
-          __pyx_t_4 = 0;
-          __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_result_list, __pyx_t_6); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-          goto __pyx_L20;
+          __pyx_t_29 = __Pyx_PyList_Append(__pyx_v_result_list, __pyx_t_4); if (unlikely(__pyx_t_29 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 133; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+          goto __pyx_L18;
         }
-        __pyx_L20:;
+        __pyx_L18:;
 
-        /* "hdbscan/_hdbscan_tree.pyx":140
+        /* "hdbscan/_hdbscan_tree.pyx":134
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  *                 ignore[sub_node] = True             # <<<<<<<<<<<<<<
@@ -3057,7 +2987,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
         if (__pyx_t_37 < 0) __pyx_t_37 += __pyx_pybuffernd_ignore.diminfo[0].shape;
         *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int_t *, __pyx_pybuffernd_ignore.rcbuffer->pybuffer.buf, __pyx_t_37, __pyx_pybuffernd_ignore.diminfo[0].strides) = 1;
 
-        /* "hdbscan/_hdbscan_tree.pyx":137
+        /* "hdbscan/_hdbscan_tree.pyx":131
  *                 ignore[sub_node] = True
  * 
  *             for sub_node in bfs_from_hierarchy(hierarchy, right):             # <<<<<<<<<<<<<<
@@ -3065,21 +2995,21 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  */
       }
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      goto __pyx_L10;
+      __Pyx_DECREF(__pyx_t_28); __pyx_t_28 = 0;
+      goto __pyx_L8;
     }
 
-    /* "hdbscan/_hdbscan_tree.pyx":142
+    /* "hdbscan/_hdbscan_tree.pyx":136
  *                 ignore[sub_node] = True
  * 
  *         elif left_count <= min_cluster_size:             # <<<<<<<<<<<<<<
  *             relabel[right] = relabel[node]
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):
  */
-    __pyx_t_17 = ((__pyx_v_left_count <= __pyx_v_min_cluster_size) != 0);
-    if (__pyx_t_17) {
+    __pyx_t_15 = ((__pyx_v_left_count <= __pyx_v_min_cluster_size) != 0);
+    if (__pyx_t_15) {
 
-      /* "hdbscan/_hdbscan_tree.pyx":143
+      /* "hdbscan/_hdbscan_tree.pyx":137
  * 
  *         elif left_count <= min_cluster_size:
  *             relabel[right] = relabel[node]             # <<<<<<<<<<<<<<
@@ -3092,44 +3022,44 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
       if (__pyx_t_39 < 0) __pyx_t_39 += __pyx_pybuffernd_relabel.diminfo[0].shape;
       *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_39, __pyx_pybuffernd_relabel.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_38, __pyx_pybuffernd_relabel.diminfo[0].strides));
 
-      /* "hdbscan/_hdbscan_tree.pyx":144
+      /* "hdbscan/_hdbscan_tree.pyx":138
  *         elif left_count <= min_cluster_size:
  *             relabel[right] = relabel[node]
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):             # <<<<<<<<<<<<<<
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  */
-      __pyx_t_2 = __pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(((PyArrayObject *)__pyx_v_hierarchy), __pyx_v_left); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_2);
-      if (unlikely(__pyx_t_2 == Py_None)) {
+      __pyx_t_28 = __pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(((PyArrayObject *)__pyx_v_hierarchy), __pyx_v_left); if (unlikely(!__pyx_t_28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_28);
+      if (unlikely(__pyx_t_28 == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_6 = __pyx_t_2; __Pyx_INCREF(__pyx_t_6); __pyx_t_33 = 0;
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_4 = __pyx_t_28; __Pyx_INCREF(__pyx_t_4); __pyx_t_33 = 0;
+      __Pyx_DECREF(__pyx_t_28); __pyx_t_28 = 0;
       for (;;) {
-        if (__pyx_t_33 >= PyList_GET_SIZE(__pyx_t_6)) break;
+        if (__pyx_t_33 >= PyList_GET_SIZE(__pyx_t_4)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_33); __Pyx_INCREF(__pyx_t_2); __pyx_t_33++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_28 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_33); __Pyx_INCREF(__pyx_t_28); __pyx_t_33++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_6, __pyx_t_33); __pyx_t_33++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_28 = PySequence_ITEM(__pyx_t_4, __pyx_t_33); __pyx_t_33++; if (unlikely(!__pyx_t_28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_28);
         #endif
-        __pyx_t_40 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_2); if (unlikely((__pyx_t_40 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_40 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_28); if (unlikely((__pyx_t_40 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_28); __pyx_t_28 = 0;
         __pyx_v_sub_node = __pyx_t_40;
 
-        /* "hdbscan/_hdbscan_tree.pyx":145
+        /* "hdbscan/_hdbscan_tree.pyx":139
  *             relabel[right] = relabel[node]
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):
  *                 if sub_node < num_points:             # <<<<<<<<<<<<<<
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  *                 ignore[sub_node] = True
  */
-        __pyx_t_17 = ((__pyx_v_sub_node < __pyx_v_num_points) != 0);
-        if (__pyx_t_17) {
+        __pyx_t_15 = ((__pyx_v_sub_node < __pyx_v_num_points) != 0);
+        if (__pyx_t_15) {
 
-          /* "hdbscan/_hdbscan_tree.pyx":146
+          /* "hdbscan/_hdbscan_tree.pyx":140
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))             # <<<<<<<<<<<<<<
@@ -3138,33 +3068,33 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
           __pyx_t_40 = __pyx_v_node;
           if (__pyx_t_40 < 0) __pyx_t_40 += __pyx_pybuffernd_relabel.diminfo[0].shape;
-          __pyx_t_2 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_40, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_2);
-          __pyx_t_4 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_sub_node); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_29 = PyFloat_FromDouble(__pyx_v_lambda_value); if (unlikely(!__pyx_t_29)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_29);
-          __pyx_t_1 = PyTuple_New(4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_28 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_40, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_28);
+          __pyx_t_1 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_sub_node); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_1);
+          __pyx_t_2 = PyFloat_FromDouble(__pyx_v_lambda_value); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_2);
+          __pyx_t_6 = PyTuple_New(4); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_6);
+          __Pyx_GIVEREF(__pyx_t_28);
+          PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_28);
+          __Pyx_GIVEREF(__pyx_t_1);
+          PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_1);
           __Pyx_GIVEREF(__pyx_t_2);
-          PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
-          __Pyx_GIVEREF(__pyx_t_4);
-          PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_4);
-          __Pyx_GIVEREF(__pyx_t_29);
-          PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_t_29);
+          PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_t_2);
           __Pyx_INCREF(__pyx_int_1);
           __Pyx_GIVEREF(__pyx_int_1);
-          PyTuple_SET_ITEM(__pyx_t_1, 3, __pyx_int_1);
+          PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_int_1);
+          __pyx_t_28 = 0;
+          __pyx_t_1 = 0;
           __pyx_t_2 = 0;
-          __pyx_t_4 = 0;
-          __pyx_t_29 = 0;
-          __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_result_list, __pyx_t_1); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-          goto __pyx_L23;
+          __pyx_t_29 = __Pyx_PyList_Append(__pyx_v_result_list, __pyx_t_6); if (unlikely(__pyx_t_29 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+          goto __pyx_L21;
         }
-        __pyx_L23:;
+        __pyx_L21:;
 
-        /* "hdbscan/_hdbscan_tree.pyx":147
+        /* "hdbscan/_hdbscan_tree.pyx":141
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  *                 ignore[sub_node] = True             # <<<<<<<<<<<<<<
@@ -3175,7 +3105,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
         if (__pyx_t_41 < 0) __pyx_t_41 += __pyx_pybuffernd_ignore.diminfo[0].shape;
         *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int_t *, __pyx_pybuffernd_ignore.rcbuffer->pybuffer.buf, __pyx_t_41, __pyx_pybuffernd_ignore.diminfo[0].strides) = 1;
 
-        /* "hdbscan/_hdbscan_tree.pyx":144
+        /* "hdbscan/_hdbscan_tree.pyx":138
  *         elif left_count <= min_cluster_size:
  *             relabel[right] = relabel[node]
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):             # <<<<<<<<<<<<<<
@@ -3183,12 +3113,12 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  */
       }
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      goto __pyx_L10;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      goto __pyx_L8;
     }
     /*else*/ {
 
-      /* "hdbscan/_hdbscan_tree.pyx":150
+      /* "hdbscan/_hdbscan_tree.pyx":144
  * 
  *         else:
  *             relabel[left] = relabel[node]             # <<<<<<<<<<<<<<
@@ -3201,44 +3131,44 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
       if (__pyx_t_43 < 0) __pyx_t_43 += __pyx_pybuffernd_relabel.diminfo[0].shape;
       *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_43, __pyx_pybuffernd_relabel.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_42, __pyx_pybuffernd_relabel.diminfo[0].strides));
 
-      /* "hdbscan/_hdbscan_tree.pyx":151
+      /* "hdbscan/_hdbscan_tree.pyx":145
  *         else:
  *             relabel[left] = relabel[node]
  *             for sub_node in bfs_from_hierarchy(hierarchy, right):             # <<<<<<<<<<<<<<
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  */
-      __pyx_t_6 = __pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(((PyArrayObject *)__pyx_v_hierarchy), __pyx_v_right); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_6);
-      if (unlikely(__pyx_t_6 == Py_None)) {
+      __pyx_t_4 = __pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_hierarchy(((PyArrayObject *)__pyx_v_hierarchy), __pyx_v_right); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_4);
+      if (unlikely(__pyx_t_4 == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_1 = __pyx_t_6; __Pyx_INCREF(__pyx_t_1); __pyx_t_33 = 0;
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_6 = __pyx_t_4; __Pyx_INCREF(__pyx_t_6); __pyx_t_33 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       for (;;) {
-        if (__pyx_t_33 >= PyList_GET_SIZE(__pyx_t_1)) break;
+        if (__pyx_t_33 >= PyList_GET_SIZE(__pyx_t_6)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_33); __Pyx_INCREF(__pyx_t_6); __pyx_t_33++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_33); __Pyx_INCREF(__pyx_t_4); __pyx_t_33++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_33); __pyx_t_33++; if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_6);
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_6, __pyx_t_33); __pyx_t_33++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_4);
         #endif
-        __pyx_t_44 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_6); if (unlikely((__pyx_t_44 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+        __pyx_t_44 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_4); if (unlikely((__pyx_t_44 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __pyx_v_sub_node = __pyx_t_44;
 
-        /* "hdbscan/_hdbscan_tree.pyx":152
+        /* "hdbscan/_hdbscan_tree.pyx":146
  *             relabel[left] = relabel[node]
  *             for sub_node in bfs_from_hierarchy(hierarchy, right):
  *                 if sub_node < num_points:             # <<<<<<<<<<<<<<
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  *                 ignore[sub_node] = True
  */
-        __pyx_t_17 = ((__pyx_v_sub_node < __pyx_v_num_points) != 0);
-        if (__pyx_t_17) {
+        __pyx_t_15 = ((__pyx_v_sub_node < __pyx_v_num_points) != 0);
+        if (__pyx_t_15) {
 
-          /* "hdbscan/_hdbscan_tree.pyx":153
+          /* "hdbscan/_hdbscan_tree.pyx":147
  *             for sub_node in bfs_from_hierarchy(hierarchy, right):
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))             # <<<<<<<<<<<<<<
@@ -3247,33 +3177,33 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  */
           __pyx_t_44 = __pyx_v_node;
           if (__pyx_t_44 < 0) __pyx_t_44 += __pyx_pybuffernd_relabel.diminfo[0].shape;
-          __pyx_t_6 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_44, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_6);
-          __pyx_t_29 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_sub_node); if (unlikely(!__pyx_t_29)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_29);
-          __pyx_t_4 = PyFloat_FromDouble(__pyx_v_lambda_value); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_4 = __Pyx_PyInt_From_npy_int64((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_44, __pyx_pybuffernd_relabel.diminfo[0].strides))); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_2 = PyTuple_New(4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_sub_node); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_2);
-          __Pyx_GIVEREF(__pyx_t_6);
-          PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_6);
-          __Pyx_GIVEREF(__pyx_t_29);
-          PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_29);
+          __pyx_t_1 = PyFloat_FromDouble(__pyx_v_lambda_value); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_1);
+          __pyx_t_28 = PyTuple_New(4); if (unlikely(!__pyx_t_28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_28);
           __Pyx_GIVEREF(__pyx_t_4);
-          PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_t_4);
+          PyTuple_SET_ITEM(__pyx_t_28, 0, __pyx_t_4);
+          __Pyx_GIVEREF(__pyx_t_2);
+          PyTuple_SET_ITEM(__pyx_t_28, 1, __pyx_t_2);
+          __Pyx_GIVEREF(__pyx_t_1);
+          PyTuple_SET_ITEM(__pyx_t_28, 2, __pyx_t_1);
           __Pyx_INCREF(__pyx_int_1);
           __Pyx_GIVEREF(__pyx_int_1);
-          PyTuple_SET_ITEM(__pyx_t_2, 3, __pyx_int_1);
-          __pyx_t_6 = 0;
-          __pyx_t_29 = 0;
+          PyTuple_SET_ITEM(__pyx_t_28, 3, __pyx_int_1);
           __pyx_t_4 = 0;
-          __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_result_list, __pyx_t_2); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-          goto __pyx_L26;
+          __pyx_t_2 = 0;
+          __pyx_t_1 = 0;
+          __pyx_t_29 = __Pyx_PyList_Append(__pyx_v_result_list, __pyx_t_28); if (unlikely(__pyx_t_29 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_DECREF(__pyx_t_28); __pyx_t_28 = 0;
+          goto __pyx_L24;
         }
-        __pyx_L26:;
+        __pyx_L24:;
 
-        /* "hdbscan/_hdbscan_tree.pyx":154
+        /* "hdbscan/_hdbscan_tree.pyx":148
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  *                 ignore[sub_node] = True             # <<<<<<<<<<<<<<
@@ -3284,7 +3214,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
         if (__pyx_t_45 < 0) __pyx_t_45 += __pyx_pybuffernd_ignore.diminfo[0].shape;
         *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int_t *, __pyx_pybuffernd_ignore.rcbuffer->pybuffer.buf, __pyx_t_45, __pyx_pybuffernd_ignore.diminfo[0].strides) = 1;
 
-        /* "hdbscan/_hdbscan_tree.pyx":151
+        /* "hdbscan/_hdbscan_tree.pyx":145
  *         else:
  *             relabel[left] = relabel[node]
  *             for sub_node in bfs_from_hierarchy(hierarchy, right):             # <<<<<<<<<<<<<<
@@ -3292,98 +3222,98 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  */
       }
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
-    __pyx_L10:;
+    __pyx_L8:;
 
-    /* "hdbscan/_hdbscan_tree.pyx":107
+    /* "hdbscan/_hdbscan_tree.pyx":103
  *     ignore = np.zeros(len(node_list), dtype=np.int)
  * 
  *     for node in node_list:             # <<<<<<<<<<<<<<
  *         if ignore[node] or node < num_points:
  *             continue
  */
-    __pyx_L5_continue:;
+    __pyx_L3_continue:;
   }
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":156
+  /* "hdbscan/_hdbscan_tree.pyx":150
  *                 ignore[sub_node] = True
  * 
  *     return np.array(result_list, dtype=[             # <<<<<<<<<<<<<<
  *                                         ('parent', int),
  *                                         ('child', int),
  */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_array); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_array); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF(__pyx_v_result_list);
   __Pyx_GIVEREF(__pyx_v_result_list);
   PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_v_result_list);
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_28 = PyDict_New(); if (unlikely(!__pyx_t_28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_28);
 
-  /* "hdbscan/_hdbscan_tree.pyx":157
+  /* "hdbscan/_hdbscan_tree.pyx":151
  * 
  *     return np.array(result_list, dtype=[
  *                                         ('parent', int),             # <<<<<<<<<<<<<<
  *                                         ('child', int),
  *                                         ('lambda', float),
  */
-  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 157; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_parent);
   __Pyx_GIVEREF(__pyx_n_s_parent);
-  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_n_s_parent);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_parent);
   __Pyx_INCREF(((PyObject *)((PyObject*)(&PyInt_Type))));
   __Pyx_GIVEREF(((PyObject *)((PyObject*)(&PyInt_Type))));
-  PyTuple_SET_ITEM(__pyx_t_4, 1, ((PyObject *)((PyObject*)(&PyInt_Type))));
+  PyTuple_SET_ITEM(__pyx_t_1, 1, ((PyObject *)((PyObject*)(&PyInt_Type))));
 
-  /* "hdbscan/_hdbscan_tree.pyx":158
+  /* "hdbscan/_hdbscan_tree.pyx":152
  *     return np.array(result_list, dtype=[
  *                                         ('parent', int),
  *                                         ('child', int),             # <<<<<<<<<<<<<<
  *                                         ('lambda', float),
  *                                         ('child_size', int)
  */
-  __pyx_t_29 = PyTuple_New(2); if (unlikely(!__pyx_t_29)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_29);
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_n_s_child);
   __Pyx_GIVEREF(__pyx_n_s_child);
-  PyTuple_SET_ITEM(__pyx_t_29, 0, __pyx_n_s_child);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_child);
   __Pyx_INCREF(((PyObject *)((PyObject*)(&PyInt_Type))));
   __Pyx_GIVEREF(((PyObject *)((PyObject*)(&PyInt_Type))));
-  PyTuple_SET_ITEM(__pyx_t_29, 1, ((PyObject *)((PyObject*)(&PyInt_Type))));
+  PyTuple_SET_ITEM(__pyx_t_2, 1, ((PyObject *)((PyObject*)(&PyInt_Type))));
 
-  /* "hdbscan/_hdbscan_tree.pyx":159
+  /* "hdbscan/_hdbscan_tree.pyx":153
  *                                         ('parent', int),
  *                                         ('child', int),
  *                                         ('lambda', float),             # <<<<<<<<<<<<<<
  *                                         ('child_size', int)
- *                                        ]), new_points
+ *                                        ])
  */
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_n_s_lambda);
   __Pyx_GIVEREF(__pyx_n_s_lambda);
-  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_n_s_lambda);
+  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_n_s_lambda);
   __Pyx_INCREF(((PyObject *)((PyObject*)(&PyFloat_Type))));
   __Pyx_GIVEREF(((PyObject *)((PyObject*)(&PyFloat_Type))));
-  PyTuple_SET_ITEM(__pyx_t_6, 1, ((PyObject *)((PyObject*)(&PyFloat_Type))));
+  PyTuple_SET_ITEM(__pyx_t_4, 1, ((PyObject *)((PyObject*)(&PyFloat_Type))));
 
-  /* "hdbscan/_hdbscan_tree.pyx":160
+  /* "hdbscan/_hdbscan_tree.pyx":154
  *                                         ('child', int),
  *                                         ('lambda', float),
  *                                         ('child_size', int)             # <<<<<<<<<<<<<<
- *                                        ]), new_points
+ *                                        ])
  * 
  */
-  __pyx_t_46 = PyTuple_New(2); if (unlikely(!__pyx_t_46)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 160; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_46 = PyTuple_New(2); if (unlikely(!__pyx_t_46)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_46);
   __Pyx_INCREF(__pyx_n_s_child_size);
   __Pyx_GIVEREF(__pyx_n_s_child_size);
@@ -3392,60 +3322,45 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
   __Pyx_GIVEREF(((PyObject *)((PyObject*)(&PyInt_Type))));
   PyTuple_SET_ITEM(__pyx_t_46, 1, ((PyObject *)((PyObject*)(&PyInt_Type))));
 
-  /* "hdbscan/_hdbscan_tree.pyx":156
+  /* "hdbscan/_hdbscan_tree.pyx":150
  *                 ignore[sub_node] = True
  * 
  *     return np.array(result_list, dtype=[             # <<<<<<<<<<<<<<
  *                                         ('parent', int),
  *                                         ('child', int),
  */
-  __pyx_t_47 = PyList_New(4); if (unlikely(!__pyx_t_47)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_47 = PyList_New(4); if (unlikely(!__pyx_t_47)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_47);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyList_SET_ITEM(__pyx_t_47, 0, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyList_SET_ITEM(__pyx_t_47, 1, __pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_4);
-  PyList_SET_ITEM(__pyx_t_47, 0, __pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_29);
-  PyList_SET_ITEM(__pyx_t_47, 1, __pyx_t_29);
-  __Pyx_GIVEREF(__pyx_t_6);
-  PyList_SET_ITEM(__pyx_t_47, 2, __pyx_t_6);
+  PyList_SET_ITEM(__pyx_t_47, 2, __pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_46);
   PyList_SET_ITEM(__pyx_t_47, 3, __pyx_t_46);
-  __pyx_t_4 = 0;
-  __pyx_t_29 = 0;
-  __pyx_t_6 = 0;
-  __pyx_t_46 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_47) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_47); __pyx_t_47 = 0;
-  __pyx_t_47 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, __pyx_t_2); if (unlikely(!__pyx_t_47)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_47);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "hdbscan/_hdbscan_tree.pyx":161
- *                                         ('lambda', float),
- *                                         ('child_size', int)
- *                                        ]), new_points             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_47);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_47);
-  __Pyx_INCREF(__pyx_v_new_points);
-  __Pyx_GIVEREF(__pyx_v_new_points);
-  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_new_points);
-  __pyx_t_47 = 0;
-  __pyx_r = ((PyObject*)__pyx_t_2);
+  __pyx_t_1 = 0;
   __pyx_t_2 = 0;
+  __pyx_t_4 = 0;
+  __pyx_t_46 = 0;
+  if (PyDict_SetItem(__pyx_t_28, __pyx_n_s_dtype, __pyx_t_47) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_47); __pyx_t_47 = 0;
+  __pyx_t_47 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_5, __pyx_t_28); if (unlikely(!__pyx_t_47)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_47);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_28); __pyx_t_28 = 0;
+  if (!(likely(((__pyx_t_47) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_47, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_r = ((PyArrayObject *)__pyx_t_47);
+  __pyx_t_47 = 0;
   goto __pyx_L0;
 
   /* "hdbscan/_hdbscan_tree.pyx":71
  *     return result
  * 
- * cpdef tuple condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,             # <<<<<<<<<<<<<<
- *                           np.ndarray points,
+ * cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,             # <<<<<<<<<<<<<<
  *                           long long min_cluster_size=10):
+ * 
  */
 
   /* function exit code */
@@ -3455,7 +3370,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_29);
+  __Pyx_XDECREF(__pyx_t_28);
   __Pyx_XDECREF(__pyx_t_46);
   __Pyx_XDECREF(__pyx_t_47);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
@@ -3476,11 +3391,10 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
   __pyx_L2:;
   __Pyx_XDECREF(__pyx_v_node_list);
   __Pyx_XDECREF(__pyx_v_result_list);
-  __Pyx_XDECREF(__pyx_v_new_points);
   __Pyx_XDECREF((PyObject *)__pyx_v_relabel);
   __Pyx_XDECREF((PyObject *)__pyx_v_ignore);
   __Pyx_XDECREF((PyObject *)__pyx_v_children);
-  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -3489,7 +3403,6 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObject *_
 static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_3condense_tree(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_3condense_tree(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_hierarchy = 0;
-  PyArrayObject *__pyx_v_points = 0;
   PY_LONG_LONG __pyx_v_min_cluster_size;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -3498,13 +3411,12 @@ static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_3condense_tree(PyObject *__py
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("condense_tree (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_hierarchy,&__pyx_n_s_points,&__pyx_n_s_min_cluster_size,0};
-    PyObject* values[3] = {0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_hierarchy,&__pyx_n_s_min_cluster_size,0};
+    PyObject* values[2] = {0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
-        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
         case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
         case  0: break;
@@ -3516,14 +3428,9 @@ static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_3condense_tree(PyObject *__py
         if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_hierarchy)) != 0)) kw_args--;
         else goto __pyx_L5_argtuple_error;
         case  1:
-        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_points)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("condense_tree", 0, 2, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-        }
-        case  2:
         if (kw_args > 0) {
           PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_min_cluster_size);
-          if (value) { values[2] = value; kw_args--; }
+          if (value) { values[1] = value; kw_args--; }
         }
       }
       if (unlikely(kw_args > 0)) {
@@ -3531,32 +3438,29 @@ static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_3condense_tree(PyObject *__py
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
-        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
         break;
         default: goto __pyx_L5_argtuple_error;
       }
     }
     __pyx_v_hierarchy = ((PyArrayObject *)values[0]);
-    __pyx_v_points = ((PyArrayObject *)values[1]);
-    if (values[2]) {
-      __pyx_v_min_cluster_size = __Pyx_PyInt_As_PY_LONG_LONG(values[2]); if (unlikely((__pyx_v_min_cluster_size == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    if (values[1]) {
+      __pyx_v_min_cluster_size = __Pyx_PyInt_As_PY_LONG_LONG(values[1]); if (unlikely((__pyx_v_min_cluster_size == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
       __pyx_v_min_cluster_size = ((PY_LONG_LONG)10);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("condense_tree", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("condense_tree", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("hdbscan._hdbscan_tree.condense_tree", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_hierarchy), __pyx_ptype_5numpy_ndarray, 1, "hierarchy", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_points), __pyx_ptype_5numpy_ndarray, 1, "points", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_r = __pyx_pf_7hdbscan_13_hdbscan_tree_2condense_tree(__pyx_self, __pyx_v_hierarchy, __pyx_v_points, __pyx_v_min_cluster_size);
+  __pyx_r = __pyx_pf_7hdbscan_13_hdbscan_tree_2condense_tree(__pyx_self, __pyx_v_hierarchy, __pyx_v_min_cluster_size);
 
   /* function exit code */
   goto __pyx_L0;
@@ -3567,7 +3471,7 @@ static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_3condense_tree(PyObject *__py
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_2condense_tree(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_hierarchy, PyArrayObject *__pyx_v_points, PY_LONG_LONG __pyx_v_min_cluster_size) {
+static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_2condense_tree(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_hierarchy, PY_LONG_LONG __pyx_v_min_cluster_size) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_hierarchy;
   __Pyx_Buffer __pyx_pybuffer_hierarchy;
   PyObject *__pyx_r = NULL;
@@ -3590,7 +3494,7 @@ static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_2condense_tree(CYTHON_UNUSED 
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.min_cluster_size = __pyx_v_min_cluster_size;
-  __pyx_t_1 = __pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(__pyx_v_hierarchy, __pyx_v_points, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = ((PyObject *)__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(__pyx_v_hierarchy, 0, &__pyx_t_2)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 71; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3614,7 +3518,7 @@ static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_2condense_tree(CYTHON_UNUSED 
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_tree.pyx":164
+/* "hdbscan/_hdbscan_tree.pyx":158
  * 
  * 
  * cdef long long keyfunc(row):             # <<<<<<<<<<<<<<
@@ -3632,21 +3536,21 @@ static PY_LONG_LONG __pyx_f_7hdbscan_13_hdbscan_tree_keyfunc(PyObject *__pyx_v_r
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("keyfunc", 0);
 
-  /* "hdbscan/_hdbscan_tree.pyx":165
+  /* "hdbscan/_hdbscan_tree.pyx":159
  * 
  * cdef long long keyfunc(row):
  *     return <long long> row[0]             # <<<<<<<<<<<<<<
  * 
  * cpdef dict compute_stability(np.ndarray condensed_tree):
  */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_row, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 165; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_row, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_1); if (unlikely((__pyx_t_2 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 165; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_1); if (unlikely((__pyx_t_2 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = ((PY_LONG_LONG)__pyx_t_2);
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":164
+  /* "hdbscan/_hdbscan_tree.pyx":158
  * 
  * 
  * cdef long long keyfunc(row):             # <<<<<<<<<<<<<<
@@ -3664,7 +3568,7 @@ static PY_LONG_LONG __pyx_f_7hdbscan_13_hdbscan_tree_keyfunc(PyObject *__pyx_v_r
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_tree.pyx":167
+/* "hdbscan/_hdbscan_tree.pyx":161
  *     return <long long> row[0]
  * 
  * cpdef dict compute_stability(np.ndarray condensed_tree):             # <<<<<<<<<<<<<<
@@ -3700,31 +3604,31 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObjec
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_stability", 0);
 
-  /* "hdbscan/_hdbscan_tree.pyx":177
+  /* "hdbscan/_hdbscan_tree.pyx":171
  *     cdef long long to_i
  * 
  *     result = {}             # <<<<<<<<<<<<<<
  *     sorted_child_data = np.sort(condensed_tree[['child', 'lambda']], axis=0)
  *     birth_pairs = [min(a[1]) for a in itertools.groupby(sorted_child_data,
  */
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 171; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_result = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":178
+  /* "hdbscan/_hdbscan_tree.pyx":172
  * 
  *     result = {}
  *     sorted_child_data = np.sort(condensed_tree[['child', 'lambda']], axis=0)             # <<<<<<<<<<<<<<
  *     birth_pairs = [min(a[1]) for a in itertools.groupby(sorted_child_data,
  *                                                         key=keyfunc)]
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sort); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sort); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_child);
   __Pyx_GIVEREF(__pyx_n_s_child);
@@ -3732,68 +3636,68 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObjec
   __Pyx_INCREF(__pyx_n_s_lambda);
   __Pyx_GIVEREF(__pyx_n_s_lambda);
   PyList_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_lambda);
-  __pyx_t_3 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_t_1); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_3 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_t_1); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_axis, __pyx_int_0) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_axis, __pyx_int_0) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_sorted_child_data = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":179
+  /* "hdbscan/_hdbscan_tree.pyx":173
  *     result = {}
  *     sorted_child_data = np.sort(condensed_tree[['child', 'lambda']], axis=0)
  *     birth_pairs = [min(a[1]) for a in itertools.groupby(sorted_child_data,             # <<<<<<<<<<<<<<
  *                                                         key=keyfunc)]
  *     births = dict(birth_pairs)
  */
-  __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_itertools); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_itertools); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_groupby); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_groupby); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(((PyObject *)__pyx_v_sorted_child_data));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_sorted_child_data));
   PyTuple_SET_ITEM(__pyx_t_3, 0, ((PyObject *)__pyx_v_sorted_child_data));
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "hdbscan/_hdbscan_tree.pyx":180
+  /* "hdbscan/_hdbscan_tree.pyx":174
  *     sorted_child_data = np.sort(condensed_tree[['child', 'lambda']], axis=0)
  *     birth_pairs = [min(a[1]) for a in itertools.groupby(sorted_child_data,
  *                                                         key=keyfunc)]             # <<<<<<<<<<<<<<
  *     births = dict(birth_pairs)
  *     from_i = condensed_tree['child'][condensed_tree['child_size'] == 1].max()
  */
-  __pyx_t_5 = __Pyx_CFunc_long__long____object___to_py(__pyx_f_7hdbscan_13_hdbscan_tree_keyfunc); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_CFunc_long__long____object___to_py(__pyx_f_7hdbscan_13_hdbscan_tree_keyfunc); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 174; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_5) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_key, __pyx_t_5) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":179
+  /* "hdbscan/_hdbscan_tree.pyx":173
  *     result = {}
  *     sorted_child_data = np.sort(condensed_tree[['child', 'lambda']], axis=0)
  *     birth_pairs = [min(a[1]) for a in itertools.groupby(sorted_child_data,             # <<<<<<<<<<<<<<
  *                                                         key=keyfunc)]
  *     births = dict(birth_pairs)
  */
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3802,9 +3706,9 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObjec
     __pyx_t_2 = __pyx_t_5; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
     __pyx_t_7 = NULL;
   } else {
-    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   for (;;) {
@@ -3812,17 +3716,17 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObjec
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       } else {
         if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       }
@@ -3832,7 +3736,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObjec
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -3840,59 +3744,59 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObjec
     }
     __Pyx_XDECREF_SET(__pyx_v_a, __pyx_t_5);
     __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_a, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_a, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_5);
     __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_min, __pyx_t_3, NULL); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_min, __pyx_t_3, NULL); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_5))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_5))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_birth_pairs = ((PyObject*)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":181
+  /* "hdbscan/_hdbscan_tree.pyx":175
  *     birth_pairs = [min(a[1]) for a in itertools.groupby(sorted_child_data,
  *                                                         key=keyfunc)]
  *     births = dict(birth_pairs)             # <<<<<<<<<<<<<<
  *     from_i = condensed_tree['child'][condensed_tree['child_size'] == 1].max()
  *     from_i += 1
  */
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_v_birth_pairs);
   __Pyx_GIVEREF(__pyx_v_birth_pairs);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_birth_pairs);
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)(&PyDict_Type))), __pyx_t_4, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)(&PyDict_Type))), __pyx_t_4, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_births = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":182
+  /* "hdbscan/_hdbscan_tree.pyx":176
  *                                                         key=keyfunc)]
  *     births = dict(birth_pairs)
  *     from_i = condensed_tree['child'][condensed_tree['child_size'] == 1].max()             # <<<<<<<<<<<<<<
  *     from_i += 1
  *     to_i = condensed_tree['parent'].max() + 1
  */
-  __pyx_t_4 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_n_s_child); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_4 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_n_s_child); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_n_s_child_size); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_5 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_n_s_child_size); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = PyObject_RichCompare(__pyx_t_5, __pyx_int_1, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyObject_RichCompare(__pyx_t_5, __pyx_int_1, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyObject_GetItem(__pyx_t_4, __pyx_t_3); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_5 = PyObject_GetItem(__pyx_t_4, __pyx_t_3); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_max); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_max); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
@@ -3906,18 +3810,18 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObjec
     }
   }
   if (__pyx_t_5) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_8 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_2); if (unlikely((__pyx_t_8 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_2); if (unlikely((__pyx_t_8 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_from_i = __pyx_t_8;
 
-  /* "hdbscan/_hdbscan_tree.pyx":183
+  /* "hdbscan/_hdbscan_tree.pyx":177
  *     births = dict(birth_pairs)
  *     from_i = condensed_tree['child'][condensed_tree['child_size'] == 1].max()
  *     from_i += 1             # <<<<<<<<<<<<<<
@@ -3926,16 +3830,16 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObjec
  */
   __pyx_v_from_i = (__pyx_v_from_i + 1);
 
-  /* "hdbscan/_hdbscan_tree.pyx":184
+  /* "hdbscan/_hdbscan_tree.pyx":178
  *     from_i = condensed_tree['child'][condensed_tree['child_size'] == 1].max()
  *     from_i += 1
  *     to_i = condensed_tree['parent'].max() + 1             # <<<<<<<<<<<<<<
  *     for i in range(from_i, to_i):
  *         selection = (condensed_tree['parent'] == i)
  */
-  __pyx_t_3 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_n_s_parent); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_3 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_n_s_parent); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_max); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_max); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -3949,21 +3853,21 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObjec
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyNumber_Add(__pyx_t_2, __pyx_int_1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = PyNumber_Add(__pyx_t_2, __pyx_int_1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_8 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_5); if (unlikely((__pyx_t_8 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_5); if (unlikely((__pyx_t_8 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_to_i = __pyx_t_8;
 
-  /* "hdbscan/_hdbscan_tree.pyx":185
+  /* "hdbscan/_hdbscan_tree.pyx":179
  *     from_i += 1
  *     to_i = condensed_tree['parent'].max() + 1
  *     for i in range(from_i, to_i):             # <<<<<<<<<<<<<<
@@ -3974,94 +3878,94 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObjec
   for (__pyx_t_9 = __pyx_v_from_i; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
     __pyx_v_i = __pyx_t_9;
 
-    /* "hdbscan/_hdbscan_tree.pyx":186
+    /* "hdbscan/_hdbscan_tree.pyx":180
  *     to_i = condensed_tree['parent'].max() + 1
  *     for i in range(from_i, to_i):
  *         selection = (condensed_tree['parent'] == i)             # <<<<<<<<<<<<<<
  *         result[i] = np.sum((condensed_tree['lambda'][selection] -
  *                             births.get(i, np.nan)) *
  */
-    __pyx_t_5 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_n_s_parent); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_5 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_n_s_parent); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_i); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_i); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyObject_RichCompare(__pyx_t_5, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyObject_RichCompare(__pyx_t_5, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_XDECREF_SET(__pyx_v_selection, ((PyArrayObject *)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "hdbscan/_hdbscan_tree.pyx":187
+    /* "hdbscan/_hdbscan_tree.pyx":181
  *     for i in range(from_i, to_i):
  *         selection = (condensed_tree['parent'] == i)
  *         result[i] = np.sum((condensed_tree['lambda'][selection] -             # <<<<<<<<<<<<<<
  *                             births.get(i, np.nan)) *
  *                            condensed_tree['child_size'][selection])
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sum); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sum); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_n_s_lambda); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_2 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_n_s_lambda); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = PyObject_GetItem(__pyx_t_2, ((PyObject *)__pyx_v_selection)); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_4 = PyObject_GetItem(__pyx_t_2, ((PyObject *)__pyx_v_selection)); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "hdbscan/_hdbscan_tree.pyx":188
+    /* "hdbscan/_hdbscan_tree.pyx":182
  *         selection = (condensed_tree['parent'] == i)
  *         result[i] = np.sum((condensed_tree['lambda'][selection] -
  *                             births.get(i, np.nan)) *             # <<<<<<<<<<<<<<
  *                            condensed_tree['child_size'][selection])
  *     return result
  */
-    __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_i); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_i); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_nan); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_nan); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_births, __pyx_t_2, __pyx_t_10); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_births, __pyx_t_2, __pyx_t_10); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-    /* "hdbscan/_hdbscan_tree.pyx":187
+    /* "hdbscan/_hdbscan_tree.pyx":181
  *     for i in range(from_i, to_i):
  *         selection = (condensed_tree['parent'] == i)
  *         result[i] = np.sum((condensed_tree['lambda'][selection] -             # <<<<<<<<<<<<<<
  *                             births.get(i, np.nan)) *
  *                            condensed_tree['child_size'][selection])
  */
-    __pyx_t_10 = PyNumber_Subtract(__pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = PyNumber_Subtract(__pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "hdbscan/_hdbscan_tree.pyx":189
+    /* "hdbscan/_hdbscan_tree.pyx":183
  *         result[i] = np.sum((condensed_tree['lambda'][selection] -
  *                             births.get(i, np.nan)) *
  *                            condensed_tree['child_size'][selection])             # <<<<<<<<<<<<<<
  *     return result
  * 
  */
-    __pyx_t_1 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_n_s_child_size); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_1 = PyObject_GetItem(((PyObject *)__pyx_v_condensed_tree), __pyx_n_s_child_size); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PyObject_GetItem(__pyx_t_1, ((PyObject *)__pyx_v_selection)); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_4 = PyObject_GetItem(__pyx_t_1, ((PyObject *)__pyx_v_selection)); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "hdbscan/_hdbscan_tree.pyx":188
+    /* "hdbscan/_hdbscan_tree.pyx":182
  *         selection = (condensed_tree['parent'] == i)
  *         result[i] = np.sum((condensed_tree['lambda'][selection] -
  *                             births.get(i, np.nan)) *             # <<<<<<<<<<<<<<
  *                            condensed_tree['child_size'][selection])
  *     return result
  */
-    __pyx_t_1 = PyNumber_Multiply(__pyx_t_10, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyNumber_Multiply(__pyx_t_10, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -4076,37 +3980,37 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObjec
       }
     }
     if (!__pyx_t_4) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_GOTREF(__pyx_t_3);
     } else {
-      __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_4); __pyx_t_4 = NULL;
       __Pyx_GIVEREF(__pyx_t_1);
       PyTuple_SET_ITEM(__pyx_t_10, 0+1, __pyx_t_1);
       __pyx_t_1 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_10, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_10, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "hdbscan/_hdbscan_tree.pyx":187
+    /* "hdbscan/_hdbscan_tree.pyx":181
  *     for i in range(from_i, to_i):
  *         selection = (condensed_tree['parent'] == i)
  *         result[i] = np.sum((condensed_tree['lambda'][selection] -             # <<<<<<<<<<<<<<
  *                             births.get(i, np.nan)) *
  *                            condensed_tree['child_size'][selection])
  */
-    __pyx_t_5 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_i); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_i); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
-    if (unlikely(PyDict_SetItem(__pyx_v_result, __pyx_t_5, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(PyDict_SetItem(__pyx_v_result, __pyx_t_5, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
 
-  /* "hdbscan/_hdbscan_tree.pyx":190
+  /* "hdbscan/_hdbscan_tree.pyx":184
  *                             births.get(i, np.nan)) *
  *                            condensed_tree['child_size'][selection])
  *     return result             # <<<<<<<<<<<<<<
@@ -4118,7 +4022,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(PyArrayObjec
   __pyx_r = __pyx_v_result;
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":167
+  /* "hdbscan/_hdbscan_tree.pyx":161
  *     return <long long> row[0]
  * 
  * cpdef dict compute_stability(np.ndarray condensed_tree):             # <<<<<<<<<<<<<<
@@ -4157,7 +4061,7 @@ static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_5compute_stability(PyObject *
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("compute_stability (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_condensed_tree), __pyx_ptype_5numpy_ndarray, 1, "condensed_tree", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_condensed_tree), __pyx_ptype_5numpy_ndarray, 1, "condensed_tree", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = __pyx_pf_7hdbscan_13_hdbscan_tree_4compute_stability(__pyx_self, ((PyArrayObject *)__pyx_v_condensed_tree));
 
   /* function exit code */
@@ -4178,7 +4082,7 @@ static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_4compute_stability(CYTHON_UNU
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_stability", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(__pyx_v_condensed_tree, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_7hdbscan_13_hdbscan_tree_compute_stability(__pyx_v_condensed_tree, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4195,7 +4099,7 @@ static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_4compute_stability(CYTHON_UNU
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_tree.pyx":192
+/* "hdbscan/_hdbscan_tree.pyx":186
  *     return result
  * 
  * cdef list bfs_from_cluster_tree(np.ndarray tree, long long bfs_root):             # <<<<<<<<<<<<<<
@@ -4205,159 +4109,237 @@ static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_4compute_stability(CYTHON_UNU
 
 static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_cluster_tree(PyArrayObject *__pyx_v_tree, PY_LONG_LONG __pyx_v_bfs_root) {
   PyObject *__pyx_v_result = 0;
-  PyObject *__pyx_v_to_process = 0;
+  PyArrayObject *__pyx_v_to_process = 0;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_to_process;
+  __Pyx_Buffer __pyx_pybuffer_to_process;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
-  int __pyx_t_4;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
+  PyArrayObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
   PyObject *__pyx_t_8 = NULL;
-  Py_ssize_t __pyx_t_9;
+  PyObject *__pyx_t_9 = NULL;
   PyObject *__pyx_t_10 = NULL;
+  int __pyx_t_11;
+  int __pyx_t_12;
+  Py_ssize_t __pyx_t_13;
+  PyObject *__pyx_t_14 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("bfs_from_cluster_tree", 0);
+  __pyx_pybuffer_to_process.pybuffer.buf = NULL;
+  __pyx_pybuffer_to_process.refcount = 0;
+  __pyx_pybuffernd_to_process.data = NULL;
+  __pyx_pybuffernd_to_process.rcbuffer = &__pyx_pybuffer_to_process;
 
-  /* "hdbscan/_hdbscan_tree.pyx":197
- *     cdef list to_process
+  /* "hdbscan/_hdbscan_tree.pyx":191
+ *     cdef np.ndarray[np.int64_t, ndim=1] to_process
  * 
  *     result = []             # <<<<<<<<<<<<<<
- *     to_process = [bfs_root]
+ *     to_process = np.array([bfs_root])
  * 
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_result = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":198
+  /* "hdbscan/_hdbscan_tree.pyx":192
  * 
  *     result = []
- *     to_process = [bfs_root]             # <<<<<<<<<<<<<<
+ *     to_process = np.array([bfs_root])             # <<<<<<<<<<<<<<
  * 
- *     while to_process:
+ *     while to_process.shape[0] > 0:
  */
-  __pyx_t_1 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_bfs_root); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 198; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
-  __pyx_t_1 = 0;
-  __pyx_v_to_process = ((PyObject*)__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_bfs_root); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
   __pyx_t_2 = 0;
+  __pyx_t_2 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_2)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  if (!__pyx_t_2) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_GOTREF(__pyx_t_1);
+  } else {
+    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_2); __pyx_t_2 = NULL;
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_4);
+    __pyx_t_4 = 0;
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = ((PyArrayObject *)__pyx_t_1);
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_to_process.rcbuffer->pybuffer);
+    __pyx_t_7 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_to_process.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_5numpy_int64_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack);
+    if (unlikely(__pyx_t_7 < 0)) {
+      PyErr_Fetch(&__pyx_t_8, &__pyx_t_9, &__pyx_t_10);
+      if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_to_process.rcbuffer->pybuffer, (PyObject*)__pyx_v_to_process, &__Pyx_TypeInfo_nn___pyx_t_5numpy_int64_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+        Py_XDECREF(__pyx_t_8); Py_XDECREF(__pyx_t_9); Py_XDECREF(__pyx_t_10);
+        __Pyx_RaiseBufferFallbackError();
+      } else {
+        PyErr_Restore(__pyx_t_8, __pyx_t_9, __pyx_t_10);
+      }
+    }
+    __pyx_pybuffernd_to_process.diminfo[0].strides = __pyx_pybuffernd_to_process.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_to_process.diminfo[0].shape = __pyx_pybuffernd_to_process.rcbuffer->pybuffer.shape[0];
+    if (unlikely(__pyx_t_7 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  }
+  __pyx_t_6 = 0;
+  __pyx_v_to_process = ((PyArrayObject *)__pyx_t_1);
+  __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":200
- *     to_process = [bfs_root]
+  /* "hdbscan/_hdbscan_tree.pyx":194
+ *     to_process = np.array([bfs_root])
  * 
- *     while to_process:             # <<<<<<<<<<<<<<
- *         result.extend(to_process)
- *         to_process = tree['child'][np.in1d(tree['parent'], to_process)].tolist()
+ *     while to_process.shape[0] > 0:             # <<<<<<<<<<<<<<
+ *         result.extend(to_process.tolist())
+ *         to_process = tree['child'][np.in1d(tree['parent'], to_process)]
  */
   while (1) {
-    __pyx_t_3 = (__pyx_v_to_process != Py_None) && (PyList_GET_SIZE(__pyx_v_to_process) != 0);
-    if (!__pyx_t_3) break;
+    __pyx_t_11 = (((__pyx_v_to_process->dimensions[0]) > 0) != 0);
+    if (!__pyx_t_11) break;
 
-    /* "hdbscan/_hdbscan_tree.pyx":201
+    /* "hdbscan/_hdbscan_tree.pyx":195
  * 
- *     while to_process:
- *         result.extend(to_process)             # <<<<<<<<<<<<<<
- *         to_process = tree['child'][np.in1d(tree['parent'], to_process)].tolist()
+ *     while to_process.shape[0] > 0:
+ *         result.extend(to_process.tolist())             # <<<<<<<<<<<<<<
+ *         to_process = tree['child'][np.in1d(tree['parent'], to_process)]
  * 
  */
-    __pyx_t_4 = __Pyx_PyList_Extend(__pyx_v_result, __pyx_v_to_process); if (unlikely(__pyx_t_4 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 201; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_to_process), __pyx_n_s_tolist); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_5 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+      if (likely(__pyx_t_5)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_5);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
+      }
+    }
+    if (__pyx_t_5) {
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    } else {
+      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_12 = __Pyx_PyList_Extend(__pyx_v_result, __pyx_t_1); if (unlikely(__pyx_t_12 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "hdbscan/_hdbscan_tree.pyx":202
- *     while to_process:
- *         result.extend(to_process)
- *         to_process = tree['child'][np.in1d(tree['parent'], to_process)].tolist()             # <<<<<<<<<<<<<<
+    /* "hdbscan/_hdbscan_tree.pyx":196
+ *     while to_process.shape[0] > 0:
+ *         result.extend(to_process.tolist())
+ *         to_process = tree['child'][np.in1d(tree['parent'], to_process)]             # <<<<<<<<<<<<<<
  * 
  *     return result
  */
-    __pyx_t_1 = PyObject_GetItem(((PyObject *)__pyx_v_tree), __pyx_n_s_child); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_1 = PyObject_GetItem(((PyObject *)__pyx_v_tree), __pyx_n_s_child); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_in1d); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = PyObject_GetItem(((PyObject *)__pyx_v_tree), __pyx_n_s_parent); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_8 = NULL;
-    __pyx_t_9 = 0;
-    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_7))) {
-      __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
-      if (likely(__pyx_t_8)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-        __Pyx_INCREF(__pyx_t_8);
+    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_in1d); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_5 = PyObject_GetItem(((PyObject *)__pyx_v_tree), __pyx_n_s_parent); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_2 = NULL;
+    __pyx_t_13 = 0;
+    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_4);
+      if (likely(__pyx_t_2)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+        __Pyx_INCREF(__pyx_t_2);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_7, function);
-        __pyx_t_9 = 1;
+        __Pyx_DECREF_SET(__pyx_t_4, function);
+        __pyx_t_13 = 1;
       }
     }
-    __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_10);
-    if (__pyx_t_8) {
-      __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_8); __pyx_t_8 = NULL;
+    __pyx_t_14 = PyTuple_New(2+__pyx_t_13); if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_14);
+    if (__pyx_t_2) {
+      __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_2); __pyx_t_2 = NULL;
     }
-    __Pyx_GIVEREF(__pyx_t_6);
-    PyTuple_SET_ITEM(__pyx_t_10, 0+__pyx_t_9, __pyx_t_6);
-    __Pyx_INCREF(__pyx_v_to_process);
-    __Pyx_GIVEREF(__pyx_v_to_process);
-    PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_v_to_process);
-    __pyx_t_6 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_10, NULL); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = PyObject_GetItem(__pyx_t_1, __pyx_t_5); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_GIVEREF(__pyx_t_5);
+    PyTuple_SET_ITEM(__pyx_t_14, 0+__pyx_t_13, __pyx_t_5);
+    __Pyx_INCREF(((PyObject *)__pyx_v_to_process));
+    __Pyx_GIVEREF(((PyObject *)__pyx_v_to_process));
+    PyTuple_SET_ITEM(__pyx_t_14, 1+__pyx_t_13, ((PyObject *)__pyx_v_to_process));
+    __pyx_t_5 = 0;
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_14, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = PyObject_GetItem(__pyx_t_1, __pyx_t_3); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_tolist); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_7)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_7);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = ((PyArrayObject *)__pyx_t_4);
+    {
+      __Pyx_BufFmt_StackElem __pyx_stack[1];
+      __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_to_process.rcbuffer->pybuffer);
+      __pyx_t_7 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_to_process.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_5numpy_int64_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack);
+      if (unlikely(__pyx_t_7 < 0)) {
+        PyErr_Fetch(&__pyx_t_10, &__pyx_t_9, &__pyx_t_8);
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_to_process.rcbuffer->pybuffer, (PyObject*)__pyx_v_to_process, &__Pyx_TypeInfo_nn___pyx_t_5numpy_int64_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+          Py_XDECREF(__pyx_t_10); Py_XDECREF(__pyx_t_9); Py_XDECREF(__pyx_t_8);
+          __Pyx_RaiseBufferFallbackError();
+        } else {
+          PyErr_Restore(__pyx_t_10, __pyx_t_9, __pyx_t_8);
+        }
       }
+      __pyx_pybuffernd_to_process.diminfo[0].strides = __pyx_pybuffernd_to_process.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_to_process.diminfo[0].shape = __pyx_pybuffernd_to_process.rcbuffer->pybuffer.shape[0];
+      if (unlikely(__pyx_t_7 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 196; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    if (__pyx_t_7) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_7); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    } else {
-      __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    }
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 202; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF_SET(__pyx_v_to_process, ((PyObject*)__pyx_t_2));
-    __pyx_t_2 = 0;
+    __pyx_t_6 = 0;
+    __Pyx_DECREF_SET(__pyx_v_to_process, ((PyArrayObject *)__pyx_t_4));
+    __pyx_t_4 = 0;
   }
 
-  /* "hdbscan/_hdbscan_tree.pyx":204
- *         to_process = tree['child'][np.in1d(tree['parent'], to_process)].tolist()
+  /* "hdbscan/_hdbscan_tree.pyx":198
+ *         to_process = tree['child'][np.in1d(tree['parent'], to_process)]
  * 
  *     return result             # <<<<<<<<<<<<<<
  * 
- * cpdef list get_clusters(np.ndarray tree, dict stability, list points):
+ * cdef list get_cluster_points(np.ndarray tree, long long cluster, long long num_points):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_result);
   __pyx_r = __pyx_v_result;
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":192
+  /* "hdbscan/_hdbscan_tree.pyx":186
  *     return result
  * 
  * cdef list bfs_from_cluster_tree(np.ndarray tree, long long bfs_root):             # <<<<<<<<<<<<<<
@@ -4369,31 +4351,289 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_cluster_tree(PyArrayO
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_XDECREF(__pyx_t_10);
+  __Pyx_XDECREF(__pyx_t_14);
+  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
+    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_to_process.rcbuffer->pybuffer);
+  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
   __Pyx_AddTraceback("hdbscan._hdbscan_tree.bfs_from_cluster_tree", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
+  goto __pyx_L2;
   __pyx_L0:;
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_to_process.rcbuffer->pybuffer);
+  __pyx_L2:;
   __Pyx_XDECREF(__pyx_v_result);
-  __Pyx_XDECREF(__pyx_v_to_process);
+  __Pyx_XDECREF((PyObject *)__pyx_v_to_process);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_tree.pyx":206
+/* "hdbscan/_hdbscan_tree.pyx":200
  *     return result
  * 
- * cpdef list get_clusters(np.ndarray tree, dict stability, list points):             # <<<<<<<<<<<<<<
+ * cdef list get_cluster_points(np.ndarray tree, long long cluster, long long num_points):             # <<<<<<<<<<<<<<
+ * 
+ *     cdef list result
+ */
+
+static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_cluster_points(PyArrayObject *__pyx_v_tree, PY_LONG_LONG __pyx_v_cluster, PY_LONG_LONG __pyx_v_num_points) {
+  PyObject *__pyx_v_result = 0;
+  PyObject *__pyx_v_to_process = 0;
+  PyObject *__pyx_v_next_to_process = 0;
+  PY_LONG_LONG __pyx_v_num_to_process;
+  PY_LONG_LONG __pyx_v_in_process;
+  PY_LONG_LONG __pyx_v_i;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  int __pyx_t_3;
+  Py_ssize_t __pyx_t_4;
+  PY_LONG_LONG __pyx_t_5;
+  PY_LONG_LONG __pyx_t_6;
+  PY_LONG_LONG __pyx_t_7;
+  int __pyx_t_8;
+  PyObject *__pyx_t_9 = NULL;
+  PyObject *__pyx_t_10 = NULL;
+  PyObject *__pyx_t_11 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("get_cluster_points", 0);
+
+  /* "hdbscan/_hdbscan_tree.pyx":208
+ *     cdef long long in_process
+ * 
+ *     result = []             # <<<<<<<<<<<<<<
+ *     to_process = [cluster]
+ *     next_to_process = []
+ */
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 208; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_result = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "hdbscan/_hdbscan_tree.pyx":209
+ * 
+ *     result = []
+ *     to_process = [cluster]             # <<<<<<<<<<<<<<
+ *     next_to_process = []
+ * 
+ */
+  __pyx_t_1 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_cluster); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 209; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 209; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_v_to_process = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "hdbscan/_hdbscan_tree.pyx":210
+ *     result = []
+ *     to_process = [cluster]
+ *     next_to_process = []             # <<<<<<<<<<<<<<
+ * 
+ *     while to_process:
+ */
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_v_next_to_process = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "hdbscan/_hdbscan_tree.pyx":212
+ *     next_to_process = []
+ * 
+ *     while to_process:             # <<<<<<<<<<<<<<
+ *         num_to_process = len(to_process)
+ *         for i in range(num_to_process):
+ */
+  while (1) {
+    __pyx_t_3 = (__pyx_v_to_process != Py_None) && (PyList_GET_SIZE(__pyx_v_to_process) != 0);
+    if (!__pyx_t_3) break;
+
+    /* "hdbscan/_hdbscan_tree.pyx":213
+ * 
+ *     while to_process:
+ *         num_to_process = len(to_process)             # <<<<<<<<<<<<<<
+ *         for i in range(num_to_process):
+ *             in_process = to_process[i]
+ */
+    __pyx_t_4 = PyList_GET_SIZE(__pyx_v_to_process); if (unlikely(__pyx_t_4 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 213; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_v_num_to_process = __pyx_t_4;
+
+    /* "hdbscan/_hdbscan_tree.pyx":214
+ *     while to_process:
+ *         num_to_process = len(to_process)
+ *         for i in range(num_to_process):             # <<<<<<<<<<<<<<
+ *             in_process = to_process[i]
+ *             if in_process < num_points:
+ */
+    __pyx_t_5 = __pyx_v_num_to_process;
+    for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
+      __pyx_v_i = __pyx_t_6;
+
+      /* "hdbscan/_hdbscan_tree.pyx":215
+ *         num_to_process = len(to_process)
+ *         for i in range(num_to_process):
+ *             in_process = to_process[i]             # <<<<<<<<<<<<<<
+ *             if in_process < num_points:
+ *                 result.append(in_process)
+ */
+      __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_to_process, __pyx_v_i, PY_LONG_LONG, 1, __Pyx_PyInt_From_PY_LONG_LONG, 1, 1, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_7 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_2); if (unlikely((__pyx_t_7 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_v_in_process = __pyx_t_7;
+
+      /* "hdbscan/_hdbscan_tree.pyx":216
+ *         for i in range(num_to_process):
+ *             in_process = to_process[i]
+ *             if in_process < num_points:             # <<<<<<<<<<<<<<
+ *                 result.append(in_process)
+ *             else:
+ */
+      __pyx_t_3 = ((__pyx_v_in_process < __pyx_v_num_points) != 0);
+      if (__pyx_t_3) {
+
+        /* "hdbscan/_hdbscan_tree.pyx":217
+ *             in_process = to_process[i]
+ *             if in_process < num_points:
+ *                 result.append(in_process)             # <<<<<<<<<<<<<<
+ *             else:
+ *                 next_to_process.extend(tree['child'][tree['parent'] == in_process].tolist())
+ */
+        __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_in_process); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 217; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_result, __pyx_t_2); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 217; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        goto __pyx_L7;
+      }
+      /*else*/ {
+
+        /* "hdbscan/_hdbscan_tree.pyx":219
+ *                 result.append(in_process)
+ *             else:
+ *                 next_to_process.extend(tree['child'][tree['parent'] == in_process].tolist())             # <<<<<<<<<<<<<<
+ *         to_process = next_to_process
+ *         next_to_process = []
+ */
+        __pyx_t_1 = PyObject_GetItem(((PyObject *)__pyx_v_tree), __pyx_n_s_child); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+        __Pyx_GOTREF(__pyx_t_1);
+        __pyx_t_9 = PyObject_GetItem(((PyObject *)__pyx_v_tree), __pyx_n_s_parent); if (unlikely(__pyx_t_9 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+        __Pyx_GOTREF(__pyx_t_9);
+        __pyx_t_10 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_in_process); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_10);
+        __pyx_t_11 = PyObject_RichCompare(__pyx_t_9, __pyx_t_10, Py_EQ); __Pyx_XGOTREF(__pyx_t_11); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+        __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+        __pyx_t_10 = PyObject_GetItem(__pyx_t_1, __pyx_t_11); if (unlikely(__pyx_t_10 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+        __Pyx_GOTREF(__pyx_t_10);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+        __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_tolist); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_11);
+        __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+        __pyx_t_10 = NULL;
+        if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_11))) {
+          __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_11);
+          if (likely(__pyx_t_10)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
+            __Pyx_INCREF(__pyx_t_10);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_11, function);
+          }
+        }
+        if (__pyx_t_10) {
+          __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_10); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+        } else {
+          __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_11); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        }
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+        __pyx_t_8 = __Pyx_PyList_Extend(__pyx_v_next_to_process, __pyx_t_2); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      }
+      __pyx_L7:;
+    }
+
+    /* "hdbscan/_hdbscan_tree.pyx":220
+ *             else:
+ *                 next_to_process.extend(tree['child'][tree['parent'] == in_process].tolist())
+ *         to_process = next_to_process             # <<<<<<<<<<<<<<
+ *         next_to_process = []
+ * 
+ */
+    __Pyx_INCREF(__pyx_v_next_to_process);
+    __Pyx_DECREF_SET(__pyx_v_to_process, __pyx_v_next_to_process);
+
+    /* "hdbscan/_hdbscan_tree.pyx":221
+ *                 next_to_process.extend(tree['child'][tree['parent'] == in_process].tolist())
+ *         to_process = next_to_process
+ *         next_to_process = []             # <<<<<<<<<<<<<<
+ * 
+ *     return result
+ */
+    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 221; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF_SET(__pyx_v_next_to_process, ((PyObject*)__pyx_t_2));
+    __pyx_t_2 = 0;
+  }
+
+  /* "hdbscan/_hdbscan_tree.pyx":223
+ *         next_to_process = []
+ * 
+ *     return result             # <<<<<<<<<<<<<<
+ * 
+ * cpdef list get_clusters(np.ndarray tree, dict stability):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_result);
+  __pyx_r = __pyx_v_result;
+  goto __pyx_L0;
+
+  /* "hdbscan/_hdbscan_tree.pyx":200
+ *     return result
+ * 
+ * cdef list get_cluster_points(np.ndarray tree, long long cluster, long long num_points):             # <<<<<<<<<<<<<<
+ * 
+ *     cdef list result
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_10);
+  __Pyx_XDECREF(__pyx_t_11);
+  __Pyx_AddTraceback("hdbscan._hdbscan_tree.get_cluster_points", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_result);
+  __Pyx_XDECREF(__pyx_v_to_process);
+  __Pyx_XDECREF(__pyx_v_next_to_process);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "hdbscan/_hdbscan_tree.pyx":225
+ *     return result
+ * 
+ * cpdef list get_clusters(np.ndarray tree, dict stability):             # <<<<<<<<<<<<<<
  *     """
  *     The tree is assumed to have numeric node ids such that a reverse numeric
  */
 
 static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_7get_clusters(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *__pyx_v_tree, PyObject *__pyx_v_stability, PyObject *__pyx_v_points, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *__pyx_v_tree, PyObject *__pyx_v_stability, CYTHON_UNUSED int __pyx_skip_dispatch) {
   PyObject *__pyx_v_node_list = 0;
   PyArrayObject *__pyx_v_cluster_tree = 0;
   PyArrayObject *__pyx_v_child_selection = 0;
@@ -4402,6 +4642,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *__
   PY_LONG_LONG __pyx_v_node;
   PY_LONG_LONG __pyx_v_sub_node;
   PY_LONG_LONG __pyx_v_cluster;
+  PY_LONG_LONG __pyx_v_num_points;
   PyObject *__pyx_v_child = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -4424,7 +4665,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_clusters", 0);
 
-  /* "hdbscan/_hdbscan_tree.pyx":224
+  /* "hdbscan/_hdbscan_tree.pyx":244
  *     # current implementation above, so don't change that ... or
  *     # if you do, change this accordingly!
  *     node_list = sorted(stability.keys(), reverse=True)[:-1] # (exclude root)             # <<<<<<<<<<<<<<
@@ -4433,77 +4674,77 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *__
  */
   if (unlikely(__pyx_v_stability == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%s'", "keys");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_1 = __Pyx_PyDict_Keys(__pyx_v_stability); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyDict_Keys(__pyx_v_stability); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_reverse, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_reverse, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_sorted, __pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_3, 0, -1, NULL, NULL, &__pyx_slice__2, 0, 1, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_3, 0, -1, NULL, NULL, &__pyx_slice__2, 0, 1, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_node_list = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":225
+  /* "hdbscan/_hdbscan_tree.pyx":245
  *     # if you do, change this accordingly!
  *     node_list = sorted(stability.keys(), reverse=True)[:-1] # (exclude root)
  *     cluster_tree = tree[tree['child_size'] > 1]             # <<<<<<<<<<<<<<
  *     is_cluster = {cluster:True for cluster in node_list}
- * 
+ *     num_points = np.max(tree[tree['child_size'] == 1]['child']) + 1
  */
-  __pyx_t_1 = PyObject_GetItem(((PyObject *)__pyx_v_tree), __pyx_n_s_child_size); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = PyObject_GetItem(((PyObject *)__pyx_v_tree), __pyx_n_s_child_size); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 245; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_int_1, Py_GT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_int_1, Py_GT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 245; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyObject_GetItem(((PyObject *)__pyx_v_tree), __pyx_t_3); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = PyObject_GetItem(((PyObject *)__pyx_v_tree), __pyx_t_3); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 245; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 245; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_cluster_tree = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":226
+  /* "hdbscan/_hdbscan_tree.pyx":246
  *     node_list = sorted(stability.keys(), reverse=True)[:-1] # (exclude root)
  *     cluster_tree = tree[tree['child_size'] > 1]
  *     is_cluster = {cluster:True for cluster in node_list}             # <<<<<<<<<<<<<<
+ *     num_points = np.max(tree[tree['child_size'] == 1]['child']) + 1
  * 
- *     for node in node_list:
  */
   { /* enter inner scope */
     PY_LONG_LONG __pyx_7genexpr__pyx_v_cluster;
-    __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 246; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (unlikely(__pyx_v_node_list == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 246; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __pyx_t_3 = __pyx_v_node_list; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
     for (;;) {
       if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
       #if CYTHON_COMPILING_IN_CPYTHON
-      __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 246; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       #else
-      __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 246; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       #endif
-      __pyx_t_5 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_2); if (unlikely((__pyx_t_5 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_2); if (unlikely((__pyx_t_5 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 246; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_7genexpr__pyx_v_cluster = __pyx_t_5;
-      __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_7genexpr__pyx_v_cluster); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_7genexpr__pyx_v_cluster); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 246; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
-      if (unlikely(PyDict_SetItem(__pyx_t_1, (PyObject*)__pyx_t_2, (PyObject*)Py_True))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(PyDict_SetItem(__pyx_t_1, (PyObject*)__pyx_t_2, (PyObject*)Py_True))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 246; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4511,8 +4752,63 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *__
   __pyx_v_is_cluster = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":228
+  /* "hdbscan/_hdbscan_tree.pyx":247
+ *     cluster_tree = tree[tree['child_size'] > 1]
  *     is_cluster = {cluster:True for cluster in node_list}
+ *     num_points = np.max(tree[tree['child_size'] == 1]['child']) + 1             # <<<<<<<<<<<<<<
+ * 
+ *     for node in node_list:
+ */
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_max); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyObject_GetItem(((PyObject *)__pyx_v_tree), __pyx_n_s_child_size); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_6 = PyObject_RichCompare(__pyx_t_3, __pyx_int_1, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyObject_GetItem(((PyObject *)__pyx_v_tree), __pyx_t_6); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_6 = PyObject_GetItem(__pyx_t_3, __pyx_n_s_child); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  if (!__pyx_t_3) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __Pyx_GOTREF(__pyx_t_1);
+  } else {
+    __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_3); __pyx_t_3 = NULL;
+    __Pyx_GIVEREF(__pyx_t_6);
+    PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_6);
+    __pyx_t_6 = 0;
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_int_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_5 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_2); if (unlikely((__pyx_t_5 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_num_points = __pyx_t_5;
+
+  /* "hdbscan/_hdbscan_tree.pyx":249
+ *     num_points = np.max(tree[tree['child_size'] == 1]['child']) + 1
  * 
  *     for node in node_list:             # <<<<<<<<<<<<<<
  *         child_selection = (cluster_tree['parent'] == node)
@@ -4520,101 +4816,101 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *__
  */
   if (unlikely(__pyx_v_node_list == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 228; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 249; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_1 = __pyx_v_node_list; __Pyx_INCREF(__pyx_t_1); __pyx_t_4 = 0;
+  __pyx_t_2 = __pyx_v_node_list; __Pyx_INCREF(__pyx_t_2); __pyx_t_4 = 0;
   for (;;) {
-    if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_1)) break;
+    if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_2)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 228; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 249; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 228; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 249; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
     #endif
-    __pyx_t_5 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_3); if (unlikely((__pyx_t_5 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 228; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_5 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_1); if (unlikely((__pyx_t_5 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 249; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_node = __pyx_t_5;
 
-    /* "hdbscan/_hdbscan_tree.pyx":229
+    /* "hdbscan/_hdbscan_tree.pyx":250
  * 
  *     for node in node_list:
  *         child_selection = (cluster_tree['parent'] == node)             # <<<<<<<<<<<<<<
  *         subtree_stability = np.sum([stability[child] for
  *                                     child in cluster_tree['child'][child_selection]])
  */
-    __pyx_t_3 = PyObject_GetItem(((PyObject *)__pyx_v_cluster_tree), __pyx_n_s_parent); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_node); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = PyObject_RichCompare(__pyx_t_3, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyObject_GetItem(((PyObject *)__pyx_v_cluster_tree), __pyx_n_s_parent); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 250; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_7 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_node); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 250; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_6 = PyObject_RichCompare(__pyx_t_1, __pyx_t_7, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 250; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 250; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_XDECREF_SET(__pyx_v_child_selection, ((PyArrayObject *)__pyx_t_6));
     __pyx_t_6 = 0;
 
-    /* "hdbscan/_hdbscan_tree.pyx":230
+    /* "hdbscan/_hdbscan_tree.pyx":251
  *     for node in node_list:
  *         child_selection = (cluster_tree['parent'] == node)
  *         subtree_stability = np.sum([stability[child] for             # <<<<<<<<<<<<<<
  *                                     child in cluster_tree['child'][child_selection]])
  *         if subtree_stability > stability[node]:
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_sum); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_7 = PyList_New(0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_7);
 
-    /* "hdbscan/_hdbscan_tree.pyx":231
+    /* "hdbscan/_hdbscan_tree.pyx":252
  *         child_selection = (cluster_tree['parent'] == node)
  *         subtree_stability = np.sum([stability[child] for
  *                                     child in cluster_tree['child'][child_selection]])             # <<<<<<<<<<<<<<
  *         if subtree_stability > stability[node]:
  *             is_cluster[node] = False
  */
-    __pyx_t_7 = PyObject_GetItem(((PyObject *)__pyx_v_cluster_tree), __pyx_n_s_child); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = PyObject_GetItem(__pyx_t_7, ((PyObject *)__pyx_v_child_selection)); if (unlikely(__pyx_t_8 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_3 = PyObject_GetItem(((PyObject *)__pyx_v_cluster_tree), __pyx_n_s_child); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_8 = PyObject_GetItem(__pyx_t_3, ((PyObject *)__pyx_v_child_selection)); if (unlikely(__pyx_t_8 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (likely(PyList_CheckExact(__pyx_t_8)) || PyTuple_CheckExact(__pyx_t_8)) {
-      __pyx_t_7 = __pyx_t_8; __Pyx_INCREF(__pyx_t_7); __pyx_t_9 = 0;
+      __pyx_t_3 = __pyx_t_8; __Pyx_INCREF(__pyx_t_3); __pyx_t_9 = 0;
       __pyx_t_10 = NULL;
     } else {
-      __pyx_t_9 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_8); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_10 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_8); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_10 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     for (;;) {
       if (likely(!__pyx_t_10)) {
-        if (likely(PyList_CheckExact(__pyx_t_7))) {
-          if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_7)) break;
+        if (likely(PyList_CheckExact(__pyx_t_3))) {
+          if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_3)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_8 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_9); __Pyx_INCREF(__pyx_t_8); __pyx_t_9++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_8 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_9); __Pyx_INCREF(__pyx_t_8); __pyx_t_9++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_8 = PySequence_ITEM(__pyx_t_7, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_8 = PySequence_ITEM(__pyx_t_3, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_8);
           #endif
         } else {
-          if (__pyx_t_9 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
+          if (__pyx_t_9 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_8 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_9); __Pyx_INCREF(__pyx_t_8); __pyx_t_9++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_8 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_9); __Pyx_INCREF(__pyx_t_8); __pyx_t_9++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_8 = PySequence_ITEM(__pyx_t_7, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_8 = PySequence_ITEM(__pyx_t_3, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_8);
           #endif
         }
       } else {
-        __pyx_t_8 = __pyx_t_10(__pyx_t_7);
+        __pyx_t_8 = __pyx_t_10(__pyx_t_3);
         if (unlikely(!__pyx_t_8)) {
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
@@ -4623,7 +4919,7 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *__
       __Pyx_XDECREF_SET(__pyx_v_child, __pyx_t_8);
       __pyx_t_8 = 0;
 
-      /* "hdbscan/_hdbscan_tree.pyx":230
+      /* "hdbscan/_hdbscan_tree.pyx":251
  *     for node in node_list:
  *         child_selection = (cluster_tree['parent'] == node)
  *         subtree_stability = np.sum([stability[child] for             # <<<<<<<<<<<<<<
@@ -4632,131 +4928,131 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *__
  */
       if (unlikely(__pyx_v_stability == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_stability, __pyx_v_child); if (unlikely(__pyx_t_8 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_stability, __pyx_v_child); if (unlikely(__pyx_t_8 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_8);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_8))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
-      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_3);
-      if (likely(__pyx_t_7)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-        __Pyx_INCREF(__pyx_t_7);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_3, function);
-      }
-    }
-    if (!__pyx_t_7) {
-      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __Pyx_GOTREF(__pyx_t_6);
-    } else {
-      __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_8);
-      __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_7); __pyx_t_7 = NULL;
-      __Pyx_GIVEREF(__pyx_t_2);
-      PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_t_2);
-      __pyx_t_2 = 0;
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_6);
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_7, (PyObject*)__pyx_t_8))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_11 = __pyx_PyFloat_AsFloat(__pyx_t_6); if (unlikely((__pyx_t_11 == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
+      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
+      if (likely(__pyx_t_3)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+        __Pyx_INCREF(__pyx_t_3);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_1, function);
+      }
+    }
+    if (!__pyx_t_3) {
+      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __Pyx_GOTREF(__pyx_t_6);
+    } else {
+      __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_8);
+      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_3); __pyx_t_3 = NULL;
+      __Pyx_GIVEREF(__pyx_t_7);
+      PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_t_7);
+      __pyx_t_7 = 0;
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_8, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_11 = __pyx_PyFloat_AsFloat(__pyx_t_6); if (unlikely((__pyx_t_11 == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_v_subtree_stability = __pyx_t_11;
 
-    /* "hdbscan/_hdbscan_tree.pyx":232
+    /* "hdbscan/_hdbscan_tree.pyx":253
  *         subtree_stability = np.sum([stability[child] for
  *                                     child in cluster_tree['child'][child_selection]])
  *         if subtree_stability > stability[node]:             # <<<<<<<<<<<<<<
  *             is_cluster[node] = False
  *             stability[node] = subtree_stability
  */
-    __pyx_t_6 = PyFloat_FromDouble(__pyx_v_subtree_stability); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 232; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyFloat_FromDouble(__pyx_v_subtree_stability); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 253; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     if (unlikely(__pyx_v_stability == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 232; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 253; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_3 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_node); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 232; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_stability, __pyx_t_3); if (unlikely(__pyx_t_8 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 232; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_1 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_node); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 253; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_8 = __Pyx_PyDict_GetItem(__pyx_v_stability, __pyx_t_1); if (unlikely(__pyx_t_8 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 253; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyObject_RichCompare(__pyx_t_6, __pyx_t_8, Py_GT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 232; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = PyObject_RichCompare(__pyx_t_6, __pyx_t_8, Py_GT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 253; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_12 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 232; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_12 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 253; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_12) {
 
-      /* "hdbscan/_hdbscan_tree.pyx":233
+      /* "hdbscan/_hdbscan_tree.pyx":254
  *                                     child in cluster_tree['child'][child_selection]])
  *         if subtree_stability > stability[node]:
  *             is_cluster[node] = False             # <<<<<<<<<<<<<<
  *             stability[node] = subtree_stability
  *         else:
  */
-      __pyx_t_3 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_node); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_3);
-      if (unlikely(PyDict_SetItem(__pyx_v_is_cluster, __pyx_t_3, Py_False) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_1 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_node); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 254; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      if (unlikely(PyDict_SetItem(__pyx_v_is_cluster, __pyx_t_1, Py_False) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 254; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "hdbscan/_hdbscan_tree.pyx":234
+      /* "hdbscan/_hdbscan_tree.pyx":255
  *         if subtree_stability > stability[node]:
  *             is_cluster[node] = False
  *             stability[node] = subtree_stability             # <<<<<<<<<<<<<<
  *         else:
  *             for sub_node in bfs_from_cluster_tree(cluster_tree, node):
  */
-      __pyx_t_3 = PyFloat_FromDouble(__pyx_v_subtree_stability); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_1 = PyFloat_FromDouble(__pyx_v_subtree_stability); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 255; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
       if (unlikely(__pyx_v_stability == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 255; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_8 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_node); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_node); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 255; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_8);
-      if (unlikely(PyDict_SetItem(__pyx_v_stability, __pyx_t_8, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(PyDict_SetItem(__pyx_v_stability, __pyx_t_8, __pyx_t_1) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 255; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       goto __pyx_L9;
     }
     /*else*/ {
 
-      /* "hdbscan/_hdbscan_tree.pyx":236
+      /* "hdbscan/_hdbscan_tree.pyx":257
  *             stability[node] = subtree_stability
  *         else:
  *             for sub_node in bfs_from_cluster_tree(cluster_tree, node):             # <<<<<<<<<<<<<<
  *                 if sub_node != node:
  *                     is_cluster[sub_node] = False
  */
-      __pyx_t_3 = __pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_cluster_tree(__pyx_v_cluster_tree, __pyx_v_node); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_3);
-      if (unlikely(__pyx_t_3 == Py_None)) {
+      __pyx_t_1 = __pyx_f_7hdbscan_13_hdbscan_tree_bfs_from_cluster_tree(__pyx_v_cluster_tree, __pyx_v_node); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 257; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      if (unlikely(__pyx_t_1 == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 257; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_8 = __pyx_t_3; __Pyx_INCREF(__pyx_t_8); __pyx_t_9 = 0;
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_8 = __pyx_t_1; __Pyx_INCREF(__pyx_t_8); __pyx_t_9 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       for (;;) {
         if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_8)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_3); __pyx_t_9++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_9); __Pyx_INCREF(__pyx_t_1); __pyx_t_9++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 257; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_8, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 257; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_1);
         #endif
-        __pyx_t_5 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_3); if (unlikely((__pyx_t_5 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_t_5 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_1); if (unlikely((__pyx_t_5 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 257; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __pyx_v_sub_node = __pyx_t_5;
 
-        /* "hdbscan/_hdbscan_tree.pyx":237
+        /* "hdbscan/_hdbscan_tree.pyx":258
  *         else:
  *             for sub_node in bfs_from_cluster_tree(cluster_tree, node):
  *                 if sub_node != node:             # <<<<<<<<<<<<<<
@@ -4766,22 +5062,22 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *__
         __pyx_t_12 = ((__pyx_v_sub_node != __pyx_v_node) != 0);
         if (__pyx_t_12) {
 
-          /* "hdbscan/_hdbscan_tree.pyx":238
+          /* "hdbscan/_hdbscan_tree.pyx":259
  *             for sub_node in bfs_from_cluster_tree(cluster_tree, node):
  *                 if sub_node != node:
  *                     is_cluster[sub_node] = False             # <<<<<<<<<<<<<<
  * 
- *     return [points[cluster] for cluster in is_cluster if is_cluster[cluster]]
+ *     return [get_cluster_points(tree, cluster, num_points) for cluster in is_cluster if is_cluster[cluster]]
  */
-          __pyx_t_3 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_sub_node); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 238; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_3);
-          if (unlikely(PyDict_SetItem(__pyx_v_is_cluster, __pyx_t_3, Py_False) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 238; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+          __pyx_t_1 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_sub_node); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 259; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_1);
+          if (unlikely(PyDict_SetItem(__pyx_v_is_cluster, __pyx_t_1, Py_False) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 259; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           goto __pyx_L12;
         }
         __pyx_L12:;
 
-        /* "hdbscan/_hdbscan_tree.pyx":236
+        /* "hdbscan/_hdbscan_tree.pyx":257
  *             stability[node] = subtree_stability
  *         else:
  *             for sub_node in bfs_from_cluster_tree(cluster_tree, node):             # <<<<<<<<<<<<<<
@@ -4793,69 +5089,65 @@ static PyObject *__pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(PyArrayObject *__
     }
     __pyx_L9:;
 
-    /* "hdbscan/_hdbscan_tree.pyx":228
- *     is_cluster = {cluster:True for cluster in node_list}
+    /* "hdbscan/_hdbscan_tree.pyx":249
+ *     num_points = np.max(tree[tree['child_size'] == 1]['child']) + 1
  * 
  *     for node in node_list:             # <<<<<<<<<<<<<<
  *         child_selection = (cluster_tree['parent'] == node)
  *         subtree_stability = np.sum([stability[child] for
  */
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":240
+  /* "hdbscan/_hdbscan_tree.pyx":261
  *                     is_cluster[sub_node] = False
  * 
- *     return [points[cluster] for cluster in is_cluster if is_cluster[cluster]]             # <<<<<<<<<<<<<<
+ *     return [get_cluster_points(tree, cluster, num_points) for cluster in is_cluster if is_cluster[cluster]]             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 261; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = 0;
-  __pyx_t_3 = __Pyx_dict_iterator(__pyx_v_is_cluster, 1, ((PyObject *)NULL), (&__pyx_t_9), (&__pyx_t_13)); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_1 = __Pyx_dict_iterator(__pyx_v_is_cluster, 1, ((PyObject *)NULL), (&__pyx_t_9), (&__pyx_t_13)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 261; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_8);
-  __pyx_t_8 = __pyx_t_3;
-  __pyx_t_3 = 0;
+  __pyx_t_8 = __pyx_t_1;
+  __pyx_t_1 = 0;
   while (1) {
-    __pyx_t_14 = __Pyx_dict_iter_next(__pyx_t_8, __pyx_t_9, &__pyx_t_4, &__pyx_t_3, NULL, NULL, __pyx_t_13);
+    __pyx_t_14 = __Pyx_dict_iter_next(__pyx_t_8, __pyx_t_9, &__pyx_t_4, &__pyx_t_1, NULL, NULL, __pyx_t_13);
     if (unlikely(__pyx_t_14 == 0)) break;
-    if (unlikely(__pyx_t_14 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_3); if (unlikely((__pyx_t_5 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (unlikely(__pyx_t_14 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 261; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_5 = __Pyx_PyInt_As_PY_LONG_LONG(__pyx_t_1); if (unlikely((__pyx_t_5 == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 261; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_cluster = __pyx_t_5;
-    __pyx_t_3 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_cluster); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_6 = __Pyx_PyDict_GetItem(__pyx_v_is_cluster, __pyx_t_3); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_1 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_cluster); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 261; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_6 = __Pyx_PyDict_GetItem(__pyx_v_is_cluster, __pyx_t_1); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 261; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_12 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_12 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 261; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     if (__pyx_t_12) {
-      if (unlikely(__pyx_v_points == Py_None)) {
-        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      }
-      __pyx_t_6 = __Pyx_GetItemInt_List(__pyx_v_points, __pyx_v_cluster, PY_LONG_LONG, 1, __Pyx_PyInt_From_PY_LONG_LONG, 1, 1, 0); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_6 = __pyx_f_7hdbscan_13_hdbscan_tree_get_cluster_points(__pyx_v_tree, __pyx_v_cluster, __pyx_v_num_points); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 261; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_6))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_6))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 261; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       goto __pyx_L15;
     }
     __pyx_L15:;
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_r = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_r = ((PyObject*)__pyx_t_2);
+  __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_tree.pyx":206
+  /* "hdbscan/_hdbscan_tree.pyx":225
  *     return result
  * 
- * cpdef list get_clusters(np.ndarray tree, dict stability, list points):             # <<<<<<<<<<<<<<
+ * cpdef list get_clusters(np.ndarray tree, dict stability):             # <<<<<<<<<<<<<<
  *     """
  *     The tree is assumed to have numeric node ids such that a reverse numeric
  */
@@ -4887,7 +5179,6 @@ static char __pyx_doc_7hdbscan_13_hdbscan_tree_6get_clusters[] = "\n    The tree
 static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_7get_clusters(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_tree = 0;
   PyObject *__pyx_v_stability = 0;
-  PyObject *__pyx_v_points = 0;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -4895,13 +5186,12 @@ static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_7get_clusters(PyObject *__pyx
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_clusters (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_tree,&__pyx_n_s_stability,&__pyx_n_s_points,0};
-    PyObject* values[3] = {0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_tree,&__pyx_n_s_stability,0};
+    PyObject* values[2] = {0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
-        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
         case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
         case  0: break;
@@ -4915,40 +5205,32 @@ static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_7get_clusters(PyObject *__pyx
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_stability)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_clusters", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-        }
-        case  2:
-        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_points)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("get_clusters", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("get_clusters", 1, 2, 2, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_clusters") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_clusters") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
     __pyx_v_tree = ((PyArrayObject *)values[0]);
     __pyx_v_stability = ((PyObject*)values[1]);
-    __pyx_v_points = ((PyObject*)values[2]);
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_clusters", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("get_clusters", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("hdbscan._hdbscan_tree.get_clusters", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_tree), __pyx_ptype_5numpy_ndarray, 1, "tree", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_stability), (&PyDict_Type), 1, "stability", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_points), (&PyList_Type), 1, "points", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_r = __pyx_pf_7hdbscan_13_hdbscan_tree_6get_clusters(__pyx_self, __pyx_v_tree, __pyx_v_stability, __pyx_v_points);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_tree), __pyx_ptype_5numpy_ndarray, 1, "tree", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_stability), (&PyDict_Type), 1, "stability", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_r = __pyx_pf_7hdbscan_13_hdbscan_tree_6get_clusters(__pyx_self, __pyx_v_tree, __pyx_v_stability);
 
   /* function exit code */
   goto __pyx_L0;
@@ -4959,7 +5241,7 @@ static PyObject *__pyx_pw_7hdbscan_13_hdbscan_tree_7get_clusters(PyObject *__pyx
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_6get_clusters(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_tree, PyObject *__pyx_v_stability, PyObject *__pyx_v_points) {
+static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_6get_clusters(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_tree, PyObject *__pyx_v_stability) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4968,7 +5250,7 @@ static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_6get_clusters(CYTHON_UNUSED P
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_clusters", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(__pyx_v_tree, __pyx_v_stability, __pyx_v_points, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_7hdbscan_13_hdbscan_tree_get_clusters(__pyx_v_tree, __pyx_v_stability, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4985,7 +5267,7 @@ static PyObject *__pyx_pf_7hdbscan_13_hdbscan_tree_6get_clusters(CYTHON_UNUSED P
   return __pyx_r;
 }
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":197
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":197
  *         # experimental exception made for __getbuffer__ and __releasebuffer__
  *         # -- the details of this may change.
  *         def __getbuffer__(ndarray self, Py_buffer* info, int flags):             # <<<<<<<<<<<<<<
@@ -5035,7 +5317,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __Pyx_GIVEREF(__pyx_v_info->obj);
   }
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":203
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":203
  *             # of flags
  * 
  *             if info == NULL: return             # <<<<<<<<<<<<<<
@@ -5048,7 +5330,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L0;
   }
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":206
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":206
  * 
  *             cdef int copy_shape, i, ndim
  *             cdef int endian_detector = 1             # <<<<<<<<<<<<<<
@@ -5057,7 +5339,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_endian_detector = 1;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":207
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":207
  *             cdef int copy_shape, i, ndim
  *             cdef int endian_detector = 1
  *             cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)             # <<<<<<<<<<<<<<
@@ -5066,7 +5348,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_little_endian = ((((char *)(&__pyx_v_endian_detector))[0]) != 0);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":209
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":209
  *             cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)
  * 
  *             ndim = PyArray_NDIM(self)             # <<<<<<<<<<<<<<
@@ -5075,7 +5357,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_ndim = PyArray_NDIM(__pyx_v_self);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":211
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":211
  *             ndim = PyArray_NDIM(self)
  * 
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -5085,7 +5367,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = (((sizeof(npy_intp)) != (sizeof(Py_ssize_t))) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":212
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":212
  * 
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):
  *                 copy_shape = 1             # <<<<<<<<<<<<<<
@@ -5097,7 +5379,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   /*else*/ {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":214
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":214
  *                 copy_shape = 1
  *             else:
  *                 copy_shape = 0             # <<<<<<<<<<<<<<
@@ -5108,7 +5390,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   __pyx_L4:;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":216
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":216
  *                 copy_shape = 0
  * 
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5122,7 +5404,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L6_bool_binop_done;
   }
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":217
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":217
  * 
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_C_CONTIGUOUS)):             # <<<<<<<<<<<<<<
@@ -5134,7 +5416,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_L6_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":218
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":218
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_C_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not C contiguous")             # <<<<<<<<<<<<<<
@@ -5148,7 +5430,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     {__pyx_filename = __pyx_f[1]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":220
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":220
  *                 raise ValueError(u"ndarray is not C contiguous")
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5162,7 +5444,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L9_bool_binop_done;
   }
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":221
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":221
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_F_CONTIGUOUS)):             # <<<<<<<<<<<<<<
@@ -5174,7 +5456,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_L9_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":222
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":222
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_F_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not Fortran contiguous")             # <<<<<<<<<<<<<<
@@ -5188,7 +5470,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     {__pyx_filename = __pyx_f[1]; __pyx_lineno = 222; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":224
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":224
  *                 raise ValueError(u"ndarray is not Fortran contiguous")
  * 
  *             info.buf = PyArray_DATA(self)             # <<<<<<<<<<<<<<
@@ -5197,7 +5479,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->buf = PyArray_DATA(__pyx_v_self);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":225
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":225
  * 
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim             # <<<<<<<<<<<<<<
@@ -5206,7 +5488,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->ndim = __pyx_v_ndim;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":226
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":226
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim
  *             if copy_shape:             # <<<<<<<<<<<<<<
@@ -5216,7 +5498,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = (__pyx_v_copy_shape != 0);
   if (__pyx_t_1) {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":229
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":229
  *                 # Allocate new buffer for strides and shape info.
  *                 # This is allocated as one block, strides first.
  *                 info.strides = <Py_ssize_t*>stdlib.malloc(sizeof(Py_ssize_t) * <size_t>ndim * 2)             # <<<<<<<<<<<<<<
@@ -5225,7 +5507,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->strides = ((Py_ssize_t *)malloc((((sizeof(Py_ssize_t)) * ((size_t)__pyx_v_ndim)) * 2)));
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":230
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":230
  *                 # This is allocated as one block, strides first.
  *                 info.strides = <Py_ssize_t*>stdlib.malloc(sizeof(Py_ssize_t) * <size_t>ndim * 2)
  *                 info.shape = info.strides + ndim             # <<<<<<<<<<<<<<
@@ -5234,7 +5516,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->shape = (__pyx_v_info->strides + __pyx_v_ndim);
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":231
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":231
  *                 info.strides = <Py_ssize_t*>stdlib.malloc(sizeof(Py_ssize_t) * <size_t>ndim * 2)
  *                 info.shape = info.strides + ndim
  *                 for i in range(ndim):             # <<<<<<<<<<<<<<
@@ -5245,7 +5527,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
       __pyx_v_i = __pyx_t_5;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":232
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":232
  *                 info.shape = info.strides + ndim
  *                 for i in range(ndim):
  *                     info.strides[i] = PyArray_STRIDES(self)[i]             # <<<<<<<<<<<<<<
@@ -5254,7 +5536,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
       (__pyx_v_info->strides[__pyx_v_i]) = (PyArray_STRIDES(__pyx_v_self)[__pyx_v_i]);
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":233
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":233
  *                 for i in range(ndim):
  *                     info.strides[i] = PyArray_STRIDES(self)[i]
  *                     info.shape[i] = PyArray_DIMS(self)[i]             # <<<<<<<<<<<<<<
@@ -5267,7 +5549,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   /*else*/ {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":235
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":235
  *                     info.shape[i] = PyArray_DIMS(self)[i]
  *             else:
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)             # <<<<<<<<<<<<<<
@@ -5276,7 +5558,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->strides = ((Py_ssize_t *)PyArray_STRIDES(__pyx_v_self));
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":236
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":236
  *             else:
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)             # <<<<<<<<<<<<<<
@@ -5287,7 +5569,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   __pyx_L11:;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":237
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":237
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)
  *             info.suboffsets = NULL             # <<<<<<<<<<<<<<
@@ -5296,7 +5578,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->suboffsets = NULL;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":238
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":238
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)
  *             info.suboffsets = NULL
  *             info.itemsize = PyArray_ITEMSIZE(self)             # <<<<<<<<<<<<<<
@@ -5305,7 +5587,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->itemsize = PyArray_ITEMSIZE(__pyx_v_self);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":239
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":239
  *             info.suboffsets = NULL
  *             info.itemsize = PyArray_ITEMSIZE(self)
  *             info.readonly = not PyArray_ISWRITEABLE(self)             # <<<<<<<<<<<<<<
@@ -5314,7 +5596,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->readonly = (!(PyArray_ISWRITEABLE(__pyx_v_self) != 0));
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":242
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":242
  * 
  *             cdef int t
  *             cdef char* f = NULL             # <<<<<<<<<<<<<<
@@ -5323,7 +5605,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_f = NULL;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":243
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":243
  *             cdef int t
  *             cdef char* f = NULL
  *             cdef dtype descr = self.descr             # <<<<<<<<<<<<<<
@@ -5335,7 +5617,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_v_descr = ((PyArray_Descr *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":247
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":247
  *             cdef int offset
  * 
  *             cdef bint hasfields = PyDataType_HASFIELDS(descr)             # <<<<<<<<<<<<<<
@@ -5344,7 +5626,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_hasfields = PyDataType_HASFIELDS(__pyx_v_descr);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":249
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":249
  *             cdef bint hasfields = PyDataType_HASFIELDS(descr)
  * 
  *             if not hasfields and not copy_shape:             # <<<<<<<<<<<<<<
@@ -5362,7 +5644,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_L15_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":251
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":251
  *             if not hasfields and not copy_shape:
  *                 # do not call releasebuffer
  *                 info.obj = None             # <<<<<<<<<<<<<<
@@ -5378,7 +5660,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   /*else*/ {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":254
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":254
  *             else:
  *                 # need to call releasebuffer
  *                 info.obj = self             # <<<<<<<<<<<<<<
@@ -5393,7 +5675,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   __pyx_L14:;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":256
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":256
  *                 info.obj = self
  * 
  *             if not hasfields:             # <<<<<<<<<<<<<<
@@ -5403,7 +5685,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = ((!(__pyx_v_hasfields != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":257
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":257
  * 
  *             if not hasfields:
  *                 t = descr.type_num             # <<<<<<<<<<<<<<
@@ -5413,7 +5695,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_4 = __pyx_v_descr->type_num;
     __pyx_v_t = __pyx_t_4;
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":258
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":258
  *             if not hasfields:
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -5433,7 +5715,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     }
     __pyx_L20_next_or:;
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":259
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":259
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):             # <<<<<<<<<<<<<<
@@ -5451,7 +5733,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_L19_bool_binop_done:;
     if (__pyx_t_1) {
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":260
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":260
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -5465,7 +5747,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       {__pyx_filename = __pyx_f[1]; __pyx_lineno = 260; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":277
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":277
  *                 elif t == NPY_CDOUBLE:     f = "Zd"
  *                 elif t == NPY_CLONGDOUBLE: f = "Zg"
  *                 elif t == NPY_OBJECT:      f = "O"             # <<<<<<<<<<<<<<
@@ -5474,7 +5756,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     switch (__pyx_v_t) {
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":261
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":261
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")
  *                 if   t == NPY_BYTE:        f = "b"             # <<<<<<<<<<<<<<
@@ -5485,7 +5767,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_b;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":262
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":262
  *                     raise ValueError(u"Non-native byte order not supported")
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"             # <<<<<<<<<<<<<<
@@ -5496,7 +5778,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_B;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":263
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":263
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  *                 elif t == NPY_SHORT:       f = "h"             # <<<<<<<<<<<<<<
@@ -5507,7 +5789,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_h;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":264
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":264
  *                 elif t == NPY_UBYTE:       f = "B"
  *                 elif t == NPY_SHORT:       f = "h"
  *                 elif t == NPY_USHORT:      f = "H"             # <<<<<<<<<<<<<<
@@ -5518,7 +5800,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_H;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":265
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":265
  *                 elif t == NPY_SHORT:       f = "h"
  *                 elif t == NPY_USHORT:      f = "H"
  *                 elif t == NPY_INT:         f = "i"             # <<<<<<<<<<<<<<
@@ -5529,7 +5811,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_i;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":266
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":266
  *                 elif t == NPY_USHORT:      f = "H"
  *                 elif t == NPY_INT:         f = "i"
  *                 elif t == NPY_UINT:        f = "I"             # <<<<<<<<<<<<<<
@@ -5540,7 +5822,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_I;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":267
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":267
  *                 elif t == NPY_INT:         f = "i"
  *                 elif t == NPY_UINT:        f = "I"
  *                 elif t == NPY_LONG:        f = "l"             # <<<<<<<<<<<<<<
@@ -5551,7 +5833,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_l;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":268
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":268
  *                 elif t == NPY_UINT:        f = "I"
  *                 elif t == NPY_LONG:        f = "l"
  *                 elif t == NPY_ULONG:       f = "L"             # <<<<<<<<<<<<<<
@@ -5562,7 +5844,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_L;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":269
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":269
  *                 elif t == NPY_LONG:        f = "l"
  *                 elif t == NPY_ULONG:       f = "L"
  *                 elif t == NPY_LONGLONG:    f = "q"             # <<<<<<<<<<<<<<
@@ -5573,7 +5855,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_q;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":270
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":270
  *                 elif t == NPY_ULONG:       f = "L"
  *                 elif t == NPY_LONGLONG:    f = "q"
  *                 elif t == NPY_ULONGLONG:   f = "Q"             # <<<<<<<<<<<<<<
@@ -5584,7 +5866,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_Q;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":271
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":271
  *                 elif t == NPY_LONGLONG:    f = "q"
  *                 elif t == NPY_ULONGLONG:   f = "Q"
  *                 elif t == NPY_FLOAT:       f = "f"             # <<<<<<<<<<<<<<
@@ -5595,7 +5877,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_f;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":272
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":272
  *                 elif t == NPY_ULONGLONG:   f = "Q"
  *                 elif t == NPY_FLOAT:       f = "f"
  *                 elif t == NPY_DOUBLE:      f = "d"             # <<<<<<<<<<<<<<
@@ -5606,7 +5888,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_d;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":273
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":273
  *                 elif t == NPY_FLOAT:       f = "f"
  *                 elif t == NPY_DOUBLE:      f = "d"
  *                 elif t == NPY_LONGDOUBLE:  f = "g"             # <<<<<<<<<<<<<<
@@ -5617,7 +5899,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_g;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":274
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":274
  *                 elif t == NPY_DOUBLE:      f = "d"
  *                 elif t == NPY_LONGDOUBLE:  f = "g"
  *                 elif t == NPY_CFLOAT:      f = "Zf"             # <<<<<<<<<<<<<<
@@ -5628,7 +5910,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_Zf;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":275
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":275
  *                 elif t == NPY_LONGDOUBLE:  f = "g"
  *                 elif t == NPY_CFLOAT:      f = "Zf"
  *                 elif t == NPY_CDOUBLE:     f = "Zd"             # <<<<<<<<<<<<<<
@@ -5639,7 +5921,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_Zd;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":276
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":276
  *                 elif t == NPY_CFLOAT:      f = "Zf"
  *                 elif t == NPY_CDOUBLE:     f = "Zd"
  *                 elif t == NPY_CLONGDOUBLE: f = "Zg"             # <<<<<<<<<<<<<<
@@ -5650,7 +5932,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_Zg;
       break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":277
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":277
  *                 elif t == NPY_CDOUBLE:     f = "Zd"
  *                 elif t == NPY_CLONGDOUBLE: f = "Zg"
  *                 elif t == NPY_OBJECT:      f = "O"             # <<<<<<<<<<<<<<
@@ -5662,7 +5944,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       default:
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":279
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":279
  *                 elif t == NPY_OBJECT:      f = "O"
  *                 else:
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)             # <<<<<<<<<<<<<<
@@ -5688,7 +5970,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
     }
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":280
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":280
  *                 else:
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *                 info.format = f             # <<<<<<<<<<<<<<
@@ -5697,7 +5979,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->format = __pyx_v_f;
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":281
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":281
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *                 info.format = f
  *                 return             # <<<<<<<<<<<<<<
@@ -5709,7 +5991,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   /*else*/ {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":283
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":283
  *                 return
  *             else:
  *                 info.format = <char*>stdlib.malloc(_buffer_format_string_len)             # <<<<<<<<<<<<<<
@@ -5718,7 +6000,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->format = ((char *)malloc(255));
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":284
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":284
  *             else:
  *                 info.format = <char*>stdlib.malloc(_buffer_format_string_len)
  *                 info.format[0] = c'^' # Native data types, manual alignment             # <<<<<<<<<<<<<<
@@ -5727,7 +6009,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     (__pyx_v_info->format[0]) = '^';
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":285
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":285
  *                 info.format = <char*>stdlib.malloc(_buffer_format_string_len)
  *                 info.format[0] = c'^' # Native data types, manual alignment
  *                 offset = 0             # <<<<<<<<<<<<<<
@@ -5736,7 +6018,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_offset = 0;
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":286
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":286
  *                 info.format[0] = c'^' # Native data types, manual alignment
  *                 offset = 0
  *                 f = _util_dtypestring(descr, info.format + 1,             # <<<<<<<<<<<<<<
@@ -5746,7 +6028,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_7 = __pyx_f_5numpy__util_dtypestring(__pyx_v_descr, (__pyx_v_info->format + 1), (__pyx_v_info->format + 255), (&__pyx_v_offset)); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 286; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_f = __pyx_t_7;
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":289
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":289
  *                                       info.format + _buffer_format_string_len,
  *                                       &offset)
  *                 f[0] = c'\0' # Terminate format string             # <<<<<<<<<<<<<<
@@ -5756,7 +6038,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     (__pyx_v_f[0]) = '\x00';
   }
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":197
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":197
  *         # experimental exception made for __getbuffer__ and __releasebuffer__
  *         # -- the details of this may change.
  *         def __getbuffer__(ndarray self, Py_buffer* info, int flags):             # <<<<<<<<<<<<<<
@@ -5788,7 +6070,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   return __pyx_r;
 }
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":291
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":291
  *                 f[0] = c'\0' # Terminate format string
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):             # <<<<<<<<<<<<<<
@@ -5812,7 +6094,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__releasebuffer__", 0);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":292
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":292
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):             # <<<<<<<<<<<<<<
@@ -5822,7 +6104,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __pyx_t_1 = (PyArray_HASFIELDS(__pyx_v_self) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":293
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":293
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):
  *                 stdlib.free(info.format)             # <<<<<<<<<<<<<<
@@ -5834,7 +6116,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   }
   __pyx_L3:;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":294
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":294
  *             if PyArray_HASFIELDS(self):
  *                 stdlib.free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -5844,7 +6126,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __pyx_t_1 = (((sizeof(npy_intp)) != (sizeof(Py_ssize_t))) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":295
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":295
  *                 stdlib.free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):
  *                 stdlib.free(info.strides)             # <<<<<<<<<<<<<<
@@ -5856,7 +6138,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   }
   __pyx_L4:;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":291
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":291
  *                 f[0] = c'\0' # Terminate format string
  * 
  *         def __releasebuffer__(ndarray self, Py_buffer* info):             # <<<<<<<<<<<<<<
@@ -5868,7 +6150,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __Pyx_RefNannyFinishContext();
 }
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":771
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":771
  * ctypedef npy_cdouble     complex_t
  * 
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -5885,7 +6167,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew1", 0);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":772
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":772
  * 
  * cdef inline object PyArray_MultiIterNew1(a):
  *     return PyArray_MultiIterNew(1, <void*>a)             # <<<<<<<<<<<<<<
@@ -5899,7 +6181,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":771
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":771
  * ctypedef npy_cdouble     complex_t
  * 
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -5918,7 +6200,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":774
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":774
  *     return PyArray_MultiIterNew(1, <void*>a)
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -5935,7 +6217,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew2", 0);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":775
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":775
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)             # <<<<<<<<<<<<<<
@@ -5949,7 +6231,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":774
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":774
  *     return PyArray_MultiIterNew(1, <void*>a)
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -5968,7 +6250,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":777
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":777
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -5985,7 +6267,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew3", 0);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":778
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":778
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)             # <<<<<<<<<<<<<<
@@ -5999,7 +6281,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":777
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":777
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -6018,7 +6300,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":780
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":780
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -6035,7 +6317,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew4", 0);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":781
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":781
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)             # <<<<<<<<<<<<<<
@@ -6049,7 +6331,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":780
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":780
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -6068,7 +6350,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":783
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":783
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -6085,7 +6367,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew5", 0);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":784
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":784
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)             # <<<<<<<<<<<<<<
@@ -6099,7 +6381,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":783
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":783
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -6118,7 +6400,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":786
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":786
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  * 
  * cdef inline char* _util_dtypestring(dtype descr, char* f, char* end, int* offset) except NULL:             # <<<<<<<<<<<<<<
@@ -6150,7 +6432,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_util_dtypestring", 0);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":793
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":793
  *     cdef int delta_offset
  *     cdef tuple i
  *     cdef int endian_detector = 1             # <<<<<<<<<<<<<<
@@ -6159,7 +6441,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
   __pyx_v_endian_detector = 1;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":794
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":794
  *     cdef tuple i
  *     cdef int endian_detector = 1
  *     cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)             # <<<<<<<<<<<<<<
@@ -6168,7 +6450,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
   __pyx_v_little_endian = ((((char *)(&__pyx_v_endian_detector))[0]) != 0);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":797
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":797
  *     cdef tuple fields
  * 
  *     for childname in descr.names:             # <<<<<<<<<<<<<<
@@ -6191,7 +6473,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_childname, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":798
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":798
  * 
  *     for childname in descr.names:
  *         fields = descr.fields[childname]             # <<<<<<<<<<<<<<
@@ -6208,7 +6490,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_fields, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":799
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":799
  *     for childname in descr.names:
  *         fields = descr.fields[childname]
  *         child, new_offset = fields             # <<<<<<<<<<<<<<
@@ -6247,7 +6529,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_new_offset, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":801
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":801
  *         child, new_offset = fields
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:             # <<<<<<<<<<<<<<
@@ -6264,7 +6546,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = ((((__pyx_v_end - __pyx_v_f) - ((int)__pyx_t_5)) < 15) != 0);
     if (__pyx_t_6) {
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":802
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":802
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")             # <<<<<<<<<<<<<<
@@ -6278,7 +6560,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       {__pyx_filename = __pyx_f[1]; __pyx_lineno = 802; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":804
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":804
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")
  * 
  *         if ((child.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -6298,7 +6580,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     }
     __pyx_L8_next_or:;
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":805
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":805
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):             # <<<<<<<<<<<<<<
@@ -6316,7 +6598,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_L7_bool_binop_done:;
     if (__pyx_t_6) {
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":806
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":806
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):
  *             raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -6330,7 +6612,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       {__pyx_filename = __pyx_f[1]; __pyx_lineno = 806; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":816
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":816
  * 
  *         # Output padding bytes
  *         while offset[0] < new_offset:             # <<<<<<<<<<<<<<
@@ -6346,7 +6628,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       if (!__pyx_t_6) break;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":817
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":817
  *         # Output padding bytes
  *         while offset[0] < new_offset:
  *             f[0] = 120 # "x"; pad byte             # <<<<<<<<<<<<<<
@@ -6355,7 +6637,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       (__pyx_v_f[0]) = 120;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":818
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":818
  *         while offset[0] < new_offset:
  *             f[0] = 120 # "x"; pad byte
  *             f += 1             # <<<<<<<<<<<<<<
@@ -6364,7 +6646,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       __pyx_v_f = (__pyx_v_f + 1);
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":819
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":819
  *             f[0] = 120 # "x"; pad byte
  *             f += 1
  *             offset[0] += 1             # <<<<<<<<<<<<<<
@@ -6375,7 +6657,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       (__pyx_v_offset[__pyx_t_8]) = ((__pyx_v_offset[__pyx_t_8]) + 1);
     }
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":821
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":821
  *             offset[0] += 1
  * 
  *         offset[0] += child.itemsize             # <<<<<<<<<<<<<<
@@ -6385,7 +6667,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_8 = 0;
     (__pyx_v_offset[__pyx_t_8]) = ((__pyx_v_offset[__pyx_t_8]) + __pyx_v_child->elsize);
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":823
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":823
  *         offset[0] += child.itemsize
  * 
  *         if not PyDataType_HASFIELDS(child):             # <<<<<<<<<<<<<<
@@ -6395,7 +6677,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = ((!(PyDataType_HASFIELDS(__pyx_v_child) != 0)) != 0);
     if (__pyx_t_6) {
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":824
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":824
  * 
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num             # <<<<<<<<<<<<<<
@@ -6407,7 +6689,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_XDECREF_SET(__pyx_v_t, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":825
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":825
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num
  *             if end - f < 5:             # <<<<<<<<<<<<<<
@@ -6417,7 +6699,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __pyx_t_6 = (((__pyx_v_end - __pyx_v_f) < 5) != 0);
       if (__pyx_t_6) {
 
-        /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":826
+        /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":826
  *             t = child.type_num
  *             if end - f < 5:
  *                 raise RuntimeError(u"Format string allocated too short.")             # <<<<<<<<<<<<<<
@@ -6431,7 +6713,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         {__pyx_filename = __pyx_f[1]; __pyx_lineno = 826; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":829
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":829
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"             # <<<<<<<<<<<<<<
@@ -6449,7 +6731,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":830
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":830
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"             # <<<<<<<<<<<<<<
@@ -6467,7 +6749,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":831
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":831
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"             # <<<<<<<<<<<<<<
@@ -6485,7 +6767,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":832
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":832
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"             # <<<<<<<<<<<<<<
@@ -6503,7 +6785,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":833
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":833
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"
  *             elif t == NPY_INT:         f[0] = 105 #"i"             # <<<<<<<<<<<<<<
@@ -6521,7 +6803,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":834
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":834
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"
  *             elif t == NPY_INT:         f[0] = 105 #"i"
  *             elif t == NPY_UINT:        f[0] =  73 #"I"             # <<<<<<<<<<<<<<
@@ -6539,7 +6821,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":835
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":835
  *             elif t == NPY_INT:         f[0] = 105 #"i"
  *             elif t == NPY_UINT:        f[0] =  73 #"I"
  *             elif t == NPY_LONG:        f[0] = 108 #"l"             # <<<<<<<<<<<<<<
@@ -6557,7 +6839,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":836
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":836
  *             elif t == NPY_UINT:        f[0] =  73 #"I"
  *             elif t == NPY_LONG:        f[0] = 108 #"l"
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"             # <<<<<<<<<<<<<<
@@ -6575,7 +6857,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":837
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":837
  *             elif t == NPY_LONG:        f[0] = 108 #"l"
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"             # <<<<<<<<<<<<<<
@@ -6593,7 +6875,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":838
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":838
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"             # <<<<<<<<<<<<<<
@@ -6611,7 +6893,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":839
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":839
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"             # <<<<<<<<<<<<<<
@@ -6629,7 +6911,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":840
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":840
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"             # <<<<<<<<<<<<<<
@@ -6647,7 +6929,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":841
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":841
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"             # <<<<<<<<<<<<<<
@@ -6665,7 +6947,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":842
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":842
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf             # <<<<<<<<<<<<<<
@@ -6685,7 +6967,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":843
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":843
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd             # <<<<<<<<<<<<<<
@@ -6705,7 +6987,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":844
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":844
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd
  *             elif t == NPY_CLONGDOUBLE: f[0] = 90; f[1] = 103; f += 1 # Zg             # <<<<<<<<<<<<<<
@@ -6725,7 +7007,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":845
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":845
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd
  *             elif t == NPY_CLONGDOUBLE: f[0] = 90; f[1] = 103; f += 1 # Zg
  *             elif t == NPY_OBJECT:      f[0] = 79 #"O"             # <<<<<<<<<<<<<<
@@ -6744,7 +7026,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       }
       /*else*/ {
 
-        /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":847
+        /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":847
  *             elif t == NPY_OBJECT:      f[0] = 79 #"O"
  *             else:
  *                 raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)             # <<<<<<<<<<<<<<
@@ -6767,7 +7049,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       }
       __pyx_L15:;
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":848
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":848
  *             else:
  *                 raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *             f += 1             # <<<<<<<<<<<<<<
@@ -6779,7 +7061,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     }
     /*else*/ {
 
-      /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":852
+      /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":852
  *             # Cython ignores struct boundary information ("T{...}"),
  *             # so don't output it
  *             f = _util_dtypestring(child, f, end, offset)             # <<<<<<<<<<<<<<
@@ -6791,7 +7073,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     }
     __pyx_L13:;
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":797
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":797
  *     cdef tuple fields
  * 
  *     for childname in descr.names:             # <<<<<<<<<<<<<<
@@ -6801,7 +7083,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":853
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":853
  *             # so don't output it
  *             f = _util_dtypestring(child, f, end, offset)
  *     return f             # <<<<<<<<<<<<<<
@@ -6811,7 +7093,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   __pyx_r = __pyx_v_f;
   goto __pyx_L0;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":786
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":786
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  * 
  * cdef inline char* _util_dtypestring(dtype descr, char* f, char* end, int* offset) except NULL:             # <<<<<<<<<<<<<<
@@ -6836,7 +7118,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   return __pyx_r;
 }
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":969
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":969
  * 
  * 
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -6851,7 +7133,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   int __pyx_t_2;
   __Pyx_RefNannySetupContext("set_array_base", 0);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":971
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":971
  * cdef inline void set_array_base(ndarray arr, object base):
  *      cdef PyObject* baseptr
  *      if base is None:             # <<<<<<<<<<<<<<
@@ -6862,7 +7144,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":972
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":972
  *      cdef PyObject* baseptr
  *      if base is None:
  *          baseptr = NULL             # <<<<<<<<<<<<<<
@@ -6874,7 +7156,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   }
   /*else*/ {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":974
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":974
  *          baseptr = NULL
  *      else:
  *          Py_INCREF(base) # important to do this before decref below!             # <<<<<<<<<<<<<<
@@ -6883,7 +7165,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
     Py_INCREF(__pyx_v_base);
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":975
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":975
  *      else:
  *          Py_INCREF(base) # important to do this before decref below!
  *          baseptr = <PyObject*>base             # <<<<<<<<<<<<<<
@@ -6894,7 +7176,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   }
   __pyx_L3:;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":976
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":976
  *          Py_INCREF(base) # important to do this before decref below!
  *          baseptr = <PyObject*>base
  *      Py_XDECREF(arr.base)             # <<<<<<<<<<<<<<
@@ -6903,7 +7185,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   Py_XDECREF(__pyx_v_arr->base);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":977
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":977
  *          baseptr = <PyObject*>base
  *      Py_XDECREF(arr.base)
  *      arr.base = baseptr             # <<<<<<<<<<<<<<
@@ -6912,7 +7194,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   __pyx_v_arr->base = __pyx_v_baseptr;
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":969
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":969
  * 
  * 
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -6924,7 +7206,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __Pyx_RefNannyFinishContext();
 }
 
-/* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":979
+/* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":979
  *      arr.base = baseptr
  * 
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -6938,7 +7220,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("get_array_base", 0);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":980
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":980
  * 
  * cdef inline object get_array_base(ndarray arr):
  *     if arr.base is NULL:             # <<<<<<<<<<<<<<
@@ -6948,7 +7230,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __pyx_t_1 = ((__pyx_v_arr->base == NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":981
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":981
  * cdef inline object get_array_base(ndarray arr):
  *     if arr.base is NULL:
  *         return None             # <<<<<<<<<<<<<<
@@ -6962,7 +7244,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   }
   /*else*/ {
 
-    /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":983
+    /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":983
  *         return None
  *     else:
  *         return <object>arr.base             # <<<<<<<<<<<<<<
@@ -6973,7 +7255,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
     goto __pyx_L0;
   }
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":979
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":979
  *      arr.base = baseptr
  * 
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -7276,7 +7558,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
   {&__pyx_n_s_object, __pyx_k_object, sizeof(__pyx_k_object), 0, 0, 1, 1},
   {&__pyx_n_s_parent, __pyx_k_parent, sizeof(__pyx_k_parent), 0, 0, 1, 1},
-  {&__pyx_n_s_points, __pyx_k_points, sizeof(__pyx_k_points), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_reverse, __pyx_k_reverse, sizeof(__pyx_k_reverse), 0, 0, 1, 1},
   {&__pyx_n_s_row, __pyx_k_row, sizeof(__pyx_k_row), 0, 0, 1, 1},
@@ -7296,8 +7577,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 static int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 31; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_builtin_min = __Pyx_GetBuiltinName(__pyx_n_s_min); if (!__pyx_builtin_min) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_builtin_sorted = __Pyx_GetBuiltinName(__pyx_n_s_sorted); if (!__pyx_builtin_sorted) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_min = __Pyx_GetBuiltinName(__pyx_n_s_min); if (!__pyx_builtin_min) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_sorted = __Pyx_GetBuiltinName(__pyx_n_s_sorted); if (!__pyx_builtin_sorted) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 802; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
@@ -7320,18 +7601,18 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_slice_);
   __Pyx_GIVEREF(__pyx_slice_);
 
-  /* "hdbscan/_hdbscan_tree.pyx":224
+  /* "hdbscan/_hdbscan_tree.pyx":244
  *     # current implementation above, so don't change that ... or
  *     # if you do, change this accordingly!
  *     node_list = sorted(stability.keys(), reverse=True)[:-1] # (exclude root)             # <<<<<<<<<<<<<<
  *     cluster_tree = tree[tree['child_size'] > 1]
  *     is_cluster = {cluster:True for cluster in node_list}
  */
-  __pyx_slice__2 = PySlice_New(Py_None, __pyx_int_neg_1, Py_None); if (unlikely(!__pyx_slice__2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 224; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__2 = PySlice_New(Py_None, __pyx_int_neg_1, Py_None); if (unlikely(!__pyx_slice__2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__2);
   __Pyx_GIVEREF(__pyx_slice__2);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":218
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":218
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_C_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not C contiguous")             # <<<<<<<<<<<<<<
@@ -7342,7 +7623,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":222
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":222
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_F_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not Fortran contiguous")             # <<<<<<<<<<<<<<
@@ -7353,7 +7634,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":260
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":260
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -7364,7 +7645,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":802
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":802
  * 
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")             # <<<<<<<<<<<<<<
@@ -7375,7 +7656,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":806
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":806
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):
  *             raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -7386,7 +7667,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":826
+  /* "../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":826
  *             t = child.type_num
  *             if end - f < 5:
  *                 raise RuntimeError(u"Format string allocated too short.")             # <<<<<<<<<<<<<<
@@ -8431,31 +8712,6 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
     return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
 }
 
-static void __Pyx_RaiseArgtupleInvalid(
-    const char* func_name,
-    int exact,
-    Py_ssize_t num_min,
-    Py_ssize_t num_max,
-    Py_ssize_t num_found)
-{
-    Py_ssize_t num_expected;
-    const char *more_or_less;
-    if (num_found < num_min) {
-        num_expected = num_min;
-        more_or_less = "at least";
-    } else {
-        num_expected = num_max;
-        more_or_less = "at most";
-    }
-    if (exact) {
-        more_or_less = "exactly";
-    }
-    PyErr_Format(PyExc_TypeError,
-                 "%.200s() takes %.8s %" CYTHON_FORMAT_SSIZE_T "d positional argument%.1s (%" CYTHON_FORMAT_SSIZE_T "d given)",
-                 func_name, more_or_less, num_expected,
-                 (num_expected == 1) ? "" : "s", num_found);
-}
-
 static void __Pyx_RaiseDoubleKeywordsError(
     const char* func_name,
     PyObject* kw_name)
@@ -8568,6 +8824,31 @@ invalid_keyword:
     #endif
 bad:
     return -1;
+}
+
+static void __Pyx_RaiseArgtupleInvalid(
+    const char* func_name,
+    int exact,
+    Py_ssize_t num_min,
+    Py_ssize_t num_max,
+    Py_ssize_t num_found)
+{
+    Py_ssize_t num_expected;
+    const char *more_or_less;
+    if (num_found < num_min) {
+        num_expected = num_min;
+        more_or_less = "at least";
+    } else {
+        num_expected = num_max;
+        more_or_less = "at most";
+    }
+    if (exact) {
+        more_or_less = "exactly";
+    }
+    PyErr_Format(PyExc_TypeError,
+                 "%.200s() takes %.8s %" CYTHON_FORMAT_SSIZE_T "d positional argument%.1s (%" CYTHON_FORMAT_SSIZE_T "d given)",
+                 func_name, more_or_less, num_expected,
+                 (num_expected == 1) ? "" : "s", num_found);
 }
 
 static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,

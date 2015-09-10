@@ -57,11 +57,10 @@ def _hdbscan_small(X, min_cluster_size=5, min_samples=None,
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
     
     single_linkage_tree = label(min_spanning_tree)
-    condensed_tree, new_points = condense_tree(single_linkage_tree, 
-                                               get_points(single_linkage_tree),
+    condensed_tree = condense_tree(single_linkage_tree, 
                                                min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
-    cluster_list = get_clusters(condensed_tree, stability_dict, new_points)
+    cluster_list = get_clusters(condensed_tree, stability_dict)
     
     labels = -1 * np.ones(X.shape[0], dtype=int)
     for index, cluster in enumerate(cluster_list):
@@ -91,11 +90,10 @@ def _hdbscan_small_kdtree(X, min_cluster_size=5, min_samples=None,
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
     
     single_linkage_tree = label(min_spanning_tree)
-    condensed_tree, new_points = condense_tree(single_linkage_tree, 
-                                               get_points(single_linkage_tree),
+    condensed_tree = condense_tree(single_linkage_tree, 
                                                min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
-    cluster_list = get_clusters(condensed_tree, stability_dict, new_points)
+    cluster_list = get_clusters(condensed_tree, stability_dict)
     
     labels = -1 * np.ones(X.shape[0], dtype=int)
     for index, cluster in enumerate(cluster_list):
@@ -114,11 +112,10 @@ def _hdbscan_large_kdtree(X, min_cluster_size=5, min_samples=None,
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
     
     single_linkage_tree = label(min_spanning_tree)
-    condensed_tree, new_points = condense_tree(single_linkage_tree, 
-                                               get_points(single_linkage_tree),
+    condensed_tree = condense_tree(single_linkage_tree,
                                                min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
-    cluster_list = get_clusters(condensed_tree, stability_dict, new_points)
+    cluster_list = get_clusters(condensed_tree, stability_dict)
     
     labels = -1 * np.ones(X.shape[0], dtype=int)
     for index, cluster in enumerate(cluster_list):
@@ -135,11 +132,10 @@ def _hdbscan_large_kdtree_fastcluster(X, min_cluster_size=5, min_samples=None,
                                                             p, min_samples)
 
     single_linkage_tree = single(mutual_reachability_)
-    condensed_tree, new_points = condense_tree(single_linkage_tree, 
-                                               get_points(single_linkage_tree),
-                                               min_cluster_size)
+    condensed_tree = condense_tree(single_linkage_tree,
+                                   min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
-    cluster_list = get_clusters(condensed_tree, stability_dict, new_points)
+    cluster_list = get_clusters(condensed_tree, stability_dict)
     
     labels = -1 * np.ones(X.shape[0], dtype=int)
     for index, cluster in enumerate(cluster_list):
