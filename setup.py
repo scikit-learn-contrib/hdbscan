@@ -8,13 +8,17 @@ except ImportError as e:
     warnings.warn(e.message)
     from setuptools import setup, Extension
     from setuptools.command.build_ext import build_ext
+import numpy
 
 _hdbscan_tree = Extension('hdbscan._hdbscan_tree',
-                          sources=['hdbscan/_hdbscan_tree.pyx'])
+                          sources=['hdbscan/_hdbscan_tree.pyx'],
+                          include_dirs=[numpy.get_include()])
 _hdbscan_linkage = Extension('hdbscan._hdbscan_linkage',
-                             sources=['hdbscan/_hdbscan_linkage.pyx'])
+                             sources=['hdbscan/_hdbscan_linkage.pyx'],
+                             include_dirs=[numpy.get_include()])
 _hdbscan_reachability = Extension('hdbscan._hdbscan_reachability',
-                                  sources=['hdbscan/_hdbscan_reachability.pyx'])
+                                  sources=['hdbscan/_hdbscan_reachability.pyx'],
+                                  include_dirs=[numpy.get_include()])
 
 def readme():
     with open('README.rst') as readme_file:
