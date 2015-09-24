@@ -392,6 +392,12 @@ class SingleLinkageTree (object):
         vary_line_width : boolean, optional
             Draw downward branches of the dendrogram with line thickness that 
             varies depending on the size of the cluster.
+
+        Returns
+        -------
+        axis : matplotlib axis
+               The axis on which the dendrogram plot has been rendered.
+
         """
         dendrogram_data = dendrogram(self._linkage, p=p, truncate_mode=truncate_mode, no_plot=True)
         X = dendrogram_data['icoord']
@@ -501,14 +507,117 @@ class SingleLinkageTree (object):
 
 class MinimumSpanningTree (object):
 
-    def __init__(self, mst):
+    def __init__(self, mst, data):
         self._mst = mst
+        self._data = data
 
-    def plot(self):
-        pass
+    def plot(self, axis=None, node_size=10, node_color='k', 
+             node_alpha=0.5, edge_alpha=0.25, edge_cmap='Reds_r', 
+             edge_linewidth=1):
+        """Plot the minimum spanning tree (as projected into 2D by t-SNE if required).
+
+        Parameters
+        ----------
+
+        axis : matplotlib axis, optional
+               The axis to render the plot to
+
+        node_size : int, optional
+                The size of nodes in the plot (default 10).
+
+        node_color : matplotlib color spec, optional
+                The color to render nodes (default black).
+
+        node_alpha : float, optional
+                The alpha value (between 0 and 1) to render nodes with
+                (default 0.5).
+
+        edge_cmap : matplotlib colormap, optional
+                The colormap to color edges by (varying color by edge 
+                    weight/distance). Can be a cmap object or a string
+                    recognised by matplotlib. (default `Reds_r`)
+
+        edge_alpha : float, optional
+                The alpha value (between 0 and 1) to render edges with
+                (default 0.25).
+
+        edge_linewidth : float, optional
+                The linewidth to use for rendering edges (default 1).
+
+        Returns
+        -------
+
+        axis : matplotlib axis
+                The axis used the render the plot.
+        """
+        try:
+            import matplotlib.pyplot as plt
+        except ImportError:
+            raise ImportError('You must install the matplotlib library to plot the single linkage tree.')
+
+        if axis is None:
+            axis = plt.gca()
+
+        if self._data.shape[1] > 2:
+            # Get a 2D projection; if we have a lot of dimensions use PCA first
+            if self._data.shape[1] > 32:
+                # Use PCA to get down to 32 dimension
+                data_for_projection = PCA(n_components=32).fit_transform(self._data)
+            else:
+                data_for_projection = self._data.copy()
+
+            projection = TSNE().fit_transform(data_for_projection)
+        else:
+            projection = self._data.copy()
+
+        line_coords = projection[self._mst[:,:2].astype(int)]
+        line_collection = LineCollection(line_coords, linewidth=edge_linewidths, 
+                                         cmap=edge_cmap, alpha=edge_alpha)
+        line_collection.set_array(self._mst[:,2].T)
+
+        axis.add_artist(line_collection)
+        axis.scatter(projection.T[0], projection.T[1], c=node_color, alpha=node_alpha)
+        axis.set_xticks([])
+        axis.set_yticks([])
+
+        return axis
 
     def to_pandas(self):
-        pass
+        """Return a Pandas dataframe of the minumum spanning tree.
+
+        Each row is an edge in the tree; the columns are `from`,
+        `to`, and `distance` giving the two vertices of the edge
+        which are indices into the dataset, and the distance
+        between those datapoints.
+        """
+        try:
+            from pandas import DataFrame
+        except ImportError:
+            raise ImportError('You must have pandas installed to export pandas DataFrames')
+
+        result = Dataframe({'from' : self._mst.T[0].astype(int), 
+                            'to' : self._mst.T[1].astype(int),
+                            'distance' : self._mst.T[2])
+        return result
 
     def to_networkx(self):
-        pass
+        """Return a NetworkX Graph object representing the minimum spanning tree.
+
+        Edge weights in the graph are the distance between the nodes they connect.
+
+        Nodes have a `data` attribute attached giving the data vector of the
+        associated point.
+        """
+       try:
+            from networkx import Graph, set_node_attributes
+        except ImportError:
+            raise ImportError('You must have networkx installed to export networkx graphs')
+
+        result = Graph()
+        for row in self._mst:
+            result.add_edge(row[0], row[1], weight=row[2])
+
+        data_dict = {index:tuple(row) for index, row in enumerate(self._data)}
+        set_node_attributes(result, 'data', data_dict)
+
+        return result
