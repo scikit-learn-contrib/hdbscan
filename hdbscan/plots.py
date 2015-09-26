@@ -597,7 +597,7 @@ class MinimumSpanningTree (object):
 
         result = Dataframe({'from' : self._mst.T[0].astype(int), 
                             'to' : self._mst.T[1].astype(int),
-                            'distance' : self._mst.T[2])
+                            'distance' : self._mst.T[2]})
         return result
 
     def to_networkx(self):
