@@ -608,7 +608,7 @@ class MinimumSpanningTree (object):
         Nodes have a `data` attribute attached giving the data vector of the
         associated point.
         """
-       try:
+        try:
             from networkx import Graph, set_node_attributes
         except ImportError:
             raise ImportError('You must have networkx installed to export networkx graphs')
