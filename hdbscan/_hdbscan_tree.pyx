@@ -148,10 +148,10 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                 ignore[sub_node] = True
                 
     return np.array(result_list, dtype=[
-                                        ('parent', int),
-                                        ('child', int),
+                                        ('parent', np.int64),
+                                        ('child', np.int64),
                                         ('lambda', float),
-                                        ('child_size', int)
+                                        ('child_size', np.int64)
                                        ])
 
 
