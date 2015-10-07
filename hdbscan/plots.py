@@ -597,7 +597,7 @@ class MinimumSpanningTree (object):
 
         result = Dataframe({'from' : self._mst.T[0].astype(int), 
                             'to' : self._mst.T[1].astype(int),
-                            'distance' : self._mst.T[2])
+                            'distance' : self._mst.T[2]})
         return result
 
     def to_networkx(self):
@@ -608,7 +608,7 @@ class MinimumSpanningTree (object):
         Nodes have a `data` attribute attached giving the data vector of the
         associated point.
         """
-       try:
+        try:
             from networkx import Graph, set_node_attributes
         except ImportError:
             raise ImportError('You must have networkx installed to export networkx graphs')
