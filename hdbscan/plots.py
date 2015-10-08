@@ -416,7 +416,7 @@ class SingleLinkageTree (object):
                            _line_width(y[1], self._linkage))
                           for y in Y]
         else:
-            linewidths = [1.0] * len(Y)
+            linewidths = [(1.0, 1.0)] * len(Y)
 
         for x, y, lw in zip(X, Y, linewidths):
             left_x = x[:2]
