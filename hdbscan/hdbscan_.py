@@ -224,14 +224,11 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2,
         else:
             raise TypeError('Unknown algorithm type %s specified' % algorithm)
 
-    if issparse(X): # We can't do much with sparse matrices ...
+    if issparse(X) or metric not in KDTree.valid_metrics: # We can't do much with sparse matrices ...
         return _hdbscan_small(X, min_cluster_size, min_samples, metric, p)
     elif X.shape[0] < 4000:
-        if X.shape[1] < 8:
-            return _hdbscan_small_kdtree(X, min_cluster_size, 
+        return _hdbscan_small_kdtree(X, min_cluster_size, 
                                          min_samples, metric, p)
-        else:
-            return _hdbscan_small(X, min_cluster_size, min_samples, metric, p)
     elif HAVE_FASTCLUSTER:
         return _hdbscan_large_kdtree_fastcluster(X, min_cluster_size, 
                                                  min_samples, metric, p)
