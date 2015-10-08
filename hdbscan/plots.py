@@ -185,7 +185,7 @@ class CondensedTree (object):
         return [cluster for cluster in is_cluster if is_cluster[cluster]]
             
     def plot(self, leaf_separation=1, cmap='Blues', select_clusters=False, 
-             axis=None, colorbar=True, log_size=False):
+             label_clusters=False, axis=None, colorbar=True, log_size=False):
         """Use matplotlib to plot an 'icicle plot' dendrogram of the condensed tree.
 
         Effectively this is a dendrogram where the width of each cluster bar is
@@ -208,6 +208,10 @@ class CondensedTree (object):
                           Whether to draw ovals highlighting which cluster
                           bar represent the clusters that were selected by
                           HDBSCAN as the final clusters. (default False)
+
+        label_clusters : boolean, optional
+                         If select_clusters is True then this determines
+                         whether to draw text labels on the clusters.
 
         axis : matplotlib axis or None, optional
                The matplotlib axis to render to. If None then a new axis
@@ -266,7 +270,7 @@ class CondensedTree (object):
 
             chosen_clusters = self._select_clusters()
             
-            for c in chosen_clusters:
+            for i, c in enumerate(chosen_clusters):
                 c_bounds = plot_data['cluster_bounds'][c]
                 width = (c_bounds[CB_RIGHT] - c_bounds[CB_LEFT])
                 height = (c_bounds[CB_TOP] - c_bounds[CB_BOTTOM])
@@ -283,6 +287,12 @@ class CondensedTree (object):
                     edgecolor='r',
                     linewidth=2
                 )
+
+                if label_clusters:
+                    axis.annotate(str(i), xy=center, 
+                        xytext=(center[0]-4.0*width, center[1]+0.65*height),
+                        horizontalalignment='left',
+                        verticalalignment='bottom')
 
                 axis.add_artist(box)
                 
