@@ -48,14 +48,14 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
 
 cdef void select_distances(
     np.ndarray[np.double_t, ndim=1] pdist_matrix,
-    np.ndarray[np.int_t, ndim=1] col_select,
+    np.ndarray[np.int64_t, ndim=1] col_select,
     np.ndarray[np.int64_t, ndim=1] current_labels,
     np.ndarray[np.double_t, ndim=1] result_buffer,
     long long row_num,
     long long dim
 ):
 
-    cdef np.ndarray[np.int_t, ndim=1] col_selection
+    cdef np.ndarray[np.int64_t, ndim=1] col_selection
 
     cdef long long i
     cdef long long n_labels = len(current_labels)
@@ -86,7 +86,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_pdist(
     cdef np.ndarray[np.double_t, ndim=1] current_distances
     cdef np.ndarray[np.double_t, ndim=1] left
     cdef np.ndarray[np.double_t, ndim=1] right
-    cdef np.ndarray[np.int_t, ndim=1] col_select
+    cdef np.ndarray[np.int64_t, ndim=1] col_select
     cdef np.ndarray[np.double_t, ndim=2] result
     
     cdef np.ndarray label_filter
