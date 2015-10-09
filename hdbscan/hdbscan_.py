@@ -156,7 +156,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2,
         ``metric='precomputed'``.
         
     min_cluster_size : int optional
-        The minimum number of samples in a groupo for that group to be 
+        The minimum number of samples in a group for that group to be
         considered a cluster; groupings smaller than this size will be left
         as noise.
 
@@ -249,7 +249,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     Parameters
     ----------
     min_cluster_size : int, optional
-        The minumum size of clusters; single linkage splits that contain
+        The minimum size of clusters; single linkage splits that contain
         fewer points than this will be considered points "falling out" of a
         cluster rather than a cluster splitting into two new clusters.
         
@@ -271,6 +271,20 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     labels_ : array, shape = [n_samples]
         Cluster labels for each point in the dataset given to fit().
         Noisy samples are given the label -1.
+
+    condensed_tree_ : CondensedTree object
+        The condensed tree produced by HDBSCAN. The object has methods
+        for converting to pandas, networkx, and plotting.
+
+    single_linkage_tree_ : SingleLinkageTree object
+        The single linkage tree produced by HDBSCAN. The object has methods
+        for converting to pandas, networkx, and plotting.
+
+    minimum_spanning_tree_ : MinimumSpanningTree object
+        The minimum spanning tree of the mutual reachability graph generated
+        by HDBSCAN. Note that for efficiency on large datasets HDBSCAN may
+        default to an algorithm that doesn't generate the minimum spanning
+        tree.
         
     References
     ----------
@@ -328,7 +342,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         return self.labels_
 
     @property
-    def condensed_tree(self):
+    def condensed_tree_(self):
         if self._condensed_tree is not None:
             return CondensedTree(self._condensed_tree)
         else:
@@ -336,7 +350,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             return None
 
     @property
-    def single_linkage_tree(self):
+    def single_linkage_tree_(self):
         if self._condensed_tree is not None:
             return SingleLinkageTree(self._single_linkage_tree)
         else:
@@ -344,7 +358,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             return None
 
     @property
-    def minimum_spanning_tree(self):
+    def minimum_spanning_tree_(self):
         if self._min_spanning_tree is not None:
             return MinimumSpanningTree(self._min_spanning_tree)
         else:
