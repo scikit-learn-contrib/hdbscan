@@ -8,7 +8,6 @@ HDBSCAN: Hierarchical Density-Based Spatial Clustering
 #         John Healy <jchealy@gmail.com>
 #
 # License: BSD 3 clause
-import warnings
 
 import numpy as np
 
