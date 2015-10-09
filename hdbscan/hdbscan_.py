@@ -17,6 +17,7 @@ from sklearn.metrics import pairwise_distances
 from scipy.spatial.distance import pdist, squareform
 from scipy.sparse import issparse
 from sklearn.neighbors import KDTree
+from warnings import warn
 try:
     from sklearn.utils import check_array
 except ImportError:
@@ -331,6 +332,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         if self._condensed_tree is not None:
             return CondensedTree(self._condensed_tree)
         else:
+            warn('No condensed tree was generated; try running fit first.')
             return None
 
     @property
@@ -338,6 +340,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         if self._condensed_tree is not None:
             return SingleLinkageTree(self._single_linkage_tree)
         else:
+            warn('No single linkage tree was generated; try running fit first.')
             return None
 
     @property
@@ -345,4 +348,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         if self._min_spanning_tree is not None:
             return MinimumSpanningTree(self._min_spanning_tree)
         else:
+            warn('No minimum spanning tree was generated. \n'
+                 'This may be due to optimized algorithm variations that skip\n'
+                 'explicit generation of the spanning tree.')
             return None
