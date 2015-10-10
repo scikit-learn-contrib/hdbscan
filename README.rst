@@ -19,7 +19,7 @@ How to use HDBSCAN
 ------------------
 
 The hdbscan package inherits from sklearn classes, and thus drops in neatly
-next to other sklearn clusterers with an indentical calling API. Similarly it
+next to other sklearn clusterers with an identical calling API. Similarly it
 supports input in a variety of formats: an array (or pandas dataframe, or
 sparse matrix) of shape `(num_samples x num_features)`; an array (or sparse matrix)
 giving a distance matrix between samples.
@@ -30,6 +30,10 @@ giving a distance matrix between samples.
     
     clusterer = hdbscan.HDBSCAN(min_cluster_size=10)
     cluster_labels = clusterer.fit_predict(data)
+
+Note that clustering larger datasets will require significant memory
+(as with any algorithm that needs all pairwise distances). Support for
+low memory/better scaling is planned but not yet implemented.
 
 ----------
 Installing
