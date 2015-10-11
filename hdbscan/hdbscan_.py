@@ -13,33 +13,36 @@ import numpy as np
 
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import pairwise_distances
-from scipy.spatial.distance import pdist, squareform
+# from scipy.spatial.distance import pdist, squareform
 from scipy.sparse import issparse
 from sklearn.neighbors import KDTree
 from warnings import warn
+
 try:
     from sklearn.utils import check_array
 except ImportError:
     from sklearn.utils import check_arrays
+
     check_array = check_arrays
 
 from ._hdbscan_linkage import single_linkage, mst_linkage_core, mst_linkage_core_pdist, label
 from ._hdbscan_tree import (get_points,
-                            condense_tree, 
-                            compute_stability, 
+                            condense_tree,
+                            compute_stability,
                             get_clusters)
 from ._hdbscan_reachability import kdtree_pdist_mutual_reachability, kdtree_mutual_reachability, mutual_reachability
 from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 
 try:
     from fastcluster import single
+
     HAVE_FASTCLUSTER = True
 except ImportError:
     HAVE_FASTCLUSTER = False
 
-def _hdbscan_small(X, min_cluster_size=5, min_samples=None, 
-                   metric='minkowski', p=2):
 
+def _hdbscan_small(X, min_cluster_size=5, min_samples=None,
+                   metric='minkowski', p=2):
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
@@ -55,21 +58,21 @@ def _hdbscan_small(X, min_cluster_size=5, min_samples=None,
 
     min_spanning_tree = mst_linkage_core(mutual_reachability_)
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
-    
+
     single_linkage_tree = label(min_spanning_tree)
-    condensed_tree = condense_tree(single_linkage_tree, 
-                                               min_cluster_size)
+    condensed_tree = condense_tree(single_linkage_tree,
+                                   min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
     cluster_list = get_clusters(condensed_tree, stability_dict)
-    
+
     labels = -1 * np.ones(X.shape[0], dtype=int)
     for index, cluster in enumerate(cluster_list):
         labels[cluster] = index
     return labels, condensed_tree, single_linkage_tree, min_spanning_tree
 
-def _hdbscan_small_kdtree(X, min_cluster_size=5, min_samples=None, 
-                          metric='minkowski', p=2):
 
+def _hdbscan_small_kdtree(X, min_cluster_size=5, min_samples=None,
+                          metric='minkowski', p=2):
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
@@ -80,7 +83,7 @@ def _hdbscan_small_kdtree(X, min_cluster_size=5, min_samples=None,
     else:
         distance_matrix = pairwise_distances(X, metric=metric)
 
-    mutual_reachability_ = kdtree_mutual_reachability(X, 
+    mutual_reachability_ = kdtree_mutual_reachability(X,
                                                       distance_matrix,
                                                       metric,
                                                       p=p,
@@ -88,21 +91,21 @@ def _hdbscan_small_kdtree(X, min_cluster_size=5, min_samples=None,
 
     min_spanning_tree = mst_linkage_core(mutual_reachability_)
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
-    
+
     single_linkage_tree = label(min_spanning_tree)
-    condensed_tree = condense_tree(single_linkage_tree, 
-                                               min_cluster_size)
+    condensed_tree = condense_tree(single_linkage_tree,
+                                   min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
     cluster_list = get_clusters(condensed_tree, stability_dict)
-    
+
     labels = -1 * np.ones(X.shape[0], dtype=int)
     for index, cluster in enumerate(cluster_list):
         labels[cluster] = index
     return labels, condensed_tree, single_linkage_tree, min_spanning_tree
 
 
-def _hdbscan_large_kdtree(X, min_cluster_size=5, min_samples=None, 
-                   metric='minkowski', p=2):
+def _hdbscan_large_kdtree(X, min_cluster_size=5, min_samples=None,
+                          metric='minkowski', p=2):
     if p is None:
         p = 2
 
@@ -110,25 +113,25 @@ def _hdbscan_large_kdtree(X, min_cluster_size=5, min_samples=None,
 
     min_spanning_tree = mst_linkage_core_pdist(mutual_reachability_)
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
-    
+
     single_linkage_tree = label(min_spanning_tree)
     condensed_tree = condense_tree(single_linkage_tree,
-                                               min_cluster_size)
+                                   min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
     cluster_list = get_clusters(condensed_tree, stability_dict)
-    
+
     labels = -1 * np.ones(X.shape[0], dtype=int)
     for index, cluster in enumerate(cluster_list):
         labels[cluster] = index
     return labels, condensed_tree, single_linkage_tree, min_spanning_tree
 
 
-def _hdbscan_large_kdtree_fastcluster(X, min_cluster_size=5, min_samples=None, 
+def _hdbscan_large_kdtree_fastcluster(X, min_cluster_size=5, min_samples=None,
                                       metric='minkowski', p=2):
     if p is None:
         p = 2
 
-    mutual_reachability_ = kdtree_pdist_mutual_reachability(X, metric, 
+    mutual_reachability_ = kdtree_pdist_mutual_reachability(X, metric,
                                                             p, min_samples)
 
     single_linkage_tree = single(mutual_reachability_)
@@ -136,7 +139,7 @@ def _hdbscan_large_kdtree_fastcluster(X, min_cluster_size=5, min_samples=None,
                                    min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
     cluster_list = get_clusters(condensed_tree, stability_dict)
-    
+
     labels = -1 * np.ones(X.shape[0], dtype=int)
     for index, cluster in enumerate(cluster_list):
         labels[cluster] = index
@@ -206,35 +209,36 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2,
 
     if min_samples <= 0 or min_cluster_size <= 0:
         raise ValueError('Min samples and Min cluster size must be positive integers')
-    
+
     X = check_array(X, accept_sparse='csr')
 
     if algorithm != 'best':
         if algorithm == 'small':
             return _hdbscan_small(X, min_cluster_size, min_samples, metric, p)
         elif algorithm == 'small_kdtree':
-            return _hdbscan_small_kdtree(X, min_cluster_size, 
+            return _hdbscan_small_kdtree(X, min_cluster_size,
                                          min_samples, metric, p)
         elif algorithm == 'large_kdtree':
-            return _hdbscan_large_kdtree(X, min_cluster_size, 
+            return _hdbscan_large_kdtree(X, min_cluster_size,
                                          min_samples, metric, p)
         elif algorithm == 'large_kdtree_fastcluster':
-            return _hdbscan_large_kdtree_fastcluster(X, min_cluster_size, 
+            return _hdbscan_large_kdtree_fastcluster(X, min_cluster_size,
                                                      min_samples, metric, p)
         else:
             raise TypeError('Unknown algorithm type %s specified' % algorithm)
 
-    if issparse(X) or metric not in KDTree.valid_metrics: # We can't do much with sparse matrices ...
+    if issparse(X) or metric not in KDTree.valid_metrics:  # We can't do much with sparse matrices ...
         return _hdbscan_small(X, min_cluster_size, min_samples, metric, p)
     elif X.shape[0] < 4000:
-        return _hdbscan_small_kdtree(X, min_cluster_size, 
-                                         min_samples, metric, p)
+        return _hdbscan_small_kdtree(X, min_cluster_size,
+                                     min_samples, metric, p)
     elif HAVE_FASTCLUSTER:
-        return _hdbscan_large_kdtree_fastcluster(X, min_cluster_size, 
+        return _hdbscan_large_kdtree_fastcluster(X, min_cluster_size,
                                                  min_samples, metric, p)
     else:
-        return _hdbscan_large_kdtree(X, min_cluster_size, 
+        return _hdbscan_large_kdtree(X, min_cluster_size,
                                      min_samples, metric, p)
+
 
 class HDBSCAN(BaseEstimator, ClusterMixin):
     """Perform HDBSCAN clustering from vector array or distance matrix.
@@ -292,19 +296,20 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     In: Advances in Knowledge Discovery and Data Mining, Springer, pp 160-172.
     2013
     """
-    
-    def __init__(self, min_cluster_size=5, min_samples=None, 
+
+    def __init__(self, min_cluster_size=5, min_samples=None,
                  metric='euclidean', p=None):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
-            
+
         self.metric = metric
         self.p = p
 
         self._condensed_tree = None
         self._single_linkage_tree = None
         self._min_spanning_tree = None
-        
+        self._raw_data = None
+
     def fit(self, X, y=None):
         """Perform HDBSCAN clustering from features or distance matrix.
 
@@ -316,12 +321,14 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             ``metric='precomputed'``.
         """
         X = check_array(X, accept_sparse='csr')
-        (self.labels_, 
-         self._condensed_tree, 
+        if self.metric != 'precomputed':
+            self._raw_data = X
+        (self.labels_,
+         self._condensed_tree,
          self._single_linkage_tree,
          self._min_spanning_tree) = hdbscan(X, **self.get_params())
         return self
-        
+
     def fit_predict(self, X, y=None):
         """Performs clustering on X and returns cluster labels.
 
@@ -359,7 +366,13 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     @property
     def minimum_spanning_tree_(self):
         if self._min_spanning_tree is not None:
-            return MinimumSpanningTree(self._min_spanning_tree)
+            if self._raw_data is not None:
+                return MinimumSpanningTree(self._min_spanning_tree, self._raw_data)
+            else:
+                warn(
+                    'No raw data is available; this may be due to using a precomputed metric matrix.'
+                    'No minimum spanning tree will be provided without raw data.')
+                return None
         else:
             warn('No minimum spanning tree was generated. \n'
                  'This may be due to optimized algorithm variations that skip\n'

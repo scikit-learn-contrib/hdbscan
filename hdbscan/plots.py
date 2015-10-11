@@ -10,6 +10,8 @@ hdbscan.plots: Use matplotlib to display plots of internal
 import numpy as np
 
 from scipy.cluster.hierarchy import dendrogram
+from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
 from ._hdbscan_tree import compute_stability
 
 CB_LEFT = 0
@@ -562,8 +564,9 @@ class MinimumSpanningTree (object):
         """
         try:
             import matplotlib.pyplot as plt
+            from matplotlib.collections import LineCollection
         except ImportError:
-            raise ImportError('You must install the matplotlib library to plot the single linkage tree.')
+            raise ImportError('You must install the matplotlib library to plot the minimum spanning tree.')
 
         if axis is None:
             axis = plt.gca()
@@ -581,7 +584,7 @@ class MinimumSpanningTree (object):
             projection = self._data.copy()
 
         line_coords = projection[self._mst[:,:2].astype(int)]
-        line_collection = LineCollection(line_coords, linewidth=edge_linewidths, 
+        line_collection = LineCollection(line_coords, linewidth=edge_linewidth,
                                          cmap=edge_cmap, alpha=edge_alpha)
         line_collection.set_array(self._mst[:,2].T)
 
@@ -605,7 +608,7 @@ class MinimumSpanningTree (object):
         except ImportError:
             raise ImportError('You must have pandas installed to export pandas DataFrames')
 
-        result = Dataframe({'from' : self._mst.T[0].astype(int), 
+        result = DataFrame({'from' : self._mst.T[0].astype(int),
                             'to' : self._mst.T[1].astype(int),
                             'distance' : self._mst.T[2]})
         return result
