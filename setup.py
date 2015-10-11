@@ -8,6 +8,8 @@ except ImportError as e:
     warnings.warn(e.message)
     from setuptools import setup, Extension
     from setuptools.command.build_ext import build_ext
+    HAVE_CYTHON = False
+
 import numpy
 
 _hdbscan_tree = Extension('hdbscan._hdbscan_tree',
