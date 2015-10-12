@@ -283,6 +283,12 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         Cluster labels for each point in the dataset given to fit().
         Noisy samples are given the label -1.
 
+    probabilities_ : array, shape = [n_samples]
+        The strength with which each sample is a member of its assigned
+        cluster. Noise points have probability zero; points in clusters
+        have values assigned proportional to the degree that they
+        persist as part of the cluster.
+
     condensed_tree_ : CondensedTree object
         The condensed tree produced by HDBSCAN. The object has methods
         for converting to pandas, networkx, and plotting.
