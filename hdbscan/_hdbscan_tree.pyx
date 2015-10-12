@@ -197,7 +197,7 @@ cdef list bfs_from_cluster_tree(np.ndarray tree, long long bfs_root):
 
     return result
 
-cdef list get_cluster_points(np.ndarray tree, long long cluster, long long num_points):
+cdef tuple get_cluster_points(np.ndarray tree, long long cluster, long long num_points):
 
     cdef list result
     cdef list to_process
@@ -220,7 +220,10 @@ cdef list get_cluster_points(np.ndarray tree, long long cluster, long long num_p
         to_process = next_to_process
         next_to_process = []
 
-    return result
+    max_cluster_lambda = tree['lambda'][result].max()
+    prob = tree['lambda'][result] / max_cluster_lambda
+
+    return result, prob
 
 cpdef list get_clusters(np.ndarray tree, dict stability):
     """

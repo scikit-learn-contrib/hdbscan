@@ -66,9 +66,11 @@ def _hdbscan_small(X, min_cluster_size=5, min_samples=None,
     cluster_list = get_clusters(condensed_tree, stability_dict)
 
     labels = -1 * np.ones(X.shape[0], dtype=int)
-    for index, cluster in enumerate(cluster_list):
+    probabilities = np.zeros(X.shape[0], dtype=float)
+    for index, (cluster, prob) in enumerate(cluster_list):
         labels[cluster] = index
-    return labels, condensed_tree, single_linkage_tree, min_spanning_tree
+        probabilities[cluster] = prob
+    return labels, probabilities, condensed_tree, single_linkage_tree, min_spanning_tree
 
 
 def _hdbscan_small_kdtree(X, min_cluster_size=5, min_samples=None,
@@ -99,9 +101,11 @@ def _hdbscan_small_kdtree(X, min_cluster_size=5, min_samples=None,
     cluster_list = get_clusters(condensed_tree, stability_dict)
 
     labels = -1 * np.ones(X.shape[0], dtype=int)
-    for index, cluster in enumerate(cluster_list):
+    probabilities = np.zeros(X.shape[0], dtype=float)
+    for index, (cluster, prob) in enumerate(cluster_list):
         labels[cluster] = index
-    return labels, condensed_tree, single_linkage_tree, min_spanning_tree
+        probabilities[cluster] = prob
+    return labels, probabilities, condensed_tree, single_linkage_tree, min_spanning_tree
 
 
 def _hdbscan_large_kdtree(X, min_cluster_size=5, min_samples=None,
@@ -121,9 +125,11 @@ def _hdbscan_large_kdtree(X, min_cluster_size=5, min_samples=None,
     cluster_list = get_clusters(condensed_tree, stability_dict)
 
     labels = -1 * np.ones(X.shape[0], dtype=int)
-    for index, cluster in enumerate(cluster_list):
+    probabilities = np.zeros(X.shape[0], dtype=float)
+    for index, (cluster, prob) in enumerate(cluster_list):
         labels[cluster] = index
-    return labels, condensed_tree, single_linkage_tree, min_spanning_tree
+        probabilities[cluster] = prob
+    return labels, probabilities, condensed_tree, single_linkage_tree, min_spanning_tree
 
 
 def _hdbscan_large_kdtree_fastcluster(X, min_cluster_size=5, min_samples=None,
@@ -141,9 +147,11 @@ def _hdbscan_large_kdtree_fastcluster(X, min_cluster_size=5, min_samples=None,
     cluster_list = get_clusters(condensed_tree, stability_dict)
 
     labels = -1 * np.ones(X.shape[0], dtype=int)
-    for index, cluster in enumerate(cluster_list):
+    probabilities = np.zeros(X.shape[0], dtype=float)
+    for index, (cluster, prob) in enumerate(cluster_list):
         labels[cluster] = index
-    return labels, condensed_tree, single_linkage_tree, None
+        probabilities[cluster] = prob
+    return labels, probabilities, condensed_tree, single_linkage_tree, None
 
 
 def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2,
@@ -324,6 +332,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         if self.metric != 'precomputed':
             self._raw_data = X
         (self.labels_,
+         self.probabilities_,
          self._condensed_tree,
          self._single_linkage_tree,
          self._min_spanning_tree) = hdbscan(X, **self.get_params())
