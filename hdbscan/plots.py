@@ -12,6 +12,8 @@ import numpy as np
 from scipy.cluster.hierarchy import dendrogram
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
+from sklearn.metrics import pairwise_distances
+from warnings import warn
 from ._hdbscan_tree import compute_stability
 
 CB_LEFT = 0
@@ -523,9 +525,10 @@ class MinimumSpanningTree (object):
         self._mst = mst
         self._data = data
 
+
     def plot(self, axis=None, node_size=10, node_color='k', 
              node_alpha=0.5, edge_alpha=0.25, edge_cmap='Reds_r', 
-             edge_linewidth=1):
+             edge_linewidth=2, vary_linewidth=True, colorbar=True):
         """Plot the minimum spanning tree (as projected into 2D by t-SNE if required).
 
         Parameters
@@ -554,7 +557,14 @@ class MinimumSpanningTree (object):
                 (default 0.25).
 
         edge_linewidth : float, optional
-                The linewidth to use for rendering edges (default 1).
+                The linewidth to use for rendering edges (default 2).
+
+        vary_linewidth : bool, optional
+                Edge width is proportional to (log of) the inverse of the
+                mutual reachability distance. (default True)
+
+        colorbar : bool, optional
+                Whether to draw a colorbar. (default True)
 
         Returns
         -------
@@ -567,6 +577,10 @@ class MinimumSpanningTree (object):
             from matplotlib.collections import LineCollection
         except ImportError:
             raise ImportError('You must install the matplotlib library to plot the minimum spanning tree.')
+
+        if self._data.shape[0] > 32767:
+            warn('Too many data points for safe rendering of an minimal spanning tree!')
+            return None
 
         if axis is None:
             axis = plt.gca()
@@ -583,8 +597,13 @@ class MinimumSpanningTree (object):
         else:
             projection = self._data.copy()
 
+        if vary_linewidth:
+            line_width = edge_linewidth * (np.log(self._mst.T[2].max() / self._mst.T[2]) + 1.0)
+        else:
+            line_width = edge_linewidth
+
         line_coords = projection[self._mst[:,:2].astype(int)]
-        line_collection = LineCollection(line_coords, linewidth=edge_linewidth,
+        line_collection = LineCollection(line_coords, linewidth=line_width,
                                          cmap=edge_cmap, alpha=edge_alpha)
         line_collection.set_array(self._mst[:,2].T)
 
@@ -593,10 +612,14 @@ class MinimumSpanningTree (object):
         axis.set_xticks([])
         axis.set_yticks([])
 
+        if colorbar:
+            cb = plt.colorbar(line_collection)
+            cb.ax.set_ylabel('Mutual reachability distance')
+
         return axis
 
     def to_pandas(self):
-        """Return a Pandas dataframe of the minumum spanning tree.
+        """Return a Pandas dataframe of the minimum spanning tree.
 
         Each row is an edge in the tree; the columns are `from`,
         `to`, and `distance` giving the two vertices of the edge

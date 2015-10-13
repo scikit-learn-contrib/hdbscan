@@ -35,14 +35,12 @@ from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 
 try:
     from fastcluster import single
-
     HAVE_FASTCLUSTER = True
 except ImportError:
     HAVE_FASTCLUSTER = False
 
-
 def _hdbscan_small(X, min_cluster_size=5, min_samples=None,
-                   metric='minkowski', p=2):
+                   metric='minkowski', p=2, gen_min_span_tree=False):
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
@@ -57,6 +55,18 @@ def _hdbscan_small(X, min_cluster_size=5, min_samples=None,
                                                min_samples)
 
     min_spanning_tree = mst_linkage_core(mutual_reachability_)
+
+    if gen_min_span_tree:
+        result_min_span_tree = min_spanning_tree.copy()
+        for index, row in enumerate(result_min_span_tree[1:], 1):
+            candidates = np.where(np.isclose(mutual_reachability_[row[1]], row[2]))[0]
+            candidates = np.intersect1d(candidates, min_spanning_tree[:index, :2].astype(int))
+            candidates = candidates[candidates != row[1]]
+            assert(len(candidates) > 0)
+            row[0] = candidates[0]
+    else:
+        result_min_span_tree = None
+
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
 
     single_linkage_tree = label(min_spanning_tree)
@@ -70,11 +80,11 @@ def _hdbscan_small(X, min_cluster_size=5, min_samples=None,
     for index, (cluster, prob) in enumerate(cluster_list):
         labels[cluster] = index
         probabilities[cluster] = prob
-    return labels, probabilities, condensed_tree, single_linkage_tree, min_spanning_tree
+    return labels, probabilities, condensed_tree, single_linkage_tree, result_min_span_tree
 
 
 def _hdbscan_small_kdtree(X, min_cluster_size=5, min_samples=None,
-                          metric='minkowski', p=2):
+                          metric='minkowski', p=2, gen_min_span_tree=False):
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
@@ -92,6 +102,18 @@ def _hdbscan_small_kdtree(X, min_cluster_size=5, min_samples=None,
                                                       min_points=min_samples)
 
     min_spanning_tree = mst_linkage_core(mutual_reachability_)
+
+    if gen_min_span_tree:
+        result_min_span_tree = min_spanning_tree.copy()
+        for index, row in enumerate(result_min_span_tree[1:], 1):
+            candidates = np.where(np.isclose(mutual_reachability_[row[1]], row[2]))[0]
+            candidates = np.intersect1d(candidates, min_spanning_tree[:index, :2].astype(int))
+            candidates = candidates[candidates != row[1]]
+            assert(len(candidates) > 0)
+            row[0] = candidates[0]
+    else:
+        result_min_span_tree = None
+
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
 
     single_linkage_tree = label(min_spanning_tree)
@@ -105,17 +127,29 @@ def _hdbscan_small_kdtree(X, min_cluster_size=5, min_samples=None,
     for index, (cluster, prob) in enumerate(cluster_list):
         labels[cluster] = index
         probabilities[cluster] = prob
-    return labels, probabilities, condensed_tree, single_linkage_tree, min_spanning_tree
+    return labels, probabilities, condensed_tree, single_linkage_tree, result_min_span_tree
 
 
 def _hdbscan_large_kdtree(X, min_cluster_size=5, min_samples=None,
-                          metric='minkowski', p=2):
+                          metric='minkowski', p=2, gen_min_span_tree=False):
     if p is None:
         p = 2
 
     mutual_reachability_ = kdtree_pdist_mutual_reachability(X, metric, p, min_samples)
 
-    min_spanning_tree = mst_linkage_core_pdist(mutual_reachability_)
+    min_spanning_tree = mst_linkage_core(mutual_reachability_)
+
+    if gen_min_span_tree:
+        result_min_span_tree = min_spanning_tree.copy()
+        for index, row in enumerate(result_min_span_tree[1:], 1):
+            candidates = np.where(np.isclose(mutual_reachability_[row[1]], row[2]))[0]
+            candidates = np.intersect1d(candidates, min_spanning_tree[:index, :2].astype(int))
+            candidates = candidates[candidates != row[1]]
+            assert(len(candidates) > 0)
+            row[0] = candidates[0]
+    else:
+        result_min_span_tree = None
+
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
 
     single_linkage_tree = label(min_spanning_tree)
@@ -129,11 +163,11 @@ def _hdbscan_large_kdtree(X, min_cluster_size=5, min_samples=None,
     for index, (cluster, prob) in enumerate(cluster_list):
         labels[cluster] = index
         probabilities[cluster] = prob
-    return labels, probabilities, condensed_tree, single_linkage_tree, min_spanning_tree
+    return labels, probabilities, condensed_tree, single_linkage_tree, result_min_span_tree
 
 
 def _hdbscan_large_kdtree_fastcluster(X, min_cluster_size=5, min_samples=None,
-                                      metric='minkowski', p=2):
+                                      metric='minkowski', p=2, gen_min_span_tree=False):
     if p is None:
         p = 2
 
@@ -155,7 +189,7 @@ def _hdbscan_large_kdtree_fastcluster(X, min_cluster_size=5, min_samples=None,
 
 
 def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2,
-            algorithm='best'):
+            algorithm='best', gen_min_span_tree=False):
     """Perform HDBSCAN clustering from a vector array or distance matrix.
     
     Parameters
@@ -194,6 +228,10 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2,
             * ``large_kdtree``
             * ``large_kdtree_fastcluster``
 
+    gen_min_span_tree : bool, optional
+        Whether to generate the minimum spanning tree for later analysis.
+        (default False)
+
     Returns
     -------
     labels : array [n_samples]
@@ -222,30 +260,38 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, metric='minkowski', p=2,
 
     if algorithm != 'best':
         if algorithm == 'small':
-            return _hdbscan_small(X, min_cluster_size, min_samples, metric, p)
+            return _hdbscan_small(X, min_cluster_size, min_samples,
+                                  metric, p, gen_min_span_tree)
         elif algorithm == 'small_kdtree':
             return _hdbscan_small_kdtree(X, min_cluster_size,
-                                         min_samples, metric, p)
+                                         min_samples, metric,
+                                         p, gen_min_span_tree)
         elif algorithm == 'large_kdtree':
             return _hdbscan_large_kdtree(X, min_cluster_size,
-                                         min_samples, metric, p)
+                                         min_samples, metric,
+                                         p, gen_min_span_tree)
         elif algorithm == 'large_kdtree_fastcluster':
             return _hdbscan_large_kdtree_fastcluster(X, min_cluster_size,
-                                                     min_samples, metric, p)
+                                                     min_samples, metric,
+                                                     p, gen_min_span_tree)
         else:
             raise TypeError('Unknown algorithm type %s specified' % algorithm)
 
     if issparse(X) or metric not in KDTree.valid_metrics:  # We can't do much with sparse matrices ...
-        return _hdbscan_small(X, min_cluster_size, min_samples, metric, p)
+        return _hdbscan_small(X, min_cluster_size, min_samples,
+                              metric, p, gen_min_span_tree)
     elif X.shape[0] < 4000:
         return _hdbscan_small_kdtree(X, min_cluster_size,
-                                     min_samples, metric, p)
+                                     min_samples, metric,
+                                     p, gen_min_span_tree)
     elif HAVE_FASTCLUSTER:
         return _hdbscan_large_kdtree_fastcluster(X, min_cluster_size,
-                                                 min_samples, metric, p)
+                                                 min_samples, metric,
+                                                 p, gen_min_span_tree)
     else:
         return _hdbscan_large_kdtree(X, min_cluster_size,
-                                     min_samples, metric, p)
+                                     min_samples, metric,
+                                     p, gen_min_span_tree)
 
 
 class HDBSCAN(BaseEstimator, ClusterMixin):
@@ -276,6 +322,11 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         metric parameter.
         If metric is "precomputed", X is assumed to be a distance matrix and
         must be square.
+
+    gen_min_span_tree: bool, optional
+        Whether to generate the minimum spanning tree with regard
+        to mutual reachability distance for later analysis.
+        (default False)
         
     Attributes
     ----------
@@ -299,9 +350,9 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
     minimum_spanning_tree_ : MinimumSpanningTree object
         The minimum spanning tree of the mutual reachability graph generated
-        by HDBSCAN. Note that for efficiency on large datasets HDBSCAN may
-        default to an algorithm that doesn't generate the minimum spanning
-        tree.
+        by HDBSCAN. Note that this is not generated by default and will only
+        be available if `gen_min_span_tree` was set to True on object creation.
+        Even then in some optimized cases a tre may not be generated.
         
     References
     ----------
@@ -312,12 +363,13 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     """
 
     def __init__(self, min_cluster_size=5, min_samples=None,
-                 metric='euclidean', p=None):
+                 metric='euclidean', p=None, gen_min_span_tree=False):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
 
         self.metric = metric
         self.p = p
+        self.gen_min_span_tree = gen_min_span_tree
 
         self._condensed_tree = None
         self._single_linkage_tree = None
