@@ -189,7 +189,7 @@ cdef list bfs_from_cluster_tree(np.ndarray tree, long long bfs_root):
     cdef np.ndarray[np.int64_t, ndim=1] to_process
 
     result = []
-    to_process = np.array([bfs_root])
+    to_process = np.array([bfs_root], dtype=np.int64)
     
     while to_process.shape[0] > 0:
         result.extend(to_process.tolist())
