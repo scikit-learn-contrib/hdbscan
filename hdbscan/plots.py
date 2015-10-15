@@ -21,12 +21,18 @@ CB_RIGHT = 1
 CB_BOTTOM = 2
 CB_TOP = 3
 
+
 def _get_leaves(condensed_tree):
     cluster_tree = condensed_tree[condensed_tree['child_size'] > 1]
     clusters = cluster_tree['child']
     return [c for c in clusters if len(cluster_tree[cluster_tree['parent'] == c]) == 0]
 
+
 def _bfs_from_cluster_tree(tree, bfs_root):
+    """
+    Perform a breadth first search on a tree in condensed tree format
+    """
+
     result = []
     to_process = [bfs_root]
 
@@ -35,6 +41,29 @@ def _bfs_from_cluster_tree(tree, bfs_root):
         to_process = tree['child'][np.in1d(tree['parent'], to_process)].tolist()
 
     return result
+
+
+def _bfs_from_linkage_tree(hierarchy, bfs_root):
+    """
+    Perform a breadth first search on a tree in scipy hclust format.
+    """
+
+    dim = hierarchy.shape[0]
+    max_node = 2 * dim
+    num_points = max_node - dim + 1
+
+    to_process = [bfs_root]
+    result = []
+
+    while to_process:
+        result.extend(to_process)
+        to_process = [x - num_points for x in
+                          to_process if x >= num_points]
+        if to_process:
+            to_process = hierarchy[to_process,:2].flatten().astype(np.int64).tolist()
+
+    return result
+
 
 class CondensedTree (object):
 
@@ -518,6 +547,51 @@ class SingleLinkageTree (object):
 
         return result
 
+    def get_clusters(self, cut_distance, min_cluster_size=5):
+        """Return a flat clustering from the single linkage hierarchy.
+
+        This represents the result of selecting a cut value for robust single linkage
+        clustering. The `min_cluster_size` allows the flat clustering to declare noise
+        points (and cluster smaller than `min_cluster_size`).
+
+        Parameters
+        ----------
+
+        cut_distance : float
+            The mutual reachability distance cut value to use to generate a flat clustering.
+
+        min_cluster_size : int, optional
+            Clusters smaller than this value with be called 'noise' and remain unclustered
+            in the resulting flat clustering.
+
+        Returns
+        -------
+
+        labels : array [n_samples]
+            An array of cluster labels, one per datapoint. Unclustered points are assigned
+            the label -1.
+        """
+        select_clusters = []
+
+        dim = self._linkage.shape[0]
+        max_node = 2 * dim
+        num_points = max_node - dim + 1
+
+        for cluster_id, linkage in enumerate(self._linkage, num_points):
+            # If the cluster was formed prior to the cut and is large enough
+            if linkage[2] < cut_distance and linkage[3] > min_cluster_size:
+                # If the cluster had not been merged before the cut
+                if self._linkage[cluster_id - num_points, 2] > cut_distance:
+                    cluster = _bfs_from_linkage_tree(self._linkage, cluster_id)
+                    select_clusters.append(cluster_id)
+
+        # Generate labels for each data point
+        result = -1 * np.ones(num_points, dtype=int)
+
+        for cluster_num, cluster in enumerate(select_clusters):
+            result[cluster] = cluster_num
+
+        return result
 
 class MinimumSpanningTree (object):
 
