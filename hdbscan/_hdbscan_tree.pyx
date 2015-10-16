@@ -225,7 +225,9 @@ cdef tuple get_cluster_points(np.ndarray tree, long long cluster, long long num_
         max_cluster_lambda = tree[cluster_split_selection]['lambda'][0]
     else:
         max_cluster_lambda = tree['lambda'][result].max()
-    prob = tree['lambda'][result] / max_cluster_lambda
+    prob = tree['lambda'][result]
+    prob = np.where(prob <= max_cluster_lambda, prob, max_cluster_lambda)
+    prob = prob / max_cluster_lambda
 
     return result, prob
 
