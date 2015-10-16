@@ -9,7 +9,7 @@ cimport numpy as np
 from scipy.spatial.distance import pdist, squareform
 from sklearn.neighbors import KDTree
 
-def mutual_reachability(distance_matrix, min_points=5):
+def mutual_reachability(distance_matrix, min_points=5, alpha=1.0):
     """Compute the weighted adjacency matrix of the mutual reachability
     graph of a distance matrix.
     
@@ -42,7 +42,10 @@ def mutual_reachability(distance_matrix, min_points=5):
                                       axis=0)[min_points]
     except AttributeError:
         core_distances = np.sort(distance_matrix,
-                                 axis=0)[min_points]        
+                                 axis=0)[min_points]
+
+    if alpha != 1.0:
+        distance_matrix = distance_matrix / alpha
                                   
     stage1 = np.where(core_distances > distance_matrix, 
                       core_distances, distance_matrix)
@@ -50,7 +53,7 @@ def mutual_reachability(distance_matrix, min_points=5):
                       core_distances.T, stage1.T).T
     return result
 
-def kdtree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5):
+def kdtree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5, alpha=1.0):
     dim = distance_matrix.shape[0]
     min_points = min(dim - 1, min_points)
 
@@ -61,14 +64,18 @@ def kdtree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5):
 
     core_distances = tree.query(X, k=min_points)[0][:,-1]
 
-    stage1 = np.where(core_distances > distance_matrix, 
+    if alpha != 1.0:
+        distance_matrix = distance_matrix / alpha
+
+    stage1 = np.where(core_distances > distance_matrix,
                       core_distances, distance_matrix)
     result = np.where(core_distances > stage1.T,
                       core_distances.T, stage1.T).T
     return result
 
 
-cpdef np.ndarray[np.double_t, ndim=1] kdtree_pdist_mutual_reachability(np.ndarray X, object metric, long long p=2, long long min_points=5):
+cpdef np.ndarray[np.double_t, ndim=1] kdtree_pdist_mutual_reachability(np.ndarray X, object metric,
+                            long long p=2, long long min_points=5, alpha=1.0):
     
     cdef long long dim
     cdef object tree
@@ -89,6 +96,9 @@ cpdef np.ndarray[np.double_t, ndim=1] kdtree_pdist_mutual_reachability(np.ndarra
     core_distances = tree.query(X, k=min_points)[0][:,-1]
 
     dists = pdist(X, metric=metric, p=p)
+
+    if alpha != 1.0:
+        dists = dists / alpha
 
     result = np.empty(dists.shape[0], dtype=np.double)
 
