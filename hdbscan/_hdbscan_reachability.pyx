@@ -8,6 +8,7 @@ cimport numpy as np
 
 from scipy.spatial.distance import pdist, squareform
 from sklearn.neighbors import KDTree
+import gc
 
 def mutual_reachability(distance_matrix, min_points=5, alpha=1.0):
     """Compute the weighted adjacency matrix of the mutual reachability
@@ -81,7 +82,6 @@ cpdef np.ndarray[np.double_t, ndim=1] kdtree_pdist_mutual_reachability(np.ndarra
     cdef object tree
     cdef np.ndarray[np.double_t, ndim=1] core_distances
     cdef np.ndarray[np.double_t, ndim=1] dists
-    cdef np.ndarray[np.double_t, ndim=1] result
     cdef long long i
     cdef long long result_pos
 
@@ -95,26 +95,25 @@ cpdef np.ndarray[np.double_t, ndim=1] kdtree_pdist_mutual_reachability(np.ndarra
 
     core_distances = tree.query(X, k=min_points)[0][:,-1]
 
+    del tree
+    gc.collect()
+
     dists = pdist(X, metric=metric, p=p)
 
     if alpha != 1.0:
-        dists = dists / alpha
-
-    result = np.empty(dists.shape[0], dtype=np.double)
+        dists /= alpha
 
     result_pos = 0
     for i in range(dim):
         for j in range(i + 1, dim):
             if core_distances[i] > core_distances[j]:
                 if core_distances[i] > dists[result_pos]:
-                    result[result_pos] = core_distances[i]
-                else:
-                    result[result_pos] = dists[result_pos]
+                    dists[result_pos] = core_distances[i]
+
             else:
                 if core_distances[j] > dists[result_pos]:
-                    result[result_pos] = core_distances[j]
-                else:
-                    result[result_pos] = dists[result_pos]
+                    dists[result_pos] = core_distances[j]
+
             result_pos += 1
 
-    return result
+    return dists
