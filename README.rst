@@ -14,8 +14,8 @@ Based on the paper:
     In: Advances in Knowledge Discovery and Data Mining, Springer, pp 160-172.
     2013
     
-Notebooks [comparing HDBSCAN to other clustering algorithms](http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb), 
-and explaianing [how HDBSCAN works](http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb) are available.
+Notebooks `comparing HDBSCAN to other clustering algorithms <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`_, 
+and explaianing `how HDBSCAN works <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb>`_ are available.
 
 ------------------
 How to use HDBSCAN
