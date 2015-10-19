@@ -217,6 +217,15 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         metric parameter.
         If metric is "precomputed", X is assumed to be a distance matrix and
         must be square.
+        (default minkowski)
+
+    p : int, optional
+        p value to use if using the minkowski metric. (default 2)
+
+    alpha : float, optional
+        A distance scaling parameter as used in robust single linkage.
+        See (K. Chaudhuri and S. Dasgupta  "Rates of convergence
+        for the cluster tree."). (default 1.0)
 
     algorithm : string, optional
         Exactly which algorithm to use; hdbscan has variants specialised 
@@ -238,8 +247,20 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     labels : array [n_samples]
         Cluster labels for each point.  Noisy samples are given the label -1.
 
+    probabilities : array [n_samples]
+        Cluster membership stringths for each point. Noisy samples are assigned 0.
+
     condensed_tree : record array
         The condensed cluster hierarchy used to generate clusters.
+
+    single_linkage_tree : array [n_samples - 1, 4]
+        The single linkage tree produced during clustering in scipy
+        hierarchical clustering format
+        (see http://docs.scipy.org/doc/scipy/reference/cluster.hierarchy.html).
+
+    min_spanning_tree : array [n_samples - 1, 3]
+        The minimum spanning as an edgelist. If gen_min_span_tree was False
+        this will be None.
         
     References
     ----------
@@ -323,10 +344,15 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         metric parameter.
         If metric is "precomputed", X is assumed to be a distance matrix and
         must be square.
+        (default euclidean)
+
+    p : int, optional
+        p value to use if using the minkowski metric. (default None)
 
     alpha : float, optional
         A distance scaling parameter as used in robust single linkage.
-        See (reference paper). (default 1.0)
+        See (K. Chaudhuri and S. Dasgupta  "Rates of convergence
+        for the cluster tree."). (default 1.0)
 
 
     gen_min_span_tree: bool, optional
@@ -431,7 +457,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
     @property
     def single_linkage_tree_(self):
-        if self._condensed_tree is not None:
+        if self._single_linkage_tree is not None:
             return SingleLinkageTree(self._single_linkage_tree)
         else:
             warn('No single linkage tree was generated; try running fit first.')
