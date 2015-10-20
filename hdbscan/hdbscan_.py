@@ -347,7 +347,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         return _hdbscan_small_kdtree(X, min_cluster_size,
                                      min_samples, alpha, metric,
                                      p, gen_min_span_tree)
-    elif X.shape < 30000:
+    elif X.shape[0] < 30000:
         if HAVE_FASTCLUSTER:
             return _hdbscan_large_kdtree_fastcluster(X, min_cluster_size,
                                                      min_samples, alpha, metric,
