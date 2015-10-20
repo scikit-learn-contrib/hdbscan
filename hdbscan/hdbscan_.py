@@ -24,7 +24,11 @@ except ImportError:
 
     check_array = check_arrays
 
-from ._hdbscan_linkage import single_linkage, mst_linkage_core, mst_linkage_core_pdist, label
+from ._hdbscan_linkage import (single_linkage,
+                               mst_linkage_core,
+                               mst_linkage_core_pdist,
+                               mst_linkage_core_cdist,
+                               label)
 from ._hdbscan_tree import (get_points,
                             condense_tree,
                             compute_stability,
@@ -187,6 +191,38 @@ def _hdbscan_large_kdtree_fastcluster(X, min_cluster_size=5, min_samples=None, a
         probabilities[cluster] = prob
     return labels, probabilities, condensed_tree, single_linkage_tree, None
 
+def _hdbscan_large_kdtree_cdist(X, min_cluster_size=5, min_samples=None, alpha=1.0,
+                                metric='minkowski', p=2, gen_min_span_tree=False):
+
+    if p is None:
+        p = 2
+
+    dim = X.shape[0]
+    min_samples = min(dim - 1, min_samples)
+
+    if metric == 'minkowski':
+        tree = KDTree(X, metric=metric, p=p)
+    else:
+        tree = KDTree(X, metric=metric)
+
+    core_distances = tree.query(X, k=min_samples)[0][:,-1]
+
+    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, metric, p)
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
+
+    single_linkage_tree = label(min_spanning_tree)
+    condensed_tree = condense_tree(single_linkage_tree,
+                                   min_cluster_size)
+    stability_dict = compute_stability(condensed_tree)
+    cluster_list = get_clusters(condensed_tree, stability_dict)
+
+    labels = -1 * np.ones(X.shape[0], dtype=int)
+    probabilities = np.zeros(X.shape[0], dtype=float)
+    for index, (cluster, prob) in enumerate(cluster_list):
+        labels[cluster] = index
+        probabilities[cluster] = prob
+    return labels, probabilities, condensed_tree, single_linkage_tree, None
+
 
 def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             metric='minkowski', p=2,
@@ -237,6 +273,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             * ``small_kdtree``
             * ``large_kdtree``
             * ``large_kdtree_fastcluster``
+            * ``large_kdtree_low_memory``
 
     gen_min_span_tree : bool, optional
         Whether to generate the minimum spanning tree for later analysis.
@@ -296,6 +333,10 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             return _hdbscan_large_kdtree_fastcluster(X, min_cluster_size,
                                                      min_samples, alpha, metric,
                                                      p, gen_min_span_tree)
+        elif algorithm == 'large_kdtree_low_memory':
+            return _hdbscan_large_kdtree_cdist(X, min_cluster_size,
+                                               min_samples, alpha, metric,
+                                               p, gen_min_span_tree)
         else:
             raise TypeError('Unknown algorithm type %s specified' % algorithm)
 
@@ -306,14 +347,20 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         return _hdbscan_small_kdtree(X, min_cluster_size,
                                      min_samples, alpha, metric,
                                      p, gen_min_span_tree)
-    elif HAVE_FASTCLUSTER:
-        return _hdbscan_large_kdtree_fastcluster(X, min_cluster_size,
-                                                 min_samples, alpha, metric,
-                                                 p, gen_min_span_tree)
+    elif X.shape < 30000:
+        if HAVE_FASTCLUSTER:
+            return _hdbscan_large_kdtree_fastcluster(X, min_cluster_size,
+                                                     min_samples, alpha, metric,
+                                                     p, gen_min_span_tree)
+        else:
+            return _hdbscan_large_kdtree(X, min_cluster_size,
+                                        min_samples, alpha, metric,
+                                        p, gen_min_span_tree)
     else:
-        return _hdbscan_large_kdtree(X, min_cluster_size,
-                                     min_samples, alpha, metric,
-                                     p, gen_min_span_tree)
+        return _hdbscan_large_kdtree_cdist(X, min_cluster_size,
+                                           min_samples, alpha, metric,
+                                           p, gen_min_span_tree)
+
 
 
 class HDBSCAN(BaseEstimator, ClusterMixin):
