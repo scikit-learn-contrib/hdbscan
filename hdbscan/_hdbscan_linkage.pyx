@@ -8,7 +8,7 @@ cimport cython
 import numpy as np
 cimport numpy as np
 
-from scipy.spatial.distance import cdist
+from scipy.spatial.distance import cdist, pdist
 
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
                                np.ndarray[np.double_t, ndim=2] distance_matrix):
@@ -136,7 +136,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
     cdef np.ndarray[np.double_t, ndim=1] current_distances
     cdef np.ndarray[np.double_t, ndim=1] current_core_distances
     cdef np.ndarray[np.double_t, ndim=1] left
-    cdef np.ndarray[np.double_t, ndim=1] right
+    # cdef np.ndarray[np.double_t, ndim=1] right
     cdef np.ndarray[np.double_t, ndim=2] result
 
     cdef np.ndarray label_filter
@@ -145,7 +145,13 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
     cdef long long new_node_index
     cdef long long new_node
     cdef long long i
+    cdef long long j
+    cdef double current_node_core_distance
     cdef long long dim
+
+    cdef double right_value
+    cdef double left_value
+    cdef double core_value
 
     dim = raw_data.shape[0]
 
@@ -161,13 +167,27 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
         current_labels = current_labels[label_filter]
         current_core_distances = current_core_distances[label_filter]
 
-        left = cdist(raw_data[[current_node]], raw_data, metric=metric, p=p)[0][current_labels]
-        left = np.where(left > current_core_distances, left, current_core_distances)
-        left = np.where(left > core_distances[current_node], left, core_distances[current_node])
+        left = cdist(raw_data[[current_node]], raw_data, metric=metric, p=p)[0][current_labels] # good
 
-        right = current_distances[label_filter]
+        current_distances = current_distances[label_filter]
 
-        current_distances = np.where(left < right, left, right)
+        current_node_core_distance = core_distances[current_node]
+        for j in range(current_labels.shape[0]):
+            right_value = current_distances[j]
+            left_value = left[j]
+            core_value = core_distances[j]
+            if current_node_core_distance > right_value or core_value > right_value or left_value > right_value:
+                continue
+
+            if core_value > current_node_core_distance:
+                if core_value > left_value:
+                    left_value = core_value
+            else:
+                if current_node_core_distance > left_value:
+                    left_value = current_node_core_distance
+
+            if left_value < right_value:
+                current_distances[j] = left_value
 
         new_node_index = np.argmin(current_distances)
         new_node = current_labels[new_node_index]
