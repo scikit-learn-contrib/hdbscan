@@ -401,6 +401,17 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         See (K. Chaudhuri and S. Dasgupta  "Rates of convergence
         for the cluster tree."). (default 1.0)
 
+    algorithm : string, optional
+        Exactly which algorithm to use; hdbscan has variants specialised
+        for different characteristics of the data. By default this is set
+        to ``best`` which chooses the "best" algorithm given the nature of
+        the data. You can force other options if you believe you know
+        better. Options are:
+            * ``small``
+            * ``small_kdtree``
+            * ``large_kdtree``
+            * ``large_kdtree_fastcluster``
+            * ``large_kdtree_low_memory``
 
     gen_min_span_tree: bool, optional
         Whether to generate the minimum spanning tree with regard
@@ -442,13 +453,15 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     """
 
     def __init__(self, min_cluster_size=5, min_samples=None,
-                 metric='euclidean', alpha=1.0, p=None, gen_min_span_tree=False):
+                 metric='euclidean', alpha=1.0, p=None,
+                 algorithm='best', gen_min_span_tree=False):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
         self.alpha = alpha
 
         self.metric = metric
         self.p = p
+        self.algorithm = algorithm
         self.gen_min_span_tree = gen_min_span_tree
 
         self._condensed_tree = None
