@@ -148,9 +148,9 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
     cdef long long new_node
     cdef long long i
     cdef long long j
-    cdef double current_node_core_distance
     cdef long long dim
 
+    cdef double current_node_core_distance
     cdef double right_value
     cdef double left_value
     cdef double core_value
@@ -165,7 +165,10 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
     current_labels = node_labels
     current_core_distances = core_distances
 
+    masked = 0
+
     for i in range(1, dim):
+
         label_filter = current_labels != current_node
         current_labels = current_labels[label_filter]
         current_core_distances = current_core_distances[label_filter]
