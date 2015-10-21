@@ -144,6 +144,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
     cdef np.ndarray label_filter
 
     cdef long long current_node
+    cdef long long comparison_node
     cdef long long new_node_index
     cdef long long new_node
     cdef long long i
@@ -184,7 +185,8 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
         for j in range(current_labels.shape[0]):
             right_value = current_distances[j]
             left_value = left[j]
-            core_value = core_distances[j]
+            comparison_node = current_labels[j]
+            core_value = core_distances[comparison_node]
             if current_node_core_distance > right_value or core_value > right_value or left_value > right_value:
                 if right_value < new_distance:
                     new_distance = right_value
