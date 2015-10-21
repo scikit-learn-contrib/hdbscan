@@ -141,7 +141,7 @@ def _hdbscan_large_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
 
     mutual_reachability_ = kdtree_pdist_mutual_reachability(X, metric, p, min_samples, alpha)
 
-    min_spanning_tree = mst_linkage_core(mutual_reachability_)
+    min_spanning_tree = mst_linkage_core_pdist(mutual_reachability_)
 
     if gen_min_span_tree:
         result_min_span_tree = min_spanning_tree.copy()
@@ -354,8 +354,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                                                      p, gen_min_span_tree)
         else:
             return _hdbscan_large_kdtree(X, min_cluster_size,
-                                        min_samples, alpha, metric,
-                                        p, gen_min_span_tree)
+                                         min_samples, alpha, metric,
+                                         p, gen_min_span_tree)
     else:
         return _hdbscan_large_kdtree_cdist(X, min_cluster_size,
                                            min_samples, alpha, metric,
