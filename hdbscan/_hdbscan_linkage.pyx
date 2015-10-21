@@ -8,6 +8,8 @@ cimport cython
 import numpy as np
 cimport numpy as np
 
+from libc.float cimport DBL_MAX
+
 from scipy.spatial.distance import cdist, pdist
 
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
@@ -152,6 +154,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
     cdef double right_value
     cdef double left_value
     cdef double core_value
+    cdef double new_distance
 
     dim = raw_data.shape[0]
 
@@ -170,13 +173,19 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
         left = cdist(raw_data[[current_node]], raw_data, metric=metric, p=p)[0][current_labels] # good
 
         current_distances = current_distances[label_filter]
-
         current_node_core_distance = core_distances[current_node]
+
+        new_distance = DBL_MAX
+        new_node = 0
+
         for j in range(current_labels.shape[0]):
             right_value = current_distances[j]
             left_value = left[j]
             core_value = core_distances[j]
             if current_node_core_distance > right_value or core_value > right_value or left_value > right_value:
+                if right_value < new_distance:
+                    new_distance = right_value
+                    new_node = current_labels[j]
                 continue
 
             if core_value > current_node_core_distance:
@@ -188,12 +197,17 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
 
             if left_value < right_value:
                 current_distances[j] = left_value
+                if left_value < new_distance:
+                    new_distance = left_value
+                    new_node = current_labels[j]
+            else:
+                if right_value < new_distance:
+                    new_distance = right_value
+                    new_node = current_labels[j]
 
-        new_node_index = np.argmin(current_distances)
-        new_node = current_labels[new_node_index]
         result[i - 1, 0] = <double> current_node
         result[i - 1, 1] = <double> new_node
-        result[i - 1, 2] = current_distances[new_node_index]
+        result[i - 1, 2] = new_distance
         current_node = new_node
 
     return result
