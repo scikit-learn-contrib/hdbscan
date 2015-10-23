@@ -38,6 +38,44 @@ Note that clustering larger datasets will require significant memory
 (as with any algorithm that needs all pairwise distances). Support for
 low memory/better scaling is planned but not yet implemented.
 
+------------------------
+Additional functionality
+------------------------
+
+The hdbscan package comes equipped with visualization tools to help you
+understand your clustering results. After fitting data the clusterer
+object has attributes for:
+
+* The condensed cluster hierarchy
+* The robust single linkage cluster hierarchy
+* The reachability distance minimal spanning tree
+
+All of which come equipped with methods for plotting and converting
+to Pandas or NetworkX for further analysis. See the notebook on
+`how HDBSCAN works <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb>`_ for examples and further details.
+
+The clusterer objects also have an attribute providing cluster membership
+strengths, resulting in optional soft clustering (and no further compute 
+expense)
+
+---------------------
+Robust single linkage
+---------------------
+
+The hdbscan package also provides support for the *robust single linkage*
+clustering algorithm of Chaudhuri and Dasgupta. As with the HDBSCAN 
+implementation this is a high performance version of the algorithm 
+outperforming scipy's standard single linkage implementation. The
+robust single linkage hierarchy is available as an attribute of
+the robust single linkage clusterer, again with the ability to plot
+or export the hierarchy, and to extract flat clusterings at a given
+cut level and gamma value.
+
+Based on the paper:
+    K. Chaudhuri and S. Dasgupta.
+    *"Rates of convergence for the cluster tree."*
+    In Advances in Neural Information Processing Systems, 2010.
+
 ----------
 Installing
 ----------
