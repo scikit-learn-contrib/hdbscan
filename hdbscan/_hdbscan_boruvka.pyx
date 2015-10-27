@@ -148,10 +148,8 @@ cdef class BoruvkaAlgorithm (object):
             node_info = self.tree.node_data[n]
             if node_info.is_leaf:
                 point_indices = idx_array[node_info.idx_start:node_info.idx_end]
-                b1 = nn_dist[point_indices].max()
-                # b1 = self.core_distance_arr[point_indices].max()
+                b1 = nn_dist[point_indices].max()                # b1 = self.core_distance_arr[point_indices].max()
                 b2 = (nn_dist[point_indices] + 2 * node_info.radius).min()
-                # b2 = (self.core_distance_arr[point_indices] + 2 * node_info.radius).min()
                 self.bounds[n] = min(b1, b2)
             else:
                 child1 = 2 * n + 1
