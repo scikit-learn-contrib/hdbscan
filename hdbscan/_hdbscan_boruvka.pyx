@@ -258,23 +258,19 @@ cdef class BoruvkaAlgorithm (object):
         cdef np.int64_t component1
         cdef np.int64_t component2
 
-        cdef np.int64_t leaf_size = max(node1_info.idx_end - node1_info.idx_start,
-                                        node2_info.idx_end - node2_info.idx_start)
-
         node_dist = min_dist_dual(node1_info.radius, node2_info.radius,
                                     node1, node2, (<np.double_t [:num_nodes, :num_nodes:1]>
                                                     (<np.double_t *> self._centroid_distances.data)))
 
-        # Case 1: Query point is outside the bound or query point is
-        #         in the same component as reference points.
-        #         In either case, trim this line on inquiry.
-        if node_dist > self.bounds[node1] or (self.component_of_node[node1] == self.component_of_node[node2]
-                                              and self.component_of_node[node1] >= 0):
-            pass
+        if node_dist < self.bounds[node1]:
+            if self.component_of_node[node1] == self.component_of_node[node2] and \
+                    self.component_of_node[node1] >= 0:
+                return 0
+        else:
+            return 0
 
-        # Case 2: Both nodes are leaves; do the all to all computations
-        #         to find the nearest neighbour among them.
-        elif node1_info.is_leaf and node2_info.is_leaf:
+
+        if node1_info.is_leaf and node2_info.is_leaf:
 
             point_indices1 = idx_array[node1_info.idx_start:node1_info.idx_end]
             point_indices2 = idx_array[node2_info.idx_start:node2_info.idx_end]
@@ -283,7 +279,7 @@ cdef class BoruvkaAlgorithm (object):
             points2 = self._data[point_indices2]
 
             distances_arr = self.dist.pairwise(points1, points2)
-            distances = (<np.double_t [:leaf_size, :leaf_size:1]> (<np.double_t *> distances_arr.data))
+            distances = (<np.double_t [:points1.shape[0], :points2.shape[0]:1]> (<np.double_t *> distances_arr.data))
 
             for i in range(point_indices1.shape[0]):
                 for j in range(point_indices2.shape[0]):
@@ -298,12 +294,10 @@ cdef class BoruvkaAlgorithm (object):
                                 self.candidate_neighbor[component1] = q
                                 self.candidate_point[component1] = p
 
-        # Case 3a: Node1 is a leaf or smaller than Node2; descend Node2 and continue
         elif node1_info.is_leaf or (not node2_info.is_leaf
                                     and node2_info.radius > node1_info.radius):
             self.dual_tree_traversal(node1, 2 * node2 + 1)
             self.dual_tree_traversal(node1, 2 * node2 + 2)
-        # Case 3b: Node2 is a leaf or smaller than Node1; descend Node1 and continue
         else:
             self.dual_tree_traversal(2 * node1 + 1, node2)
             self.dual_tree_traversal(2 * node1 + 2, node2)
