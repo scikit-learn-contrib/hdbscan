@@ -1,4 +1,4 @@
-#cython: boundscheck=False, nonecheck=False, profile=True
+#cython: boundscheck=False, nonecheck=False, wraparound=False
 # Minimum spanning tree single linkage implementation for hdbscan
 # Authors: Leland McInnes
 # License: 3-clause BSD
@@ -10,70 +10,32 @@ cimport numpy as np
 
 from libc.float cimport DBL_MAX
 
-from scipy.spatial.distance import cdist, pdist, squareform
+# from scipy.spatial.distance import cdist, pdist, squareform
+import sklearn.neighbors.dist_metrics as dist_metrics
 
-cdef points(tree, node, data, indices=False):
-    node_data = tree.node_data[node]
-    if not node_data['is_leaf']:
+cdef struct NodeData_t:
+    np.int64_t idx_start
+    np.int64_t idx_end
+    np.int64_t is_leaf
+    np.double_t radius
 
-        if indices:
-            return np.array([]), np.array([])
-        else:
-            return np.array([])
-
-    else:
-        idx_start = node_data['idx_start']
-        idx_end = node_data['idx_end']
-        selection = tree.idx_array[idx_start:idx_end]
-        if indices:
-            return data[selection], selection
-        else:
-            return data[selection]
-
-cdef descendant_points(tree, node, data):
-    node_data = tree.node_data[node]
-    idx_start = node_data['idx_start']
-    idx_end = node_data['idx_end']
-    return data[tree.idx_array[idx_start:idx_end]]
-
-cdef inline list children(object tree, long long node):
-    node_data = tree.node_data[node]
-    if node_data['is_leaf']:
-        return []
-    else:
-        return [2 * node + 1, 2 * node + 2]
-
-cdef inline double min_dist_dual(object tree1,
-                                 object tree2,
+cdef inline double min_dist_dual(np.double_t radius1,
+                                 np.double_t radius2,
                                  long long node1,
                                  long long node2,
-                                 np.ndarray[double, ndim=2] centroid_dist):
-    dist_pt = centroid_dist[node1, node2]
-    return max(0, (dist_pt - tree1.node_data[node1]['radius']
-                    - tree2.node_data[node2]['radius']))
-
-cdef double max_child_distance(object tree, long long node, np.ndarray data):
-    node_points = points(tree, node, data)
-    if node_points.shape[0] > 0:
-        centroid = tree.node_bounds[0, node]
-        point_distances = cdist([centroid], node_points)[0]
-        return np.max(point_distances)
-    else:
-        return 0.0
-
-cdef double max_descendant_distance(object tree, long long node, np.ndarray data):
-    node_points = descendant_points(tree, node, data)
-    centroid = tree.node_bounds[0, node]
-    point_distances = cdist([centroid], node_points)[0]
-    return np.max(point_distances)
+                                 np.double_t[:, ::1] centroid_dist):
+    cdef np.double_t dist_pt = centroid_dist[node1, node2]
+    return max(0, (dist_pt - radius1 - radius2))
 
 cdef class BoruvkaUnionFind (object):
 
-    cdef np.ndarray _data
+    cdef np.ndarray _data_arr
+    cdef np.int64_t[:,::1] _data
 
     def __init__(self, size):
-        self._data = np.zeros((size, 2))
-        self._data.T[0] = np.arange(size)
+        self._data_arr = np.zeros((size, 2), dtype=np.int64)
+        self._data_arr.T[0] = np.arange(size)
+        self._data = (<np.int64_t[:size, :2:1]> (<np.int64_t *> self._data_arr.data))
 
     cpdef union_(self, long long x, long long y):
         cdef long long x_root = self.find(x)
@@ -95,130 +57,182 @@ cdef class BoruvkaUnionFind (object):
         return self._data[x, 0]
 
     cpdef np.ndarray[np.int64_t, ndim=1] components(self):
-        return self._data.T[0]
+        return self._data_arr.T[0]
 
 cdef class BoruvkaAlgorithm (object):
 
     cdef object tree
+    cdef object dist
     cdef np.ndarray _data
-    cdef np.ndarray bounds
-    cdef dict component_of_point
-    cdef dict component_of_node
-    cdef dict candidate_neighbor
-    cdef dict candidate_point
-    cdef dict candidate_distance
+    cdef public np.double_t[::1] bounds
+    cdef public np.int64_t[::1] component_of_point
+    cdef public np.int64_t[::1] component_of_node
+    cdef public np.int64_t[::1] candidate_neighbor
+    cdef public np.int64_t[::1] candidate_point
+    cdef public np.double_t[::1] candidate_distance
+    # cdef public np.double_t[:,::1] _centroid_distances
     cdef object component_union_find
     cdef set edges
 
+    cdef np.ndarray components
+    cdef np.ndarray bounds_arr
     cdef np.ndarray _centroid_distances
+    cdef np.ndarray component_of_point_arr
+    cdef np.ndarray component_of_node_arr
+    cdef np.ndarray candidate_point_arr
+    cdef np.ndarray candidate_neighbor_arr
+    cdef np.ndarray candidate_distance_arr
 
-    def __init__(self, tree):
+    def __init__(self, tree, metric='euclidean', **kwargs):
+
+        cdef np.int64_t num_points = tree.data.shape[0]
+        cdef np.int64_t num_nodes = tree.node_data.shape[0]
+
         self.tree = tree
         self._data = np.array(tree.data)
-        self.bounds = np.zeros(tree.node_bounds[0].shape[0])
-        self.component_of_point = {}
-        self.component_of_node = {}
-        self.candidate_neighbor = {}
-        self.candidate_point = {}
-        self.candidate_distance = {}
-        self.component_union_find = BoruvkaUnionFind(tree.data.shape[0])
+
+        self.dist = dist_metrics.DistanceMetric.get_metric(metric, **kwargs)
+
+        self.components = np.arange(num_points)
+        self.bounds_arr = np.empty(num_nodes, np.double)
+        self.component_of_point_arr = np.empty(num_points, dtype=np.int64)
+        self.component_of_node_arr = np.empty(num_nodes, dtype=np.int64)
+        self.candidate_neighbor_arr = np.empty(num_points, dtype=np.int64)
+        self.candidate_point_arr = np.empty(num_points, dtype=np.int64)
+        self.candidate_distance_arr = np.empty(num_points, dtype=np.double)
+        self.component_union_find = BoruvkaUnionFind(num_points)
         self.edges = set([])
 
+        self.bounds = (<np.double_t[:num_nodes:1]> (<np.double_t *> self.bounds_arr.data))
+        self.component_of_point = (<np.int64_t[:num_points:1]> (<np.int64_t *> self.component_of_point_arr.data))
+        self.component_of_node = (<np.int64_t[:num_nodes:1]> (<np.int64_t *> self.component_of_node_arr.data))
+        self.candidate_neighbor = (<np.int64_t[:num_points:1]> (<np.int64_t *> self.candidate_neighbor_arr.data))
+        self.candidate_point = (<np.int64_t[:num_points:1]> (<np.int64_t *> self.candidate_point_arr.data))
+        self.candidate_distance = (<np.double_t[:num_points:1]> (<np.double_t *> self.candidate_distance_arr.data))
 
-        self._centroid_distances = squareform(pdist(tree.node_bounds[0]))
+        self._centroid_distances = self.dist.pairwise(tree.node_bounds[0])
+
+        # self._centroid_distances = (<np.double_t[:num_nodes, :num_nodes:1]> (<np.double_t *> self._centroid_distances.data))
+
         self._compute_bounds()
         self._initialize_components()
 
     cdef _compute_bounds(self):
-        nn_dist = self.tree.query(self.tree.data, 2)[0][:,-1]
 
-        for n in range(self.tree.node_data.shape[0] - 1, -1, -1):
-            if self.tree.node_data[n]['is_leaf']:
-                node_points, node_point_indices = points(self.tree, n, self._data, indices=True)
-                b1 = nn_dist[node_point_indices].max()
-                b2 = (nn_dist[node_point_indices] + 2 * max_descendant_distance(self.tree, n, self._data)).min()
+        cdef np.int64_t n
+        cdef np.int64_t num_points = self.tree.data.shape[0]
+        cdef np.int64_t num_nodes = self.tree.node_data.shape[0]
+
+        cdef np.ndarray[np.double_t, ndim=1] nn_dist
+        cdef np.int64_t[::1] point_indices
+        cdef np.int64_t[::1] idx_array = self.tree.idx_array
+
+        cdef np.double_t b1
+        cdef np.double_t b2
+
+        cdef np.int64_t child1
+        cdef np.int64_t child2
+
+        cdef NodeData_t node_info
+        cdef NodeData_t child1_info
+        cdef NodeData_t child2_info
+
+        nn_dist = self.tree.query(self.tree.data, 2)[0][:,1]
+
+        for n in range(num_nodes - 1, -1, -1):
+            node_info = self.tree.node_data[n]
+            if node_info.is_leaf:
+                point_indices = idx_array[node_info.idx_start:node_info.idx_end]
+                b1 = nn_dist[point_indices].max()
+                b2 = (nn_dist[point_indices] + 2 * node_info.radius).min()
                 self.bounds[n] = min(b1, b2)
             else:
-                child_nodes = children(self.tree, n)
-                lambda_children = np.array([max_descendant_distance(self.tree, c, self._data) for c in child_nodes])
-                b1 = self.bounds[child_nodes].max()
-                b2 = (self.bounds[child_nodes] + 2 * (max_descendant_distance(self.tree, n, self._data) - lambda_children)).min()
+                child1 = 2 * n + 1
+                child2 = 2 * n + 2
+                child1_info = self.tree.node_data[child1]
+                child2_info = self.tree.node_data[child2]
+                b1 = max(self.bounds[child1], self.bounds[child2])
+                b2 = min(self.bounds[child1] + 2 * (node_info.radius - child1_info.radius),
+                            self.bounds[child2] + 2 * (node_info.radius - child2_info.radius))
                 if b2 > 0:
                     self.bounds[n] = min(b1, b2)
                 else:
                     self.bounds[n] = b1
 
-        for n in range(1, self.tree.node_data.shape[0]):
+        for n in range(1, num_nodes):
             self.bounds[n] = min(self.bounds[n], self.bounds[(n - 1) // 2])
 
     cdef _initialize_components(self):
-        self.component_of_point = {n:n for n in range(self.tree.data.shape[0])}
-        self.component_of_node = {n:-(n+1) for n in range(self.tree.node_data.shape[0])}
-        self.candidate_neighbor = {n:None for n in range(self.tree.data.shape[0])}
-        self.candidate_point = {n:None for n in range(self.tree.data.shape[0])}
-        self.candidate_distance = {n:np.infty for n in range(self.tree.data.shape[0])}
 
-    cpdef score(self, node1, node2):
-        node_dist = min_dist_dual(self.tree, self.tree, node1, node2, self._centroid_distances)
-        if node_dist < self.bounds[node1]:
-            if self.component_of_node[node1] == self.component_of_node[node2] and \
-                    self.component_of_node[node1] >= 0 and self.component_of_node[node2] >= 0:
-                return np.infty
-            else:
-                return node_dist
-        else:
-            return np.infty
+        cdef np.int64_t n
+        cdef np.int64_t num_points = self.tree.data.shape[0]
+        cdef np.int64_t num_nodes = self.tree.node_data.shape[0]
 
-    cdef base_case(self, long long p, long long q, double point_distance):
+        for n in range(num_points):
+            self.component_of_point[n] = n
+            self.candidate_neighbor[n] = -1
+            self.candidate_point[n] = -1
+            self.candidate_distance[n] = DBL_MAX
 
-        cdef long long component
-
-        component = self.component_of_point[p]
-        if component != self.component_of_point[q] and \
-                point_distance < self.candidate_distance[component]:
-            self.candidate_distance[component] = point_distance
-            self.candidate_neighbor[component] = q
-            self.candidate_point[component] = p
-
-        return point_distance
+        for n in range(num_nodes):
+            self.component_of_node[n] = -(n+1)
 
     cdef update_components(self):
 
-        cdef long long source
-        cdef long long sink
+        cdef np.int64_t source
+        cdef np.int64_t sink
+        cdef np.int64_t c
+        cdef np.int64_t component
+        cdef np.int64_t n
+        cdef np.int64_t i
+        cdef np.int64_t p
+        cdef np.int64_t current_component
+        cdef np.int64_t child1
+        cdef np.int64_t child2
 
-        components = np.unique(self.component_union_find.components())
-        for component in components:
+        cdef NodeData_t node_info
+        cdef np.int64_t[::1] idx_array = self.tree.idx_array
+
+        for c in range(self.components.shape[0]):
+            component = self.components[c]
             source, sink = sorted([self.candidate_point[component],
                                    self.candidate_neighbor[component]])
-            if source is None or sink is None:
+            if source == -1 or sink == -1:
                 raise ValueError('Source or sink of edge is None!')
             self.edges.add((source, sink, self.candidate_distance[component]))
             self.component_union_find.union_(source, sink)
-            self.candidate_distance[component] = np.infty
+            self.candidate_distance[component] = DBL_MAX
 
         for n in range(self.tree.data.shape[0]):
             self.component_of_point[n] = self.component_union_find.find(n)
 
         for n in range(self.tree.node_data.shape[0] - 1, -1, -1):
-            if self.tree.node_data[n]['is_leaf']:
-                components_of_points = np.array([self.component_of_point[p] for p in points(self.tree, n, self._data, indices=True)[1]])
-                if np.all(components_of_points == components_of_points[0]):
-                    self.component_of_node[n] = components_of_points[0]
+            node_info = self.tree.node_data[n]
+            if node_info.is_leaf:
+                current_component = self.component_of_point[idx_array[node_info.idx_start]]
+                for i in range(node_info.idx_start + 1, node_info.idx_end):
+                    p = idx_array[i]
+                    if self.component_of_point[p] != current_component:
+                        break
+                else:
+                    self.component_of_node[n] = current_component
             else:
-                child1, child2 = children(self.tree, n)
-                if self.component_of_node[child1] == self. component_of_node[child2]:
+                child1 = 2 * n + 1
+                child2 = 2 * n + 2
+                if self.component_of_node[child1] == self.component_of_node[child2]:
                     self.component_of_node[n] = self.component_of_node[child1]
 
-        components = np.unique(self.component_union_find.components())
-        return components.shape[0]
+        self.components = np.unique(self.component_union_find.components())
+        return self.components.shape[0]
 
-    cdef void dual_tree_traversal(self, long long node1, long long node2):
+    cpdef int dual_tree_traversal(self, np.int64_t node1, np.int64_t node2):
 
-        cdef np.ndarray[np.double_t, ndim=2] distances
+        cdef np.ndarray[np.double_t, ndim=2] distances_arr
+        cdef np.double_t[:,::1] distances
 
-        cdef np.ndarray points1, point2
-        # cdef np.ndarray point_indices1, point_indices2
+        cdef np.ndarray[np.double_t, ndim=2] points1
+        cdef np.ndarray[np.double_t, ndim=2] points2
+        cdef np.int64_t[::1] point_indices1, point_indices2
 
         cdef long long i
         cdef long long j
@@ -231,32 +245,66 @@ cdef class BoruvkaAlgorithm (object):
 
         cdef double node_dist
 
-        if np.isinf(self.score(node1, node2)):
-            return
-        # node_dist = min_dist_dual(self.tree, self.tree, node1, node2, self._centroid_distances)
-        # if node_dist < self.bounds[node1]:
-        #     if self.component_of_node[node1] == self.component_of_node[node2] and \
-        #             self.component_of_node[node1] >= 0 and self.component_of_node[node2] >= 0:
-        #         return
-        # else:
-        #     return
+        cdef np.int64_t num_points = self.tree.data.shape[0]
+        cdef np.int64_t num_nodes = self.tree.node_data.shape[0]
+        cdef np.int64_t[::1] idx_array = self.tree.idx_array
+
+        cdef NodeData_t node1_info = self.tree.node_data[node1]
+        cdef NodeData_t node2_info = self.tree.node_data[node2]
+
+        cdef np.int64_t *component_of_point_ptr = <np.int64_t *> &self.component_of_point[0]
+        cdef np.double_t *candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]
+
+        cdef np.int64_t component1
+        cdef np.int64_t component2
+
+        cdef np.int64_t leaf_size = node1_info.idx_end - node1_info.idx_start
+
+        node_dist = min_dist_dual(node1_info.radius, node2_info.radius,
+                                    node1, node2, (<np.double_t [:num_nodes, :num_nodes:1]>
+                                                    (<np.double_t *> self._centroid_distances.data)))
+
+        if node_dist < self.bounds[node1]:
+            if self.component_of_node[node1] == self.component_of_node[node2] and \
+                    self.component_of_node[node1] >= 0:
+                return 0
+        else:
+            return 0
 
 
-        if self.tree.node_data[node1]['is_leaf'] and self.tree.node_data[node2]['is_leaf']:
-            points1, point_indices1 = points(self.tree, node1, self._data, indices=True)
-            points2, point_indices2 = points(self.tree, node2, self._data, indices=True)
+        if node1_info.is_leaf and node2_info.is_leaf:
 
-            distances = cdist(points1, points2)
+            point_indices1 = idx_array[node1_info.idx_start:node1_info.idx_end]
+            point_indices2 = idx_array[node2_info.idx_start:node2_info.idx_end]
+
+            points1 = self._data[point_indices1]
+            points2 = self._data[point_indices2]
+
+            distances_arr = self.dist.pairwise(points1, points2)
+            distances = (<np.double_t [:leaf_size, :leaf_size:1]> (<np.double_t *> distances_arr.data))
+
             for i in range(point_indices1.shape[0]):
                 for j in range(point_indices2.shape[0]):
-                    if distances[i, j] > 0:
-                        p = point_indices1[i]
-                        q = point_indices2[j]
-                        self.base_case(p, q, distances[i, j])
+                    p = point_indices1[i]
+                    q = point_indices2[j]
+                    if p != q:
+                        component1 = component_of_point_ptr[p]
+                        component2 = component_of_point_ptr[q]
+                        if component1 != component2:
+                            if distances[i, j] < candidate_distance_ptr[component1]:
+                                candidate_distance_ptr[component1] = distances[i, j]
+                                self.candidate_neighbor[component1] = q
+                                self.candidate_point[component1] = p
+
+        elif node1_info.is_leaf or (not node2_info.is_leaf
+                                    and node2_info.radius > node1_info.radius):
+            self.dual_tree_traversal(node1, 2 * node2 + 1)
+            self.dual_tree_traversal(node1, 2 * node2 + 2)
         else:
-            for child1 in children(self.tree, node1):
-                for child2 in children(self.tree, node2):
-                    self.dual_tree_traversal(child1, child2)
+            self.dual_tree_traversal(2 * node1 + 1, node2)
+            self.dual_tree_traversal(2 * node1 + 2, node2)
+
+        return 0
 
     cpdef spanning_tree(self):
         num_components = self.tree.data.shape[0]
