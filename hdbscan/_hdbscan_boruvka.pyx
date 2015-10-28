@@ -1,4 +1,4 @@
-#cython: boundscheck=False, nonecheck=False, wraparound=False
+#cython: boundscheck=False, nonecheck=False, wraparound=False, profile=True
 # Minimum spanning tree single linkage implementation for hdbscan
 # Authors: Leland McInnes
 # License: 3-clause BSD
@@ -59,7 +59,7 @@ cdef class BoruvkaUnionFind (object):
     cpdef np.ndarray[np.int64_t, ndim=1] components(self):
         return self._data_arr.T[0]
 
-cdef class BoruvkaAlgorithm (object):
+cdef class BallTreeBoruvkaAlgorithm (object):
 
     cdef object tree
     cdef object dist
@@ -139,7 +139,7 @@ cdef class BoruvkaAlgorithm (object):
         cdef NodeData_t child1_info
         cdef NodeData_t child2_info
 
-        knn_dist = self.tree.query(self.tree.data, max(2, self.min_samples))[0]
+        knn_dist = self.tree.query(self.tree.data, max(2, self.min_samples), dualtree=True)[0]
         nn_dist = knn_dist[:, 1]
         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
         self.core_distance = (<np.double_t [:num_points:1]> (<np.double_t *> self.core_distance_arr.data))
@@ -313,7 +313,12 @@ cdef class BoruvkaAlgorithm (object):
         return 0
 
     cpdef spanning_tree(self):
+
+        cdef np.int64_t num_components
+        cdef np.int64_t num_nodes
+
         num_components = self.tree.data.shape[0]
+        num_nodes = self.tree.node_data.shape[0]
         while num_components > 1:
             self.dual_tree_traversal(0, 0)
             num_components = self.update_components()
