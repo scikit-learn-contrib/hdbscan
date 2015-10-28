@@ -7,7 +7,7 @@ import numpy as np
 cimport numpy as np
 
 from scipy.spatial.distance import pdist, squareform
-from sklearn.neighbors import KDTree
+from sklearn.neighbors import KDTree, BallTree
 import gc
 
 def mutual_reachability(distance_matrix, min_points=5, alpha=1.0):
@@ -74,10 +74,27 @@ def kdtree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5, al
                       core_distances.T, stage1.T).T
     return result
 
+def balltree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5, alpha=1.0):
+    dim = distance_matrix.shape[0]
+    min_points = min(dim - 1, min_points)
+
+    tree = BallTree(X, metric=metric)
+
+    core_distances = tree.query(X, k=min_points)[0][:,-1]
+
+    if alpha != 1.0:
+        distance_matrix = distance_matrix / alpha
+
+    stage1 = np.where(core_distances > distance_matrix,
+                      core_distances, distance_matrix)
+    result = np.where(core_distances > stage1.T,
+                      core_distances.T, stage1.T).T
+    return result
+
 
 cpdef np.ndarray[np.double_t, ndim=1] kdtree_pdist_mutual_reachability(np.ndarray X, object metric,
                             long long p=2, long long min_points=5, alpha=1.0):
-    
+
     cdef long long dim
     cdef object tree
     cdef np.ndarray[np.double_t, ndim=1] core_distances
@@ -87,11 +104,51 @@ cpdef np.ndarray[np.double_t, ndim=1] kdtree_pdist_mutual_reachability(np.ndarra
 
     dim = X.shape[0]
     min_points = min(dim - 1, min_points)
-    
+
     if metric == 'minkowski':
         tree = KDTree(X, metric=metric, p=p)
     else:
         tree = KDTree(X, metric=metric)
+
+    core_distances = tree.query(X, k=min_points)[0][:,-1]
+
+    del tree
+    gc.collect()
+
+    dists = pdist(X, metric=metric, p=p)
+
+    if alpha != 1.0:
+        dists /= alpha
+
+    result_pos = 0
+    for i in range(dim):
+        for j in range(i + 1, dim):
+            if core_distances[i] > core_distances[j]:
+                if core_distances[i] > dists[result_pos]:
+                    dists[result_pos] = core_distances[i]
+
+            else:
+                if core_distances[j] > dists[result_pos]:
+                    dists[result_pos] = core_distances[j]
+
+            result_pos += 1
+
+    return dists
+
+cpdef np.ndarray[np.double_t, ndim=1] balltree_pdist_mutual_reachability(np.ndarray X, object metric,
+                            long long p=2, long long min_points=5, alpha=1.0):
+
+    cdef long long dim
+    cdef object tree
+    cdef np.ndarray[np.double_t, ndim=1] core_distances
+    cdef np.ndarray[np.double_t, ndim=1] dists
+    cdef long long i
+    cdef long long result_pos
+
+    dim = X.shape[0]
+    min_points = min(dim - 1, min_points)
+
+    tree = BallTree(X, metric=metric)
 
     core_distances = tree.query(X, k=min_points)[0][:,-1]
 
