@@ -91,6 +91,8 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef public np.int64_t[::1] candidate_point
     cdef public np.double_t[::1] candidate_distance
     cdef public np.double_t[:,::1] centroid_distances
+    cdef public np.int64_t[::1] idx_array
+    cdef public NodeData_t[::1] node_data
     cdef BoruvkaUnionFind component_union_find
     cdef set edges
 
@@ -135,6 +137,9 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         self.component_union_find = BoruvkaUnionFind(self.num_points)
         self.edges = set([])
 
+        self.idx_array = tree.idx_array
+        self.node_data = tree.node_data
+
         self.bounds = (<np.double_t[:self.num_nodes:1]> (<np.double_t *> self.bounds_arr.data))
         self.component_of_point = (<np.int64_t[:self.num_points:1]> (<np.int64_t *> self.component_of_point_arr.data))
         self.component_of_node = (<np.int64_t[:self.num_nodes:1]> (<np.int64_t *> self.component_of_node_arr.data))
@@ -167,7 +172,6 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.int64_t, ndim=1] nn_indices_arr
         cdef np.int64_t * nn_indices
         cdef np.int64_t[::1] point_indices
-        cdef np.int64_t[::1] idx_array = self.tree.idx_array
 
         cdef np.double_t b1
         cdef np.double_t b2
@@ -190,8 +194,9 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         for n in range(self.num_nodes - 1, -1, -1):
             node_info = self.tree.node_data[n]
             if node_info.is_leaf:
-                point_indices = idx_array[node_info.idx_start:node_info.idx_end]
-                b1 = nn_dist[point_indices].max()                # b1 = self.core_distance_arr[point_indices].max()
+                point_indices = self.idx_array[node_info.idx_start:node_info.idx_end]
+                b1 = nn_dist[point_indices].max()
+                # b1 = self.core_distance_arr[point_indices].max()
                 b2 = (nn_dist[point_indices] + 2 * node_info.radius).min()
                 self.bounds[n] = min(b1, b2)
             else:
@@ -248,7 +253,6 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         cdef np.int64_t child2
 
         cdef NodeData_t node_info
-        cdef np.int64_t[::1] idx_array = self.tree.idx_array
 
         for c in range(self.components.shape[0]):
             component = self.components[c]
@@ -268,11 +272,11 @@ cdef class BallTreeBoruvkaAlgorithm (object):
             self.component_of_point[n] = self.component_union_find.find(n)
 
         for n in range(self.tree.node_data.shape[0] - 1, -1, -1):
-            node_info = self.tree.node_data[n]
+            node_info = self.node_data[n]
             if node_info.is_leaf:
-                current_component = self.component_of_point[idx_array[node_info.idx_start]]
+                current_component = self.component_of_point[self.idx_array[node_info.idx_start]]
                 for i in range(node_info.idx_start + 1, node_info.idx_end):
-                    p = idx_array[i]
+                    p = self.idx_array[i]
                     if self.component_of_point[p] != current_component:
                         break
                 else:
@@ -306,15 +310,11 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
         cdef double node_dist
 
-        cdef np.int64_t[::1] idx_array = self.tree.idx_array
-
-        cdef NodeData_t node1_info = self.tree.node_data[node1]
-        cdef NodeData_t node2_info = self.tree.node_data[node2]
+        cdef NodeData_t node1_info = self.node_data[node1]
+        cdef NodeData_t node2_info = self.node_data[node2]
 
         cdef np.int64_t component1
         cdef np.int64_t component2
-
-        cdef np.int64_t n_features = self.tree.data.shape[1]
 
         cdef np.double_t *raw_data = (<np.double_t *> &self._raw_data[0,0])
         cdef np.double_t d
@@ -334,8 +334,8 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
         if node1_info.is_leaf and node2_info.is_leaf:
 
-            point_indices1 = idx_array[node1_info.idx_start:node1_info.idx_end]
-            point_indices2 = idx_array[node2_info.idx_start:node2_info.idx_end]
+            point_indices1 = self.idx_array[node1_info.idx_start:node1_info.idx_end]
+            point_indices2 = self.idx_array[node2_info.idx_start:node2_info.idx_end]
 
             #points1 = self._data[point_indices1]
             #points2 = self._data[point_indices2]
@@ -357,7 +357,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
                         d = euclidean_dist(&raw_data[self.num_features * p],
                                            &raw_data[self.num_features * q],
-                                           n_features)
+                                           self.num_features)
 
                         # mr_dist = max(distances[i, j], self.core_distance_ptr[p], self.core_distance_ptr[q])
                         mr_dist = max(d, self.core_distance_ptr[p], self.core_distance_ptr[q])
