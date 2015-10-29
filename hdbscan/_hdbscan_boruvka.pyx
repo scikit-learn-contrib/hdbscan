@@ -12,6 +12,7 @@ from libc.float cimport DBL_MAX
 from libc.math cimport fabs, sqrt, exp, cos, pow
 
 # from scipy.spatial.distance import cdist, pdist, squareform
+
 import sklearn.neighbors.dist_metrics as dist_metrics
 
 cdef inline np.double_t euclidean_dist(np.double_t* x1, np.double_t* x2,
@@ -29,6 +30,7 @@ cdef struct NodeData_t:
     np.int64_t idx_end
     np.int64_t is_leaf
     np.double_t radius
+
 
 cdef inline double min_dist_dual(np.double_t radius1,
                                  np.double_t radius2,
@@ -77,6 +79,10 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef np.ndarray _data
     cdef np.double_t[:, ::1] _raw_data
     cdef np.int64_t min_samples
+    cdef np.int64_t num_points
+    cdef np.int64_t num_nodes
+    cdef np.int64_t num_features
+
     cdef public np.double_t[::1] core_distance
     cdef public np.double_t[::1] bounds
     cdef public np.int64_t[::1] component_of_point
@@ -85,8 +91,16 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef public np.int64_t[::1] candidate_point
     cdef public np.double_t[::1] candidate_distance
     cdef public np.double_t[:,::1] centroid_distances
-    cdef object component_union_find
+    cdef BoruvkaUnionFind component_union_find
     cdef set edges
+
+    cdef np.int64_t *component_of_point_ptr
+    cdef np.int64_t *component_of_node_ptr
+    cdef np.double_t *candidate_distance_ptr
+    cdef np.int64_t *candidate_neighbor_ptr
+    cdef np.int64_t *candidate_point_ptr
+    cdef np.double_t *core_distance_ptr
+    cdef np.double_t *bounds_ptr
 
     cdef np.ndarray components
     cdef np.ndarray core_distance_arr
@@ -100,8 +114,9 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
     def __init__(self, tree, min_samples=5, metric='euclidean', **kwargs):
 
-        cdef np.int64_t num_points = tree.data.shape[0]
-        cdef np.int64_t num_nodes = tree.node_data.shape[0]
+        self.num_points = tree.data.shape[0]
+        self.num_features = tree.data.shape[1]
+        self.num_nodes = tree.node_data.shape[0]
 
         self.tree = tree
         self._data = np.array(tree.data)
@@ -110,34 +125,41 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
         self.dist = dist_metrics.DistanceMetric.get_metric(metric, **kwargs)
 
-        self.components = np.arange(num_points)
-        self.bounds_arr = np.empty(num_nodes, np.double)
-        self.component_of_point_arr = np.empty(num_points, dtype=np.int64)
-        self.component_of_node_arr = np.empty(num_nodes, dtype=np.int64)
-        self.candidate_neighbor_arr = np.empty(num_points, dtype=np.int64)
-        self.candidate_point_arr = np.empty(num_points, dtype=np.int64)
-        self.candidate_distance_arr = np.empty(num_points, dtype=np.double)
-        self.component_union_find = BoruvkaUnionFind(num_points)
+        self.components = np.arange(self.num_points)
+        self.bounds_arr = np.empty(self.num_nodes, np.double)
+        self.component_of_point_arr = np.empty(self.num_points, dtype=np.int64)
+        self.component_of_node_arr = np.empty(self.num_nodes, dtype=np.int64)
+        self.candidate_neighbor_arr = np.empty(self.num_points, dtype=np.int64)
+        self.candidate_point_arr = np.empty(self.num_points, dtype=np.int64)
+        self.candidate_distance_arr = np.empty(self.num_points, dtype=np.double)
+        self.component_union_find = BoruvkaUnionFind(self.num_points)
         self.edges = set([])
 
-        self.bounds = (<np.double_t[:num_nodes:1]> (<np.double_t *> self.bounds_arr.data))
-        self.component_of_point = (<np.int64_t[:num_points:1]> (<np.int64_t *> self.component_of_point_arr.data))
-        self.component_of_node = (<np.int64_t[:num_nodes:1]> (<np.int64_t *> self.component_of_node_arr.data))
-        self.candidate_neighbor = (<np.int64_t[:num_points:1]> (<np.int64_t *> self.candidate_neighbor_arr.data))
-        self.candidate_point = (<np.int64_t[:num_points:1]> (<np.int64_t *> self.candidate_point_arr.data))
-        self.candidate_distance = (<np.double_t[:num_points:1]> (<np.double_t *> self.candidate_distance_arr.data))
+        self.bounds = (<np.double_t[:self.num_nodes:1]> (<np.double_t *> self.bounds_arr.data))
+        self.component_of_point = (<np.int64_t[:self.num_points:1]> (<np.int64_t *> self.component_of_point_arr.data))
+        self.component_of_node = (<np.int64_t[:self.num_nodes:1]> (<np.int64_t *> self.component_of_node_arr.data))
+        self.candidate_neighbor = (<np.int64_t[:self.num_points:1]> (<np.int64_t *> self.candidate_neighbor_arr.data))
+        self.candidate_point = (<np.int64_t[:self.num_points:1]> (<np.int64_t *> self.candidate_point_arr.data))
+        self.candidate_distance = (<np.double_t[:self.num_points:1]> (<np.double_t *> self.candidate_distance_arr.data))
 
         self._centroid_distances_arr = self.dist.pairwise(tree.node_bounds[0])
-        self.centroid_distances = (<np.double_t [:num_nodes, :num_nodes:1]> (<np.double_t *> self._centroid_distances_arr.data))
+        self.centroid_distances = (<np.double_t [:self.num_nodes, :self.num_nodes:1]> (<np.double_t *> self._centroid_distances_arr.data))
 
         self._initialize_components()
         self._compute_bounds()
 
+        # Set up fast pointer access to arrays
+        self.component_of_point_ptr = <np.int64_t *> &self.component_of_point[0]
+        self.component_of_node_ptr = <np.int64_t *> &self.component_of_node[0]
+        self.candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]
+        self.candidate_neighbor_ptr = <np.int64_t *> &self.candidate_neighbor[0]
+        self.candidate_point_ptr = <np.int64_t *> &self.candidate_point[0]
+        self.core_distance_ptr = <np.double_t *> &self.core_distance[0]
+        self.bounds_ptr = <np.double_t *> &self.bounds[0]
+
     cdef _compute_bounds(self):
 
         cdef np.int64_t n
-        cdef np.int64_t num_points = self.tree.data.shape[0]
-        cdef np.int64_t num_nodes = self.tree.node_data.shape[0]
 
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.double_t, ndim=1] nn_dist
@@ -163,9 +185,9 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         nn_indices_arr = knn_indices[: ,1].copy()
         nn_indices = (<np.int64_t *> nn_indices_arr.data)
         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
-        self.core_distance = (<np.double_t [:num_points:1]> (<np.double_t *> self.core_distance_arr.data))
+        self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
 
-        for n in range(num_nodes - 1, -1, -1):
+        for n in range(self.num_nodes - 1, -1, -1):
             node_info = self.tree.node_data[n]
             if node_info.is_leaf:
                 point_indices = idx_array[node_info.idx_start:node_info.idx_end]
@@ -185,11 +207,11 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                 else:
                     self.bounds[n] = b1
 
-        for n in range(1, num_nodes):
+        for n in range(1, self.num_nodes):
             self.bounds[n] = min(self.bounds[n], self.bounds[(n - 1) // 2])
 
         # Since we already computed nearest neighbors, start populating components
-        for n in range(num_points):
+        for n in range(self.num_points):
             self.candidate_point[n] = n
             self.candidate_neighbor[n] = nn_indices[n]
             mr_dist = max(nn_dist[n], self.core_distance[n], self.core_distance[nn_indices[n]])
@@ -200,16 +222,14 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef _initialize_components(self):
 
         cdef np.int64_t n
-        cdef np.int64_t num_points = self.tree.data.shape[0]
-        cdef np.int64_t num_nodes = self.tree.node_data.shape[0]
 
-        for n in range(num_points):
+        for n in range(self.num_points):
             self.component_of_point[n] = n
             self.candidate_neighbor[n] = -1
             self.candidate_point[n] = -1
             self.candidate_distance[n] = DBL_MAX
 
-        for n in range(num_nodes):
+        for n in range(self.num_nodes):
             self.component_of_node[n] = -(n+1)
 
     cdef update_components(self):
@@ -271,8 +291,8 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         #cdef np.ndarray[np.double_t, ndim=2] distances_arr
         #cdef np.double_t[:,::1] distances
 
-        cdef np.ndarray[np.double_t, ndim=2] points1
-        cdef np.ndarray[np.double_t, ndim=2] points2
+        # cdef np.ndarray[np.double_t, ndim=2] points1
+        # cdef np.ndarray[np.double_t, ndim=2] points2
         cdef np.int64_t[::1] point_indices1, point_indices2
 
         cdef long long i
@@ -286,18 +306,10 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
         cdef double node_dist
 
-        cdef np.int64_t num_points = self.tree.data.shape[0]
-        cdef np.int64_t num_nodes = self.tree.node_data.shape[0]
         cdef np.int64_t[::1] idx_array = self.tree.idx_array
 
         cdef NodeData_t node1_info = self.tree.node_data[node1]
         cdef NodeData_t node2_info = self.tree.node_data[node2]
-
-        cdef np.int64_t *component_of_point_ptr = <np.int64_t *> &self.component_of_point[0]
-        cdef np.double_t *candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]
-        cdef np.int64_t *candidate_neighbor_ptr = <np.int64_t *> &self.candidate_neighbor[0]
-        cdef np.int64_t *candidate_point_ptr = <np.int64_t *> &self.candidate_point[0]
-        cdef np.double_t *core_distance_ptr = <np.double_t *> &self.core_distance[0]
 
         cdef np.int64_t component1
         cdef np.int64_t component2
@@ -312,9 +324,9 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         node_dist = min_dist_dual(node1_info.radius, node2_info.radius,
                                     node1, node2, self.centroid_distances)
 
-        if node_dist < self.bounds[node1]:
-            if self.component_of_node[node1] == self.component_of_node[node2] and \
-                    self.component_of_node[node1] >= 0:
+        if node_dist < self.bounds_ptr[node1]:
+            if self.component_of_node_ptr[node1] == self.component_of_node_ptr[node2] and \
+                    self.component_of_node_ptr[node1] >= 0:
                 return 0
         else:
             return 0
@@ -325,8 +337,8 @@ cdef class BallTreeBoruvkaAlgorithm (object):
             point_indices1 = idx_array[node1_info.idx_start:node1_info.idx_end]
             point_indices2 = idx_array[node2_info.idx_start:node2_info.idx_end]
 
-            points1 = self._data[point_indices1]
-            points2 = self._data[point_indices2]
+            #points1 = self._data[point_indices1]
+            #points2 = self._data[point_indices2]
 
             #distances_arr = self.dist.pairwise(points1, points2)
             #distances = (<np.double_t [:points1.shape[0], :points2.shape[0]:1]> (<np.double_t *> distances_arr.data))
@@ -334,25 +346,25 @@ cdef class BallTreeBoruvkaAlgorithm (object):
             for i in range(point_indices1.shape[0]):
 
                 p = point_indices1[i]
-                component1 = component_of_point_ptr[p]
+                component1 = self.component_of_point_ptr[p]
 
                 for j in range(point_indices2.shape[0]):
 
                     q = point_indices2[j]
-                    component2 = component_of_point_ptr[q]
+                    component2 = self.component_of_point_ptr[q]
 
                     if component1 != component2:
 
-                        d = euclidean_dist(&raw_data[n_features * p],
-                                           &raw_data[n_features * q],
+                        d = euclidean_dist(&raw_data[self.num_features * p],
+                                           &raw_data[self.num_features * q],
                                            n_features)
 
-                        # mr_dist = max(distances[i, j], core_distance_ptr[p], core_distance_ptr[q])
-                        mr_dist = max(d, core_distance_ptr[p], core_distance_ptr[q])
-                        if mr_dist < candidate_distance_ptr[component1]:
-                            candidate_distance_ptr[component1] = mr_dist
-                            candidate_neighbor_ptr[component1] = q
-                            candidate_point_ptr[component1] = p
+                        # mr_dist = max(distances[i, j], self.core_distance_ptr[p], self.core_distance_ptr[q])
+                        mr_dist = max(d, self.core_distance_ptr[p], self.core_distance_ptr[q])
+                        if mr_dist < self.candidate_distance_ptr[component1]:
+                            self.candidate_distance_ptr[component1] = mr_dist
+                            self.candidate_neighbor_ptr[component1] = q
+                            self.candidate_point_ptr[component1] = p
 
         elif node1_info.is_leaf or (not node2_info.is_leaf
                                     and node2_info.radius > node1_info.radius):
