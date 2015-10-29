@@ -1,4 +1,4 @@
-#cython: boundscheck=False, nonecheck=False, wraparound=False
+#cython: boundscheck=False, nonecheck=False, wraparound=False, initializedcheck=False
 # Minimum spanning tree single linkage implementation for hdbscan
 # Authors: Leland McInnes
 # License: 3-clause BSD
@@ -290,7 +290,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         self.components = np.unique(self.component_union_find.components())
         return self.components.shape[0]
 
-    cpdef int dual_tree_traversal(self, np.int64_t node1, np.int64_t node2):
+    cdef int dual_tree_traversal(self, np.int64_t node1, np.int64_t node2):
 
         #cdef np.ndarray[np.double_t, ndim=2] distances_arr
         #cdef np.double_t[:,::1] distances
@@ -320,6 +320,12 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         cdef np.double_t d
 
         cdef np.double_t mr_dist
+
+        cdef np.int64_t left
+        cdef np.int64_t right
+        cdef np.double_t left_dist
+        cdef np.double_t right_dist
+
 
         node_dist = min_dist_dual(node1_info.radius, node2_info.radius,
                                     node1, node2, self.centroid_distances)
@@ -368,11 +374,47 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
         elif node1_info.is_leaf or (not node2_info.is_leaf
                                     and node2_info.radius > node1_info.radius):
-            self.dual_tree_traversal(node1, 2 * node2 + 1)
-            self.dual_tree_traversal(node1, 2 * node2 + 2)
+
+            left = 2 * node2 + 1
+            right = 2 * node2 + 2
+
+            node2_info = self.node_data[left]
+
+            left_dist = min_dist_dual(node1_info.radius, node2_info.radius,
+                                      node1, left, self.centroid_distances)
+
+            node2_info = self.node_data[right]
+
+            right_dist = min_dist_dual(node1_info.radius, node2_info.radius,
+                                       node1, right, self.centroid_distances)
+
+            if left_dist < right_dist:
+                self.dual_tree_traversal(node1, left)
+                self.dual_tree_traversal(node1, right)
+            else:
+                self.dual_tree_traversal(node1, right)
+                self.dual_tree_traversal(node1, left)
         else:
-            self.dual_tree_traversal(2 * node1 + 1, node2)
-            self.dual_tree_traversal(2 * node1 + 2, node2)
+            left = 2 * node1 + 1
+            right = 2 * node1 + 2
+
+            node1_info = self.node_data[left]
+
+            left_dist = min_dist_dual(node1_info.radius, node2_info.radius,
+                                      left, node2, self.centroid_distances)
+
+            node1_info = self.node_data[right]
+
+            right_dist = min_dist_dual(node1_info.radius, node2_info.radius,
+                                       right, node2, self.centroid_distances)
+
+            if left_dist < right_dist:
+                self.dual_tree_traversal(left, node2)
+                self.dual_tree_traversal(right, node2)
+            else:
+                self.dual_tree_traversal(right, node2)
+                self.dual_tree_traversal(left, node2)
+
 
         return 0
 
