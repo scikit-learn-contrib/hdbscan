@@ -40,7 +40,7 @@ from ._hdbscan_reachability import (mutual_reachability,
 #                                    balltree_mutual_reachability
                                    )
 
-from ._hdbscan_boruvka import BallTreeBoruvkaAlgorithm
+from ._hdbscan_boruvka import KDTreeBoruvkaAlgorithm, BallTreeBoruvkaAlgorithm
 
 from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 
@@ -136,6 +136,18 @@ def _hdbscan_prims_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
 
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (None,)
 
+def _hdbscan_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
+                            metric='minkowski', p=2,
+                            algorithm='best', gen_min_span_tree=False):
+
+    dim = X.shape[0]
+    min_samples = min(dim - 1, min_samples)
+
+    tree = KDTree(X, metric=metric, leaf_size=100)
+    alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric)
+    min_spanning_tree = alg.spanning_tree()
+
+    return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (min_spanning_tree,)
 
 def _hdbscan_boruvka_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                               metric='minkowski', p=2,
@@ -262,7 +274,11 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                                            min_samples, alpha, metric,
                                            p, gen_min_span_tree)
         elif algorithm == 'boruvka_kdtree':
-            raise ValueError('Dual Tree Boruvka for KDTrees is not yet implemented')
+            if metric not in BallTree.valid_metrics:
+                raise ValueError("Cannot use Boruvka with KDTree for this metric!")
+            return _hdbscan_boruvka_kdtree(X, min_cluster_size,
+                                           min_samples, alpha, metric,
+                                           p, gen_min_span_tree)
         elif algorithm == 'boruvka_balltree':
             if metric not in BallTree.valid_metrics:
                 raise ValueError("Cannot use Boruvka with BallTree for this metric!")
@@ -276,16 +292,16 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         return _hdbscan_generic(X, min_cluster_size, min_samples, alpha,
                                 metric, p, gen_min_span_tree)
     elif metric in KDTree.valid_metrics:
-        # Need better heuristic on this
-        if X.shape[0] < 50000 or X.shape[1] > 5:
+        # Need heuristic to decide when to go to boruvka; still debugging for now
+        if True:
             return _hdbscan_prims_kdtree(X, min_cluster_size, min_samples, alpha,
                                          metric, p, gen_min_span_tree)
         else:
-            return _hdbscan_boruvka_balltree(X, min_cluster_size, min_samples, alpha,
-                                             metric, p, gen_min_span_tree)
+            return _hdbscan_boruvka_kdtree(X, min_cluster_size, min_samples, alpha,
+                                           metric, p, gen_min_span_tree)
     else: # Metric is a valid BallTree metric
-        # Need better heuristic on this
-        if X.shape[0] < 20000 or (X.shape[0] < 60000 and X.shape[1] > 4):
+        # Need heuristic to decide when to go to boruvka; still debugging for now
+        if True:
             return _hdbscan_prims_kdtree(X, min_cluster_size, min_samples, alpha,
                                          metric, p, gen_min_span_tree)
         else:
