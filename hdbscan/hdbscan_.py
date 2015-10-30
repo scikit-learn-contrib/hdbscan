@@ -41,6 +41,7 @@ from ._hdbscan_reachability import (mutual_reachability,
                                    )
 
 from ._hdbscan_boruvka import KDTreeBoruvkaAlgorithm, BallTreeBoruvkaAlgorithm
+from dist_metrics import DistanceMetric
 
 from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 
@@ -110,8 +111,10 @@ def _hdbscan_prims_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
 
     tree = KDTree(X, metric=metric)
 
+    dist_metric = DistanceMetric.get_metric(metric)
+
     core_distances = tree.query(X, k=min_samples)[0][:,-1]
-    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, metric, p)
+    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric)
 
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (None,)
 
@@ -131,32 +134,34 @@ def _hdbscan_prims_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
 
     tree = BallTree(X, metric=metric)
 
+    dist_metric = DistanceMetric.get_metric(metric)
+
     core_distances = tree.query(X, k=min_samples)[0][:,-1]
-    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, metric, p)
+    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric)
 
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (None,)
 
 def _hdbscan_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-                            metric='minkowski', p=2,
+                            metric='minkowski', p=2, leaf_size=10,
                             algorithm='best', gen_min_span_tree=False):
 
     dim = X.shape[0]
     min_samples = min(dim - 1, min_samples)
 
-    tree = KDTree(X, metric=metric, leaf_size=100)
+    tree = KDTree(X, metric=metric, leaf_size=leaf_size)
     alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric)
     min_spanning_tree = alg.spanning_tree()
 
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (min_spanning_tree,)
 
 def _hdbscan_boruvka_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-                              metric='minkowski', p=2,
+                              metric='minkowski', p=2, leaf_size=30,
                               algorithm='best', gen_min_span_tree=False):
 
     dim = X.shape[0]
     min_samples = min(dim - 1, min_samples)
 
-    tree = BallTree(X, metric=metric, leaf_size=100)
+    tree = BallTree(X, metric=metric, leaf_size=leaf_size)
     alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric)
     min_spanning_tree = alg.spanning_tree()
 

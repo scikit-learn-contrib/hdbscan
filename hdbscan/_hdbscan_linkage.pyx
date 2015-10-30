@@ -11,6 +11,8 @@ cimport numpy as np
 from libc.float cimport DBL_MAX
 
 from scipy.spatial.distance import cdist, pdist
+from dist_metrics import DistanceMetric
+from dist_metrics cimport DistanceMetric
 
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
                                np.ndarray[np.double_t, ndim=2] distance_matrix):
@@ -154,6 +156,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist_old(
     cdef long long i
     cdef long long j
     cdef long long dim
+    cdef long long num_features
 
     cdef double current_node_core_distance
     cdef double right_value
@@ -226,19 +229,19 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist_old(
     return result_arr
 
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
-                               np.ndarray raw_data,
+                               np.ndarray[np.double_t, ndim=2] raw_data,
                                np.ndarray[np.double_t, ndim=1] core_distances,
-                               object metric,
-                               int p):
+                               DistanceMetric dist_metric):
 
     cdef np.ndarray[np.double_t, ndim=1] current_distances_arr
-    cdef np.ndarray[np.double_t, ndim=1] left_arr
+    # cdef np.ndarray[np.double_t, ndim=1] left_arr
     cdef np.ndarray[np.int8_t, ndim=1] in_tree_arr
     cdef np.ndarray[np.double_t, ndim=2] result_arr
 
     cdef np.double_t * current_distances
     cdef np.double_t * current_core_distances
-    cdef np.double_t * left
+    cdef np.double_t * raw_data_ptr
+    # cdef np.double_t * left
     cdef np.int8_t * in_tree
     cdef np.double_t[:, ::1] raw_data_view
     cdef np.double_t[:, ::1] result
@@ -250,6 +253,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
     cdef long long i
     cdef long long j
     cdef long long dim
+    cdef long long num_features
 
     cdef double current_node_core_distance
     cdef double right_value
@@ -258,6 +262,10 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
     cdef double new_distance
 
     dim = raw_data.shape[0]
+    num_features = raw_data.shape[1]
+
+    raw_data_view = (<np.double_t [:raw_data.shape[0], :raw_data.shape[1]:1]> (<np.double_t *> raw_data.data))
+    raw_data_ptr = (<np.double_t *> &raw_data_view[0, 0])
 
     result_arr = np.zeros((dim - 1, 3))
     in_tree_arr = np.zeros(dim, dtype=np.int8)
@@ -268,17 +276,17 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
     in_tree = (<np.int8_t *> in_tree_arr.data)
     current_distances = (<np.double_t *> current_distances_arr.data)
     current_core_distances = (<np.double_t *> core_distances.data)
-    raw_data_view = (<np.double_t [:raw_data.shape[0], :raw_data.shape[1]:1]> (<np.double_t *> raw_data.data))
+    #raw_data_view = (<np.double_t [:raw_data.shape[0], :raw_data.shape[1]:1]> (<np.double_t *> raw_data.data))
 
     for i in range(1, dim):
 
         in_tree[current_node] = 1
 
-        left_arr = cdist((raw_data_view[current_node],), raw_data, metric=metric, p=p)[0]
+        # left_arr = cdist((raw_data_view[current_node],), raw_data, metric=metric, p=p)[0]
 
         current_node_core_distance = current_core_distances[current_node]
 
-        left = (<np.double_t *> left_arr.data)
+        # left = (<np.double_t *> left_arr.data)
 
         new_distance = DBL_MAX
         new_node = 0
@@ -288,7 +296,10 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
                 continue
 
             right_value = current_distances[j]
-            left_value = left[j]
+            # left_value = left[j]
+            left_value = dist_metric.dist(&raw_data_ptr[num_features * current_node],
+                                          &raw_data_ptr[num_features * j],
+                                          num_features)
             core_value = core_distances[j]
             if current_node_core_distance > right_value or core_value > right_value or left_value > right_value:
                 if right_value < new_distance:

@@ -24,6 +24,9 @@ _hdbscan_boruvka = Extension('hdbscan._hdbscan_boruvka',
 _hdbscan_reachability = Extension('hdbscan._hdbscan_reachability',
                                   sources=['hdbscan/_hdbscan_reachability.pyx'],
                                   include_dirs=[numpy.get_include()])
+dist_metrics = Extension('hdbscan.dist_metrics',
+                         sources=['hdbscan/dist_metrics.pyx'],
+                         include_dirs=[numpy.get_include()])
 
 def readme():
     with open('README.rst') as readme_file:
@@ -61,7 +64,8 @@ configuration = {
     'ext_modules' : [_hdbscan_tree,
                      _hdbscan_linkage,
                      _hdbscan_boruvka,
-                     _hdbscan_reachability],
+                     _hdbscan_reachability,
+                     dist_metrics],
     'cmdclass' : {'build_ext' : build_ext},
     'test_suite' : 'nose.collector',
     'tests_require' : ['nose'],
