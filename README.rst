@@ -33,10 +33,6 @@ giving a distance matrix between samples.
     clusterer = hdbscan.HDBSCAN(min_cluster_size=10)
     cluster_labels = clusterer.fit_predict(data)
 
-Note that clustering larger datasets will require significant memory
-(as with any algorithm that needs all pairwise distances). Support for
-low memory/better scaling is planned but not yet implemented.
-
 ------------------------
 Additional functionality
 ------------------------
