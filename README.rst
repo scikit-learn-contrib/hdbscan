@@ -14,8 +14,7 @@ Based on the paper:
     In: Advances in Knowledge Discovery and Data Mining, Springer, pp 160-172.
     2013
     
-Notebooks `comparing HDBSCAN to other clustering algorithms <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`_, 
-and explaining `how HDBSCAN works <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb>`_ are available.
+Notebooks `comparing HDBSCAN to other clustering algorithms <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`_, explaining `how HDBSCAN works <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb>`_ and `comparing performance with other python clustering implementations <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations.ipynb>`_ are available.
 
 ------------------
 How to use HDBSCAN
@@ -34,9 +33,15 @@ giving a distance matrix between samples.
     clusterer = hdbscan.HDBSCAN(min_cluster_size=10)
     cluster_labels = clusterer.fit_predict(data)
 
-Note that clustering larger datasets will require significant memory
-(as with any algorithm that needs all pairwise distances). Support for
-low memory/better scaling is planned but not yet implemented.
+-----------
+Performance
+-----------
+
+Significant effort has been put into making the hdbscan implementation as fast as 
+possible. It is more than twice as fast as the reference implementation in Java
+and is competitive with highly optimized single linkage implementations in C and C++.
+`current performance can be seen in this notebook <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations.ipynb>`_ 
+and further performance improvements should be forthcoming in the next few releases.
 
 ------------------------
 Additional functionality
