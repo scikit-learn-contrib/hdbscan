@@ -291,8 +291,9 @@ class RobustSingleLinkage (BaseEstimator, ClusterMixin):
 
     """
 
-    def __init__(self, k=5, alpha=1.4142135623730951, gamma=5, metric='euclidean', p=None):
+    def __init__(self, cut=0.25, k=5, alpha=1.4142135623730951, gamma=5, metric='euclidean', p=None):
 
+        self.cut = cut
         self.k = k
         self.alpha = alpha
         self.gamma = gamma
