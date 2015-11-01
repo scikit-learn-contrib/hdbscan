@@ -76,6 +76,19 @@ the robust single linkage clusterer, again with the ability to plot
 or export the hierarchy, and to extract flat clusterings at a given
 cut level and gamma value.
 
+Example usage:
+
+.. code:: python
+
+    import hdbscan
+    
+    clusterer = hdbscan.RobustSingleLinkage(cut=0.125, k=7)
+    cluster_labels = clusterer.fit_predict(data)
+    hierarchy = clusterer.cluster_hierarchy_
+    alt_labels = hierarchy.get_clusters(0.100, 5)
+    hierarchy.plot()
+
+
 Based on the paper:
     K. Chaudhuri and S. Dasgupta.
     *"Rates of convergence for the cluster tree."*
