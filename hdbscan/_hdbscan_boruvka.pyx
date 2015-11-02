@@ -378,10 +378,16 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                 p = point_indices1[i]
                 component1 = self.component_of_point_ptr[p]
 
+                if self.core_distance_ptr[p] > self.candidate_distance_ptr[component1]:
+                    continue
+
                 for j in range(point_indices2.shape[0]):
 
                     q = point_indices2[j]
                     component2 = self.component_of_point_ptr[q]
+
+                    if self.core_distance_ptr[q] > self.candidate_distance_ptr[component1]:
+                        continue
 
                     if component1 != component2:
 
@@ -389,7 +395,6 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                                            &raw_data[self.num_features * q],
                                            self.num_features)
 
-                        # mr_dist = max(distances[i, j], self.core_distance_ptr[p], self.core_distance_ptr[q])
                         mr_dist = max(d, self.core_distance_ptr[p], self.core_distance_ptr[q])
                         if mr_dist < self.candidate_distance_ptr[component1]:
                             self.candidate_distance_ptr[component1] = mr_dist
@@ -735,10 +740,16 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                 p = point_indices1[i]
                 component1 = self.component_of_point_ptr[p]
 
+                if self.core_distance_ptr[p] > self.candidate_distance_ptr[component1]:
+                    continue
+
                 for j in range(point_indices2.shape[0]):
 
                     q = point_indices2[j]
                     component2 = self.component_of_point_ptr[q]
+
+                    if self.core_distance_ptr[q] > self.candidate_distance_ptr[component1]:
+                        continue
 
                     if component1 != component2:
 
