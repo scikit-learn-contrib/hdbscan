@@ -11,7 +11,6 @@ import numpy as np
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import pairwise_distances
 from scipy.sparse import issparse
-from sklearn.neighbors import KDTree
 
 try:
     from sklearn.utils import check_array
