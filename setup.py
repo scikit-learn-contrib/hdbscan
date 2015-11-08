@@ -18,9 +18,15 @@ _hdbscan_tree = Extension('hdbscan._hdbscan_tree',
 _hdbscan_linkage = Extension('hdbscan._hdbscan_linkage',
                              sources=['hdbscan/_hdbscan_linkage.pyx'],
                              include_dirs=[numpy.get_include()])
+_hdbscan_boruvka = Extension('hdbscan._hdbscan_boruvka',
+                             sources=['hdbscan/_hdbscan_boruvka.pyx'],
+                             include_dirs=[numpy.get_include()])
 _hdbscan_reachability = Extension('hdbscan._hdbscan_reachability',
                                   sources=['hdbscan/_hdbscan_reachability.pyx'],
                                   include_dirs=[numpy.get_include()])
+dist_metrics = Extension('hdbscan.dist_metrics',
+                         sources=['hdbscan/dist_metrics.pyx'],
+                         include_dirs=[numpy.get_include()])
 
 def readme():
     with open('README.rst') as readme_file:
@@ -28,7 +34,7 @@ def readme():
 
 configuration = {
     'name' : 'hdbscan',
-    'version' : '0.3.1',
+    'version' : '0.4',
     'description' : 'Clustering based on density with variable density clusters',
     'long_description' : readme(),
     'classifiers' : [
@@ -55,7 +61,11 @@ configuration = {
     'packages' : ['hdbscan'],
     'install_requires' : ['scikit-learn>=0.16',
                           'cython >= 0.17'],
-    'ext_modules' : [_hdbscan_tree, _hdbscan_linkage, _hdbscan_reachability],
+    'ext_modules' : [_hdbscan_tree,
+                     _hdbscan_linkage,
+                     _hdbscan_boruvka,
+                     _hdbscan_reachability,
+                     dist_metrics],
     'cmdclass' : {'build_ext' : build_ext},
     'test_suite' : 'nose.collector',
     'tests_require' : ['nose'],

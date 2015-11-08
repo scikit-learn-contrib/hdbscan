@@ -11,6 +11,8 @@ cimport numpy as np
 from libc.float cimport DBL_MAX
 
 from scipy.spatial.distance import cdist, pdist
+from dist_metrics import DistanceMetric
+from dist_metrics cimport DistanceMetric
 
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
                                np.ndarray[np.double_t, ndim=2] distance_matrix):
@@ -80,7 +82,6 @@ cdef void select_distances(
 
     result_buffer[i:n_labels] = pdist_matrix[current_labels[i:] - (row_num + 1) + row_start]
     return
-    
 
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_pdist(
                                np.ndarray[np.double_t, ndim=1] pdist_matrix):
@@ -127,29 +128,33 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_pdist(
         
     return result
 
-cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
-                               np.ndarray raw_data,
-                               np.ndarray[np.double_t, ndim=1] core_distances,
-                               object metric,
-                               int p):
 
-    cdef np.ndarray[np.int64_t, ndim=1] node_labels
-    cdef np.ndarray[np.int64_t, ndim=1] current_labels
-    cdef np.ndarray[np.double_t, ndim=1] current_distances
-    cdef np.ndarray[np.double_t, ndim=1] current_core_distances
-    cdef np.ndarray[np.double_t, ndim=1] left
-    # cdef np.ndarray[np.double_t, ndim=1] right
-    cdef np.ndarray[np.double_t, ndim=2] result
+cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
+                               np.ndarray[np.double_t, ndim=2] raw_data,
+                               np.ndarray[np.double_t, ndim=1] core_distances,
+                               DistanceMetric dist_metric):
+
+    cdef np.ndarray[np.double_t, ndim=1] current_distances_arr
+    # cdef np.ndarray[np.double_t, ndim=1] left_arr
+    cdef np.ndarray[np.int8_t, ndim=1] in_tree_arr
+    cdef np.ndarray[np.double_t, ndim=2] result_arr
+
+    cdef np.double_t * current_distances
+    cdef np.double_t * current_core_distances
+    cdef np.double_t * raw_data_ptr
+    # cdef np.double_t * left
+    cdef np.int8_t * in_tree
+    cdef np.double_t[:, ::1] raw_data_view
+    cdef np.double_t[:, ::1] result
 
     cdef np.ndarray label_filter
 
     cdef long long current_node
-    cdef long long comparison_node
-    cdef long long new_node_index
     cdef long long new_node
     cdef long long i
     cdef long long j
     cdef long long dim
+    cdef long long num_features
 
     cdef double current_node_core_distance
     cdef double right_value
@@ -158,39 +163,49 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
     cdef double new_distance
 
     dim = raw_data.shape[0]
+    num_features = raw_data.shape[1]
 
-    result = np.zeros((dim - 1, 3))
-    node_labels = np.arange(dim, dtype=np.int64)
+    raw_data_view = (<np.double_t [:raw_data.shape[0], :raw_data.shape[1]:1]> (<np.double_t *> raw_data.data))
+    raw_data_ptr = (<np.double_t *> &raw_data_view[0, 0])
+
+    result_arr = np.zeros((dim - 1, 3))
+    in_tree_arr = np.zeros(dim, dtype=np.int8)
     current_node = 0
-    current_distances = np.infty * np.ones(dim)
-    current_labels = node_labels
-    current_core_distances = core_distances
+    current_distances_arr = np.infty * np.ones(dim)
 
-    masked = 0
+    result = (<np.double_t [:dim - 1, :3:1]> (<np.double_t *> result_arr.data))
+    in_tree = (<np.int8_t *> in_tree_arr.data)
+    current_distances = (<np.double_t *> current_distances_arr.data)
+    current_core_distances = (<np.double_t *> core_distances.data)
+    #raw_data_view = (<np.double_t [:raw_data.shape[0], :raw_data.shape[1]:1]> (<np.double_t *> raw_data.data))
 
     for i in range(1, dim):
 
-        label_filter = current_labels != current_node
-        current_labels = current_labels[label_filter]
-        current_core_distances = current_core_distances[label_filter]
+        in_tree[current_node] = 1
 
-        left = cdist(raw_data[[current_node]], raw_data, metric=metric, p=p)[0][current_labels] # good
+        # left_arr = cdist((raw_data_view[current_node],), raw_data, metric=metric, p=p)[0]
 
-        current_distances = current_distances[label_filter]
-        current_node_core_distance = core_distances[current_node]
+        current_node_core_distance = current_core_distances[current_node]
+
+        # left = (<np.double_t *> left_arr.data)
 
         new_distance = DBL_MAX
         new_node = 0
 
-        for j in range(current_labels.shape[0]):
+        for j in range(dim):
+            if in_tree[j]:
+                continue
+
             right_value = current_distances[j]
-            left_value = left[j]
-            comparison_node = current_labels[j]
-            core_value = core_distances[comparison_node]
+            # left_value = left[j]
+            left_value = dist_metric.dist(&raw_data_ptr[num_features * current_node],
+                                          &raw_data_ptr[num_features * j],
+                                          num_features)
+            core_value = core_distances[j]
             if current_node_core_distance > right_value or core_value > right_value or left_value > right_value:
                 if right_value < new_distance:
                     new_distance = right_value
-                    new_node = current_labels[j]
+                    new_node = j
                 continue
 
             if core_value > current_node_core_distance:
@@ -204,81 +219,18 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
                 current_distances[j] = left_value
                 if left_value < new_distance:
                     new_distance = left_value
-                    new_node = current_labels[j]
+                    new_node = j
             else:
                 if right_value < new_distance:
                     new_distance = right_value
-                    new_node = current_labels[j]
+                    new_node = j
 
         result[i - 1, 0] = <double> current_node
         result[i - 1, 1] = <double> new_node
         result[i - 1, 2] = new_distance
         current_node = new_node
 
-    return result
-
-
-
-cdef tuple get_candidate(object kdtree, long long point_index, np.ndarray[np.double_t, ndim=1] core_distances):
-
-    point_core_distance = core_distances[point_index]
-    point = kdtree.data[point_index]
-    first_pass_candidates = kdtree.query_radius(point, point_core_distance)[0]
-
-    candidate_core_distances = core_distances[first_pass_candidates]
-    best_candidate_index = candidate_core_distances.argmin()
-    second_pass_radius = candidate_core_distances[best_candidate_index]
-
-    if second_pass_radius <= point_core_distance:
-        return first_pass_candidates[best_candidate_index], point_core_distance
-
-    second_pass_candidates, second_pass_distances = kdtree.query_radius(point, second_pass_radius, return_distance=True)
-
-    candidate_core_distances = core_distances[second_pass_candidates]
-
-    candidate_reachability_distances = np.empty(len(second_pass_candidates), dtype=np.double)
-
-    for i in range(len(second_pass_candidates)):
-        if candidate_core_distances[i] > second_pass_distances:
-            if candidate_core_distances[i] > point_core_distance:
-                candidate_reachability_distances[i] = second_pass_distances[i]
-            else:
-                 candidate_reachability_distances[i] = point_core_distance
-        else:
-            if second_pass_distances[i] > point_core_distance:
-                candidate_reachability_distances[i] = second_pass_distances[i]
-            else:
-                candidate_reachability_distances[i] = point_core_distance
-
-    best_candidate_index = candidate_reachability_distances.argmin()
-
-    return (second_pass_candidates[best_candidate_index],
-            candidate_reachability_distances[best_candidate_index])
-
-# Started blocking this out, so hang onto it for now, but need considerably more work
-# to make it correct (deal with removing and updating node candidates rom the queue)
-#cpdef mst_linkage_core_kdtree(object kdtree, np.ndarray[np.double_t, ndim=1] core_distances):
-#
-#    cdef long long dim
-#    cdef long long current_node
-#    cdef long long new_candidate
-#
-#    dim = kdtree.data.shape[0]
-#    node_labels = np.arange(dim, dtype=np.int64)
-#    result = np.zeros((dim - 1, 3))
-#
-#    current_node = 0
-#
-#    for i in range(1, dim):
-#        new_candidate, new_distance = get_candidate(kdtree, current_node, core_distances)
-#        priority_queue.add(new_candidate, new_distance)
-#        new_node, new_distance = priority_queue.pop()
-#        result[i - 1, 0] = <double> current_node
-#        result[i - 1, 1] = <double> new_node
-#        result[i - 1, 2] = new_distance
-#        current_node = new_node
-#
-#    return result
+    return result_arr
 
 cdef class UnionFind (object):
 
