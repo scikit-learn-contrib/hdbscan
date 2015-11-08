@@ -82,7 +82,6 @@ cdef void select_distances(
 
     result_buffer[i:n_labels] = pdist_matrix[current_labels[i:] - (row_num + 1) + row_start]
     return
-    
 
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_pdist(
                                np.ndarray[np.double_t, ndim=1] pdist_matrix):
@@ -129,104 +128,6 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_pdist(
         
     return result
 
-cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist_old(
-                               np.ndarray raw_data,
-                               np.ndarray[np.double_t, ndim=1] core_distances,
-                               object metric,
-                               int p):
-
-    cdef np.ndarray[np.int64_t, ndim=1] current_labels_arr
-    cdef np.ndarray[np.double_t, ndim=1] current_distances_arr
-    cdef np.ndarray[np.double_t, ndim=1] current_core_distances_arr
-    cdef np.ndarray[np.double_t, ndim=1] left_arr
-    cdef np.ndarray[np.double_t, ndim=2] result_arr
-
-    cdef np.int64_t * current_labels
-    cdef np.double_t * current_distances
-    cdef np.double_t * current_core_distances
-    cdef np.double_t * left
-    cdef np.double_t[:,::1] result
-
-    cdef np.ndarray label_filter
-
-    cdef long long current_node
-    cdef long long comparison_node
-    cdef long long new_node_index
-    cdef long long new_node
-    cdef long long i
-    cdef long long j
-    cdef long long dim
-    cdef long long num_features
-
-    cdef double current_node_core_distance
-    cdef double right_value
-    cdef double left_value
-    cdef double core_value
-    cdef double new_distance
-
-    dim = raw_data.shape[0]
-
-    result_arr = np.zeros((dim - 1, 3))
-    current_node = 0
-    current_distances_arr = np.infty * np.ones(dim)
-    current_labels_arr = np.arange(dim, dtype=np.int64)
-    current_core_distances_arr = core_distances
-
-    result = (<np.double_t [:dim - 1, :3:1]> (<np.double_t *> result_arr.data))
-
-    for i in range(1, dim):
-
-        label_filter = current_labels_arr != current_node
-        current_labels_arr = current_labels_arr[label_filter]
-        current_core_distances_arr = current_core_distances_arr[label_filter]
-
-        left_arr = cdist(raw_data[[current_node]], raw_data, metric=metric, p=p)[0][current_labels_arr] # good
-
-        current_distances_arr = current_distances_arr[label_filter]
-        current_node_core_distance = core_distances[current_node]
-
-        current_labels = (<np.int64_t *> current_labels_arr.data)
-        current_distances = (<np.double_t *> current_distances_arr.data)
-        current_core_distances = (<np.double_t *> current_core_distances_arr.data)
-        left = (<np.double_t *> left_arr.data)
-
-        new_distance = DBL_MAX
-        new_node = 0
-
-        for j in range(current_labels_arr.shape[0]):
-            right_value = current_distances[j]
-            left_value = left[j]
-            comparison_node = current_labels[j]
-            core_value = core_distances[comparison_node]
-            if current_node_core_distance > right_value or core_value > right_value or left_value > right_value:
-                if right_value < new_distance:
-                    new_distance = right_value
-                    new_node = current_labels[j]
-                continue
-
-            if core_value > current_node_core_distance:
-                if core_value > left_value:
-                    left_value = core_value
-            else:
-                if current_node_core_distance > left_value:
-                    left_value = current_node_core_distance
-
-            if left_value < right_value:
-                current_distances[j] = left_value
-                if left_value < new_distance:
-                    new_distance = left_value
-                    new_node = current_labels[j]
-            else:
-                if right_value < new_distance:
-                    new_distance = right_value
-                    new_node = current_labels[j]
-
-        result[i - 1, 0] = <double> current_node
-        result[i - 1, 1] = <double> new_node
-        result[i - 1, 2] = new_distance
-        current_node = new_node
-
-    return result_arr
 
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
                                np.ndarray[np.double_t, ndim=2] raw_data,

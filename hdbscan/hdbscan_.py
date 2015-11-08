@@ -41,7 +41,7 @@ from ._hdbscan_reachability import (mutual_reachability,
                                    )
 
 from ._hdbscan_boruvka import KDTreeBoruvkaAlgorithm, BallTreeBoruvkaAlgorithm
-from dist_metrics import DistanceMetric
+from .dist_metrics import DistanceMetric
 
 from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 
@@ -298,7 +298,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                                 metric, p, leaf_size, gen_min_span_tree)
     elif metric in KDTree.valid_metrics:
         # Need heuristic to decide when to go to boruvka; still debugging for now
-        if True:
+        if X.shape[1] > 60:
             return _hdbscan_prims_kdtree(X, min_cluster_size, min_samples, alpha,
                                          metric, p, leaf_size, gen_min_span_tree)
         else:
@@ -306,7 +306,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                                            metric, p, leaf_size, gen_min_span_tree)
     else: # Metric is a valid BallTree metric
         # Need heuristic to decide when to go to boruvka; still debugging for now
-        if True:
+        if X.shape[1] > 60:
             return _hdbscan_prims_kdtree(X, min_cluster_size, min_samples, alpha,
                                          metric, p, leaf_size, gen_min_span_tree)
         else:

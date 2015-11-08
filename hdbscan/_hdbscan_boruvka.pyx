@@ -646,7 +646,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
             self.component_union_find.union_(source, sink)
             self.candidate_distance[component] = DBL_MAX
             if self.num_edges == self.num_points - 1:
-                self.components = np.unique(self.component_union_find.components())
+                self.components = self.component_union_find.components()
                 return self.components.shape[0]
 
         for n in range(self.tree.data.shape[0]):
@@ -669,7 +669,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                     self.component_of_node[n] = self.component_of_node[child1]
 
         last_num_components = self.components.shape[0]
-        self.components = np.unique(self.component_union_find.components())
+        self.components = self.component_union_find.components()
 
         if self.components.shape[0] == last_num_components:
             # Reset bounds
