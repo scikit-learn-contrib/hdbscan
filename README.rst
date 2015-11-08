@@ -14,8 +14,7 @@ Based on the paper:
     In: Advances in Knowledge Discovery and Data Mining, Springer, pp 160-172.
     2013
     
-Notebooks `comparing HDBSCAN to other clustering algorithms <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`_, 
-and explaining `how HDBSCAN works <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb>`_ are available.
+Notebooks `comparing HDBSCAN to other clustering algorithms <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`_, explaining `how HDBSCAN works <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb>`_ and `comparing performance with other python clustering implementations <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations.ipynb>`_ are available.
 
 ------------------
 How to use HDBSCAN
@@ -34,9 +33,66 @@ giving a distance matrix between samples.
     clusterer = hdbscan.HDBSCAN(min_cluster_size=10)
     cluster_labels = clusterer.fit_predict(data)
 
-Note that clustering larger datasets will require significant memory
-(as with any algorithm that needs all pairwise distances). Support for
-low memory/better scaling is planned but not yet implemented.
+-----------
+Performance
+-----------
+
+Significant effort has been put into making the hdbscan implementation as fast as 
+possible. It is more than twice as fast as the reference implementation in Java
+and is competitive with highly optimized single linkage implementations in C and C++.
+`current performance can be seen in this notebook <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations.ipynb>`_ 
+and further performance improvements should be forthcoming in the next few releases.
+
+------------------------
+Additional functionality
+------------------------
+
+The hdbscan package comes equipped with visualization tools to help you
+understand your clustering results. After fitting data the clusterer
+object has attributes for:
+
+* The condensed cluster hierarchy
+* The robust single linkage cluster hierarchy
+* The reachability distance minimal spanning tree
+
+All of which come equipped with methods for plotting and converting
+to Pandas or NetworkX for further analysis. See the notebook on
+`how HDBSCAN works <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb>`_ for examples and further details.
+
+The clusterer objects also have an attribute providing cluster membership
+strengths, resulting in optional soft clustering (and no further compute 
+expense)
+
+---------------------
+Robust single linkage
+---------------------
+
+The hdbscan package also provides support for the *robust single linkage*
+clustering algorithm of Chaudhuri and Dasgupta. As with the HDBSCAN 
+implementation this is a high performance version of the algorithm 
+outperforming scipy's standard single linkage implementation. The
+robust single linkage hierarchy is available as an attribute of
+the robust single linkage clusterer, again with the ability to plot
+or export the hierarchy, and to extract flat clusterings at a given
+cut level and gamma value.
+
+Example usage:
+
+.. code:: python
+
+    import hdbscan
+    
+    clusterer = hdbscan.RobustSingleLinkage(cut=0.125, k=7)
+    cluster_labels = clusterer.fit_predict(data)
+    hierarchy = clusterer.cluster_hierarchy_
+    alt_labels = hierarchy.get_clusters(0.100, 5)
+    hierarchy.plot()
+
+
+Based on the paper:
+    K. Chaudhuri and S. Dasgupta.
+    *"Rates of convergence for the cluster tree."*
+    In Advances in Neural Information Processing Systems, 2010.
 
 ----------
 Installing

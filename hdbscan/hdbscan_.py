@@ -142,17 +142,7 @@ def _hdbscan_large_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     mutual_reachability_ = kdtree_pdist_mutual_reachability(X, metric, p, min_samples, alpha)
 
     min_spanning_tree = mst_linkage_core_pdist(mutual_reachability_)
-
-    if gen_min_span_tree:
-        result_min_span_tree = min_spanning_tree.copy()
-        for index, row in enumerate(result_min_span_tree[1:], 1):
-            candidates = np.where(np.isclose(mutual_reachability_[row[1]], row[2]))[0]
-            candidates = np.intersect1d(candidates, min_spanning_tree[:index, :2].astype(int))
-            candidates = candidates[candidates != row[1]]
-            assert(len(candidates) > 0)
-            row[0] = candidates[0]
-    else:
-        result_min_span_tree = None
+    result_min_span_tree = None
 
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
 
