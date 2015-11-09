@@ -39,9 +39,10 @@ Performance
 
 Significant effort has been put into making the hdbscan implementation as fast as 
 possible. It is more than twice as fast as the reference implementation in Java
-and is competitive with highly optimized single linkage implementations in C and C++.
-`current performance can be seen in this notebook <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations.ipynb>`_ 
-and further performance improvements should be forthcoming in the next few releases.
+and is currently faster highly optimized single linkage implementations in C and C++.
+`version 0.3 performance can be seen in this notebook <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations.ipynb>`_ . 
+Version 0.4 brings a new minimum spanning tree algorithm and dramatic speedups, particularly
+for low dimensional data.
 
 ------------------------
 Additional functionality
