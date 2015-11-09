@@ -13,8 +13,8 @@ from libc.math cimport fabs, sqrt, exp, cos, pow
 
 # from scipy.spatial.distance import cdist, pdist, squareform
 
-import .dist_metrics as dist_metrics
-cimport .dist_metrics as dist_metrics
+import dist_metrics as dist_metrics
+cimport dist_metrics as dist_metrics
 
 from libc.math cimport fabs, sqrt, exp, cos, pow, log
 

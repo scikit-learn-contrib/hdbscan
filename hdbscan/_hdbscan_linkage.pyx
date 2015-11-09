@@ -11,8 +11,8 @@ cimport numpy as np
 from libc.float cimport DBL_MAX
 
 from scipy.spatial.distance import cdist, pdist
-from .dist_metrics import DistanceMetric
-from .dist_metrics cimport DistanceMetric
+from dist_metrics import DistanceMetric
+from dist_metrics cimport DistanceMetric
 
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
                                np.ndarray[np.double_t, ndim=2] distance_matrix):
@@ -234,17 +234,21 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
 
 cdef class UnionFind (object):
 
-    cdef np.ndarray parent
-    cdef np.ndarray size
-    cdef long long next_label
+    cdef np.ndarray parent_arr
+    cdef np.ndarray size_arr
+    cdef np.int64_t next_label
+    cdef np.int64_t *parent
+    cdef np.int64_t *size
     
     def __init__(self, N):
-        self.parent = -1 * np.ones(2 * N - 1, dtype=np.int64)
+        self.parent_arr = -1 * np.ones(2 * N - 1, dtype=np.int64)
         self.next_label = N
-        self.size = np.hstack((np.ones(N, dtype=np.int64),
+        self.size_arr = np.hstack((np.ones(N, dtype=np.int64),
                                np.zeros(N-1, dtype=np.int64)))
+        self.parent = (<np.int64_t *> self.parent_arr.data)
+        self.size = (<np.int64_t *> self.size_arr.data)
                                
-    cdef void union(self, long long m, long long n):
+    cdef void union(self, np.int64_t m, np.int64_t n):
         self.size[self.next_label] = self.size[m] + self.size[n]
         self.parent[m] = self.next_label
         self.parent[n] = self.next_label
@@ -253,13 +257,13 @@ cdef class UnionFind (object):
         
         return
         
-    cdef long long find(self, long long n):
+    cdef long long find(self, np.int64_t n):
         while self.parent[n] != -1:
             n = self.parent[n]
         return n
         
-    cdef long long fast_find(self, long long n):
-        cdef long long p
+    cdef long long fast_find(self, np.int64_t n):
+        cdef np.int64_t p
         p = n
         while self.parent[n] != -1:
             n = self.parent[n]
