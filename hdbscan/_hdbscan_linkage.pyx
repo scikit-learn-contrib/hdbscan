@@ -11,8 +11,8 @@ cimport numpy as np
 from libc.float cimport DBL_MAX
 
 from scipy.spatial.distance import cdist, pdist
-from dist_metrics import DistanceMetric
-from dist_metrics cimport DistanceMetric
+from .dist_metrics import DistanceMetric
+from .dist_metrics cimport DistanceMetric
 
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
                                np.ndarray[np.double_t, ndim=2] distance_matrix):
