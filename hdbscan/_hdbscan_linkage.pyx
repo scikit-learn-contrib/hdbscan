@@ -275,29 +275,36 @@ cdef class UnionFind (object):
 cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L, 
                                            do_fast_find=True):
 
-    cdef np.ndarray[np.double_t, ndim=2] result
+    cdef np.ndarray[np.double_t, ndim=2] result_arr
+    cdef np.double_t[:, ::1] result
 
-    cdef long long N, a, aa, b, bb, idx
-    cdef float delta
+    cdef np.int64_t N, a, aa, b, bb, idx
+    cdef np.double_t delta
     
-    result = np.zeros((L.shape[0], L.shape[1] + 1))
+    result_arr = np.zeros((L.shape[0], L.shape[1] + 1))
+    result = (<np.double_t[:L.shape[0], :4:1]> (<np.double_t *> result_arr.data))
     N = L.shape[0] + 1
     U = UnionFind(N)
-    
-    for index, (a, b, delta) in enumerate(L):
+
+    for index in range(L.shape[0]):
+
+        a = <np.int64_t> L[index, 0]
+        b = <np.int64_t> L[index, 1]
+        delta = L[index, 2]
+
         if do_fast_find:
             aa, bb = U.fast_find(a), U.fast_find(b)
         else:
             aa, bb, = U.find(a), U.find(b)
             
-        result[index, 0] = aa
-        result[index, 1] = bb
-        result[index, 2] = delta
-        result[index, 3] = U.size[aa] + U.size[bb]
+        result[index][0] = aa
+        result[index][1] = bb
+        result[index][2] = delta
+        result[index][3] = U.size[aa] + U.size[bb]
         
         U.union(aa, bb)
        
-    return result
+    return result_arr
 
 cpdef np.ndarray[np.double_t, ndim=2] single_linkage(distance_matrix):
     
