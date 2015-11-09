@@ -1,4 +1,4 @@
-#cython: boundscheck=False, nonecheck=False, initializedcheck=False
+#cython: boundscheck=False, nonecheck=False, initializedcheck=False, profile=True
 # Tree handling (condensing, finding stable clusters) for hdbscan
 # Authors: Leland McInnes
 # License: 3-clause BSD
@@ -229,34 +229,46 @@ cdef list bfs_from_cluster_tree(np.ndarray tree, long long bfs_root):
 cdef tuple get_cluster_points(np.ndarray tree, long long cluster, long long num_points):
 
     cdef list result
+    cdef np.ndarray[np.int64_t, ndim=1] result_arr
+    cdef np.int64_t *result_ptr
+    cdef np.int64_t num_result_points = 0
     cdef list to_process
     cdef list next_to_process
     cdef long long num_to_process
     cdef long long in_process
 
+    cdef np.ndarray[np.int64_t, ndim=1] children = tree['child']
+    cdef np.ndarray[np.int64_t, ndim=1] parents = tree['parent']
+    cdef np.ndarray[np.int64_t, ndim=1] sizes = tree['child_size']
+
     result = []
     to_process = [cluster]
     next_to_process = []
+    result_arr = np.empty(num_points, dtype=np.int64)
+    result_ptr = (<np.int64_t *> result_arr.data)
 
     while to_process:
         num_to_process = len(to_process)
         for i in range(num_to_process):
             in_process = to_process[i]
             if in_process < num_points:
-                result.append(in_process)
+                result_ptr[num_result_points] = in_process
+                num_result_points += 1
             else:
-                next_to_process.extend(tree['child'][tree['parent'] == in_process].tolist())
+                next_to_process.extend(children[parents == in_process].tolist())
         to_process = next_to_process
         next_to_process = []
 
-    cluster_split_selection = (tree['parent'] == cluster) & (tree['child_size'] > 1)
-    if np.sum(cluster_split_selection) > 0:
-        max_cluster_lambda = tree[cluster_split_selection]['lambda'][0]
-    else:
-        max_cluster_lambda = tree['lambda'][result].max()
-    prob = tree['lambda'][result]
-    prob = np.where(prob <= max_cluster_lambda, prob, max_cluster_lambda)
-    prob = prob / max_cluster_lambda
+    result = list(result_arr[:num_result_points])
+    #cluster_split_selection = (parents == cluster) & (sizes > 1)
+    #if np.sum(cluster_split_selection) > 0:
+    #    max_cluster_lambda = tree[cluster_split_selection]['lambda'][0]
+    #else:
+    #    max_cluster_lambda = tree['lambda'][result].max()
+    #prob = tree['lambda'][result]
+    #prob = np.where(prob <= max_cluster_lambda, prob, max_cluster_lambda)
+    #prob = prob / max_cluster_lambda
+    prob = np.ones(len(result))
 
     return result, prob
 
