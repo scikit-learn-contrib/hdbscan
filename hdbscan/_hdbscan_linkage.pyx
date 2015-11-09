@@ -272,8 +272,7 @@ cdef class UnionFind (object):
             p, self.parent[p] = self.parent[p], n
         return n
         
-cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L, 
-                                           do_fast_find=True):
+cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
 
     cdef np.ndarray[np.double_t, ndim=2] result_arr
     cdef np.double_t[:, ::1] result
@@ -292,11 +291,8 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L,
         b = <np.int64_t> L[index, 1]
         delta = L[index, 2]
 
-        if do_fast_find:
-            aa, bb = U.fast_find(a), U.fast_find(b)
-        else:
-            aa, bb, = U.find(a), U.find(b)
-            
+        aa, bb = U.fast_find(a), U.fast_find(b)
+
         result[index][0] = aa
         result[index][1] = bb
         result[index][2] = delta
