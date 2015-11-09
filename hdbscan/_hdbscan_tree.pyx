@@ -154,34 +154,63 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                                         ('child_size', np.int64)
                                        ])
 
-
-cdef long long keyfunc(row):
-    return <long long> row[0]
- 
 cpdef dict compute_stability(np.ndarray condensed_tree):
 
-    cdef dict result
+    cdef np.ndarray[np.double_t, ndim=1] result_arr
     cdef np.ndarray sorted_child_data
-    cdef np.ndarray selection
-    cdef list birth_pairs
-    cdef dict births
-    cdef long long from_i
-    cdef long long to_i
+    cdef np.ndarray[np.int64_t, ndim=1] sorted_children
+    cdef np.ndarray[np.double_t, ndim=1] sorted_lambdas
 
-    result = {}
+    cdef np.int64_t child
+    cdef np.int64_t current_child
+    cdef np.float64_t lambda_
+    cdef np.float64_t min_lambda
+
+    cdef np.ndarray[np.double_t, ndim=1] births_arr
+    cdef np.double_t *births
+    cdef np.int64_t from_i
+    cdef np.int64_t to_i
+
+    cdef np.int64_t largest_child = condensed_tree['child'].max()
+    cdef np.int64_t smallest_cluster = condensed_tree['parent'].min()
+    cdef np.int64_t num_clusters = condensed_tree['parent'].max() - smallest_cluster + 1
+
     sorted_child_data = np.sort(condensed_tree[['child', 'lambda']], axis=0)
-    birth_pairs = [min(a[1]) for a in itertools.groupby(sorted_child_data,
-                                                        key=keyfunc)]
-    births = dict(birth_pairs)
-    from_i = condensed_tree['child'][condensed_tree['child_size'] == 1].max()
-    from_i += 1
-    to_i = condensed_tree['parent'].max() + 1
-    for i in range(from_i, to_i):
-        selection = (condensed_tree['parent'] == i)
-        result[i] = np.sum((condensed_tree['lambda'][selection] - 
-                            births.get(i, np.nan)) *
-                           condensed_tree['child_size'][selection])
-    return result
+    births_arr = np.nan * np.ones(largest_child + 1, dtype=np.double)
+    births = (<np.double_t *> births_arr.data)
+    sorted_children = sorted_child_data['child']
+    sorted_lambdas = sorted_child_data['lambda']
+
+    current_child = -1
+    min_lambda = 0
+
+    for row in range(sorted_child_data.shape[0]):
+        child = <np.int64_t> sorted_children[row]
+        lambda_ = sorted_lambdas[row]
+
+        if child == current_child:
+            min_lambda = min(min_lambda, lambda_)
+        elif current_child != -1:
+            births[current_child] = min_lambda
+            current_child = child
+            min_lambda = lambda_
+        else:
+            # Initialize
+            current_child = child
+            min_lambda = lambda_
+
+    result_arr = np.zeros(num_clusters, dtype=np.double)
+
+    for i in range(condensed_tree.shape[0]):
+        parent = condensed_tree['parent'][i]
+        child = condensed_tree['child'][i]
+        lambda_ = condensed_tree['lambda'][i]
+        child_size = condensed_tree['child_size'][i]
+        result_index = parent - smallest_cluster
+
+        result_arr[result_index] += (lambda_ - births[parent]) * child_size
+
+    return dict(np.vstack((np.arange(smallest_cluster, condensed_tree['parent'].max() + 1), result_arr)).T)
 
 cdef list bfs_from_cluster_tree(np.ndarray tree, long long bfs_root):
 
