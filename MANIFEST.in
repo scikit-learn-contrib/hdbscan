@@ -1,0 +1,2 @@
+include *.rst *.txt
+recursive-include hdbscan *.py *.pyx *.pxd *.c

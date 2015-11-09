@@ -17,10 +17,10 @@ _hdbscan_tree = Extension('hdbscan._hdbscan_tree',
                           include_dirs=[numpy.get_include()])
 _hdbscan_linkage = Extension('hdbscan._hdbscan_linkage',
                              sources=['hdbscan/_hdbscan_linkage.pyx'],
-                             include_dirs=[numpy.get_include()])
+                             include_dirs=['hdbscan', numpy.get_include()])
 _hdbscan_boruvka = Extension('hdbscan._hdbscan_boruvka',
                              sources=['hdbscan/_hdbscan_boruvka.pyx'],
-                             include_dirs=[numpy.get_include()])
+                             include_dirs=['hdbscan', numpy.get_include()])
 _hdbscan_reachability = Extension('hdbscan._hdbscan_reachability',
                                   sources=['hdbscan/_hdbscan_reachability.pyx'],
                                   include_dirs=[numpy.get_include()])
@@ -34,7 +34,7 @@ def readme():
 
 configuration = {
     'name' : 'hdbscan',
-    'version' : '0.4.1',
+    'version' : '0.4.2',
     'description' : 'Clustering based on density with variable density clusters',
     'long_description' : readme(),
     'classifiers' : [
