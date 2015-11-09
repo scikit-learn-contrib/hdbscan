@@ -310,10 +310,5 @@ cpdef np.ndarray[np.double_t, ndim=2] single_linkage(distance_matrix):
     hierarchy = mst_linkage_core(distance_matrix)
     for_labelling = hierarchy[np.argsort(hierarchy.T[2]), :]
     return label(for_labelling)
-    
-    
-    
-    
-    
-        
+
     
