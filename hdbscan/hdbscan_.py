@@ -55,13 +55,8 @@ def _tree_to_labels(X, min_spanning_tree, min_cluster_size=10):
     condensed_tree = condense_tree(single_linkage_tree,
                                    min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
-    cluster_list = get_clusters(condensed_tree, stability_dict)
+    labels, probabilities = get_clusters(condensed_tree, stability_dict)
 
-    labels = -1 * np.ones(X.shape[0], dtype=int)
-    probabilities = np.zeros(X.shape[0], dtype=float)
-    for index, (cluster, prob) in enumerate(cluster_list):
-        labels[cluster] = index
-        probabilities[cluster] = prob
     return labels, probabilities, condensed_tree, single_linkage_tree
 
 

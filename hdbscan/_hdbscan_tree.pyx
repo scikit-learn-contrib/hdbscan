@@ -168,8 +168,6 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
 
     cdef np.ndarray[np.double_t, ndim=1] births_arr
     cdef np.double_t *births
-    cdef np.int64_t from_i
-    cdef np.int64_t to_i
 
     cdef np.int64_t largest_child = condensed_tree['child'].max()
     cdef np.int64_t smallest_cluster = condensed_tree['parent'].min()
@@ -226,45 +224,110 @@ cdef list bfs_from_cluster_tree(np.ndarray tree, long long bfs_root):
 
     return result
 
+cdef max_lambdas(np.ndarray tree):
+
+    cdef np.ndarray sorted_parent_data
+    cdef np.ndarray[np.int64_t, ndim=1] sorted_parents
+    cdef np.ndarray[np.double_t, ndim=1] sorted_lambdas
+
+    cdef np.int64_t parent
+    cdef np.int64_t current_parent
+    cdef np.float64_t lambda_
+    cdef np.float64_t max_lambda
+
+    cdef np.ndarray[np.double_t, ndim=1] deaths_arr
+    cdef np.double_t *deaths
+
+    cdef np.int64_t largest_parent = tree['parent'].max()
+
+    sorted_parent_data = np.sort(tree[['parent', 'lambda']], axis=0)
+    deaths_arr = np.zeros(largest_parent + 1, dtype=np.double)
+    deaths = (<np.double_t *> deaths_arr.data)
+    sorted_parents = sorted_parent_data['parent']
+    sorted_lambdas = sorted_parent_data['lambda']
+
+    current_parent = -1
+    max_lambda = 0
+
+    for row in range(sorted_parent_data.shape[0]):
+        parent = <np.int64_t> sorted_parents[row]
+        lambda_ = sorted_lambdas[row]
+
+        if parent == current_parent:
+            max_lambda = max(max_lambda, lambda_)
+        elif current_parent != -1:
+            deaths[current_parent] = max_lambda
+            current_parent = parent
+            max_lambda = lambda_
+        else:
+            # Initialize
+            current_parent = parent
+            max_lambda = lambda_
+
+    return deaths_arr
+
 cdef tuple get_cluster_points(np.ndarray tree, long long cluster, long long num_points):
 
     cdef list result
     cdef np.ndarray[np.int64_t, ndim=1] result_arr
     cdef np.int64_t *result_ptr
     cdef np.int64_t num_result_points = 0
-    cdef list to_process
-    cdef list next_to_process
-    cdef long long num_to_process
-    cdef long long in_process
+    cdef np.ndarray[np.int64_t, ndim=1] to_process
+    cdef np.ndarray[np.int64_t, ndim=1] next_to_process
+    cdef np.int64_t num_to_process
+    cdef np.int64_t next_num_to_process
+    cdef np.int64_t in_process
 
     cdef np.ndarray[np.int64_t, ndim=1] children = tree['child']
     cdef np.ndarray[np.int64_t, ndim=1] parents = tree['parent']
     cdef np.ndarray[np.int64_t, ndim=1] sizes = tree['child_size']
 
+    cdef np.int64_t i
+    cdef np.int64_t j
+
     result = []
-    to_process = [cluster]
-    next_to_process = []
+    #to_process = [cluster]
+    #next_to_process = []
     result_arr = np.empty(num_points, dtype=np.int64)
     result_ptr = (<np.int64_t *> result_arr.data)
 
-    while to_process:
-        num_to_process = len(to_process)
+    to_process = np.empty(num_points, dtype=np.int64)
+    to_process[0] = cluster
+    num_to_process = 1
+
+    next_to_process = np.empty(num_points, dtype=np.int64)
+    next_num_to_process = 0
+
+    while num_to_process > 0:
+
         for i in range(num_to_process):
             in_process = to_process[i]
             if in_process < num_points:
                 result_ptr[num_result_points] = in_process
                 num_result_points += 1
             else:
-                next_to_process.extend(children[parents == in_process].tolist())
-        to_process = next_to_process
-        next_to_process = []
+                for j in range(parents.shape[0]):
+                    if parents[j] == in_process:
+                        next_to_process[next_num_to_process] = children[j]
+                        next_num_to_process += 1
+
+        to_process[:next_num_to_process] = next_to_process[:next_num_to_process]
+        num_to_process = next_num_to_process
+        next_num_to_process = 0
 
     result = list(result_arr[:num_result_points])
-    #cluster_split_selection = (parents == cluster) & (sizes > 1)
-    #if np.sum(cluster_split_selection) > 0:
-    #    max_cluster_lambda = tree[cluster_split_selection]['lambda'][0]
-    #else:
-    #    max_cluster_lambda = tree['lambda'][result].max()
+
+    # deaths = max_lambdas(tree, set([]))
+
+    cluster_split_selection = (parents == cluster) & (sizes > 1)
+    if np.sum(cluster_split_selection) > 0:
+        max_cluster_lambda = tree[cluster_split_selection]['lambda'][0]
+    else:
+        max_cluster_lambda = tree['lambda'][result].max()
+
+    #if deaths[cluster] != max_cluster_lambda:
+    #    pass
+    #    #print cluster, deaths[cluster], max_cluster_lambda
     #prob = tree['lambda'][result]
     #prob = np.where(prob <= max_cluster_lambda, prob, max_cluster_lambda)
     #prob = prob / max_cluster_lambda
@@ -272,7 +335,103 @@ cdef tuple get_cluster_points(np.ndarray tree, long long cluster, long long num_
 
     return result, prob
 
-cpdef list get_clusters(np.ndarray tree, dict stability):
+cdef class TreeUnionFind (object):
+
+    cdef np.ndarray _data_arr
+    cdef np.int64_t[:,::1] _data
+    cdef np.ndarray is_component
+
+    def __init__(self, size):
+        self._data_arr = np.zeros((size, 2), dtype=np.int64)
+        self._data_arr.T[0] = np.arange(size)
+        self._data = (<np.int64_t[:size, :2:1]> (<np.int64_t *> self._data_arr.data))
+        self.is_component = np.ones(size, dtype=np.bool)
+
+    cdef union_(self, np.int64_t x, np.int64_t y):
+        cdef np.int64_t x_root = self.find(x)
+        cdef np.int64_t y_root = self.find(y)
+
+        if self._data[x_root, 1] < self._data[y_root, 1]:
+            self._data[x_root, 0] = y_root
+        elif self._data[x_root, 1] > self._data[y_root, 1]:
+            self._data[y_root, 0] = x_root
+        else:
+            self._data[y_root, 0] = x_root
+            self._data[x_root, 1] += 1
+
+        return
+
+    cdef find(self, np.int64_t x):
+        if self._data[x, 0] != x:
+            self._data[x, 0] = self.find(self._data[x, 0])
+            self.is_component[x] = False
+        return self._data[x, 0]
+
+    cdef np.ndarray[np.int64_t, ndim=1] components(self):
+        return self.is_component.nonzero()[0]
+
+cpdef np.ndarray[np.int64_t, ndim=1] do_labelling(np.ndarray tree, set clusters, dict cluster_label_map):
+
+    cdef np.int64_t root_cluster
+    cdef np.ndarray[np.int64_t, ndim=1] result_arr
+    cdef np.int64_t *result
+    cdef TreeUnionFind union_find
+    cdef np.int64_t n
+    cdef np.int64_t cluster
+
+    root_cluster = tree['parent'].min()
+    result_arr = np.empty(root_cluster, dtype=np.int64)
+    result = (<np.int64_t *> result_arr.data)
+
+    union_find = TreeUnionFind(tree['parent'].max() + 1)
+
+    for row in tree:
+        if row['child'] not in clusters:
+            union_find.union_(row['parent'], row['child'])
+
+    for n in range(root_cluster):
+        cluster = union_find.find(n)
+        if cluster <= root_cluster:
+            result[n] = -1
+        else:
+            result[n] = cluster_label_map[cluster]
+
+    return result_arr
+
+cpdef get_probabilities(np.ndarray tree, dict cluster_map, np.ndarray labels):
+
+    cdef np.ndarray[np.double_t, ndim=1] result
+    cdef np.ndarray[np.double_t, ndim=1] deaths
+    cdef np.int64_t root_cluster
+    cdef np.int64_t point
+    cdef np.int64_t cluster_num
+    cdef np.int64_t cluster
+    cdef np.double_t max_lambda
+    cdef np.double_t lambda_
+
+    result = np.zeros(labels.shape[0])
+    deaths = max_lambdas(tree)
+    root_cluster = tree['parent'].min()
+
+    for row in tree:
+        point = row['child']
+        if point >= root_cluster:
+            continue
+
+        cluster_num = labels[point]
+
+        if cluster_num == -1:
+            continue
+
+        cluster = cluster_map[cluster_num]
+        max_lambda = deaths[cluster]
+        lambda_ = min(row['lambda'], max_lambda)
+        result[point] = lambda_ / max_lambda
+
+    return result
+
+
+cpdef tuple get_clusters(np.ndarray tree, dict stability):
     """
     The tree is assumed to have numeric node ids such that a reverse numeric
     sort is equivalent to a topological sort.
@@ -286,6 +445,7 @@ cpdef list get_clusters(np.ndarray tree, dict stability):
     cdef long long sub_node
     cdef long long cluster
     cdef long long num_points
+    cdef np.ndarray labels
 
     # Assume clusters are ordered by numeric id equivalent to
     # a topological sort of the tree; This is valid given the
@@ -308,8 +468,14 @@ cpdef list get_clusters(np.ndarray tree, dict stability):
                 if sub_node != node:
                     is_cluster[sub_node] = False
 
-    return [get_cluster_points(tree, cluster, num_points) for cluster in is_cluster if is_cluster[cluster]]
+    clusters = set([c for c in is_cluster if is_cluster[c]])
+    cluster_map = {c:n for n, c in enumerate(clusters)}
+    reverse_cluster_map = {n:c for n, c in enumerate(clusters)}
 
+    labels = do_labelling(tree, clusters, cluster_map)
+    probs = get_probabilities(tree, reverse_cluster_map, labels)
+
+    return (labels, probs)
     
     
     
