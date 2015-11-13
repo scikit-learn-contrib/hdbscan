@@ -244,7 +244,7 @@ cdef class UnionFind (object):
         self.parent_arr = -1 * np.ones(2 * N - 1, dtype=np.int64)
         self.next_label = N
         self.size_arr = np.hstack((np.ones(N, dtype=np.int64),
-                               np.zeros(N-1, dtype=np.int64)))
+                                   np.zeros(N-1, dtype=np.int64)))
         self.parent = (<np.int64_t *> self.parent_arr.data)
         self.size = (<np.int64_t *> self.size_arr.data)
                                
@@ -257,19 +257,19 @@ cdef class UnionFind (object):
         
         return
         
-    cdef long long find(self, np.int64_t n):
+    cdef np.int64_t find(self, np.int64_t n):
         while self.parent[n] != -1:
             n = self.parent[n]
         return n
         
-    cdef long long fast_find(self, np.int64_t n):
+    cdef np.int64_t fast_find(self, np.int64_t n):
         cdef np.int64_t p
         p = n
-        while self.parent[n] != -1:
-            n = self.parent[n]
+        while self.parent_arr[n] != -1:
+            n = self.parent_arr[n]
         # label up to the root
-        while self.parent[p] != n:
-            p, self.parent[p] = self.parent[p], n
+        while self.parent_arr[p] != n:
+            p, self.parent_arr[p] = self.parent_arr[p], n
         return n
         
 cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
