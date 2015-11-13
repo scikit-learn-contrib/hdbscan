@@ -90,7 +90,7 @@ cdef class BoruvkaUnionFind (object):
         self._data = (<np.int64_t[:size, :2:1]> (<np.int64_t *> self._data_arr.data))
         self.is_component = np.ones(size, dtype=np.bool)
 
-    cpdef union_(self, np.int64_t x, np.int64_t y):
+    cdef union_(self, np.int64_t x, np.int64_t y):
         cdef np.int64_t x_root = self.find(x)
         cdef np.int64_t y_root = self.find(y)
 
@@ -104,13 +104,13 @@ cdef class BoruvkaUnionFind (object):
 
         return
 
-    cpdef find(self, np.int64_t x):
+    cdef find(self, np.int64_t x):
         if self._data[x, 0] != x:
             self._data[x, 0] = self.find(self._data[x, 0])
             self.is_component[x] = False
         return self._data[x, 0]
 
-    cpdef np.ndarray[np.int64_t, ndim=1] components(self):
+    cdef np.ndarray[np.int64_t, ndim=1] components(self):
         return self.is_component.nonzero()[0]
 
 cdef class KDTreeBoruvkaAlgorithm (object):
