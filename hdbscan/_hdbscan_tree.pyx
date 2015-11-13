@@ -6,41 +6,6 @@
 import numpy as np
 cimport numpy as np
 
-import itertools
-
-cpdef np.ndarray get_points(np.ndarray[np.double_t, ndim=2] hierarchy):
-    """
-    Extract original point information from the single linkage hierarchy
-    providing a list of points for each node in the hierarchy tree.
-    """
-
-    cdef long long max_node
-    cdef long long num_points
-    cdef long long dim
-    cdef long long node
-    cdef long long parent
-    cdef np.ndarray[tuple, ndim=1] result
-    cdef long long i
-    cdef long long left_child
-    cdef long long right_child
-
-    dim = hierarchy.shape[0]
-    max_node = 2 * dim
-    num_points = max_node - (dim - 1)
-
-    result = np.empty(max_node + 1, dtype=object)
-
-    for node in range(num_points):
-        result[node] = (node,)
-
-    for i in range(dim):
-        parent = i + num_points
-        left_child = <long long> hierarchy[i,0]
-        right_child = <long long> hierarchy[i,1]
-        result[parent] = result[left_child] + result[right_child]
-
-    return result
-
 cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy, long long bfs_root):
 
     """
@@ -266,75 +231,6 @@ cdef max_lambdas(np.ndarray tree):
 
     return deaths_arr
 
-cdef tuple get_cluster_points(np.ndarray tree, long long cluster, long long num_points):
-
-    cdef list result
-    cdef np.ndarray[np.int64_t, ndim=1] result_arr
-    cdef np.int64_t *result_ptr
-    cdef np.int64_t num_result_points = 0
-    cdef np.ndarray[np.int64_t, ndim=1] to_process
-    cdef np.ndarray[np.int64_t, ndim=1] next_to_process
-    cdef np.int64_t num_to_process
-    cdef np.int64_t next_num_to_process
-    cdef np.int64_t in_process
-
-    cdef np.ndarray[np.int64_t, ndim=1] children = tree['child']
-    cdef np.ndarray[np.int64_t, ndim=1] parents = tree['parent']
-    cdef np.ndarray[np.int64_t, ndim=1] sizes = tree['child_size']
-
-    cdef np.int64_t i
-    cdef np.int64_t j
-
-    result = []
-    #to_process = [cluster]
-    #next_to_process = []
-    result_arr = np.empty(num_points, dtype=np.int64)
-    result_ptr = (<np.int64_t *> result_arr.data)
-
-    to_process = np.empty(num_points, dtype=np.int64)
-    to_process[0] = cluster
-    num_to_process = 1
-
-    next_to_process = np.empty(num_points, dtype=np.int64)
-    next_num_to_process = 0
-
-    while num_to_process > 0:
-
-        for i in range(num_to_process):
-            in_process = to_process[i]
-            if in_process < num_points:
-                result_ptr[num_result_points] = in_process
-                num_result_points += 1
-            else:
-                for j in range(parents.shape[0]):
-                    if parents[j] == in_process:
-                        next_to_process[next_num_to_process] = children[j]
-                        next_num_to_process += 1
-
-        to_process[:next_num_to_process] = next_to_process[:next_num_to_process]
-        num_to_process = next_num_to_process
-        next_num_to_process = 0
-
-    result = list(result_arr[:num_result_points])
-
-    # deaths = max_lambdas(tree, set([]))
-
-    cluster_split_selection = (parents == cluster) & (sizes > 1)
-    if np.sum(cluster_split_selection) > 0:
-        max_cluster_lambda = tree[cluster_split_selection]['lambda'][0]
-    else:
-        max_cluster_lambda = tree['lambda'][result].max()
-
-    #if deaths[cluster] != max_cluster_lambda:
-    #    pass
-    #    #print cluster, deaths[cluster], max_cluster_lambda
-    #prob = tree['lambda'][result]
-    #prob = np.where(prob <= max_cluster_lambda, prob, max_cluster_lambda)
-    #prob = prob / max_cluster_lambda
-    prob = np.ones(len(result))
-
-    return result, prob
-
 cdef class TreeUnionFind (object):
 
     cdef np.ndarray _data_arr
@@ -370,7 +266,7 @@ cdef class TreeUnionFind (object):
     cdef np.ndarray[np.int64_t, ndim=1] components(self):
         return self.is_component.nonzero()[0]
 
-cpdef np.ndarray[np.int64_t, ndim=1] do_labelling(np.ndarray tree, set clusters, dict cluster_label_map):
+cdef np.ndarray[np.int64_t, ndim=1] do_labelling(np.ndarray tree, set clusters, dict cluster_label_map):
 
     cdef np.int64_t root_cluster
     cdef np.ndarray[np.int64_t, ndim=1] result_arr
@@ -398,7 +294,7 @@ cpdef np.ndarray[np.int64_t, ndim=1] do_labelling(np.ndarray tree, set clusters,
 
     return result_arr
 
-cpdef get_probabilities(np.ndarray tree, dict cluster_map, np.ndarray labels):
+cdef get_probabilities(np.ndarray tree, dict cluster_map, np.ndarray labels):
 
     cdef np.ndarray[np.double_t, ndim=1] result
     cdef np.ndarray[np.double_t, ndim=1] deaths
