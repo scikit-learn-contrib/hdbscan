@@ -29,8 +29,7 @@ from ._hdbscan_linkage import (single_linkage,
                                mst_linkage_core_pdist,
                                mst_linkage_core_cdist,
                                label)
-from ._hdbscan_tree import (get_points,
-                            condense_tree,
+from ._hdbscan_tree import (condense_tree,
                             compute_stability,
                             get_clusters)
 from ._hdbscan_reachability import (mutual_reachability,
