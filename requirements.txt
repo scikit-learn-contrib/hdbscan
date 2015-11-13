@@ -1,2 +1,6 @@
+cython>=0.23
+numpy>=1.10
+scipy >= 0.9
 scikit-learn>=0.16
+
 

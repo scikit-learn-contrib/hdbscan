@@ -105,6 +105,15 @@ Fast install
 
     pip install hdbscan
 
+If pip is having difficulties pulling the dependencies then we'd suggest installing
+the dependencies manually using anaconda followed by pulling hdscan from pip:
+
+.. code:: bash
+
+    conda install cython
+    conda install sklearn
+    pip install hdbscan
+
 For a manual install get this package:
 
 .. code:: bash
