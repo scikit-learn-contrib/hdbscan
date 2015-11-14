@@ -122,6 +122,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
     cdef np.ndarray _data
     cdef np.double_t[:, ::1] _raw_data
     cdef np.double_t[:, :, ::1] node_bounds
+    cdef np.double_t alpha
     cdef np.int64_t min_samples
     cdef np.int64_t num_points
     cdef np.int64_t num_nodes
@@ -159,7 +160,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
     cdef np.ndarray candidate_neighbor_arr
     cdef np.ndarray candidate_distance_arr
 
-    def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20, **kwargs):
+    def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20, alpha=1.0, **kwargs):
 
         self.core_dist_tree = tree
         self.tree = KDTree(tree.data, metric=metric, leaf_size=leaf_size)
@@ -167,6 +168,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         self._raw_data = self.tree.data
         self.node_bounds = self.tree.node_bounds
         self.min_samples = min_samples
+        self.alpha = alpha
 
         self.num_points = self.tree.data.shape[0]
         self.num_features = self.tree.data.shape[1]
@@ -396,7 +398,10 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                                            self.num_features)
 
                         # mr_dist = max(distances[i, j], self.core_distance_ptr[p], self.core_distance_ptr[q])
-                        mr_dist = max(d, self.core_distance_ptr[p], self.core_distance_ptr[q])
+                        if self.alpha != 1.0:
+                            mr_dist = max(d / self.alpha, self.core_distance_ptr[p], self.core_distance_ptr[q])
+                        else:
+                            mr_dist = max(d, self.core_distance_ptr[p], self.core_distance_ptr[q])
                         if mr_dist < self.candidate_distance_ptr[component1]:
                             self.candidate_distance_ptr[component1] = mr_dist
                             self.candidate_neighbor_ptr[component1] = q
@@ -502,6 +507,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef dist_metrics.DistanceMetric dist
     cdef np.ndarray _data
     cdef np.double_t[:, ::1] _raw_data
+    cdef np.double_t alpha
     cdef np.int64_t min_samples
     cdef np.int64_t num_points
     cdef np.int64_t num_nodes
@@ -539,7 +545,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef np.ndarray candidate_neighbor_arr
     cdef np.ndarray candidate_distance_arr
 
-    def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20, **kwargs):
+    def __init__(self, tree, min_samples=5, metric='euclidean', alpha=1.0, leaf_size=20, **kwargs):
 
         self.core_dist_tree = tree
         self.tree = BallTree(tree.data, metric=metric, leaf_size=leaf_size)
@@ -770,9 +776,13 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
                         d = self.dist.dist(&raw_data[self.num_features * p],
                                            &raw_data[self.num_features * q],
-                                           self.num_features)
+                                           self.num_features) * self.alpha
 
-                        mr_dist = max(d, self.core_distance_ptr[p], self.core_distance_ptr[q])
+                        if self.alpha != 1.0:
+                            mr_dist = max(d / self.alpha, self.core_distance_ptr[p], self.core_distance_ptr[q])
+                        else:
+                            mr_dist = max(d, self.core_distance_ptr[p], self.core_distance_ptr[q])
+
                         if mr_dist < self.candidate_distance_ptr[component1]:
                             self.candidate_distance_ptr[component1] = mr_dist
                             self.candidate_neighbor_ptr[component1] = q

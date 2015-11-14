@@ -2784,7 +2784,7 @@ static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObje
  *         right_count = <long long> (hierarchy[right - num_points][3]
  *                              if right >= num_points else 1)             # <<<<<<<<<<<<<<
  * 
- *         if left_count > min_cluster_size and right_count > min_cluster_size:
+ *         if left_count >= min_cluster_size and right_count >= min_cluster_size:
  */
     if (((__pyx_v_right >= __pyx_v_num_points) != 0)) {
 
@@ -2812,24 +2812,24 @@ static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObje
     /* "hdbscan/_hdbscan_tree.pyx":81
  *                              if right >= num_points else 1)
  * 
- *         if left_count > min_cluster_size and right_count > min_cluster_size:             # <<<<<<<<<<<<<<
+ *         if left_count >= min_cluster_size and right_count >= min_cluster_size:             # <<<<<<<<<<<<<<
  *             relabel[left] = next_label
  *             next_label += 1
  */
-    __pyx_t_16 = ((__pyx_v_left_count > __pyx_v_min_cluster_size) != 0);
+    __pyx_t_16 = ((__pyx_v_left_count >= __pyx_v_min_cluster_size) != 0);
     if (__pyx_t_16) {
     } else {
       __pyx_t_15 = __pyx_t_16;
       goto __pyx_L9_bool_binop_done;
     }
-    __pyx_t_16 = ((__pyx_v_right_count > __pyx_v_min_cluster_size) != 0);
+    __pyx_t_16 = ((__pyx_v_right_count >= __pyx_v_min_cluster_size) != 0);
     __pyx_t_15 = __pyx_t_16;
     __pyx_L9_bool_binop_done:;
     if (__pyx_t_15) {
 
       /* "hdbscan/_hdbscan_tree.pyx":82
  * 
- *         if left_count > min_cluster_size and right_count > min_cluster_size:
+ *         if left_count >= min_cluster_size and right_count >= min_cluster_size:
  *             relabel[left] = next_label             # <<<<<<<<<<<<<<
  *             next_label += 1
  *             result_list.append((relabel[node], relabel[left], lambda_value, left_count))
@@ -2839,7 +2839,7 @@ static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObje
       *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_relabel.diminfo[0].strides) = __pyx_v_next_label;
 
       /* "hdbscan/_hdbscan_tree.pyx":83
- *         if left_count > min_cluster_size and right_count > min_cluster_size:
+ *         if left_count >= min_cluster_size and right_count >= min_cluster_size:
  *             relabel[left] = next_label
  *             next_label += 1             # <<<<<<<<<<<<<<
  *             result_list.append((relabel[node], relabel[left], lambda_value, left_count))
@@ -2908,7 +2908,7 @@ static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObje
  *             next_label += 1
  *             result_list.append((relabel[node], relabel[right], lambda_value, right_count))             # <<<<<<<<<<<<<<
  * 
- *         elif left_count <= min_cluster_size and right_count <= min_cluster_size:
+ *         elif left_count < min_cluster_size and right_count < min_cluster_size:
  */
       __pyx_t_31 = __pyx_v_node;
       if (__pyx_t_31 < 0) __pyx_t_31 += __pyx_pybuffernd_relabel.diminfo[0].shape;
@@ -2944,24 +2944,24 @@ static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObje
     /* "hdbscan/_hdbscan_tree.pyx":90
  *             result_list.append((relabel[node], relabel[right], lambda_value, right_count))
  * 
- *         elif left_count <= min_cluster_size and right_count <= min_cluster_size:             # <<<<<<<<<<<<<<
+ *         elif left_count < min_cluster_size and right_count < min_cluster_size:             # <<<<<<<<<<<<<<
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):
  *                 if sub_node < num_points:
  */
-    __pyx_t_16 = ((__pyx_v_left_count <= __pyx_v_min_cluster_size) != 0);
+    __pyx_t_16 = ((__pyx_v_left_count < __pyx_v_min_cluster_size) != 0);
     if (__pyx_t_16) {
     } else {
       __pyx_t_15 = __pyx_t_16;
       goto __pyx_L11_bool_binop_done;
     }
-    __pyx_t_16 = ((__pyx_v_right_count <= __pyx_v_min_cluster_size) != 0);
+    __pyx_t_16 = ((__pyx_v_right_count < __pyx_v_min_cluster_size) != 0);
     __pyx_t_15 = __pyx_t_16;
     __pyx_L11_bool_binop_done:;
     if (__pyx_t_15) {
 
       /* "hdbscan/_hdbscan_tree.pyx":91
  * 
- *         elif left_count <= min_cluster_size and right_count <= min_cluster_size:
+ *         elif left_count < min_cluster_size and right_count < min_cluster_size:
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):             # <<<<<<<<<<<<<<
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
@@ -2987,7 +2987,7 @@ static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObje
         __pyx_v_sub_node = __pyx_t_34;
 
         /* "hdbscan/_hdbscan_tree.pyx":92
- *         elif left_count <= min_cluster_size and right_count <= min_cluster_size:
+ *         elif left_count < min_cluster_size and right_count < min_cluster_size:
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):
  *                 if sub_node < num_points:             # <<<<<<<<<<<<<<
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
@@ -3044,7 +3044,7 @@ static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObje
 
         /* "hdbscan/_hdbscan_tree.pyx":91
  * 
- *         elif left_count <= min_cluster_size and right_count <= min_cluster_size:
+ *         elif left_count < min_cluster_size and right_count < min_cluster_size:
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):             # <<<<<<<<<<<<<<
  *                 if sub_node < num_points:
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
@@ -3129,7 +3129,7 @@ static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObje
  *                     result_list.append((relabel[node], sub_node, lambda_value, 1))
  *                 ignore[sub_node] = True             # <<<<<<<<<<<<<<
  * 
- *         elif left_count <= min_cluster_size:
+ *         elif left_count < min_cluster_size:
  */
         __pyx_t_37 = __pyx_v_sub_node;
         if (__pyx_t_37 < 0) __pyx_t_37 += __pyx_pybuffernd_ignore.diminfo[0].shape;
@@ -3150,16 +3150,16 @@ static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObje
     /* "hdbscan/_hdbscan_tree.pyx":101
  *                 ignore[sub_node] = True
  * 
- *         elif left_count <= min_cluster_size:             # <<<<<<<<<<<<<<
+ *         elif left_count < min_cluster_size:             # <<<<<<<<<<<<<<
  *             relabel[right] = relabel[node]
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):
  */
-    __pyx_t_15 = ((__pyx_v_left_count <= __pyx_v_min_cluster_size) != 0);
+    __pyx_t_15 = ((__pyx_v_left_count < __pyx_v_min_cluster_size) != 0);
     if (__pyx_t_15) {
 
       /* "hdbscan/_hdbscan_tree.pyx":102
  * 
- *         elif left_count <= min_cluster_size:
+ *         elif left_count < min_cluster_size:
  *             relabel[right] = relabel[node]             # <<<<<<<<<<<<<<
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):
  *                 if sub_node < num_points:
@@ -3171,7 +3171,7 @@ static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObje
       *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_39, __pyx_pybuffernd_relabel.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int64_t *, __pyx_pybuffernd_relabel.rcbuffer->pybuffer.buf, __pyx_t_38, __pyx_pybuffernd_relabel.diminfo[0].strides));
 
       /* "hdbscan/_hdbscan_tree.pyx":103
- *         elif left_count <= min_cluster_size:
+ *         elif left_count < min_cluster_size:
  *             relabel[right] = relabel[node]
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):             # <<<<<<<<<<<<<<
  *                 if sub_node < num_points:
@@ -3254,7 +3254,7 @@ static PyArrayObject *__pyx_f_7hdbscan_13_hdbscan_tree_condense_tree(PyArrayObje
         *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_int_t *, __pyx_pybuffernd_ignore.rcbuffer->pybuffer.buf, __pyx_t_41, __pyx_pybuffernd_ignore.diminfo[0].strides) = 1;
 
         /* "hdbscan/_hdbscan_tree.pyx":103
- *         elif left_count <= min_cluster_size:
+ *         elif left_count < min_cluster_size:
  *             relabel[right] = relabel[node]
  *             for sub_node in bfs_from_hierarchy(hierarchy, left):             # <<<<<<<<<<<<<<
  *                 if sub_node < num_points:

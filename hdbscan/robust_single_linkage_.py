@@ -109,14 +109,15 @@ def _rsl_prims_balltree(X, cut, k=5, alpha=1.4142135623730951, gamma=5, metric='
     return labels, single_linkage_tree
 
 def _rsl_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-                            metric='minkowski', p=2, leaf_size=10,
+                            metric='minkowski', p=2, leaf_size=40,
                             algorithm='best', gen_min_span_tree=False):
 
     dim = X.shape[0]
     min_samples = min(dim - 1, min_samples)
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size)
-    alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric)
+    alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric,
+                                 alpha=alpha, leaf_size=leaf_size)
     min_spanning_tree = alg.spanning_tree()
 
     single_linkage_tree = label(min_spanning_tree)
@@ -127,14 +128,15 @@ def _rsl_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     return labels, single_linkage_tree
 
 def _rsl_boruvka_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-                              metric='minkowski', p=2, leaf_size=30,
+                              metric='minkowski', p=2, leaf_size=40,
                               algorithm='best', gen_min_span_tree=False):
 
     dim = X.shape[0]
     min_samples = min(dim - 1, min_samples)
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size)
-    alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric)
+    alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric,
+                                   alpha=alpha, leaf_size=leaf_size)
     min_spanning_tree = alg.spanning_tree()
 
     single_linkage_tree = label(min_spanning_tree)
