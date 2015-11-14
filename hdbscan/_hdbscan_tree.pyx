@@ -126,6 +126,10 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
     cdef np.ndarray[np.int64_t, ndim=1] sorted_children
     cdef np.ndarray[np.double_t, ndim=1] sorted_lambdas
 
+    cdef np.ndarray[np.int64_t, ndim=1] parents
+    cdef np.ndarray[np.int64_t, ndim=1] sizes
+    cdef np.ndarray[np.double_t, ndim=1] lambdas
+
     cdef np.int64_t child
     cdef np.int64_t current_child
     cdef np.float64_t lambda_
@@ -143,6 +147,10 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
     births = (<np.double_t *> births_arr.data)
     sorted_children = sorted_child_data['child']
     sorted_lambdas = sorted_child_data['lambda']
+
+    parents = condensed_tree['parent']
+    sizes = condensed_tree['child_size']
+    lambdas = condensed_tree['lambda']
 
     current_child = -1
     min_lambda = 0
@@ -165,10 +173,9 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
     result_arr = np.zeros(num_clusters, dtype=np.double)
 
     for i in range(condensed_tree.shape[0]):
-        parent = condensed_tree['parent'][i]
-        child = condensed_tree['child'][i]
-        lambda_ = condensed_tree['lambda'][i]
-        child_size = condensed_tree['child_size'][i]
+        parent = parents[i]
+        lambda_ = lambdas[i]
+        child_size = sizes[i]
         result_index = parent - smallest_cluster
 
         result_arr[result_index] += (lambda_ - births[parent]) * child_size
