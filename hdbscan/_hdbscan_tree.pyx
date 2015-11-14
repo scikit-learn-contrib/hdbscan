@@ -78,7 +78,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
         right_count = <long long> (hierarchy[right - num_points][3] 
                              if right >= num_points else 1)
         
-        if left_count > min_cluster_size and right_count > min_cluster_size:
+        if left_count >= min_cluster_size and right_count >= min_cluster_size:
             relabel[left] = next_label
             next_label += 1
             result_list.append((relabel[node], relabel[left], lambda_value, left_count))
@@ -87,7 +87,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
             next_label += 1
             result_list.append((relabel[node], relabel[right], lambda_value, right_count))
             
-        elif left_count <= min_cluster_size and right_count <= min_cluster_size:
+        elif left_count < min_cluster_size and right_count < min_cluster_size:
             for sub_node in bfs_from_hierarchy(hierarchy, left):
                 if sub_node < num_points:
                     result_list.append((relabel[node], sub_node, lambda_value, 1))
@@ -98,7 +98,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                     result_list.append((relabel[node], sub_node, lambda_value, 1))
                 ignore[sub_node] = True
                 
-        elif left_count <= min_cluster_size:
+        elif left_count < min_cluster_size:
             relabel[right] = relabel[node]
             for sub_node in bfs_from_hierarchy(hierarchy, left):
                 if sub_node < num_points:
