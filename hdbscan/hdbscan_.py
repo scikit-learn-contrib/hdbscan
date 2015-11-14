@@ -90,7 +90,7 @@ def _hdbscan_generic(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (result_min_span_tree,)
 
 def _hdbscan_prims_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-                          metric='minkowski', p=2, leaf_size=10, gen_min_span_tree=False):
+                          metric='minkowski', p=2, leaf_size=40, gen_min_span_tree=False):
 
     if metric == 'minkowski':
         if p is None:
@@ -113,7 +113,7 @@ def _hdbscan_prims_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (None,)
 
 def _hdbscan_prims_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-                            metric='minkowski', p=2, leaf_size=10, gen_min_span_tree=False):
+                            metric='minkowski', p=2, leaf_size=40, gen_min_span_tree=False):
 
     if metric == 'minkowski':
         if p is None:
@@ -136,7 +136,7 @@ def _hdbscan_prims_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (None,)
 
 def _hdbscan_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-                            metric='minkowski', p=2, leaf_size=10,
+                            metric='minkowski', p=2, leaf_size=40,
                             gen_min_span_tree=False):
 
     dim = X.shape[0]
@@ -149,7 +149,7 @@ def _hdbscan_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (min_spanning_tree,)
 
 def _hdbscan_boruvka_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-                              metric='minkowski', p=2, leaf_size=30,
+                              metric='minkowski', p=2, leaf_size=40,
                               gen_min_span_tree=False):
 
     dim = X.shape[0]
@@ -163,7 +163,7 @@ def _hdbscan_boruvka_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0
 
 
 def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-            metric='minkowski', p=2, leaf_size=10,
+            metric='minkowski', p=2, leaf_size=40,
             algorithm='best', gen_min_span_tree=False):
     """Perform HDBSCAN clustering from a vector array or distance matrix.
     
@@ -352,11 +352,18 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         to ``best`` which chooses the "best" algorithm given the nature of
         the data. You can force other options if you believe you know
         better. Options are:
-            * ``small``
-            * ``small_kdtree``
-            * ``large_kdtree``
-            * ``large_kdtree_fastcluster``
-            * ``large_kdtree_low_memory``
+            * ``best``
+            * ``generic``
+            * ``prims_kdtree``
+            * ``prims_balltree``
+            * ``boruvka_kdtree``
+            * ``boruvka_balltree``
+
+    leaf_size: int, optional
+        If using a space tree algorithm (kdtree, or balltree) the number
+        of points ina leaf node of the tree. This does not alter the
+        resulting clustering, but may have an effect on the runtime
+        of the algorithm. (default 40)
 
     gen_min_span_tree: bool, optional
         Whether to generate the minimum spanning tree with regard
@@ -399,7 +406,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
     def __init__(self, min_cluster_size=5, min_samples=None,
                  metric='euclidean', alpha=1.0, p=None,
-                 algorithm='best', gen_min_span_tree=False):
+                 algorithm='best', leaf_size=40, gen_min_span_tree=False):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
         self.alpha = alpha
@@ -407,6 +414,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self.metric = metric
         self.p = p
         self.algorithm = algorithm
+        self.leaf_size = leaf_size
         self.gen_min_span_tree = gen_min_span_tree
 
         self._condensed_tree = None
