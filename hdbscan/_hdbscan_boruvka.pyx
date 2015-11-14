@@ -552,6 +552,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         self._data = np.array(self.tree.data)
         self._raw_data = self.tree.data
         self.min_samples = min_samples
+        self.alpha = alpha
 
         self.num_points = self.tree.data.shape[0]
         self.num_features = self.tree.data.shape[1]
