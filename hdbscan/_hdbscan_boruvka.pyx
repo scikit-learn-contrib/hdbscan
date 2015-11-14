@@ -159,10 +159,10 @@ cdef class KDTreeBoruvkaAlgorithm (object):
     cdef np.ndarray candidate_neighbor_arr
     cdef np.ndarray candidate_distance_arr
 
-    def __init__(self, tree, min_samples=5, metric='euclidean', **kwargs):
+    def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20, **kwargs):
 
         self.core_dist_tree = tree
-        self.tree = KDTree(tree.data, metric=metric, leaf_size=10)
+        self.tree = KDTree(tree.data, metric=metric, leaf_size=leaf_size)
         self._data = np.array(self.tree.data)
         self._raw_data = self.tree.data
         self.node_bounds = self.tree.node_bounds
@@ -539,10 +539,10 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef np.ndarray candidate_neighbor_arr
     cdef np.ndarray candidate_distance_arr
 
-    def __init__(self, tree, min_samples=5, metric='euclidean', **kwargs):
+    def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20, **kwargs):
 
         self.core_dist_tree = tree
-        self.tree = BallTree(tree.data, metric=metric, leaf_size=10)
+        self.tree = BallTree(tree.data, metric=metric, leaf_size=leaf_size)
         self._data = np.array(self.tree.data)
         self._raw_data = self.tree.data
         self.min_samples = min_samples
