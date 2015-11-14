@@ -99,7 +99,7 @@ Based on the paper:
 Installing
 ----------
 
-Fast install
+Fast install, presuming you have sklearn and all its requirements installed:
 
 .. code:: bash
 
@@ -119,6 +119,12 @@ Install the requirements
 .. code:: bash
 
     sudo pip install -r requirements.txt
+    
+or
+
+.. code:: bash
+
+    conda install sklearn cython
 
 Install the package
 
