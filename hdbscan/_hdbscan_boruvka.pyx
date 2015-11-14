@@ -208,6 +208,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         self.core_distance_ptr = <np.double_t *> &self.core_distance[0]
         self.bounds_ptr = <np.double_t *> &self.bounds[0]
 
+    @cython.profile(True)
     cdef _compute_bounds(self):
 
         cdef np.int64_t n
@@ -235,7 +236,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         for n in range(self.num_nodes):
             self.component_of_node[n] = -(n+1)
 
-    cdef update_components(self):
+    cpdef update_components(self):
 
         cdef np.int64_t source
         cdef np.int64_t sink
