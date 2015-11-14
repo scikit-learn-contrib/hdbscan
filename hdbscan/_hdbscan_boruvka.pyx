@@ -12,6 +12,7 @@ from libc.float cimport DBL_MAX
 from libc.math cimport fabs, sqrt, exp, cos, pow
 
 # from scipy.spatial.distance import cdist, pdist, squareform
+from sklearn.neighbors import KDTree, BallTree
 
 import dist_metrics as dist_metrics
 cimport dist_metrics as dist_metrics
@@ -116,6 +117,7 @@ cdef class BoruvkaUnionFind (object):
 cdef class KDTreeBoruvkaAlgorithm (object):
 
     cdef object tree
+    cdef object core_dist_tree
     cdef dist_metrics.DistanceMetric dist
     cdef np.ndarray _data
     cdef np.double_t[:, ::1] _raw_data
@@ -159,15 +161,16 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 
     def __init__(self, tree, min_samples=5, metric='euclidean', **kwargs):
 
-        self.num_points = tree.data.shape[0]
-        self.num_features = tree.data.shape[1]
-        self.num_nodes = tree.node_data.shape[0]
-
-        self.tree = tree
-        self._data = np.array(tree.data)
-        self._raw_data = tree.data
-        self.node_bounds = tree.node_bounds
+        self.core_dist_tree = tree
+        self.tree = KDTree(tree.data, metric=metric, leaf_size=10)
+        self._data = np.array(self.tree.data)
+        self._raw_data = self.tree.data
+        self.node_bounds = self.tree.node_bounds
         self.min_samples = min_samples
+
+        self.num_points = self.tree.data.shape[0]
+        self.num_features = self.tree.data.shape[1]
+        self.num_nodes = self.tree.node_data.shape[0]
 
         self.dist = dist_metrics.DistanceMetric.get_metric(metric, **kwargs)
 
@@ -183,8 +186,8 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         self.edges = np.empty((self.num_points - 1, 3))
         self.num_edges = 0
 
-        self.idx_array = tree.idx_array
-        self.node_data = tree.node_data
+        self.idx_array = self.tree.idx_array
+        self.node_data = self.tree.node_data
 
         self.bounds = (<np.double_t[:self.num_nodes:1]> (<np.double_t *> self.bounds_arr.data))
         self.component_of_point = (<np.int64_t[:self.num_points:1]> (<np.int64_t *> self.component_of_point_arr.data))
@@ -193,7 +196,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         self.candidate_point = (<np.int64_t[:self.num_points:1]> (<np.int64_t *> self.candidate_point_arr.data))
         self.candidate_distance = (<np.double_t[:self.num_points:1]> (<np.double_t *> self.candidate_distance_arr.data))
 
-        #self._centroid_distances_arr = self.dist.pairwise(tree.node_bounds[0])
+        #self._centroid_distances_arr = self.dist.pairwise(self.tree.node_bounds[0])
         #self.centroid_distances = (<np.double_t [:self.num_nodes, :self.num_nodes:1]> (<np.double_t *> self._centroid_distances_arr.data))
 
         self._initialize_components()
@@ -216,10 +219,10 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.int64_t, ndim=2] knn_indices
 
-        knn_dist, knn_indices = self.tree.query(self.tree.data,
-                                                k=self.min_samples,
-                                                dualtree=True,
-                                                breadth_first=True)
+        knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
+                                                          k=self.min_samples,
+                                                          dualtree=True,
+                                                          breadth_first=True)
         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
 
@@ -495,6 +498,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 cdef class BallTreeBoruvkaAlgorithm (object):
 
     cdef object tree
+    cdef object core_dist_tree
     cdef dist_metrics.DistanceMetric dist
     cdef np.ndarray _data
     cdef np.double_t[:, ::1] _raw_data
@@ -537,14 +541,16 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
     def __init__(self, tree, min_samples=5, metric='euclidean', **kwargs):
 
-        self.num_points = tree.data.shape[0]
-        self.num_features = tree.data.shape[1]
-        self.num_nodes = tree.node_data.shape[0]
-
-        self.tree = tree
-        self._data = np.array(tree.data)
-        self._raw_data = tree.data
+        self.core_dist_tree = tree
+        self.tree = BallTree(tree.data, metric=metric, leaf_size=10)
+        self._data = np.array(self.tree.data)
+        self._raw_data = self.tree.data
         self.min_samples = min_samples
+
+        self.num_points = self.tree.data.shape[0]
+        self.num_features = self.tree.data.shape[1]
+        self.num_nodes = self.tree.node_data.shape[0]
+
 
         self.dist = dist_metrics.DistanceMetric.get_metric(metric, **kwargs)
 
@@ -560,8 +566,8 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         self.edges = np.empty((self.num_points - 1, 3))
         self.num_edges = 0
 
-        self.idx_array = tree.idx_array
-        self.node_data = tree.node_data
+        self.idx_array = self.tree.idx_array
+        self.node_data = self.tree.node_data
 
         self.bounds = (<np.double_t[:self.num_nodes:1]> (<np.double_t *> self.bounds_arr.data))
         self.component_of_point = (<np.int64_t[:self.num_points:1]> (<np.int64_t *> self.component_of_point_arr.data))
@@ -570,7 +576,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         self.candidate_point = (<np.int64_t[:self.num_points:1]> (<np.int64_t *> self.candidate_point_arr.data))
         self.candidate_distance = (<np.double_t[:self.num_points:1]> (<np.double_t *> self.candidate_distance_arr.data))
 
-        self._centroid_distances_arr = self.dist.pairwise(tree.node_bounds[0])
+        self._centroid_distances_arr = self.dist.pairwise(self.tree.node_bounds[0])
         self.centroid_distances = (<np.double_t [:self.num_nodes, :self.num_nodes:1]> (<np.double_t *> self._centroid_distances_arr.data))
 
         self._initialize_components()
@@ -592,10 +598,10 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.int64_t, ndim=2] knn_indices
 
-        knn_dist, knn_indices = self.tree.query(self.tree.data,
-                                                k=self.min_samples,
-                                                dualtree=True,
-                                                breadth_first=True)
+        knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
+                                                          k=self.min_samples,
+                                                          dualtree=True,
+                                                          breadth_first=True)
         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
 
