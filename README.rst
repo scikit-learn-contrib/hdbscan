@@ -38,11 +38,12 @@ Performance
 -----------
 
 Significant effort has been put into making the hdbscan implementation as fast as 
-possible. It is more than twice as fast as the reference implementation in Java
+possible. It is more than ten as fast as the reference implementation in Java (full
+benchmarks forthcoming),
 and is currently faster highly optimized single linkage implementations in C and C++.
 `version 0.3 performance can be seen in this notebook <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations.ipynb>`_ . 
-Version 0.4 brings a new minimum spanning tree algorithm and dramatic speedups, particularly
-for low dimensional data.
+Versions 0.4 and 0.5 bring a new minimum spanning tree algorithm, and further
+optimizations that provide dramatic speedups, particularly for low dimensional data.
 
 ------------------------
 Additional functionality
@@ -103,6 +104,15 @@ Fast install, presuming you have sklearn and all its requirements installed:
 
 .. code:: bash
 
+    pip install hdbscan
+
+If pip is having difficulties pulling the dependencies then we'd suggest installing
+the dependencies manually using anaconda followed by pulling hdscan from pip:
+
+.. code:: bash
+
+    conda install cython
+    conda install sklearn
     pip install hdbscan
 
 For a manual install get this package:
