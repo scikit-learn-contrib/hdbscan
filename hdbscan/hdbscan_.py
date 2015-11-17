@@ -107,7 +107,9 @@ def _hdbscan_prims_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
 
     dist_metric = DistanceMetric.get_metric(metric)
 
-    core_distances = tree.query(X, k=min_samples)[0][:,-1]
+    core_distances = tree.query(X, k=min_samples,
+                                dualtree=True,
+                                breadth_first=True)[0][:,-1]
     min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric)
 
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (None,)
@@ -130,7 +132,9 @@ def _hdbscan_prims_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
 
     dist_metric = DistanceMetric.get_metric(metric)
 
-    core_distances = tree.query(X, k=min_samples)[0][:,-1]
+    core_distances = tree.query(X, k=min_samples,
+                                dualtree=True,
+                                breadth_first=True)[0][:,-1]
     min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric)
 
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (None,)

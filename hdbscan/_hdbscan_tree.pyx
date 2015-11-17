@@ -6,6 +6,8 @@
 import numpy as np
 cimport numpy as np
 
+cdef np.double_t INFTY = np.inf
+
 cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy, long long bfs_root):
 
     """
@@ -72,11 +74,20 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
         children = hierarchy[node - num_points]
         left = <long long> children[0]
         right = <long long> children[1]
-        lambda_value = 1.0 / children[2] if children[2] > 0.0 else np.inf
-        left_count = <long long> (hierarchy[left - num_points][3] 
-                            if left >= num_points else 1)
-        right_count = <long long> (hierarchy[right - num_points][3] 
-                             if right >= num_points else 1)
+        if children[2] > 0.0:
+            lambda_value = 1.0 / children[2]
+        else:
+            lambda_value = INFTY
+
+        if left >= num_points:
+            left_count = <long long> hierarchy[left - num_points][3]
+        else:
+            left_count = 1
+
+        if right >= num_points:
+            right_count = <long long> hierarchy[right - num_points][3]
+        else:
+            right_count = 1
         
         if left_count >= min_cluster_size and right_count >= min_cluster_size:
             relabel[left] = next_label
@@ -131,6 +142,9 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
     cdef np.ndarray[np.double_t, ndim=1] lambdas
 
     cdef np.int64_t child
+    cdef np.int64_t parent
+    cdef np.int64_t child_size
+    cdef np.int64_t result_index
     cdef np.int64_t current_child
     cdef np.float64_t lambda_
     cdef np.float64_t min_lambda
