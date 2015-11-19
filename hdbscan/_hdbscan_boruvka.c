@@ -1034,9 +1034,9 @@ struct __pyx_obj_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct___compute_bounds
 
 
 /* "hdbscan/_hdbscan_boruvka.pyx":242
- *             query = self.tree.query
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)
- *                                                                     (points, k=5, dualtree=True, breadth_first=True)             # <<<<<<<<<<<<<<
+ *             query = self.core_dist_tree.query
+ *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
+ *                                                                    (points, k=5, dualtree=True, breadth_first=True)             # <<<<<<<<<<<<<<
  *                                   for points in datasets)])
  *         else:
  */
@@ -2242,7 +2242,6 @@ static char __pyx_k_struct[] = "struct";
 static char __pyx_k_unpack[] = "unpack";
 static char __pyx_k_vstack[] = "vstack";
 static char __pyx_k_asarray[] = "asarray";
-static char __pyx_k_backend[] = "backend";
 static char __pyx_k_delayed[] = "delayed";
 static char __pyx_k_fortran[] = "fortran";
 static char __pyx_k_genexpr[] = "genexpr";
@@ -2282,7 +2281,6 @@ static char __pyx_k_pyx_getbuffer[] = "__pyx_getbuffer";
 static char __pyx_k_spanning_tree[] = "spanning_tree";
 static char __pyx_k_allocate_buffer[] = "allocate_buffer";
 static char __pyx_k_dtype_is_object[] = "dtype_is_object";
-static char __pyx_k_multiprocessing[] = "multiprocessing";
 static char __pyx_k_sklearn_neighbors[] = "sklearn.neighbors";
 static char __pyx_k_update_components[] = "update_components";
 static char __pyx_k_strided_and_direct[] = "<strided and direct>";
@@ -2368,7 +2366,6 @@ static PyObject *__pyx_n_s_arange;
 static PyObject *__pyx_n_s_args;
 static PyObject *__pyx_n_s_array;
 static PyObject *__pyx_n_s_asarray;
-static PyObject *__pyx_n_s_backend;
 static PyObject *__pyx_n_s_base;
 static PyObject *__pyx_n_s_bool;
 static PyObject *__pyx_n_s_breadth_first;
@@ -2417,7 +2414,6 @@ static PyObject *__pyx_n_s_memview;
 static PyObject *__pyx_n_s_metric;
 static PyObject *__pyx_n_s_min_samples;
 static PyObject *__pyx_n_s_mode;
-static PyObject *__pyx_n_s_multiprocessing;
 static PyObject *__pyx_n_s_n_jobs;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_name_2;
@@ -4538,9 +4534,9 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init_
 static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_15_compute_bounds_2generator(__pyx_GeneratorObject *__pyx_generator, PyObject *__pyx_sent_value); /* proto */
 
 /* "hdbscan/_hdbscan_boruvka.pyx":242
- *             query = self.tree.query
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)
- *                                                                     (points, k=5, dualtree=True, breadth_first=True)             # <<<<<<<<<<<<<<
+ *             query = self.core_dist_tree.query
+ *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
+ *                                                                    (points, k=5, dualtree=True, breadth_first=True)             # <<<<<<<<<<<<<<
  *                                   for points in datasets)])
  *         else:
  */
@@ -4608,8 +4604,8 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
   if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "hdbscan/_hdbscan_boruvka.pyx":243
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)
- *                                                                     (points, k=5, dualtree=True, breadth_first=True)
+ *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
+ *                                                                    (points, k=5, dualtree=True, breadth_first=True)
  *                                   for points in datasets)])             # <<<<<<<<<<<<<<
  *         else:
  *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
@@ -4635,9 +4631,9 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
 
     /* "hdbscan/_hdbscan_boruvka.pyx":241
  * 
- *             query = self.tree.query
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)             # <<<<<<<<<<<<<<
- *                                                                     (points, k=5, dualtree=True, breadth_first=True)
+ *             query = self.core_dist_tree.query
+ *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)             # <<<<<<<<<<<<<<
+ *                                                                    (points, k=5, dualtree=True, breadth_first=True)
  *                                   for points in datasets)])
  */
     __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_delayed); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 241; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -4659,9 +4655,9 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
     /* "hdbscan/_hdbscan_boruvka.pyx":242
- *             query = self.tree.query
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)
- *                                                                     (points, k=5, dualtree=True, breadth_first=True)             # <<<<<<<<<<<<<<
+ *             query = self.core_dist_tree.query
+ *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
+ *                                                                    (points, k=5, dualtree=True, breadth_first=True)             # <<<<<<<<<<<<<<
  *                                   for points in datasets)])
  *         else:
  */
@@ -4698,8 +4694,8 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
     if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
     /* "hdbscan/_hdbscan_boruvka.pyx":243
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)
- *                                                                     (points, k=5, dualtree=True, breadth_first=True)
+ *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
+ *                                                                    (points, k=5, dualtree=True, breadth_first=True)
  *                                   for points in datasets)])             # <<<<<<<<<<<<<<
  *         else:
  *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
@@ -4708,9 +4704,9 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "hdbscan/_hdbscan_boruvka.pyx":242
- *             query = self.tree.query
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)
- *                                                                     (points, k=5, dualtree=True, breadth_first=True)             # <<<<<<<<<<<<<<
+ *             query = self.core_dist_tree.query
+ *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
+ *                                                                    (points, k=5, dualtree=True, breadth_first=True)             # <<<<<<<<<<<<<<
  *                                   for points in datasets)])
  *         else:
  */
@@ -5014,20 +5010,20 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
     /* "hdbscan/_hdbscan_boruvka.pyx":240
  *                         ]
  * 
- *             query = self.tree.query             # <<<<<<<<<<<<<<
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)
- *                                                                     (points, k=5, dualtree=True, breadth_first=True)
+ *             query = self.core_dist_tree.query             # <<<<<<<<<<<<<<
+ *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
+ *                                                                    (points, k=5, dualtree=True, breadth_first=True)
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_query); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->core_dist_tree, __pyx_n_s_query); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     if (PyDict_SetItem(__pyx_d, __pyx_n_s_query, __pyx_t_6) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 240; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
     /* "hdbscan/_hdbscan_boruvka.pyx":241
  * 
- *             query = self.tree.query
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)             # <<<<<<<<<<<<<<
- *                                                                     (points, k=5, dualtree=True, breadth_first=True)
+ *             query = self.core_dist_tree.query
+ *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)             # <<<<<<<<<<<<<<
+ *                                                                    (points, k=5, dualtree=True, breadth_first=True)
  *                                   for points in datasets)])
  */
     __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 241; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -5042,16 +5038,15 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
     __pyx_t_9 = PyDict_New(); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 241; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_9);
     if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_n_jobs, __pyx_int_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 241; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_backend, __pyx_n_s_multiprocessing) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 241; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_9); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 241; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
     /* "hdbscan/_hdbscan_boruvka.pyx":242
- *             query = self.tree.query
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)
- *                                                                     (points, k=5, dualtree=True, breadth_first=True)             # <<<<<<<<<<<<<<
+ *             query = self.core_dist_tree.query
+ *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
+ *                                                                    (points, k=5, dualtree=True, breadth_first=True)             # <<<<<<<<<<<<<<
  *                                   for points in datasets)])
  *         else:
  */
@@ -5086,9 +5081,9 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
 
     /* "hdbscan/_hdbscan_boruvka.pyx":241
  * 
- *             query = self.tree.query
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)             # <<<<<<<<<<<<<<
- *                                                                     (points, k=5, dualtree=True, breadth_first=True)
+ *             query = self.core_dist_tree.query
+ *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)             # <<<<<<<<<<<<<<
+ *                                                                    (points, k=5, dualtree=True, breadth_first=True)
  *                                   for points in datasets)])
  */
     if (likely(PyList_CheckExact(__pyx_t_4)) || PyTuple_CheckExact(__pyx_t_4)) {
@@ -28420,7 +28415,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_args, __pyx_k_args, sizeof(__pyx_k_args), 0, 0, 1, 1},
   {&__pyx_n_s_array, __pyx_k_array, sizeof(__pyx_k_array), 0, 0, 1, 1},
   {&__pyx_n_s_asarray, __pyx_k_asarray, sizeof(__pyx_k_asarray), 0, 0, 1, 1},
-  {&__pyx_n_s_backend, __pyx_k_backend, sizeof(__pyx_k_backend), 0, 0, 1, 1},
   {&__pyx_n_s_base, __pyx_k_base, sizeof(__pyx_k_base), 0, 0, 1, 1},
   {&__pyx_n_s_bool, __pyx_k_bool, sizeof(__pyx_k_bool), 0, 0, 1, 1},
   {&__pyx_n_s_breadth_first, __pyx_k_breadth_first, sizeof(__pyx_k_breadth_first), 0, 0, 1, 1},
@@ -28469,7 +28463,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_metric, __pyx_k_metric, sizeof(__pyx_k_metric), 0, 0, 1, 1},
   {&__pyx_n_s_min_samples, __pyx_k_min_samples, sizeof(__pyx_k_min_samples), 0, 0, 1, 1},
   {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
-  {&__pyx_n_s_multiprocessing, __pyx_k_multiprocessing, sizeof(__pyx_k_multiprocessing), 0, 0, 1, 1},
   {&__pyx_n_s_n_jobs, __pyx_k_n_jobs, sizeof(__pyx_k_n_jobs), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_name_2, __pyx_k_name_2, sizeof(__pyx_k_name_2), 0, 0, 1, 1},

@@ -237,9 +237,9 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
                         ]
 
-            query = self.tree.query
-            knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)
-                                                                    (points, k=5, dualtree=True, breadth_first=True)
+            query = self.core_dist_tree.query
+            knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
+                                                                   (points, k=5, dualtree=True, breadth_first=True)
                                   for points in datasets)])
         else:
             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
