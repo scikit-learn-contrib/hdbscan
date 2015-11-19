@@ -132,7 +132,7 @@ cdef inline np.double_t balltree_min_dist_dual(np.double_t radius1,
                                                np.double_t radius2,
                                                np.int64_t node1,
                                                np.int64_t node2,
-                                               np.double_t[:, ::1] centroid_dist):
+                                               np.double_t[:, ::1] centroid_dist) nogil except -1:
     cdef np.double_t dist_pt = centroid_dist[node1, node2]
     return max(0, (dist_pt - radius1 - radius2))
 
@@ -140,7 +140,7 @@ cdef inline np.double_t kdtree_min_dist_dual(dist_metrics.DistanceMetric metric,
                                              np.int64_t node1,
                                              np.int64_t node2,
                                              np.double_t[:, :, ::1] node_bounds,
-                                             np.int64_t num_features):
+                                             np.int64_t num_features) except -1:
 
     cdef np.double_t d, d1, d2, rdist=0.0
     cdef np.double_t zero = 0.0
@@ -204,11 +204,11 @@ cdef class BoruvkaUnionFind (object):
     cdef np.ndarray[np.int64_t, ndim=1] components(self):
         return self.is_component.nonzero()[0]
 
-cdef _recursive_query(np.int64_t node1, np.int64_t node2, NeighborsHeap nbr_heap,
+cdef int _recursive_query(np.int64_t node1, np.int64_t node2, NeighborsHeap nbr_heap,
                       NodeData_t[::1] node_data, np.double_t *raw_data,
                       dist_metrics.DistanceMetric dist, np.double_t[:, :, ::1] node_bounds,
                       np.int64_t[::1] idx_array, np.double_t *bounds_ptr,
-                      np.int64_t num_features):
+                      np.int64_t num_features) except -1:
 
         cdef np.int64_t[::1] point_indices1, point_indices2
 
@@ -269,8 +269,8 @@ cdef _recursive_query(np.int64_t node1, np.int64_t node2, NeighborsHeap nbr_heap
                     if p != q:
 
                         d = dist.dist(&raw_data[num_features * p],
-                                           &raw_data[num_features * q],
-                                           num_features)
+                                      &raw_data[num_features * q],
+                                      num_features)
 
                         if d < nbr_heap.largest(p):
                             nbr_heap.push(p, d)

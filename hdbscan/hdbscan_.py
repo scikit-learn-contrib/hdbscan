@@ -147,7 +147,7 @@ def _hdbscan_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     min_samples = min(dim - 1, min_samples)
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size)
-    alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size//3)
+    alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size//5)
     min_spanning_tree = alg.spanning_tree()
 
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (min_spanning_tree,)
@@ -160,7 +160,7 @@ def _hdbscan_boruvka_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0
     min_samples = min(dim - 1, min_samples)
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size)
-    alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size//3)
+    alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size//5)
     min_spanning_tree = alg.spanning_tree()
 
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (min_spanning_tree,)
