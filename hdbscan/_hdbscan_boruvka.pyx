@@ -37,6 +37,96 @@ cdef struct NodeData_t:
     np.int64_t is_leaf
     np.double_t radius
 
+# Copied directly from Jake Vanderplas' version in sklearn BinaryTree.pxi
+cdef class NeighborsHeap:
+    """A max-heap structure to keep track of distances of neighbors
+    This implements an efficient pre-allocated set of fixed-size heaps
+    for chasing neighbors, holding a distance.
+    When any row of the heap is full, adding an additional point will push
+    the furthest point off the heap.
+    Parameters
+    ----------
+    n_pts : int
+        the number of heaps to use
+    n_nbrs : int
+        the size of each heap.
+    """
+    cdef np.ndarray distances_arr
+
+    cdef np.double_t[:, ::1] distances
+
+    def __cinit__(self):
+        self.distances_arr = np.zeros((1, 1), dtype=np.double, order='C')
+        self.distances = <np.double_t[:1, :1:1]> (<np.double_t*> self.distances_arr.data)
+
+    def __init__(self, n_pts, n_nbrs):
+        self.distances_arr = np.inf + np.zeros((n_pts, n_nbrs), dtype=np.double,
+                                               order='C')
+        self.distances = <np.double_t[:n_pts, :n_nbrs:1]> (<np.double_t*> self.distances_arr.data)
+
+    def get_distances(self, sort=True):
+        """Get the arrays of distances within the heap.
+        If sort=True, then simultaneously sort the indices and distances,
+        so the closer points are listed first.
+        """
+        if sort:
+            self._sort()
+        return self.distances_arr
+
+    cdef inline np.double_t largest(self, np.int64_t row) nogil except -1:
+        """Return the largest distance in the given row"""
+        return self.distances[row, 0]
+
+    cdef int push(self, np.int64_t row, np.double_t val) nogil except -1:
+        """push (val) into the given row"""
+        cdef np.int64_t i, ic1, ic2, i_swap
+        cdef np.int64_t size = self.distances.shape[1]
+        cdef np.double_t* dist_arr = &self.distances[row, 0]
+
+        # check if val should be in heap
+        if val > dist_arr[0]:
+            return 0
+
+        # insert val at position zero
+        dist_arr[0] = val
+
+        #descend the heap, swapping values until the max heap criterion is met
+        i = 0
+        while True:
+            ic1 = 2 * i + 1
+            ic2 = ic1 + 1
+
+            if ic1 >= size:
+                break
+            elif ic2 >= size:
+                if dist_arr[ic1] > val:
+                    i_swap = ic1
+                else:
+                    break
+            elif dist_arr[ic1] >= dist_arr[ic2]:
+                if val < dist_arr[ic1]:
+                    i_swap = ic1
+                else:
+                    break
+            else:
+                if val < dist_arr[ic2]:
+                    i_swap = ic2
+                else:
+                    break
+
+            dist_arr[i] = dist_arr[i_swap]
+
+            i = i_swap
+
+        dist_arr[i] = val
+
+        return 0
+
+    cdef int _sort(self) except -1:
+        """simultaneously sort the distances and indices"""
+        np.sort(self.distances_arr, axis=0)
+
+        return 0
 
 cdef inline np.double_t balltree_min_dist_dual(np.double_t radius1,
                                                np.double_t radius2,
@@ -113,6 +203,170 @@ cdef class BoruvkaUnionFind (object):
 
     cdef np.ndarray[np.int64_t, ndim=1] components(self):
         return self.is_component.nonzero()[0]
+
+cdef _recursive_query(np.int64_t node1, np.int64_t node2, NeighborsHeap nbr_heap,
+                      NodeData_t[::1] node_data, np.double_t *raw_data,
+                      dist_metrics.DistanceMetric dist, np.double_t[:, :, ::1] node_bounds,
+                      np.int64_t[::1] idx_array, np.double_t *bounds_ptr,
+                      np.int64_t num_features):
+
+        cdef np.int64_t[::1] point_indices1, point_indices2
+
+        cdef long long i
+        cdef long long j
+
+        cdef np.int64_t p
+        cdef np.int64_t q
+
+        cdef np.int64_t parent
+        cdef np.int64_t child1
+        cdef np.int64_t child2
+
+        cdef double node_dist
+
+        cdef NodeData_t node1_info = node_data[node1]
+        cdef NodeData_t node2_info = node_data[node2]
+        cdef NodeData_t parent_info
+        cdef NodeData_t left_info
+        cdef NodeData_t right_info
+
+        cdef np.double_t d
+
+        cdef np.double_t new_bound
+        cdef np.double_t new_upper_bound
+        cdef np.double_t new_lower_bound
+        cdef np.double_t bound_max
+        cdef np.double_t bound_min
+
+        cdef np.int64_t left
+        cdef np.int64_t right
+        cdef np.double_t left_dist
+        cdef np.double_t right_dist
+
+
+        node_dist = kdtree_min_dist_dual(dist, node1, node2, node_bounds, num_features)
+
+        if node_dist >= bounds_ptr[node1]:
+            return 0
+
+
+        if node1_info.is_leaf and node2_info.is_leaf:
+
+            new_upper_bound = 0.0
+            new_lower_bound = DBL_MAX
+
+            point_indices1 = idx_array[node1_info.idx_start:node1_info.idx_end]
+            point_indices2 = idx_array[node2_info.idx_start:node2_info.idx_end]
+
+            for i in range(point_indices1.shape[0]):
+
+                p = point_indices1[i]
+
+                for j in range(point_indices2.shape[0]):
+
+                    q = point_indices2[j]
+
+                    if p != q:
+
+                        d = dist.dist(&raw_data[num_features * p],
+                                           &raw_data[num_features * q],
+                                           num_features)
+
+                        if d < nbr_heap.largest(p):
+                            nbr_heap.push(p, d)
+
+                new_upper_bound = max(new_upper_bound, nbr_heap.largest(p))
+                new_lower_bound = min(new_lower_bound, nbr_heap.largest(p)) # To be fixed
+
+            new_bound = min(new_upper_bound, new_lower_bound + 2 * node1_info.radius)
+            if new_bound < bounds_ptr[node1]:
+                bounds_ptr[node1] = new_bound
+
+                # Propagate bounds up the tree
+                while node1 > 0:
+                    parent = (node1 - 1) // 2
+                    left = 2 * parent + 1
+                    right = 2 * parent + 2
+
+                    parent_info = node_data[parent]
+                    left_info = node_data[left]
+                    right_info = node_data[right]
+
+                    bound_max = max(bounds_ptr[left],
+                                    bounds_ptr[right])
+                    bound_min = min(bounds_ptr[left] + 2 * (parent_info.radius - left_info.radius),
+                                    bounds_ptr[right] + 2 * (parent_info.radius - right_info.radius))
+
+                    if bound_min > 0:
+                        new_bound = min(bound_max, bound_min)
+                    else:
+                        new_bound = bound_max
+
+                    if new_bound < bounds_ptr[parent]:
+                        bounds_ptr[parent] = new_bound
+                        node1 = parent
+                    else:
+                        break
+
+
+        elif node1_info.is_leaf or (not node2_info.is_leaf
+                                    and node2_info.radius > node1_info.radius):
+
+            left = 2 * node2 + 1
+            right = 2 * node2 + 2
+
+            node2_info = node_data[left]
+
+            left_dist = kdtree_min_dist_dual(dist, node1, left, node_bounds, num_features)
+
+            node2_info = node_data[right]
+
+            right_dist = kdtree_min_dist_dual(dist, node1, right, node_bounds, num_features)
+
+            if left_dist < right_dist:
+                _recursive_query(node1, left,
+                                nbr_heap, node_data, raw_data, dist, node_bounds,
+                                idx_array, bounds_ptr, num_features)
+                _recursive_query(node1, right,
+                                nbr_heap, node_data, raw_data, dist, node_bounds,
+                                idx_array, bounds_ptr, num_features)
+            else:
+                _recursive_query(node1, right,
+                                nbr_heap, node_data, raw_data, dist, node_bounds,
+                                idx_array, bounds_ptr, num_features)
+                _recursive_query(node1, left,
+                                nbr_heap, node_data, raw_data, dist, node_bounds,
+                                idx_array, bounds_ptr, num_features)
+        else:
+            left = 2 * node1 + 1
+            right = 2 * node1 + 2
+
+            node1_info = node_data[left]
+
+            left_dist = kdtree_min_dist_dual(dist, left, node2, node_bounds, num_features)
+
+            node1_info = node_data[right]
+
+            right_dist = kdtree_min_dist_dual(dist, right, node2, node_bounds, num_features)
+
+            if left_dist < right_dist:
+                _recursive_query(left, node2,
+                                nbr_heap, node_data, raw_data, dist, node_bounds,
+                                idx_array, bounds_ptr, num_features)
+                _recursive_query(right, node2,
+                                nbr_heap, node_data, raw_data, dist, node_bounds,
+                                idx_array, bounds_ptr, num_features)
+            else:
+                _recursive_query(right, node2,
+                                nbr_heap, node_data, raw_data, dist, node_bounds,
+                                idx_array, bounds_ptr, num_features)
+                _recursive_query(left, node2,
+                                nbr_heap, node_data, raw_data, dist, node_bounds,
+                                idx_array, bounds_ptr, num_features)
+
+
+        return 0
+
 
 cdef class KDTreeBoruvkaAlgorithm (object):
 
@@ -218,15 +472,28 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 
         cdef np.int64_t n
 
-        cdef np.ndarray[np.double_t, ndim=2] knn_dist
-        cdef np.ndarray[np.int64_t, ndim=2] knn_indices
+        #cdef np.ndarray[np.double_t, ndim=2] knn_dist
+        #cdef np.ndarray[np.int64_t, ndim=2] knn_indices
+        #
+        #knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
+        #                                                  k=self.min_samples,
+        #                                                  dualtree=True,
+        #                                                  breadth_first=True)
+        #self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
+        #self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
 
-        knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
-                                                          k=self.min_samples,
-                                                          dualtree=True,
-                                                          breadth_first=True)
-        self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
+        for n in range(self.num_nodes):
+            self.bounds_arr[n] = <np.double_t> DBL_MAX
+
+        self.core_distance_arr = np.empty(self.tree.data.shape[0], dtype=np.double)
         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
+        nbr_heap = NeighborsHeap(self.tree.data.shape[0], self.min_samples)
+        _recursive_query(0, 0, nbr_heap, self.node_data, <np.double_t *> &self._raw_data[0,0],
+                         self.dist, self.node_bounds, self.idx_array, <np.double_t *> &self.bounds[0],
+                         self.num_features)
+
+        for n in range(self.tree.data.shape[0]):
+            self.core_distance[n] = nbr_heap.largest(n)
 
         for n in range(self.num_nodes):
             self.bounds_arr[n] = <np.double_t> DBL_MAX
