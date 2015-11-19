@@ -17,9 +17,17 @@ from sklearn.neighbors import KDTree, BallTree
 import dist_metrics as dist_metrics
 cimport dist_metrics as dist_metrics
 
+try:
+    from joblib import Parallel, delayed
+    HAVE_JOBLIB = True
+except ImportError:
+    HAVE_JOBLIB = False
+
 from libc.math cimport fabs, sqrt, exp, cos, pow, log
 
 cdef np.double_t INF = np.inf
+
+query = None
 
 #cdef inline np.double_t euclidean_dist(np.double_t* x1, np.double_t* x2,
 #                                       np.int64_t size) nogil except -1:
@@ -221,10 +229,24 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.int64_t, ndim=2] knn_indices
 
-        knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
-                                                          k=self.min_samples,
-                                                          dualtree=True,
-                                                          breadth_first=True)
+        if HAVE_JOBLIB:
+            global query
+            datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
+                        np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
+                        np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
+                        np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
+                        ]
+
+            query = self.tree.query
+            knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4, backend='multiprocessing')(delayed(query, check_pickle=False)
+                                                                    (points, k=5, dualtree=True, breadth_first=True)
+                                  for points in datasets)])
+        else:
+            knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
+                                                              k=self.min_samples,
+                                                              dualtree=True,
+                                                              breadth_first=True)
+
         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
 
