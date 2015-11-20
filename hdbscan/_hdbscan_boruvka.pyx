@@ -229,7 +229,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.int64_t, ndim=2] knn_indices
 
-        if HAVE_JOBLIB:
+        if HAVE_JOBLIB and self.tree.data.shape[0] > 16384:
             global query
             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
@@ -239,7 +239,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 
             query = self.core_dist_tree.query
             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
-                                                                   (points, k=5, dualtree=True, breadth_first=True)
+                                                                   (points, k=self.min_samples, dualtree=True, breadth_first=True)
                                   for points in datasets)])
         else:
             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
@@ -627,10 +627,24 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.int64_t, ndim=2] knn_indices
 
-        knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
-                                                          k=self.min_samples,
-                                                          dualtree=True,
-                                                          breadth_first=True)
+        if HAVE_JOBLIB and self.tree.data.shape[0] > 16384:
+            global query
+            datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
+                        np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
+                        np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
+                        np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
+                        ]
+
+            query = self.core_dist_tree.query
+            knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
+                                                                   (points, k=self.min_samples, dualtree=True, breadth_first=True)
+                                  for points in datasets)])
+        else:
+            knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
+                                                              k=self.min_samples,
+                                                              dualtree=True,
+                                                              breadth_first=True)
+
         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
 
