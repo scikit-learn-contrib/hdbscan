@@ -21,7 +21,7 @@ except ImportError:
 
 from ._hdbscan_linkage import single_linkage, mst_linkage_core_cdist, label
 from ._hdbscan_boruvka import KDTreeBoruvkaAlgorithm, BallTreeBoruvkaAlgorithm
-from dist_metrics import DistanceMetric
+from .dist_metrics import DistanceMetric
 from ._hdbscan_reachability import mutual_reachability
 from .plots import SingleLinkageTree
 from sklearn.neighbors import KDTree, BallTree
