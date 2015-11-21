@@ -17,11 +17,7 @@ from sklearn.neighbors import KDTree, BallTree
 import dist_metrics as dist_metrics
 cimport dist_metrics as dist_metrics
 
-try:
-    from joblib import Parallel, delayed
-    HAVE_JOBLIB = True
-except ImportError:
-    HAVE_JOBLIB = False
+from sklearn.externals.joblib import Parallel, delayed
 
 from libc.math cimport fabs, sqrt, exp, cos, pow, log
 
@@ -154,6 +150,9 @@ cdef class BoruvkaUnionFind (object):
     cdef np.ndarray[np.int64_t, ndim=1] components(self):
         return self.is_component.nonzero()[0]
 
+def _core_dist_query(tree, data, min_samples):
+    return tree.query(data, k=min_samples, dualtree=True, breadth_first=True)
+
 cdef class KDTreeBoruvkaAlgorithm (object):
 
     cdef object tree
@@ -261,17 +260,15 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.int64_t, ndim=2] knn_indices
 
-        if HAVE_JOBLIB and self.tree.data.shape[0] > 16384:
-            global query
+        if self.tree.data.shape[0] > 16384:
             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
                         ]
 
-            query = self.core_dist_tree.query
-            knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
-                                                                   (points, k=self.min_samples, dualtree=True, breadth_first=True)
+            knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+                                 (self.core_dist_tree, points, self.min_samples)
                                   for points in datasets)])
         else:
             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
@@ -661,17 +658,15 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.int64_t, ndim=2] knn_indices
 
-        if HAVE_JOBLIB and self.tree.data.shape[0] > 16384:
-            global query
+        if self.tree.data.shape[0] > 16384:
             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
                         ]
 
-            query = self.core_dist_tree.query
-            knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(query, check_pickle=False)
-                                                                   (points, k=self.min_samples, dualtree=True, breadth_first=True)
+            knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+                                 (self.core_dist_tree, points, self.min_samples)
                                   for points in datasets)])
         else:
             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
