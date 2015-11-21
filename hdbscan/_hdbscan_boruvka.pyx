@@ -50,7 +50,7 @@ cdef inline np.double_t balltree_min_dist_dual(np.double_t radius1,
                                                np.double_t radius2,
                                                np.int64_t node1,
                                                np.int64_t node2,
-                                               np.double_t[:, ::1] centroid_dist):
+                                               np.double_t[:, ::1] centroid_dist) nogil except -1:
     cdef np.double_t dist_pt = centroid_dist[node1, node2]
     return max(0, (dist_pt - radius1 - radius2))
 
@@ -58,7 +58,7 @@ cdef inline np.double_t kdtree_min_dist_dual(dist_metrics.DistanceMetric metric,
                                              np.int64_t node1,
                                              np.int64_t node2,
                                              np.double_t[:, :, ::1] node_bounds,
-                                             np.int64_t num_features):
+                                             np.int64_t num_features) except -1:
 
     cdef np.double_t d, d1, d2, rdist=0.0
     cdef np.double_t zero = 0.0
@@ -86,6 +86,38 @@ cdef inline np.double_t kdtree_min_dist_dual(dist_metrics.DistanceMetric metric,
 
     return metric._rdist_to_dist(rdist)
 
+cdef inline np.double_t kdtree_min_rdist_dual(dist_metrics.DistanceMetric metric,
+                                              np.int64_t node1,
+                                              np.int64_t node2,
+                                              np.double_t[:, :, ::1] node_bounds,
+                                              np.int64_t num_features) nogil except -1:
+
+    cdef np.double_t d, d1, d2, rdist=0.0
+    cdef np.double_t zero = 0.0
+    cdef np.int64_t j
+
+    if metric.p == INF:
+        for j in range(num_features):
+            d1 = (node_bounds[0, node1, j]
+                  - node_bounds[1, node2, j])
+            d2 = (node_bounds[0, node2, j]
+                  - node_bounds[1, node1, j])
+            d = (d1 + fabs(d1)) + (d2 + fabs(d2))
+
+            rdist = max(rdist, 0.5 * d)
+    else:
+        # here we'll use the fact that x + abs(x) = 2 * max(x, 0)
+        for j in range(num_features):
+            d1 = (node_bounds[0, node1, j]
+                  - node_bounds[1, node2, j])
+            d2 = (node_bounds[0, node2, j]
+                  - node_bounds[1, node1, j])
+            d = (d1 + fabs(d1)) + (d2 + fabs(d2))
+
+            rdist += pow(0.5 * d, metric.p)
+
+    return rdist
+
 
 cdef class BoruvkaUnionFind (object):
 
@@ -99,7 +131,7 @@ cdef class BoruvkaUnionFind (object):
         self._data = (<np.int64_t[:size, :2:1]> (<np.int64_t *> self._data_arr.data))
         self.is_component = np.ones(size, dtype=np.bool)
 
-    cdef union_(self, np.int64_t x, np.int64_t y):
+    cdef int union_(self, np.int64_t x, np.int64_t y) except -1:
         cdef np.int64_t x_root = self.find(x)
         cdef np.int64_t y_root = self.find(y)
 
@@ -111,9 +143,9 @@ cdef class BoruvkaUnionFind (object):
             self._data[y_root, 0] = x_root
             self._data[x_root, 1] += 1
 
-        return
+        return 0
 
-    cdef find(self, np.int64_t x):
+    cdef np.int64_t find(self, np.int64_t x) except -1:
         if self._data[x, 0] != x:
             self._data[x, 0] = self.find(self._data[x, 0])
             self.is_component[x] = False
@@ -250,6 +282,9 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
 
+        for n in range(self.num_points):
+            self.core_distance[n] = self.dist._dist_to_rdist(self.core_distance[n])
+
         for n in range(self.num_nodes):
             self.bounds_arr[n] = <np.double_t> DBL_MAX
 
@@ -266,7 +301,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         for n in range(self.num_nodes):
             self.component_of_node[n] = -(n+1)
 
-    cpdef update_components(self):
+    cdef int update_components(self) except -1:
 
         cdef np.int64_t source
         cdef np.int64_t sink
@@ -299,7 +334,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                 continue
             self.edges[self.num_edges, 0] = source
             self.edges[self.num_edges, 1] = sink
-            self.edges[self.num_edges, 2] = self.candidate_distance[component]
+            self.edges[self.num_edges, 2] = self.dist._rdist_to_dist(self.candidate_distance[component])
             self.num_edges += 1
             self.component_union_find.union_(source, sink)
             self.candidate_distance[component] = DBL_MAX
@@ -336,7 +371,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 
         return self.components.shape[0]
 
-    cdef int dual_tree_traversal(self, np.int64_t node1, np.int64_t node2):
+    cdef int dual_tree_traversal(self, np.int64_t node1, np.int64_t node2) nogil except -1:
 
         cdef np.int64_t[::1] point_indices1, point_indices2
 
@@ -377,9 +412,8 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         cdef np.double_t left_dist
         cdef np.double_t right_dist
 
-
-        node_dist = kdtree_min_dist_dual(self.dist,
-                                      node1, node2, self.node_bounds, self.num_features)
+        node_dist = kdtree_min_rdist_dual(self.dist,
+                                          node1, node2, self.node_bounds, self.num_features)
 
         if node_dist < self.bounds_ptr[node1]:
             if self.component_of_node_ptr[node1] == self.component_of_node_ptr[node2] and \
@@ -415,9 +449,9 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 
                     if component1 != component2:
 
-                        d = self.dist.dist(&raw_data[self.num_features * p],
-                                           &raw_data[self.num_features * q],
-                                           self.num_features)
+                        d = self.dist.rdist(&raw_data[self.num_features * p],
+                                            &raw_data[self.num_features * q],
+                                            self.num_features)
 
                         # mr_dist = max(distances[i, j], self.core_distance_ptr[p], self.core_distance_ptr[q])
                         if self.alpha != 1.0:
@@ -471,12 +505,12 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 
             node2_info = self.node_data[left]
 
-            left_dist = kdtree_min_dist_dual(self.dist,
+            left_dist = kdtree_min_rdist_dual(self.dist,
                                       node1, left, self.node_bounds, self.num_features)
 
             node2_info = self.node_data[right]
 
-            right_dist = kdtree_min_dist_dual(self.dist,
+            right_dist = kdtree_min_rdist_dual(self.dist,
                                       node1, right, self.node_bounds, self.num_features)
 
             if left_dist < right_dist:
@@ -491,12 +525,12 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 
             node1_info = self.node_data[left]
 
-            left_dist = kdtree_min_dist_dual(self.dist,
+            left_dist = kdtree_min_rdist_dual(self.dist,
                                       left, node2, self.node_bounds, self.num_features)
 
             node1_info = self.node_data[right]
 
-            right_dist = kdtree_min_dist_dual(self.dist,
+            right_dist = kdtree_min_rdist_dual(self.dist,
                                       right, node2, self.node_bounds, self.num_features)
 
             if left_dist < right_dist:
@@ -734,7 +768,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
         return self.components.shape[0]
 
-    cdef int dual_tree_traversal(self, np.int64_t node1, np.int64_t node2):
+    cdef int dual_tree_traversal(self, np.int64_t node1, np.int64_t node2) except -1:
 
         cdef np.int64_t[::1] point_indices1, point_indices2
 
