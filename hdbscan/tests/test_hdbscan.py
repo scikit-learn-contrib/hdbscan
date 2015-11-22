@@ -17,16 +17,15 @@ from sklearn.cluster.tests.common import generate_clustered_data
 from sklearn.metrics.pairwise import pairwise_distances
 
 n_clusters = 3
-X = generate_clustered_data(n_clusters=n_clusters)
-
+X = generate_clustered_data(n_clusters=n_clusters, n_samples_per_cluster=50)
 
 def test_hdbscan_distance_matrix():
     D = distance.squareform(distance.pdist(X))
     D /= np.max(D)
     
-    labels = hdbscan(D, metric='precomputed')
+    labels, p, ctree, ltree, mtree = hdbscan(D, metric='precomputed')
     # number of clusters, ignoring noise if present
-    n_clusters_1 = len(set(labels)) - int(-1 in labels) # ignore noise 
+    n_clusters_1 = len(set(labels)) - int(-1 in labels) # ignore noise
     assert_equal(n_clusters_1, n_clusters)
 
     labels = HDBSCAN(metric="precomputed").fit(D).labels_
@@ -34,7 +33,7 @@ def test_hdbscan_distance_matrix():
     assert_equal(n_clusters_2, n_clusters)
     
 def test_hdbscan_feature_vector():    
-    labels = hdbscan(X)
+    labels, p, ctree, ltree, mtree = hdbscan(X)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_1, n_clusters)
 
@@ -43,7 +42,7 @@ def test_hdbscan_feature_vector():
     assert_equal(n_clusters_2, n_clusters)
 
 def test_hdbscan_no_clusters():
-    labels = hdbscan(X, min_cluster_size=len(X)+1)
+    labels, p, ctree, ltree, mtree = hdbscan(X, min_cluster_size=len(X)+1)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_1, 0)
     
@@ -55,7 +54,7 @@ def test_hdbscan_callable_metric():
     # metric is the function reference, not the string key.
     metric = distance.euclidean
 
-    labels = hdbscan(X, metric=metric)
+    labels, p, ctree, ltree, mtree = hdbscan(X, metric=metric)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_1, n_clusters)
 
@@ -88,13 +87,10 @@ def test_hdbscan_badargs():
                   X, metric='imperial')
     assert_raises(ValueError,
                   hdbscan,
-                  X, metric=None) 
-    assert_raises(TypeError,
-                  hdbscan,
-                  X, p=None)
+                  X, metric=None)
     assert_raises(ValueError,
                   hdbscan,
-                  X, p=-1)
+                  X, metric='minkowski', p=-1)
     
     
 ### Probably not applicable now #########################

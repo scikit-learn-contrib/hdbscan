@@ -60,7 +60,7 @@ def _tree_to_labels(X, min_spanning_tree, min_cluster_size=10):
 
 
 def _hdbscan_generic(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-                   metric='minkowski', p=2, gen_min_span_tree=False):
+                   metric='minkowski', p=2, leaf_size=None, gen_min_span_tree=False):
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
@@ -143,6 +143,12 @@ def _hdbscan_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                             metric='minkowski', p=2, leaf_size=40,
                             gen_min_span_tree=False):
 
+    if metric == 'minkowski':
+        if p is None:
+            raise TypeError('Minkowski metric given but no p value supplied!')
+        if p < 0:
+            raise ValueError('Minkowski metric with negative p value is not defined!')
+
     dim = X.shape[0]
     min_samples = min(dim - 1, min_samples)
 
@@ -155,6 +161,12 @@ def _hdbscan_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
 def _hdbscan_boruvka_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                               metric='minkowski', p=2, leaf_size=40,
                               gen_min_span_tree=False):
+
+    if metric == 'minkowski':
+        if p is None:
+            raise TypeError('Minkowski metric given but no p value supplied!')
+        if p < 0:
+            raise ValueError('Minkowski metric with negative p value is not defined!')
 
     dim = X.shape[0]
     min_samples = min(dim - 1, min_samples)
