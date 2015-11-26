@@ -15,6 +15,7 @@ from sklearn.utils.testing import assert_not_in
 from hdbscan import HDBSCAN
 from hdbscan import hdbscan
 from sklearn.cluster.tests.common import generate_clustered_data
+from scipy.stats import mode
 
 from sklearn import datasets
 
@@ -42,6 +43,20 @@ def generate_noisy_data():
     moons, _ = datasets.make_moons(n_samples=200, noise=0.05)
     noise = np.random.uniform(-1.0, 3.0, (50, 2))
     return np.vstack([blobs, moons, noise])
+
+def homogeneity(labels1, labels2):
+    num_missed = 0.0
+    for label in set(labels1):
+        matches = labels2[labels1 == label]
+        match_mode = mode(matches).mode[0]
+        num_missed += np.sum(matches != match_mode)
+
+    for label in set(labels2):
+        matches = labels1[labels2 == label]
+        match_mode = mode(matches).mode[0]
+        num_missed += np.sum(matches != match_mode)
+
+    return num_missed / 2.0
 
 def test_hdbscan_distance_matrix():
     D = distance.squareform(distance.pdist(X))
@@ -97,20 +112,14 @@ def test_hdbscan_boruvka_kdtree_matches():
     labels_prims, p, ctree, ltree, mtree = hdbscan(data, algorithm='generic')
     labels_boruvka, p, ctree, ltree, mtree = hdbscan(data, algorithm='boruvka_kdtree')
 
-    relabelled_prims = relabel(labels_prims)
-    relabelled_boruvka = relabel(labels_boruvka)
-
-    num_mismatches = np.sum(relabelled_prims != relabelled_boruvka)
+    num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
     assert_less(num_mismatches / float(data.shape[0]), 0.015)
 
     labels_prims = HDBSCAN(algorithm='generic').fit_predict(data)
     labels_boruvka = HDBSCAN(algorithm='boruvka_kdtree').fit_predict(data)
 
-    relabelled_prims = relabel(labels_prims)
-    relabelled_boruvka = relabel(labels_boruvka)
-
-    num_mismatches = np.sum(relabelled_prims != relabelled_boruvka)
+    num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
     assert_less(num_mismatches / float(data.shape[0]), 0.015)
 
@@ -121,20 +130,14 @@ def test_hdbscan_boruvka_balltree_matches():
     labels_prims, p, ctree, ltree, mtree = hdbscan(data, algorithm='generic')
     labels_boruvka, p, ctree, ltree, mtree = hdbscan(data, algorithm='boruvka_balltree')
 
-    relabelled_prims = relabel(labels_prims)
-    relabelled_boruvka = relabel(labels_boruvka)
-
-    num_mismatches = np.sum(relabelled_prims != relabelled_boruvka)
+    num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
     assert_less(num_mismatches / float(data.shape[0]), 0.015)
 
     labels_prims = HDBSCAN(algorithm='generic').fit_predict(data)
     labels_boruvka = HDBSCAN(algorithm='boruvka_balltree').fit_predict(data)
 
-    relabelled_prims = relabel(labels_prims)
-    relabelled_boruvka = relabel(labels_boruvka)
-
-    num_mismatches = np.sum(relabelled_prims != relabelled_boruvka)
+    num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
     assert_less(num_mismatches / float(data.shape[0]), 0.015)
 
