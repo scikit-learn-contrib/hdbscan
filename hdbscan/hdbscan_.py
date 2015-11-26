@@ -32,12 +32,7 @@ from ._hdbscan_linkage import (single_linkage,
 from ._hdbscan_tree import (condense_tree,
                             compute_stability,
                             get_clusters)
-from ._hdbscan_reachability import (mutual_reachability,
-#                                    kdtree_pdist_mutual_reachability,
-#                                    balltree_pdist_mutual_reachability,
-#                                    kdtree_mutual_reachability,
-#                                    balltree_mutual_reachability
-                                   )
+from ._hdbscan_reachability import mutual_reachability
 
 from ._hdbscan_boruvka import KDTreeBoruvkaAlgorithm, BallTreeBoruvkaAlgorithm
 from .dist_metrics import DistanceMetric
