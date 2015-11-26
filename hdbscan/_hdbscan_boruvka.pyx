@@ -3,6 +3,52 @@
 # Authors: Leland McInnes
 # License: 3-clause BSD
 
+# Code to implement a Dual Tree Boruvka Minimimum Spanning Tree computation
+# The algorithm is largely tree independent, but fine details of handling
+# different tree types has resulted in separate implementations. In
+# due course this should be cleaned up to remove unnecessarily duplicated
+# code, but it stands for now.
+#
+# The core idea of the algorithm is to do repeated sweeps through the dataset,
+# adding edges to the tree with each sweep until a full tree is formed.
+# To do this, start with each node (or point) existing in it's own component.
+# On each sweep find all the edges of minimum weight (in this instance
+# of minimal mutual reachability distance) that join separate components.
+# Add all these edges to the list of edges in the spanning tree, and then
+# combine together all the components joined by edges. Begin the next sweep ...
+#
+# Eventually we end up with only one component, and all edges in we added
+# form the minimum spanning tree. The key insight is that each sweep is
+# essentially akin to a nearest neighbor search (with the caveat about being
+# in separate components), and so can be performed very efficiently using
+# a space tree such as a kdtree or ball tree. By using a dual tree formalism
+# with a query tree and reference tree we can prune when all points im the
+# query node are in the same component, as are all the points of the reference
+# node. This allows for rapid pruning in the dual tree traversal in later
+# stages. Importantly, we can construct the full tree in O(log N) sweeps
+# and since each sweep has complexity equal to that of an all points
+# nearest neighbor query within the tree structure we are using we end
+# up with sub-quadratic complexity at worst, and in the case of cover
+# trees (still to be implemented) we can achieve O(N log N) complexity!
+#
+# This code is based on the papers:
+#
+#
+#
+#
+#
+#
+# As per the sklearn BallTree and KDTree implementations we make use of
+# the rdist, which is a faster to compute notion of distance (for example
+# in the euclidean case it is the distance squared).
+#
+# To combine together components in between sweeps we make use of
+# a union find data structure. This is a separate implementation
+# from that used in the labelling of the single linkage tree as
+# we can perform more specific optimizations here for what
+# is a simpler version of the structure.
+
+
 cimport cython
 
 import numpy as np
@@ -23,18 +69,8 @@ from libc.math cimport fabs, sqrt, exp, cos, pow, log
 
 cdef np.double_t INF = np.inf
 
-query = None
-
-#cdef inline np.double_t euclidean_dist(np.double_t* x1, np.double_t* x2,
-#                                       np.int64_t size) nogil except -1:
-#    cdef np.double_t tmp, d=0
-#    cdef np.intp_t j
-#    for j in range(size):
-#        tmp = x1[j] - x2[j]
-#        d += tmp * tmp
-#    return sqrt(d)
-
-
+# Define the NodeData struct used in sklearn trees for faster
+# access to the node data internals in Cython.
 cdef struct NodeData_t:
     np.int64_t idx_start
     np.int64_t idx_end
@@ -42,6 +78,8 @@ cdef struct NodeData_t:
     np.double_t radius
 
 
+# Define a function giving the minimum distance between two
+# nodes of a ball tree
 cdef inline np.double_t balltree_min_dist_dual(np.double_t radius1,
                                                np.double_t radius2,
                                                np.int64_t node1,
@@ -50,6 +88,8 @@ cdef inline np.double_t balltree_min_dist_dual(np.double_t radius1,
     cdef np.double_t dist_pt = centroid_dist[node1, node2]
     return max(0, (dist_pt - radius1 - radius2))
 
+# Define a function giving the minimum distance between two
+# nodes of a kd-tree
 cdef inline np.double_t kdtree_min_dist_dual(dist_metrics.DistanceMetric metric,
                                              np.int64_t node1,
                                              np.int64_t node2,
@@ -154,6 +194,9 @@ def _core_dist_query(tree, data, min_samples):
     return tree.query(data, k=min_samples, dualtree=True, breadth_first=True)
 
 cdef class KDTreeBoruvkaAlgorithm (object):
+    """A Dual Tree Boruvka Algorithm implemented for the sklearn
+    KDTree space tree implementation.
+    """
 
     cdef object tree
     cdef object core_dist_tree
