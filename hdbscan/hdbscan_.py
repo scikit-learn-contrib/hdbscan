@@ -15,6 +15,7 @@ from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import pairwise_distances
 from scipy.sparse import issparse
 from sklearn.neighbors import KDTree, BallTree
+from sklearn.externals.joblib import Memory
 from warnings import warn
 
 try:
@@ -41,8 +42,8 @@ from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 
 FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics
 
-def _tree_to_labels(X, min_spanning_tree, min_cluster_size=10):
 
+def _tree_to_labels(X, min_spanning_tree, min_cluster_size=10):
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
 
     single_linkage_tree = label(min_spanning_tree)
@@ -55,7 +56,7 @@ def _tree_to_labels(X, min_spanning_tree, min_cluster_size=10):
 
 
 def _hdbscan_generic(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-                   metric='minkowski', p=2, leaf_size=None, gen_min_span_tree=False):
+                     metric='minkowski', p=2, leaf_size=None, gen_min_span_tree=False):
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
@@ -77,23 +78,23 @@ def _hdbscan_generic(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             candidates = np.where(np.isclose(mutual_reachability_[row[1]], row[2]))[0]
             candidates = np.intersect1d(candidates, min_spanning_tree[:index, :2].astype(int))
             candidates = candidates[candidates != row[1]]
-            assert(len(candidates) > 0)
+            assert (len(candidates) > 0)
             row[0] = candidates[0]
     else:
         result_min_span_tree = None
 
     return min_spanning_tree, result_min_span_tree
 
+
 def _hdbscan_prims_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                           metric='minkowski', p=2, leaf_size=40, gen_min_span_tree=False):
-
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
         if p < 0:
             raise ValueError('Minkowski metric with negative p value is not defined!')
     elif p is None:
-        p = 2 # Unused, but needs to be integer; assume euclidean
+        p = 2  # Unused, but needs to be integer; assume euclidean
 
     dim = X.shape[0]
     min_samples = min(dim - 1, min_samples)
@@ -104,21 +105,21 @@ def _hdbscan_prims_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
 
     core_distances = tree.query(X, k=min_samples,
                                 dualtree=True,
-                                breadth_first=True)[0][:,-1]
+                                breadth_first=True)[0][:, -1]
     min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric)
 
     return min_spanning_tree, None
 
+
 def _hdbscan_prims_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                             metric='minkowski', p=2, leaf_size=40, gen_min_span_tree=False):
-
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
         if p < 0:
             raise ValueError('Minkowski metric with negative p value is not defined!')
     elif p is None:
-        p = 2 # Unused, but needs to be integer; assume euclidean
+        p = 2  # Unused, but needs to be integer; assume euclidean
 
     dim = X.shape[0]
     min_samples = min(dim - 1, min_samples)
@@ -129,15 +130,15 @@ def _hdbscan_prims_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
 
     core_distances = tree.query(X, k=min_samples,
                                 dualtree=True,
-                                breadth_first=True)[0][:,-1]
+                                breadth_first=True)[0][:, -1]
     min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric)
 
     return min_spanning_tree, None
 
+
 def _hdbscan_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                             metric='minkowski', p=2, leaf_size=40,
                             gen_min_span_tree=False):
-
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
@@ -148,7 +149,7 @@ def _hdbscan_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     min_samples = min(dim - 1, min_samples)
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size)
-    alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size//3)
+    alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3)
     min_spanning_tree = alg.spanning_tree()
 
     if gen_min_span_tree:
@@ -156,10 +157,10 @@ def _hdbscan_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     else:
         return min_spanning_tree, None
 
+
 def _hdbscan_boruvka_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                               metric='minkowski', p=2, leaf_size=40,
                               gen_min_span_tree=False):
-
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
@@ -170,7 +171,7 @@ def _hdbscan_boruvka_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0
     min_samples = min(dim - 1, min_samples)
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size)
-    alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size//3)
+    alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3)
     min_spanning_tree = alg.spanning_tree()
 
     if gen_min_span_tree:
@@ -286,42 +287,42 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                 raise ValueError("Cannot use Prim's with KDTree for this metric!")
             (min_spanning_tree,
              result_min_span_tree) = _hdbscan_prims_kdtree(X, min_cluster_size,
-                                                      min_samples, alpha,
-                                                      metric, p, leaf_size,
-                                                      gen_min_span_tree)
+                                                           min_samples, alpha,
+                                                           metric, p, leaf_size,
+                                                           gen_min_span_tree)
         elif algorithm == 'prims_balltree':
             if metric not in BallTree.valid_metrics:
                 raise ValueError("Cannot use Prim's with BallTree for this metric!")
             (min_spanning_tree,
              result_min_span_tree) = _hdbscan_prims_balltree(X, min_cluster_size,
-                                                        min_samples, alpha,
-                                                        metric, p, leaf_size,
-                                                        gen_min_span_tree)
+                                                             min_samples, alpha,
+                                                             metric, p, leaf_size,
+                                                             gen_min_span_tree)
         elif algorithm == 'boruvka_kdtree':
             if metric not in BallTree.valid_metrics:
                 raise ValueError("Cannot use Boruvka with KDTree for this metric!")
             (min_spanning_tree,
              result_min_span_tree) = _hdbscan_boruvka_kdtree(X, min_cluster_size,
-                                                        min_samples, alpha,
-                                                        metric, p, leaf_size,
-                                                        gen_min_span_tree)
+                                                             min_samples, alpha,
+                                                             metric, p, leaf_size,
+                                                             gen_min_span_tree)
         elif algorithm == 'boruvka_balltree':
             if metric not in BallTree.valid_metrics:
                 raise ValueError("Cannot use Boruvka with BallTree for this metric!")
             (min_spanning_tree,
              result_min_span_tree) = _hdbscan_boruvka_balltree(X, min_cluster_size,
-                                                          min_samples, alpha,
-                                                          metric, p, leaf_size,
-                                                          gen_min_span_tree)
+                                                               min_samples, alpha,
+                                                               metric, p, leaf_size,
+                                                               gen_min_span_tree)
         else:
             raise TypeError('Unknown algorithm type %s specified' % algorithm)
     else:
 
         if issparse(X) or metric not in FAST_METRICS:  # We can't do much with sparse matrices ...
             (min_spanning_tree,
-             result_min_span_tree) =  _hdbscan_generic(X, min_cluster_size, min_samples,
-                                                  alpha, metric, p, leaf_size,
-                                                  gen_min_span_tree)
+             result_min_span_tree) = _hdbscan_generic(X, min_cluster_size, min_samples,
+                                                      alpha, metric, p, leaf_size,
+                                                      gen_min_span_tree)
         elif metric in KDTree.valid_metrics:
             # Need heuristic to decide when to go to boruvka; still debugging for now
             if X.shape[1] > 60:
@@ -336,7 +337,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                                                                  min_samples, alpha,
                                                                  metric, p, leaf_size,
                                                                  gen_min_span_tree)
-        else: # Metric is a valid BallTree metric
+        else:  # Metric is a valid BallTree metric
             # Need heuristic to decide when to go to boruvka; still debugging for now
             if X.shape[1] > 60:
                 (min_spanning_tree,
@@ -352,6 +353,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                                                                    gen_min_span_tree)
 
     return _tree_to_labels(X, min_spanning_tree, min_cluster_size) + (result_min_span_tree,)
+
 
 class HDBSCAN(BaseEstimator, ClusterMixin):
     """Perform HDBSCAN clustering from vector array or distance matrix.
