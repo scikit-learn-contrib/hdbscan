@@ -581,9 +581,10 @@ class SingleLinkageTree (object):
             # If the cluster was formed prior to the cut and is large enough
             if linkage[2] < cut_distance and linkage[3] > min_cluster_size:
                 # If the cluster had not been merged before the cut
-                if self._linkage[cluster_id - num_points, 2] > cut_distance:
+                if self._linkage[(self._linkage.T[0] == cluster_id) |
+                                 (self._linkage.T[1] == cluster_id)][0,2] > cut_distance:
                     cluster = _bfs_from_linkage_tree(self._linkage, cluster_id)
-                    select_clusters.append(cluster_id)
+                    select_clusters.append([x for x in cluster if x < num_points])
 
         # Generate labels for each data point
         result = -1 * np.ones(num_points, dtype=int)
