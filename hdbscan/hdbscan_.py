@@ -55,7 +55,7 @@ def _tree_to_labels(X, min_spanning_tree, min_cluster_size=10):
     return labels, probabilities, condensed_tree, single_linkage_tree
 
 
-def _hdbscan_generic(X, min_cluster_size=5, min_samples=None, alpha=1.0,
+def _hdbscan_generic(X, min_samples=5, alpha=1.0,
                      metric='minkowski', p=2, leaf_size=None, gen_min_span_tree=False):
     if metric == 'minkowski':
         if p is None:
@@ -86,7 +86,7 @@ def _hdbscan_generic(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     return min_spanning_tree, result_min_span_tree
 
 
-def _hdbscan_prims_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
+def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
                           metric='minkowski', p=2, leaf_size=40, gen_min_span_tree=False):
     if metric == 'minkowski':
         if p is None:
@@ -106,12 +106,12 @@ def _hdbscan_prims_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     core_distances = tree.query(X, k=min_samples,
                                 dualtree=True,
                                 breadth_first=True)[0][:, -1]
-    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric)
+    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric, alpha)
 
     return min_spanning_tree, None
 
 
-def _hdbscan_prims_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
+def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
                             metric='minkowski', p=2, leaf_size=40, gen_min_span_tree=False):
     if metric == 'minkowski':
         if p is None:
@@ -131,12 +131,12 @@ def _hdbscan_prims_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     core_distances = tree.query(X, k=min_samples,
                                 dualtree=True,
                                 breadth_first=True)[0][:, -1]
-    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric)
+    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric, alpha)
 
     return min_spanning_tree, None
 
 
-def _hdbscan_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
+def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
                             metric='minkowski', p=2, leaf_size=40,
                             gen_min_span_tree=False):
     if metric == 'minkowski':
@@ -158,7 +158,7 @@ def _hdbscan_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         return min_spanning_tree, None
 
 
-def _hdbscan_boruvka_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
+def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
                               metric='minkowski', p=2, leaf_size=40,
                               gen_min_span_tree=False):
     if metric == 'minkowski':
@@ -279,14 +279,14 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     if algorithm != 'best':
         if algorithm == 'generic':
             (min_spanning_tree,
-             result_min_span_tree) = _hdbscan_generic(X, min_cluster_size,
+             result_min_span_tree) = _hdbscan_generic(X,
                                                       min_samples, alpha, metric,
                                                       p, gen_min_span_tree)
         elif algorithm == 'prims_kdtree':
             if metric not in KDTree.valid_metrics:
                 raise ValueError("Cannot use Prim's with KDTree for this metric!")
             (min_spanning_tree,
-             result_min_span_tree) = _hdbscan_prims_kdtree(X, min_cluster_size,
+             result_min_span_tree) = _hdbscan_prims_kdtree(X,
                                                            min_samples, alpha,
                                                            metric, p, leaf_size,
                                                            gen_min_span_tree)
@@ -294,7 +294,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             if metric not in BallTree.valid_metrics:
                 raise ValueError("Cannot use Prim's with BallTree for this metric!")
             (min_spanning_tree,
-             result_min_span_tree) = _hdbscan_prims_balltree(X, min_cluster_size,
+             result_min_span_tree) = _hdbscan_prims_balltree(X,
                                                              min_samples, alpha,
                                                              metric, p, leaf_size,
                                                              gen_min_span_tree)
@@ -302,7 +302,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             if metric not in BallTree.valid_metrics:
                 raise ValueError("Cannot use Boruvka with KDTree for this metric!")
             (min_spanning_tree,
-             result_min_span_tree) = _hdbscan_boruvka_kdtree(X, min_cluster_size,
+             result_min_span_tree) = _hdbscan_boruvka_kdtree(X,
                                                              min_samples, alpha,
                                                              metric, p, leaf_size,
                                                              gen_min_span_tree)
@@ -310,7 +310,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             if metric not in BallTree.valid_metrics:
                 raise ValueError("Cannot use Boruvka with BallTree for this metric!")
             (min_spanning_tree,
-             result_min_span_tree) = _hdbscan_boruvka_balltree(X, min_cluster_size,
+             result_min_span_tree) = _hdbscan_boruvka_balltree(X,
                                                                min_samples, alpha,
                                                                metric, p, leaf_size,
                                                                gen_min_span_tree)
@@ -320,20 +320,20 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
 
         if issparse(X) or metric not in FAST_METRICS:  # We can't do much with sparse matrices ...
             (min_spanning_tree,
-             result_min_span_tree) = _hdbscan_generic(X, min_cluster_size, min_samples,
+             result_min_span_tree) = _hdbscan_generic(X, min_samples,
                                                       alpha, metric, p, leaf_size,
                                                       gen_min_span_tree)
         elif metric in KDTree.valid_metrics:
             # Need heuristic to decide when to go to boruvka; still debugging for now
             if X.shape[1] > 60:
                 (min_spanning_tree,
-                 result_min_span_tree) = _hdbscan_prims_kdtree(X, min_cluster_size,
+                 result_min_span_tree) = _hdbscan_prims_kdtree(X,
                                                                min_samples, alpha,
                                                                metric, p, leaf_size,
                                                                gen_min_span_tree)
             else:
                 (min_spanning_tree,
-                 result_min_span_tree) = _hdbscan_boruvka_kdtree(X, min_cluster_size,
+                 result_min_span_tree) = _hdbscan_boruvka_kdtree(X,
                                                                  min_samples, alpha,
                                                                  metric, p, leaf_size,
                                                                  gen_min_span_tree)
@@ -341,13 +341,13 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             # Need heuristic to decide when to go to boruvka; still debugging for now
             if X.shape[1] > 60:
                 (min_spanning_tree,
-                 result_min_span_tree) = _hdbscan_prims_kdtree(X, min_cluster_size,
+                 result_min_span_tree) = _hdbscan_prims_kdtree(X,
                                                                min_samples, alpha,
                                                                metric, p, leaf_size,
                                                                gen_min_span_tree)
             else:
                 (min_spanning_tree,
-                 result_min_span_tree) = _hdbscan_boruvka_balltree(X, min_cluster_size,
+                 result_min_span_tree) = _hdbscan_boruvka_balltree(X,
                                                                    min_samples, alpha,
                                                                    metric, p, leaf_size,
                                                                    gen_min_span_tree)

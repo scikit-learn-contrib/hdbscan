@@ -132,7 +132,8 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_pdist(
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
                                np.ndarray[np.double_t, ndim=2] raw_data,
                                np.ndarray[np.double_t, ndim=1] core_distances,
-                               DistanceMetric dist_metric):
+                               DistanceMetric dist_metric,
+                               np.double_t alpha=1.0):
 
     cdef np.ndarray[np.double_t, ndim=1] current_distances_arr
     # cdef np.ndarray[np.double_t, ndim=1] left_arr
@@ -201,6 +202,10 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
             left_value = dist_metric.dist(&raw_data_ptr[num_features * current_node],
                                           &raw_data_ptr[num_features * j],
                                           num_features)
+
+            if alpha != 1.0:
+                left_value /= alpha
+
             core_value = core_distances[j]
             if current_node_core_distance > right_value or core_value > right_value or left_value > right_value:
                 if right_value < new_distance:
