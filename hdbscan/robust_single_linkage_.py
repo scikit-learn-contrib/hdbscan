@@ -12,6 +12,9 @@ from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import pairwise_distances
 from scipy.sparse import issparse
 
+from sklearn.externals.joblib import Memory
+from sklearn.externals import six
+
 try:
     from sklearn.utils import check_array
 except ImportError:
@@ -19,7 +22,7 @@ except ImportError:
 
     check_array = check_arrays
 
-from ._hdbscan_linkage import single_linkage, mst_linkage_core_cdist, label
+from ._hdbscan_linkage import mst_linkage_core, mst_linkage_core_cdist, label
 from ._hdbscan_boruvka import KDTreeBoruvkaAlgorithm, BallTreeBoruvkaAlgorithm
 from .dist_metrics import DistanceMetric
 from ._hdbscan_reachability import mutual_reachability
@@ -30,8 +33,8 @@ from warnings import warn
 
 FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics
 
-def _rsl_generic(X, cut, k=5, alpha=1.4142135623730951, gamma=5, metric='minkowski', p=2):
 
+def _rsl_generic(X, k=5, alpha=1.4142135623730951, metric='minkowski', p=2):
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
@@ -50,19 +53,17 @@ def _rsl_generic(X, cut, k=5, alpha=1.4142135623730951, gamma=5, metric='minkows
     single_linkage_tree = label(min_spanning_tree)
     single_linkage_tree = SingleLinkageTree(single_linkage_tree)
 
-    labels = single_linkage_tree.get_clusters(cut, gamma)
+    return single_linkage_tree
 
-    return labels, single_linkage_tree
 
-def _rsl_prims_kdtree(X, cut, k=5, alpha=1.4142135623730951, gamma=5, metric='minkowski', p=2):
-
+def _rsl_prims_kdtree(X, k=5, alpha=1.4142135623730951, metric='minkowski', p=2):
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
         if p < 0:
             raise ValueError('Minkowski metric with negative p value is not defined!')
     elif p is None:
-        p = 2 # Unused, but needs to be integer; assume euclidean
+        p = 2  # Unused, but needs to be integer; assume euclidean
 
     dim = X.shape[0]
     k = min(dim - 1, k)
@@ -71,25 +72,23 @@ def _rsl_prims_kdtree(X, cut, k=5, alpha=1.4142135623730951, gamma=5, metric='mi
 
     dist_metric = DistanceMetric.get_metric(metric)
 
-    core_distances = tree.query(X, k=k)[0][:,-1]
-    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric)
+    core_distances = tree.query(X, k=k)[0][:, -1]
+    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric, alpha)
 
     single_linkage_tree = label(min_spanning_tree)
     single_linkage_tree = SingleLinkageTree(single_linkage_tree)
 
-    labels = single_linkage_tree.get_clusters(cut, gamma)
+    return single_linkage_tree
 
-    return labels, single_linkage_tree
 
-def _rsl_prims_balltree(X, cut, k=5, alpha=1.4142135623730951, gamma=5, metric='minkowski', p=2):
-
+def _rsl_prims_balltree(X, k=5, alpha=1.4142135623730951, metric='minkowski', p=2):
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
         if p < 0:
             raise ValueError('Minkowski metric with negative p value is not defined!')
     elif p is None:
-        p = 2 # Unused, but needs to be integer; assume euclidean
+        p = 2  # Unused, but needs to be integer; assume euclidean
 
     dim = X.shape[0]
     k = min(dim - 1, k)
@@ -98,22 +97,19 @@ def _rsl_prims_balltree(X, cut, k=5, alpha=1.4142135623730951, gamma=5, metric='
 
     dist_metric = DistanceMetric.get_metric(metric)
 
-    core_distances = tree.query(X, k=k)[0][:,-1]
-    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric)
+    core_distances = tree.query(X, k=k)[0][:, -1]
+    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric, alpha)
 
     single_linkage_tree = label(min_spanning_tree)
     single_linkage_tree = SingleLinkageTree(single_linkage_tree)
 
-    labels = single_linkage_tree.get_clusters(cut, gamma)
+    return single_linkage_tree
 
-    return labels, single_linkage_tree
 
-def _rsl_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-                            metric='minkowski', p=2, leaf_size=40,
-                            algorithm='best', gen_min_span_tree=False):
-
+def _rsl_boruvka_kdtree(X, k=5, alpha=1.0,
+                        metric='minkowski', p=2, leaf_size=40):
     dim = X.shape[0]
-    min_samples = min(dim - 1, min_samples)
+    min_samples = min(dim - 1, k)
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size)
     alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric,
@@ -123,16 +119,13 @@ def _rsl_boruvka_kdtree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     single_linkage_tree = label(min_spanning_tree)
     single_linkage_tree = SingleLinkageTree(single_linkage_tree)
 
-    labels = single_linkage_tree.get_clusters(cut, gamma)
+    return single_linkage_tree
 
-    return labels, single_linkage_tree
 
-def _rsl_boruvka_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
-                              metric='minkowski', p=2, leaf_size=40,
-                              algorithm='best', gen_min_span_tree=False):
-
+def _rsl_boruvka_balltree(X, k=5, alpha=1.0,
+                          metric='minkowski', p=2, leaf_size=40):
     dim = X.shape[0]
-    min_samples = min(dim - 1, min_samples)
+    min_samples = min(dim - 1, k)
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size)
     alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric,
@@ -142,11 +135,12 @@ def _rsl_boruvka_balltree(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     single_linkage_tree = label(min_spanning_tree)
     single_linkage_tree = SingleLinkageTree(single_linkage_tree)
 
-    labels = single_linkage_tree.get_clusters(cut, gamma)
+    return single_linkage_tree
 
-    return labels, single_linkage_tree
 
-def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951, gamma=5, metric='minkowski', p=2, algorithm=None):
+def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
+                          gamma=5, metric='minkowski', p=2, algorithm='best',
+                          memory=Memory(cachedir=None, verbose=0)):
     """Perform robust single linkage clustering from a vector array
     or distance matrix.
 
@@ -195,6 +189,11 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951, gamma=5, metric
             * ``boruvka_kdtree``
             * ``boruvka_balltree``
 
+    memory : Instance of joblib.Memory or string (optional)
+        Used to cache the output of the computation of the tree.
+        By default, no caching is done. If a string is given, it is the
+        path to the caching directory.
+
     Returns
     -------
     labels : array [n_samples]
@@ -223,39 +222,54 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951, gamma=5, metric
         raise ValueError('gamma must be an integer greater than zero!')
 
     X = check_array(X, accept_sparse='csr')
+    if isinstance(memory, six.string_types):
+        memory = Memory(cachedir=memory, verbose=0)
 
-    if algorithm is not None:
+    if algorithm != 'best':
         if algorithm == 'generic':
-            return _rsl_generic(X, cut, k, alpha, gamma, metric, p)
+            single_linkage_tree = \
+                memory.cache(_rsl_generic)(X, k, alpha, metric, p)
         elif algorithm == 'prims_kdtree':
-            return _rsl_prims_kdtree(X, cut, k, alpha, gamma, metric, p)
+            single_linkage_tree = \
+                memory.cache(_rsl_prims_kdtree)(X, k, alpha, metric, p)
         elif algorithm == 'prims_balltree':
-            return _rsl_prims_balltree(X, cut, k, alpha, gamma, metric, p)
+            single_linkage_tree = \
+                memory.cache(_rsl_prims_balltree)(X, k, alpha, metric, p)
         elif algorithm == 'boruvka_kdtree':
-            return _rsl_boruvka_kdtree(X, cut, k, alpha, gamma, metric, p)
+            single_linkage_tree = \
+                memory.cache(_rsl_boruvka_kdtree)(X, k, alpha, metric, p)
         elif algorithm == 'boruvka_balltree':
-            return _rsl_boruvka_balltree(X, cut, k, alpha, gamma, metric, p)
+            single_linkage_tree = \
+                memory.cache(_rsl_boruvka_balltree)(X, k, alpha, metric, p)
         else:
             raise TypeError('Unknown algorithm type %s specified' % algorithm)
+    else:
+        if issparse(X) or metric not in FAST_METRICS:  # We can't do much with sparse matrices ...
+            single_linkage_tree = \
+                memory.cache(_rsl_generic)(X, k, alpha, metric, p)
+        elif metric in KDTree.valid_metrics:
+            # Need heuristic to decide when to go to boruvka; still debugging for now
+            if X.shape[1] > 128:
+                single_linkage_tree = \
+                    memory.cache(_rsl_prims_kdtree)(X, k, alpha, metric, p)
+            else:
+                single_linkage_tree = \
+                    memory.cache(_rsl_boruvka_kdtree)(X, k, alpha, metric, p)
+        else:  # Metric is a valid BallTree metric
+            # Need heuristic to decide when to go to boruvka; still debugging for now
+            if X.shape[1] > 128:
+                single_linkage_tree = \
+                    memory.cache(_rsl_prims_kdtree)(X, k, alpha, metric, p)
+            else:
+                single_linkage_tree = \
+                    memory.cache(_rsl_boruvka_balltree)(X, k, alpha, metric, p)
 
-    if issparse(X) or metric not in FAST_METRICS:  # We can't do much with sparse matrices ...
-        return _rsl_generic(X, cut, k, alpha, gamma, metric, p)
-    elif metric in KDTree.valid_metrics:
-        # Need heuristic to decide when to go to boruvka; still debugging for now
-        if True:
-            return _rsl_prims_kdtree(X, cut, k, alpha, gamma, metric, p)
-        else:
-            return _rsl_boruvka_kdtree(X, cut, k, alpha, gamma, metric, p)
-    else: # Metric is a valid BallTree metric
-        # Need heuristic to decide when to go to boruvka; still debugging for now
-        if True:
-            return _rsl_prims_kdtree(X, cut, k, alpha, gamma, metric, p)
-        else:
-            return _rsl_boruvka_balltree(X, cut, k, alpha, gamma, metric, p)
+    labels = single_linkage_tree.get_clusters(cut, gamma)
+
+    return labels, single_linkage_tree
 
 
-
-class RobustSingleLinkage (BaseEstimator, ClusterMixin):
+class RobustSingleLinkage(BaseEstimator, ClusterMixin):
     """Perform robust single linkage clustering from a vector array
     or distance matrix.
 
