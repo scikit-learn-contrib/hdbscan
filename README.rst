@@ -8,6 +8,14 @@ the result to find a clustering that gives the best stability over epsilon.
 This allows HDBSCAN to find clusters of varying densities (unlike DBSCAN),
 and be more robust to parameter selection.
 
+In practice this means that HDBSCAN returns a good clustering straight
+away with little or no parameter tuning -- and the primary parameter,
+minimum cluster size, is intuitive and easy to select.
+
+HDBSCAN is ideal for exploratory data analysis; it's a fast and robust
+algorithm that you can trust to return meaningful clusters (if there
+are any).
+
 Based on the paper:
     R. Campello, D. Moulavi, and J. Sander, *Density-Based Clustering Based on
     Hierarchical Density Estimates*
@@ -23,7 +31,7 @@ How to use HDBSCAN
 The hdbscan package inherits from sklearn classes, and thus drops in neatly
 next to other sklearn clusterers with an identical calling API. Similarly it
 supports input in a variety of formats: an array (or pandas dataframe, or
-sparse matrix) of shape `(num_samples x num_features)`; an array (or sparse matrix)
+sparse matrix) of shape ``(num_samples x num_features)``; an array (or sparse matrix)
 giving a distance matrix between samples.
 
 .. code:: python
@@ -107,7 +115,7 @@ Fast install, presuming you have sklearn and all its requirements installed:
     pip install hdbscan
 
 If pip is having difficulties pulling the dependencies then we'd suggest installing
-the dependencies manually using anaconda followed by pulling hdscan from pip:
+the dependencies manually using anaconda followed by pulling hdbscan from pip:
 
 .. code:: bash
 
