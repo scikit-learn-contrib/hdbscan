@@ -146,4 +146,4 @@ Install the package
 Licensing
 ---------
 
-The hdbscan package is BSD licensed. Enjoy.
+The hdbscan package is 3-clause BSD licensed. Enjoy.
