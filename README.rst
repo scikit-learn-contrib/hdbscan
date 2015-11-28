@@ -38,12 +38,12 @@ Performance
 -----------
 
 Significant effort has been put into making the hdbscan implementation as fast as 
-possible. It is more than ten as fast as the reference implementation in Java (full
-benchmarks forthcoming),
-and is currently faster highly optimized single linkage implementations in C and C++.
-`version 0.3 performance can be seen in this notebook <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations.ipynb>`_ . 
-Versions 0.4 and 0.5 bring a new minimum spanning tree algorithm, and further
-optimizations that provide dramatic speedups, particularly for low dimensional data.
+possible. It is `orders of magnitude faster then the reference implementation <https://nbviewerjupyter.org/github/lmcinnes/hdbscan/blobmaster/notebooks/Python%20vs%20Java.ipynb>`_ in Java,
+and is currently faster than highly optimized single linkage implementations in C and C++.
+`version 0.6 performance can be seen in this notebook <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations-v0.6.ipynb>`_ .
+In particular `performance on low dimensional data is better than sklearn's DBSCAN <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations%202D%20v0.6.ipynb>`_ ,
+and via support for caching with joblib, re-clustering with different parameters
+can be almost free.
 
 ------------------------
 Additional functionality
