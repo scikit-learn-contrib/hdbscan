@@ -287,6 +287,60 @@ cdef class TreeUnionFind (object):
     cdef np.ndarray[np.int64_t, ndim=1] components(self):
         return self.is_component.nonzero()[0]
 
+cpdef np.ndarray[np.int64_t, ndim=1] labelling_at_cut(np.ndarray linkage,
+                                                      np.double_t cut,
+                                                      np.int64_t min_cluster_size):
+
+    cdef np.int64_t root
+    cdef np.int64_t num_points
+    cdef np.ndarray[np.int64_t, ndim=1] result_arr
+    cdef np.ndarray[np.int64_t, ndim=1] unique_labels
+    cdef np.ndarray[np.int64_t, ndim=1] cluster_size
+    cdef np.int64_t *result
+    cdef TreeUnionFind union_find
+    cdef np.int64_t n
+    cdef np.int64_t cluster
+    cdef np.int64_t cluster_id
+
+
+    root = 2 * linkage.shape[0]
+    num_points = root // 2 + 1
+
+    result_arr = np.empty(num_points, dtype=np.int64)
+    result = (<np.int64_t *> result_arr.data)
+
+    union_find = TreeUnionFind(<np.int64_t> root + 1)
+
+    cluster = num_points
+    for row in linkage:
+        if row[2] < cut:
+            union_find.union_(<np.int64_t> row[0], cluster)
+            union_find.union_(<np.int64_t> row[1], cluster)
+        cluster += 1
+
+
+    cluster_size = np.zeros(num_points, dtype=np.int64)
+    for n in range(num_points):
+        cluster = union_find.find(n)
+        cluster_size[cluster] += 1
+        result[n] = cluster
+
+    cluster_label_map = {-1:-1}
+    cluster_label = 0
+    unique_labels = np.unique(result_arr)
+
+    for cluster in unique_labels:
+        if cluster_size[cluster] < min_cluster_size:
+            cluster_label_map[cluster] = -1
+        else:
+            cluster_label_map[cluster] = cluster_label
+            cluster_label += 1
+
+    for n in range(num_points):
+        result[n] = cluster_label_map[result[n]]
+
+    return result_arr
+
 cdef np.ndarray[np.int64_t, ndim=1] do_labelling(np.ndarray tree, set clusters, dict cluster_label_map):
 
     cdef np.int64_t root_cluster

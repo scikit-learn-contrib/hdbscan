@@ -14,7 +14,7 @@ from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 from sklearn.metrics import pairwise_distances
 from warnings import warn
-from ._hdbscan_tree import compute_stability
+from ._hdbscan_tree import compute_stability, labelling_at_cut
 
 CB_LEFT = 0
 CB_RIGHT = 1
@@ -58,15 +58,14 @@ def _bfs_from_linkage_tree(hierarchy, bfs_root):
     while to_process:
         result.extend(to_process)
         to_process = [x - num_points for x in
-                          to_process if x >= num_points]
+                      to_process if x >= num_points]
         if to_process:
-            to_process = hierarchy[to_process,:2].flatten().astype(np.int64).tolist()
+            to_process = hierarchy[to_process, :2].flatten().astype(np.int64).tolist()
 
     return result
 
 
-class CondensedTree (object):
-
+class CondensedTree(object):
     def __init__(self, condensed_tree_array):
         self._raw_tree = condensed_tree_array
 
@@ -109,11 +108,11 @@ class CondensedTree (object):
         # through everything from the leaves back, setting coords as we go
         cluster_x_coords = dict(zip(leaves, [leaf_separation * x
                                              for x in range(len(leaves))]))
-        cluster_y_coords = {root : 0.0}
+        cluster_y_coords = {root: 0.0}
 
         for cluster in range(last_leaf, root - 1, -1):
             split = self._raw_tree[['child', 'lambda']]
-            split = split[(self._raw_tree['parent'] == cluster) & 
+            split = split[(self._raw_tree['parent'] == cluster) &
                           (self._raw_tree['child_size'] > 1)]
             if len(split['child']) > 1:
                 left_child, right_child = split['child']
@@ -121,7 +120,7 @@ class CondensedTree (object):
                                                      cluster_x_coords[right_child]])
                 cluster_y_coords[left_child] = split['lambda'][0]
                 cluster_y_coords[right_child] = split['lambda'][1]
-            
+
         # We use bars to plot the 'icicles', so we need to generate centers, tops, 
         # bottoms and widths for each rectangle. We can go through each cluster 
         # and do this for each in turn.
@@ -138,9 +137,9 @@ class CondensedTree (object):
             scaling = np.log(scaling)
 
         for c in range(last_leaf, root - 1, -1):
-            
+
             cluster_bounds[c] = [0, 0, 0, 0]
-            
+
             c_children = self._raw_tree[self._raw_tree['parent'] == c]
             current_size = np.sum(c_children['child_size'])
             current_lambda = cluster_y_coords[c]
@@ -182,17 +181,17 @@ class CondensedTree (object):
                 cluster_x_coords[child] * scaling + sign * (child_size / 2.0)
             ])
             line_ys.append([
-                cluster_y_coords[child], 
+                cluster_y_coords[child],
                 cluster_y_coords[child]
             ])
-            
+
         return {
-            'bar_centers' : bar_centers,
-            'bar_tops' : bar_tops,
-            'bar_bottoms' : bar_bottoms,
-            'bar_widths' : bar_widths,
-            'line_xs' : line_xs,
-            'line_ys' : line_ys,
+            'bar_centers': bar_centers,
+            'bar_tops': bar_tops,
+            'bar_bottoms': bar_bottoms,
+            'bar_widths': bar_widths,
+            'line_xs': line_xs,
+            'line_ys': line_ys,
             'cluster_bounds': cluster_bounds
         }
 
@@ -200,11 +199,11 @@ class CondensedTree (object):
         stability = compute_stability(self._raw_tree)
         node_list = sorted(stability.keys(), reverse=True)[:-1]
         cluster_tree = self._raw_tree[self._raw_tree['child_size'] > 1]
-        is_cluster = {cluster : True for cluster in node_list}
+        is_cluster = {cluster: True for cluster in node_list}
 
         for node in node_list:
             child_selection = (cluster_tree['parent'] == node)
-            subtree_stability = np.sum([stability[child] for 
+            subtree_stability = np.sum([stability[child] for
                                         child in cluster_tree['child'][child_selection]])
 
             if subtree_stability > stability[node]:
@@ -216,8 +215,8 @@ class CondensedTree (object):
                         is_cluster[sub_node] = False
 
         return [cluster for cluster in is_cluster if is_cluster[cluster]]
-            
-    def plot(self, leaf_separation=1, cmap='Blues', select_clusters=False, 
+
+    def plot(self, leaf_separation=1, cmap='Blues', select_clusters=False,
              label_clusters=False, axis=None, colorbar=True, log_size=False):
         """Use matplotlib to plot an 'icicle plot' dendrogram of the condensed tree.
 
@@ -268,18 +267,20 @@ class CondensedTree (object):
         try:
             import matplotlib.pyplot as plt
         except ImportError:
-            raise ImportError('You must install the matplotlib library to plot the condensed tree. Use get_plot_data to calculate the relevant data without plotting.')
-        
+            raise ImportError(
+                'You must install the matplotlib library to plot the condensed tree.'
+                'Use get_plot_data to calculate the relevant data without plotting.')
+
         plot_data = self.get_plot_data(leaf_separation=leaf_separation, log_size=log_size)
 
         if cmap != 'none':
-            sm = plt.cm.ScalarMappable(cmap=cmap, 
-                                   norm=plt.Normalize(0, max(plot_data['bar_widths'])))
+            sm = plt.cm.ScalarMappable(cmap=cmap,
+                                       norm=plt.Normalize(0, max(plot_data['bar_widths'])))
             sm.set_array(plot_data['bar_widths'])
             bar_colors = [sm.to_rgba(x) for x in plot_data['bar_widths']]
         else:
             bar_colors = 'black'
-        
+
         if axis is None:
             axis = plt.gca()
 
@@ -302,7 +303,7 @@ class CondensedTree (object):
                 raise ImportError('You must have matplotlib.patches available to plot selected clusters.')
 
             chosen_clusters = self._select_clusters()
-            
+
             for i, c in enumerate(chosen_clusters):
                 c_bounds = plot_data['cluster_bounds'][c]
                 width = (c_bounds[CB_RIGHT] - c_bounds[CB_LEFT])
@@ -322,13 +323,13 @@ class CondensedTree (object):
                 )
 
                 if label_clusters:
-                    axis.annotate(str(i), xy=center, 
-                        xytext=(center[0]-4.0*width, center[1]+0.65*height),
-                        horizontalalignment='left',
-                        verticalalignment='bottom')
+                    axis.annotate(str(i), xy=center,
+                                  xytext=(center[0] - 4.0 * width, center[1] + 0.65 * height),
+                                  horizontalalignment='left',
+                                  verticalalignment='bottom')
 
                 axis.add_artist(box)
-                
+
         if colorbar:
             cb = plt.colorbar(sm)
             if log_size:
@@ -394,14 +395,15 @@ class CondensedTree (object):
 
         return result
 
+
 def _line_width(y, linkage):
     if y == 0.0:
         return 1.0
     else:
-        return linkage[linkage.T[2] == y][0,3]
-                    
-class SingleLinkageTree (object):
+        return linkage[linkage.T[2] == y][0, 3]
 
+
+class SingleLinkageTree(object):
     def __init__(self, linkage):
         self._linkage = linkage
 
@@ -469,9 +471,9 @@ class SingleLinkageTree (object):
             horizontal_x = x[1:3]
             horizontal_y = y[1:3]
 
-            axis.plot(left_x, left_y, color='k', linewidth=np.log2(1+lw[0]),
+            axis.plot(left_x, left_y, color='k', linewidth=np.log2(1 + lw[0]),
                       solid_joinstyle='miter', solid_capstyle='butt')
-            axis.plot(right_x, right_y, color='k', linewidth=np.log2(1+lw[1]),
+            axis.plot(right_x, right_y, color='k', linewidth=np.log2(1 + lw[1]),
                       solid_joinstyle='miter', solid_capstyle='butt')
             axis.plot(horizontal_x, horizontal_y, color='k', linewidth=1.0,
                       solid_joinstyle='miter', solid_capstyle='butt')
@@ -511,11 +513,11 @@ class SingleLinkageTree (object):
         parent_array = np.arange(num_points, max_node)
 
         result = DataFrame({
-            'parent' : parent_array,
-            'left_child' : self._linkage[0],
-            'right_child' : self._linkage[1],
-            'distance' : self._linkage[2],
-            'size' : self._linkage[3]
+            'parent': parent_array,
+            'left_child': self._linkage[0],
+            'right_child': self._linkage[1],
+            'distance': self._linkage[2],
+            'size': self._linkage[3]
         })
 
         return result
@@ -542,7 +544,7 @@ class SingleLinkageTree (object):
             result.add_edge(parent, row[0], weight=row[2])
             result.add_edge(parent, row[1], weight=row[2])
 
-        size_dict = {parent : row[3] for parent, row in enumerate(self._linkage, num_points)}
+        size_dict = {parent: row[3] for parent, row in enumerate(self._linkage, num_points)}
         set_node_attributes(result, 'size', size_dict)
 
         return result
@@ -571,38 +573,16 @@ class SingleLinkageTree (object):
             An array of cluster labels, one per datapoint. Unclustered points are assigned
             the label -1.
         """
-        select_clusters = []
+        return labelling_at_cut(self._linkage, cut_distance, min_cluster_size)
 
-        dim = self._linkage.shape[0]
-        max_node = 2 * dim
-        num_points = max_node - dim + 1
 
-        for cluster_id, linkage in enumerate(self._linkage, num_points):
-            # If the cluster was formed prior to the cut and is large enough
-            if linkage[2] < cut_distance and linkage[3] > min_cluster_size:
-                # If the cluster had not been merged before the cut
-                if self._linkage[(self._linkage.T[0] == cluster_id) |
-                                 (self._linkage.T[1] == cluster_id)][0,2] > cut_distance:
-                    cluster = _bfs_from_linkage_tree(self._linkage, cluster_id)
-                    select_clusters.append([x for x in cluster if x < num_points])
-
-        # Generate labels for each data point
-        result = -1 * np.ones(num_points, dtype=int)
-
-        for cluster_num, cluster in enumerate(select_clusters):
-            result[cluster] = cluster_num
-
-        return result
-
-class MinimumSpanningTree (object):
-
+class MinimumSpanningTree(object):
     def __init__(self, mst, data):
         self._mst = mst
         self._data = data
 
-
-    def plot(self, axis=None, node_size=10, node_color='k', 
-             node_alpha=0.5, edge_alpha=0.25, edge_cmap='Reds_r', 
+    def plot(self, axis=None, node_size=10, node_color='k',
+             node_alpha=0.5, edge_alpha=0.25, edge_cmap='Reds_r',
              edge_linewidth=2, vary_linewidth=True, colorbar=True):
         """Plot the minimum spanning tree (as projected into 2D by t-SNE if required).
 
@@ -677,10 +657,10 @@ class MinimumSpanningTree (object):
         else:
             line_width = edge_linewidth
 
-        line_coords = projection[self._mst[:,:2].astype(int)]
+        line_coords = projection[self._mst[:, :2].astype(int)]
         line_collection = LineCollection(line_coords, linewidth=line_width,
                                          cmap=edge_cmap, alpha=edge_alpha)
-        line_collection.set_array(self._mst[:,2].T)
+        line_collection.set_array(self._mst[:, 2].T)
 
         axis.add_artist(line_collection)
         axis.scatter(projection.T[0], projection.T[1], c=node_color, alpha=node_alpha)
@@ -706,9 +686,9 @@ class MinimumSpanningTree (object):
         except ImportError:
             raise ImportError('You must have pandas installed to export pandas DataFrames')
 
-        result = DataFrame({'from' : self._mst.T[0].astype(int),
-                            'to' : self._mst.T[1].astype(int),
-                            'distance' : self._mst.T[2]})
+        result = DataFrame({'from': self._mst.T[0].astype(int),
+                            'to': self._mst.T[1].astype(int),
+                            'distance': self._mst.T[2]})
         return result
 
     def to_networkx(self):
@@ -728,7 +708,7 @@ class MinimumSpanningTree (object):
         for row in self._mst:
             result.add_edge(row[0], row[1], weight=row[2])
 
-        data_dict = {index:tuple(row) for index, row in enumerate(self._data)}
+        data_dict = {index: tuple(row) for index, row in enumerate(self._data)}
         set_node_attributes(result, 'data', data_dict)
 
         return result
