@@ -411,9 +411,9 @@ cpdef np.ndarray[np.double_t, ndim=1] outlier_scores(np.ndarray tree):
     cdef np.intp_t cluster
     cdef np.double_t lambda_max
 
-    result = np.zeros(labels.shape[0])
     deaths = max_lambdas(tree)
     root_cluster = tree['parent'].min()
+    result = np.zeros(root_cluster, dtype=np.double)
 
     topological_sort_order = np.argsort(tree['parent'])
     topologically_sorted_tree = tree[topological_sort_order]
