@@ -663,7 +663,7 @@ class MinimumSpanningTree(object):
         line_collection.set_array(self._mst[:, 2].T)
 
         axis.add_artist(line_collection)
-        axis.scatter(projection.T[0], projection.T[1], c=node_color, alpha=node_alpha)
+        axis.scatter(projection.T[0], projection.T[1], c=node_color, alpha=node_alpha, s=node_size)
         axis.set_xticks([])
         axis.set_yticks([])
 
