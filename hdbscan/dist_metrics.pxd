@@ -8,7 +8,7 @@ cimport numpy as np
 from libc.math cimport fabs, sqrt, exp, cos, pow
 
 ctypedef np.double_t DTYPE_t
-ctypedef np.int64_t ITYPE_t
+ctypedef np.intp_t ITYPE_t
 
 cdef enum:
     DTYPECODE = np.NPY_FLOAT64
@@ -19,7 +19,7 @@ ctypedef fused DITYPE_t:
     ITYPE_t
     DTYPE_t
 
-ITYPE = np.int64
+ITYPE = np.intp
 
 DTYPE = np.double
 

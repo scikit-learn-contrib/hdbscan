@@ -17,8 +17,8 @@ from dist_metrics cimport DistanceMetric
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
                                np.ndarray[np.double_t, ndim=2] distance_matrix):
 
-    cdef np.ndarray[np.int64_t, ndim=1] node_labels
-    cdef np.ndarray[np.int64_t, ndim=1] current_labels
+    cdef np.ndarray[np.intp_t, ndim=1] node_labels
+    cdef np.ndarray[np.intp_t, ndim=1] current_labels
     cdef np.ndarray[np.double_t, ndim=1] current_distances
     cdef np.ndarray[np.double_t, ndim=1] left
     cdef np.ndarray[np.double_t, ndim=1] right
@@ -26,13 +26,13 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
     
     cdef np.ndarray label_filter
     
-    cdef long long current_node
-    cdef long long new_node_index
-    cdef long long new_node
-    cdef long long i
+    cdef np.intp_t current_node
+    cdef np.intp_t new_node_index
+    cdef np.intp_t new_node
+    cdef np.intp_t i
     
     result = np.zeros((distance_matrix.shape[0] - 1, 3))
-    node_labels = np.arange(distance_matrix.shape[0], dtype=np.int64)
+    node_labels = np.arange(distance_matrix.shape[0], dtype=np.intp)
     current_node = 0
     current_distances = np.infty * np.ones(distance_matrix.shape[0])
     current_labels = node_labels
@@ -54,18 +54,18 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
 
 cdef void select_distances(
     np.ndarray[np.double_t, ndim=1] pdist_matrix,
-    np.ndarray[np.int64_t, ndim=1] col_select,
-    np.ndarray[np.int64_t, ndim=1] current_labels,
+    np.ndarray[np.intp_t, ndim=1] col_select,
+    np.ndarray[np.intp_t, ndim=1] current_labels,
     np.ndarray[np.double_t, ndim=1] result_buffer,
-    long long row_num,
-    long long dim
+    np.intp_t row_num,
+    np.intp_t dim
 ):
 
-    cdef np.ndarray[np.int64_t, ndim=1] col_selection
+    cdef np.ndarray[np.intp_t, ndim=1] col_selection
 
-    cdef long long i
-    cdef long long n_labels = len(current_labels)
-    cdef long long row_start
+    cdef np.intp_t i
+    cdef np.intp_t n_labels = len(current_labels)
+    cdef np.intp_t row_start
 
     col_selection = col_select - (dim - row_num)
 
@@ -86,27 +86,27 @@ cdef void select_distances(
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_pdist(
                                np.ndarray[np.double_t, ndim=1] pdist_matrix):
 
-    cdef np.ndarray[np.int64_t, ndim=1] node_labels
-    cdef np.ndarray[np.int64_t, ndim=1] current_labels
+    cdef np.ndarray[np.intp_t, ndim=1] node_labels
+    cdef np.ndarray[np.intp_t, ndim=1] current_labels
     cdef np.ndarray[np.double_t, ndim=1] current_distances
     cdef np.ndarray[np.double_t, ndim=1] left
     cdef np.ndarray[np.double_t, ndim=1] right
-    cdef np.ndarray[np.int64_t, ndim=1] col_select
+    cdef np.ndarray[np.intp_t, ndim=1] col_select
     cdef np.ndarray[np.double_t, ndim=2] result
     
     cdef np.ndarray label_filter
     
-    cdef long long current_node
-    cdef long long new_node_index
-    cdef long long new_node
-    cdef long long i
-    cdef long long dim
+    cdef np.intp_t current_node
+    cdef np.intp_t new_node_index
+    cdef np.intp_t new_node
+    cdef np.intp_t i
+    cdef np.intp_t dim
 
     dim = int((1 + np.sqrt(1 + 8 * pdist_matrix.shape[0])) / 2.0)
     col_select = np.cumsum(np.arange(dim - 1, 0, -1))
     
     result = np.zeros((dim - 1, 3))
-    node_labels = np.arange(dim, dtype=np.int64)
+    node_labels = np.arange(dim, dtype=np.intp)
     current_node = 0
     current_distances = np.infty * np.ones(dim)
     current_labels = node_labels
@@ -150,12 +150,12 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
 
     cdef np.ndarray label_filter
 
-    cdef long long current_node
-    cdef long long new_node
-    cdef long long i
-    cdef long long j
-    cdef long long dim
-    cdef long long num_features
+    cdef np.intp_t current_node
+    cdef np.intp_t new_node
+    cdef np.intp_t i
+    cdef np.intp_t j
+    cdef np.intp_t dim
+    cdef np.intp_t num_features
 
     cdef double current_node_core_distance
     cdef double right_value
@@ -241,19 +241,19 @@ cdef class UnionFind (object):
 
     cdef np.ndarray parent_arr
     cdef np.ndarray size_arr
-    cdef np.int64_t next_label
-    cdef np.int64_t *parent
-    cdef np.int64_t *size
+    cdef np.intp_t next_label
+    cdef np.intp_t *parent
+    cdef np.intp_t *size
     
     def __init__(self, N):
-        self.parent_arr = -1 * np.ones(2 * N - 1, dtype=np.int64)
+        self.parent_arr = -1 * np.ones(2 * N - 1, dtype=np.intp)
         self.next_label = N
-        self.size_arr = np.hstack((np.ones(N, dtype=np.int64),
-                                   np.zeros(N-1, dtype=np.int64)))
-        self.parent = (<np.int64_t *> self.parent_arr.data)
-        self.size = (<np.int64_t *> self.size_arr.data)
+        self.size_arr = np.hstack((np.ones(N, dtype=np.intp),
+                                   np.zeros(N-1, dtype=np.intp)))
+        self.parent = (<np.intp_t *> self.parent_arr.data)
+        self.size = (<np.intp_t *> self.size_arr.data)
                                
-    cdef void union(self, np.int64_t m, np.int64_t n):
+    cdef void union(self, np.intp_t m, np.intp_t n):
         self.size[self.next_label] = self.size[m] + self.size[n]
         self.parent[m] = self.next_label
         self.parent[n] = self.next_label
@@ -262,13 +262,13 @@ cdef class UnionFind (object):
         
         return
         
-    cdef np.int64_t find(self, np.int64_t n):
+    cdef np.intp_t find(self, np.intp_t n):
         while self.parent[n] != -1:
             n = self.parent[n]
         return n
         
-    cdef np.int64_t fast_find(self, np.int64_t n):
-        cdef np.int64_t p
+    cdef np.intp_t fast_find(self, np.intp_t n):
+        cdef np.intp_t p
         p = n
         while self.parent_arr[n] != -1:
             n = self.parent_arr[n]
@@ -282,7 +282,7 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
     cdef np.ndarray[np.double_t, ndim=2] result_arr
     cdef np.double_t[:, ::1] result
 
-    cdef np.int64_t N, a, aa, b, bb, idx
+    cdef np.intp_t N, a, aa, b, bb, idx
     cdef np.double_t delta
     
     result_arr = np.zeros((L.shape[0], L.shape[1] + 1))
@@ -292,8 +292,8 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
 
     for index in range(L.shape[0]):
 
-        a = <np.int64_t> L[index, 0]
-        b = <np.int64_t> L[index, 1]
+        a = <np.intp_t> L[index, 0]
+        b = <np.intp_t> L[index, 1]
         delta = L[index, 2]
 
         aa, bb = U.fast_find(a), U.fast_find(b)

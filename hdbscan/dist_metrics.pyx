@@ -15,7 +15,7 @@ np.import_array()  # required in order to use C-API
 from libc.math cimport fabs, sqrt, exp, cos, pow, log
 
 DTYPE = np.double
-ITYPE = np.int64
+ITYPE = np.intp
 
 
 ######################################################################

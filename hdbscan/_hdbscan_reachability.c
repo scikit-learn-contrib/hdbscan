@@ -759,13 +759,13 @@ struct __pyx_opt_args_7hdbscan_21_hdbscan_reachability_balltree_pdist_mutual_rea
  * 
  * 
  * cpdef np.ndarray[np.double_t, ndim=1] kdtree_pdist_mutual_reachability(np.ndarray X, object metric,             # <<<<<<<<<<<<<<
- *                             long long p=2, long long min_points=5, alpha=1.0):
+ *                             np.intp_t p=2, np.intp_t min_points=5, alpha=1.0):
  * 
  */
 struct __pyx_opt_args_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutual_reachability {
   int __pyx_n;
-  PY_LONG_LONG p;
-  PY_LONG_LONG min_points;
+  __pyx_t_5numpy_intp_t p;
+  __pyx_t_5numpy_intp_t min_points;
   PyObject *alpha;
 };
 
@@ -773,13 +773,13 @@ struct __pyx_opt_args_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutual_reach
  *     return dists
  * 
  * cpdef np.ndarray[np.double_t, ndim=1] balltree_pdist_mutual_reachability(np.ndarray X, object metric,             # <<<<<<<<<<<<<<
- *                             long long p=2, long long min_points=5, alpha=1.0):
+ *                             np.intp_t p=2, np.intp_t min_points=5, alpha=1.0):
  * 
  */
 struct __pyx_opt_args_7hdbscan_21_hdbscan_reachability_balltree_pdist_mutual_reachability {
   int __pyx_n;
-  PY_LONG_LONG p;
-  PY_LONG_LONG min_points;
+  __pyx_t_5numpy_intp_t p;
+  __pyx_t_5numpy_intp_t min_points;
   PyObject *alpha;
 };
 
@@ -1019,11 +1019,13 @@ static Py_ssize_t __Pyx_minusones[] = {-1, -1, -1, -1, -1, -1, -1, -1};
 
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
 
-static CYTHON_INLINE PY_LONG_LONG __Pyx_PyInt_As_PY_LONG_LONG(PyObject *);
+static CYTHON_INLINE Py_intptr_t __Pyx_PyInt_As_Py_intptr_t(PyObject *);
 
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_PY_LONG_LONG(PY_LONG_LONG value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_Py_intptr_t(Py_intptr_t value);
+
+static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
 
 #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
@@ -1127,8 +1129,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
-static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
-
 static int __Pyx_check_binary_version(void);
 
 #if !defined(__Pyx_PyIdentifier_FromString)
@@ -1188,8 +1188,8 @@ static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_mutual_reachability(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_distance_matrix, PyObject *__pyx_v_min_points, PyObject *__pyx_v_alpha); /* proto */
 static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_2kdtree_mutual_reachability(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_X, PyObject *__pyx_v_distance_matrix, PyObject *__pyx_v_metric, PyObject *__pyx_v_p, PyObject *__pyx_v_min_points, PyObject *__pyx_v_alpha); /* proto */
 static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_4balltree_mutual_reachability(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_X, PyObject *__pyx_v_distance_matrix, PyObject *__pyx_v_metric, CYTHON_UNUSED PyObject *__pyx_v_p, PyObject *__pyx_v_min_points, PyObject *__pyx_v_alpha); /* proto */
-static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_6kdtree_pdist_mutual_reachability(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_X, PyObject *__pyx_v_metric, PY_LONG_LONG __pyx_v_p, PY_LONG_LONG __pyx_v_min_points, PyObject *__pyx_v_alpha); /* proto */
-static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_8balltree_pdist_mutual_reachability(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_X, PyObject *__pyx_v_metric, PY_LONG_LONG __pyx_v_p, PY_LONG_LONG __pyx_v_min_points, PyObject *__pyx_v_alpha); /* proto */
+static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_6kdtree_pdist_mutual_reachability(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_X, PyObject *__pyx_v_metric, __pyx_t_5numpy_intp_t __pyx_v_p, __pyx_t_5numpy_intp_t __pyx_v_min_points, PyObject *__pyx_v_alpha); /* proto */
+static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_8balltree_pdist_mutual_reachability(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_X, PyObject *__pyx_v_metric, __pyx_t_5numpy_intp_t __pyx_v_p, __pyx_t_5numpy_intp_t __pyx_v_min_points, PyObject *__pyx_v_alpha); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static char __pyx_k_B[] = "B";
@@ -2723,31 +2723,31 @@ static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_4balltree_mutual_reac
  * 
  * 
  * cpdef np.ndarray[np.double_t, ndim=1] kdtree_pdist_mutual_reachability(np.ndarray X, object metric,             # <<<<<<<<<<<<<<
- *                             long long p=2, long long min_points=5, alpha=1.0):
+ *                             np.intp_t p=2, np.intp_t min_points=5, alpha=1.0):
  * 
  */
 
 static PyObject *__pyx_pw_7hdbscan_21_hdbscan_reachability_7kdtree_pdist_mutual_reachability(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutual_reachability(PyArrayObject *__pyx_v_X, PyObject *__pyx_v_metric, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutual_reachability *__pyx_optional_args) {
-  PY_LONG_LONG __pyx_v_p = ((PY_LONG_LONG)2);
-  PY_LONG_LONG __pyx_v_min_points = ((PY_LONG_LONG)5);
+  __pyx_t_5numpy_intp_t __pyx_v_p = ((__pyx_t_5numpy_intp_t)2);
+  __pyx_t_5numpy_intp_t __pyx_v_min_points = ((__pyx_t_5numpy_intp_t)5);
   PyObject *__pyx_v_alpha = ((PyObject *)__pyx_float_1_0);
-  PY_LONG_LONG __pyx_v_dim;
+  __pyx_t_5numpy_intp_t __pyx_v_dim;
   PyObject *__pyx_v_tree = 0;
   PyArrayObject *__pyx_v_core_distances = 0;
   PyArrayObject *__pyx_v_dists = 0;
-  PY_LONG_LONG __pyx_v_i;
-  PY_LONG_LONG __pyx_v_result_pos;
-  PY_LONG_LONG __pyx_v_j;
+  __pyx_t_5numpy_intp_t __pyx_v_i;
+  __pyx_t_5numpy_intp_t __pyx_v_result_pos;
+  long __pyx_v_j;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_core_distances;
   __Pyx_Buffer __pyx_pybuffer_core_distances;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_dists;
   __Pyx_Buffer __pyx_pybuffer_dists;
   PyArrayObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  PY_LONG_LONG __pyx_t_1;
-  PY_LONG_LONG __pyx_t_2;
-  PY_LONG_LONG __pyx_t_3;
+  __pyx_t_5numpy_intp_t __pyx_t_1;
+  long __pyx_t_2;
+  long __pyx_t_3;
   int __pyx_t_4;
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
@@ -2759,17 +2759,17 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutu
   PyObject *__pyx_t_12 = NULL;
   PyObject *__pyx_t_13 = NULL;
   PyArrayObject *__pyx_t_14 = NULL;
-  PY_LONG_LONG __pyx_t_15;
-  PY_LONG_LONG __pyx_t_16;
-  PY_LONG_LONG __pyx_t_17;
-  PY_LONG_LONG __pyx_t_18;
-  PY_LONG_LONG __pyx_t_19;
-  PY_LONG_LONG __pyx_t_20;
-  PY_LONG_LONG __pyx_t_21;
-  PY_LONG_LONG __pyx_t_22;
-  PY_LONG_LONG __pyx_t_23;
-  PY_LONG_LONG __pyx_t_24;
-  PY_LONG_LONG __pyx_t_25;
+  __pyx_t_5numpy_intp_t __pyx_t_15;
+  __pyx_t_5numpy_intp_t __pyx_t_16;
+  __pyx_t_5numpy_intp_t __pyx_t_17;
+  __pyx_t_5numpy_intp_t __pyx_t_18;
+  __pyx_t_5numpy_intp_t __pyx_t_19;
+  __pyx_t_5numpy_intp_t __pyx_t_20;
+  __pyx_t_5numpy_intp_t __pyx_t_21;
+  long __pyx_t_22;
+  __pyx_t_5numpy_intp_t __pyx_t_23;
+  long __pyx_t_24;
+  __pyx_t_5numpy_intp_t __pyx_t_25;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2795,7 +2795,7 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutu
   __pyx_pybuffernd_dists.rcbuffer = &__pyx_pybuffer_dists;
 
   /* "hdbscan/_hdbscan_reachability.pyx":105
- *     cdef long long result_pos
+ *     cdef np.intp_t result_pos
  * 
  *     dim = X.shape[0]             # <<<<<<<<<<<<<<
  *     min_points = min(dim - 1, min_points)
@@ -2846,7 +2846,7 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutu
     __pyx_t_7 = PyDict_New(); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 109; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_metric, __pyx_v_metric) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 109; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_8 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_p); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 109; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_p); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 109; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_8);
     if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_p, __pyx_t_8) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 109; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -2904,7 +2904,7 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutu
   PyTuple_SET_ITEM(__pyx_t_6, 0, ((PyObject *)__pyx_v_X));
   __pyx_t_7 = PyDict_New(); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_min_points); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_min_points); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
   if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_k, __pyx_t_8) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -3000,7 +3000,7 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutu
   __pyx_t_7 = PyDict_New(); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 118; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
   if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_metric, __pyx_v_metric) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 118; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_5 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_p); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 118; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_p); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 118; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_p, __pyx_t_5) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 118; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -3093,9 +3093,9 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutu
  *         for j in range(i + 1, dim):
  *             if core_distances[i] > core_distances[j]:
  */
-  __pyx_t_3 = __pyx_v_dim;
-  for (__pyx_t_1 = 0; __pyx_t_1 < __pyx_t_3; __pyx_t_1+=1) {
-    __pyx_v_i = __pyx_t_1;
+  __pyx_t_1 = __pyx_v_dim;
+  for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_1; __pyx_t_15+=1) {
+    __pyx_v_i = __pyx_t_15;
 
     /* "hdbscan/_hdbscan_reachability.pyx":125
  *     result_pos = 0
@@ -3104,9 +3104,9 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutu
  *             if core_distances[i] > core_distances[j]:
  *                 if core_distances[i] > dists[result_pos]:
  */
-    __pyx_t_2 = __pyx_v_dim;
-    for (__pyx_t_15 = (__pyx_v_i + 1); __pyx_t_15 < __pyx_t_2; __pyx_t_15+=1) {
-      __pyx_v_j = __pyx_t_15;
+    __pyx_t_16 = __pyx_v_dim;
+    for (__pyx_t_3 = (__pyx_v_i + 1); __pyx_t_3 < __pyx_t_16; __pyx_t_3+=1) {
+      __pyx_v_j = __pyx_t_3;
 
       /* "hdbscan/_hdbscan_reachability.pyx":126
  *     for i in range(dim):
@@ -3115,11 +3115,11 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutu
  *                 if core_distances[i] > dists[result_pos]:
  *                     dists[result_pos] = core_distances[i]
  */
-      __pyx_t_16 = __pyx_v_i;
-      if (__pyx_t_16 < 0) __pyx_t_16 += __pyx_pybuffernd_core_distances.diminfo[0].shape;
-      __pyx_t_17 = __pyx_v_j;
+      __pyx_t_17 = __pyx_v_i;
       if (__pyx_t_17 < 0) __pyx_t_17 += __pyx_pybuffernd_core_distances.diminfo[0].shape;
-      __pyx_t_4 = (((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_core_distances.rcbuffer->pybuffer.buf, __pyx_t_16, __pyx_pybuffernd_core_distances.diminfo[0].strides)) > (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_core_distances.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_core_distances.diminfo[0].strides))) != 0);
+      __pyx_t_2 = __pyx_v_j;
+      if (__pyx_t_2 < 0) __pyx_t_2 += __pyx_pybuffernd_core_distances.diminfo[0].shape;
+      __pyx_t_4 = (((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_core_distances.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_core_distances.diminfo[0].strides)) > (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_core_distances.rcbuffer->pybuffer.buf, __pyx_t_2, __pyx_pybuffernd_core_distances.diminfo[0].strides))) != 0);
       if (__pyx_t_4) {
 
         /* "hdbscan/_hdbscan_reachability.pyx":127
@@ -3214,7 +3214,7 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_kdtree_pdist_mutu
  * 
  * 
  * cpdef np.ndarray[np.double_t, ndim=1] kdtree_pdist_mutual_reachability(np.ndarray X, object metric,             # <<<<<<<<<<<<<<
- *                             long long p=2, long long min_points=5, alpha=1.0):
+ *                             np.intp_t p=2, np.intp_t min_points=5, alpha=1.0):
  * 
  */
 
@@ -3249,8 +3249,8 @@ static PyObject *__pyx_pw_7hdbscan_21_hdbscan_reachability_7kdtree_pdist_mutual_
 static PyObject *__pyx_pw_7hdbscan_21_hdbscan_reachability_7kdtree_pdist_mutual_reachability(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_X = 0;
   PyObject *__pyx_v_metric = 0;
-  PY_LONG_LONG __pyx_v_p;
-  PY_LONG_LONG __pyx_v_min_points;
+  __pyx_t_5numpy_intp_t __pyx_v_p;
+  __pyx_t_5numpy_intp_t __pyx_v_min_points;
   PyObject *__pyx_v_alpha = 0;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -3317,14 +3317,14 @@ static PyObject *__pyx_pw_7hdbscan_21_hdbscan_reachability_7kdtree_pdist_mutual_
     __pyx_v_X = ((PyArrayObject *)values[0]);
     __pyx_v_metric = values[1];
     if (values[2]) {
-      __pyx_v_p = __Pyx_PyInt_As_PY_LONG_LONG(values[2]); if (unlikely((__pyx_v_p == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      __pyx_v_p = __Pyx_PyInt_As_Py_intptr_t(values[2]); if (unlikely((__pyx_v_p == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
-      __pyx_v_p = ((PY_LONG_LONG)2);
+      __pyx_v_p = ((__pyx_t_5numpy_intp_t)2);
     }
     if (values[3]) {
-      __pyx_v_min_points = __Pyx_PyInt_As_PY_LONG_LONG(values[3]); if (unlikely((__pyx_v_min_points == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      __pyx_v_min_points = __Pyx_PyInt_As_Py_intptr_t(values[3]); if (unlikely((__pyx_v_min_points == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
-      __pyx_v_min_points = ((PY_LONG_LONG)5);
+      __pyx_v_min_points = ((__pyx_t_5numpy_intp_t)5);
     }
     __pyx_v_alpha = values[4];
   }
@@ -3348,7 +3348,7 @@ static PyObject *__pyx_pw_7hdbscan_21_hdbscan_reachability_7kdtree_pdist_mutual_
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_6kdtree_pdist_mutual_reachability(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_X, PyObject *__pyx_v_metric, PY_LONG_LONG __pyx_v_p, PY_LONG_LONG __pyx_v_min_points, PyObject *__pyx_v_alpha) {
+static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_6kdtree_pdist_mutual_reachability(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_X, PyObject *__pyx_v_metric, __pyx_t_5numpy_intp_t __pyx_v_p, __pyx_t_5numpy_intp_t __pyx_v_min_points, PyObject *__pyx_v_alpha) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3383,31 +3383,31 @@ static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_6kdtree_pdist_mutual_
  *     return dists
  * 
  * cpdef np.ndarray[np.double_t, ndim=1] balltree_pdist_mutual_reachability(np.ndarray X, object metric,             # <<<<<<<<<<<<<<
- *                             long long p=2, long long min_points=5, alpha=1.0):
+ *                             np.intp_t p=2, np.intp_t min_points=5, alpha=1.0):
  * 
  */
 
 static PyObject *__pyx_pw_7hdbscan_21_hdbscan_reachability_9balltree_pdist_mutual_reachability(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_balltree_pdist_mutual_reachability(PyArrayObject *__pyx_v_X, PyObject *__pyx_v_metric, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_7hdbscan_21_hdbscan_reachability_balltree_pdist_mutual_reachability *__pyx_optional_args) {
-  PY_LONG_LONG __pyx_v_p = ((PY_LONG_LONG)2);
-  PY_LONG_LONG __pyx_v_min_points = ((PY_LONG_LONG)5);
+  __pyx_t_5numpy_intp_t __pyx_v_p = ((__pyx_t_5numpy_intp_t)2);
+  __pyx_t_5numpy_intp_t __pyx_v_min_points = ((__pyx_t_5numpy_intp_t)5);
   PyObject *__pyx_v_alpha = ((PyObject *)__pyx_float_1_0);
-  PY_LONG_LONG __pyx_v_dim;
+  __pyx_t_5numpy_intp_t __pyx_v_dim;
   PyObject *__pyx_v_tree = 0;
   PyArrayObject *__pyx_v_core_distances = 0;
   PyArrayObject *__pyx_v_dists = 0;
-  PY_LONG_LONG __pyx_v_i;
-  PY_LONG_LONG __pyx_v_result_pos;
-  PY_LONG_LONG __pyx_v_j;
+  __pyx_t_5numpy_intp_t __pyx_v_i;
+  __pyx_t_5numpy_intp_t __pyx_v_result_pos;
+  long __pyx_v_j;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_core_distances;
   __Pyx_Buffer __pyx_pybuffer_core_distances;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_dists;
   __Pyx_Buffer __pyx_pybuffer_dists;
   PyArrayObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  PY_LONG_LONG __pyx_t_1;
-  PY_LONG_LONG __pyx_t_2;
-  PY_LONG_LONG __pyx_t_3;
+  __pyx_t_5numpy_intp_t __pyx_t_1;
+  long __pyx_t_2;
+  long __pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
@@ -3419,17 +3419,17 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_balltree_pdist_mu
   PyObject *__pyx_t_12 = NULL;
   PyArrayObject *__pyx_t_13 = NULL;
   int __pyx_t_14;
-  PY_LONG_LONG __pyx_t_15;
-  PY_LONG_LONG __pyx_t_16;
-  PY_LONG_LONG __pyx_t_17;
-  PY_LONG_LONG __pyx_t_18;
-  PY_LONG_LONG __pyx_t_19;
-  PY_LONG_LONG __pyx_t_20;
-  PY_LONG_LONG __pyx_t_21;
-  PY_LONG_LONG __pyx_t_22;
-  PY_LONG_LONG __pyx_t_23;
-  PY_LONG_LONG __pyx_t_24;
-  PY_LONG_LONG __pyx_t_25;
+  __pyx_t_5numpy_intp_t __pyx_t_15;
+  __pyx_t_5numpy_intp_t __pyx_t_16;
+  __pyx_t_5numpy_intp_t __pyx_t_17;
+  __pyx_t_5numpy_intp_t __pyx_t_18;
+  __pyx_t_5numpy_intp_t __pyx_t_19;
+  __pyx_t_5numpy_intp_t __pyx_t_20;
+  __pyx_t_5numpy_intp_t __pyx_t_21;
+  long __pyx_t_22;
+  __pyx_t_5numpy_intp_t __pyx_t_23;
+  long __pyx_t_24;
+  __pyx_t_5numpy_intp_t __pyx_t_25;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -3455,7 +3455,7 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_balltree_pdist_mu
   __pyx_pybuffernd_dists.rcbuffer = &__pyx_pybuffer_dists;
 
   /* "hdbscan/_hdbscan_reachability.pyx":148
- *     cdef long long result_pos
+ *     cdef np.intp_t result_pos
  * 
  *     dim = X.shape[0]             # <<<<<<<<<<<<<<
  *     min_points = min(dim - 1, min_points)
@@ -3520,7 +3520,7 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_balltree_pdist_mu
   PyTuple_SET_ITEM(__pyx_t_6, 0, ((PyObject *)__pyx_v_X));
   __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_min_points); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_min_points); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_k, __pyx_t_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -3616,7 +3616,7 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_balltree_pdist_mu
   __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_metric, __pyx_v_metric) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_7 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_p); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_p); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_p, __pyx_t_7) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -3709,9 +3709,9 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_balltree_pdist_mu
  *         for j in range(i + 1, dim):
  *             if core_distances[i] > core_distances[j]:
  */
-  __pyx_t_3 = __pyx_v_dim;
-  for (__pyx_t_1 = 0; __pyx_t_1 < __pyx_t_3; __pyx_t_1+=1) {
-    __pyx_v_i = __pyx_t_1;
+  __pyx_t_1 = __pyx_v_dim;
+  for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_1; __pyx_t_15+=1) {
+    __pyx_v_i = __pyx_t_15;
 
     /* "hdbscan/_hdbscan_reachability.pyx":165
  *     result_pos = 0
@@ -3720,9 +3720,9 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_balltree_pdist_mu
  *             if core_distances[i] > core_distances[j]:
  *                 if core_distances[i] > dists[result_pos]:
  */
-    __pyx_t_2 = __pyx_v_dim;
-    for (__pyx_t_15 = (__pyx_v_i + 1); __pyx_t_15 < __pyx_t_2; __pyx_t_15+=1) {
-      __pyx_v_j = __pyx_t_15;
+    __pyx_t_16 = __pyx_v_dim;
+    for (__pyx_t_3 = (__pyx_v_i + 1); __pyx_t_3 < __pyx_t_16; __pyx_t_3+=1) {
+      __pyx_v_j = __pyx_t_3;
 
       /* "hdbscan/_hdbscan_reachability.pyx":166
  *     for i in range(dim):
@@ -3731,11 +3731,11 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_balltree_pdist_mu
  *                 if core_distances[i] > dists[result_pos]:
  *                     dists[result_pos] = core_distances[i]
  */
-      __pyx_t_16 = __pyx_v_i;
-      if (__pyx_t_16 < 0) __pyx_t_16 += __pyx_pybuffernd_core_distances.diminfo[0].shape;
-      __pyx_t_17 = __pyx_v_j;
+      __pyx_t_17 = __pyx_v_i;
       if (__pyx_t_17 < 0) __pyx_t_17 += __pyx_pybuffernd_core_distances.diminfo[0].shape;
-      __pyx_t_14 = (((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_core_distances.rcbuffer->pybuffer.buf, __pyx_t_16, __pyx_pybuffernd_core_distances.diminfo[0].strides)) > (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_core_distances.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_core_distances.diminfo[0].strides))) != 0);
+      __pyx_t_2 = __pyx_v_j;
+      if (__pyx_t_2 < 0) __pyx_t_2 += __pyx_pybuffernd_core_distances.diminfo[0].shape;
+      __pyx_t_14 = (((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_core_distances.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_core_distances.diminfo[0].strides)) > (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_core_distances.rcbuffer->pybuffer.buf, __pyx_t_2, __pyx_pybuffernd_core_distances.diminfo[0].strides))) != 0);
       if (__pyx_t_14) {
 
         /* "hdbscan/_hdbscan_reachability.pyx":167
@@ -3828,7 +3828,7 @@ static PyArrayObject *__pyx_f_7hdbscan_21_hdbscan_reachability_balltree_pdist_mu
  *     return dists
  * 
  * cpdef np.ndarray[np.double_t, ndim=1] balltree_pdist_mutual_reachability(np.ndarray X, object metric,             # <<<<<<<<<<<<<<
- *                             long long p=2, long long min_points=5, alpha=1.0):
+ *                             np.intp_t p=2, np.intp_t min_points=5, alpha=1.0):
  * 
  */
 
@@ -3863,8 +3863,8 @@ static PyObject *__pyx_pw_7hdbscan_21_hdbscan_reachability_9balltree_pdist_mutua
 static PyObject *__pyx_pw_7hdbscan_21_hdbscan_reachability_9balltree_pdist_mutual_reachability(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_X = 0;
   PyObject *__pyx_v_metric = 0;
-  PY_LONG_LONG __pyx_v_p;
-  PY_LONG_LONG __pyx_v_min_points;
+  __pyx_t_5numpy_intp_t __pyx_v_p;
+  __pyx_t_5numpy_intp_t __pyx_v_min_points;
   PyObject *__pyx_v_alpha = 0;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -3931,14 +3931,14 @@ static PyObject *__pyx_pw_7hdbscan_21_hdbscan_reachability_9balltree_pdist_mutua
     __pyx_v_X = ((PyArrayObject *)values[0]);
     __pyx_v_metric = values[1];
     if (values[2]) {
-      __pyx_v_p = __Pyx_PyInt_As_PY_LONG_LONG(values[2]); if (unlikely((__pyx_v_p == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      __pyx_v_p = __Pyx_PyInt_As_Py_intptr_t(values[2]); if (unlikely((__pyx_v_p == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
-      __pyx_v_p = ((PY_LONG_LONG)2);
+      __pyx_v_p = ((__pyx_t_5numpy_intp_t)2);
     }
     if (values[3]) {
-      __pyx_v_min_points = __Pyx_PyInt_As_PY_LONG_LONG(values[3]); if (unlikely((__pyx_v_min_points == (PY_LONG_LONG)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      __pyx_v_min_points = __Pyx_PyInt_As_Py_intptr_t(values[3]); if (unlikely((__pyx_v_min_points == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
-      __pyx_v_min_points = ((PY_LONG_LONG)5);
+      __pyx_v_min_points = ((__pyx_t_5numpy_intp_t)5);
     }
     __pyx_v_alpha = values[4];
   }
@@ -3962,7 +3962,7 @@ static PyObject *__pyx_pw_7hdbscan_21_hdbscan_reachability_9balltree_pdist_mutua
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_8balltree_pdist_mutual_reachability(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_X, PyObject *__pyx_v_metric, PY_LONG_LONG __pyx_v_p, PY_LONG_LONG __pyx_v_min_points, PyObject *__pyx_v_alpha) {
+static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_8balltree_pdist_mutual_reachability(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_X, PyObject *__pyx_v_metric, __pyx_t_5numpy_intp_t __pyx_v_p, __pyx_t_5numpy_intp_t __pyx_v_min_points, PyObject *__pyx_v_alpha) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8160,19 +8160,19 @@ bad:
  #endif
 #endif
 
-static CYTHON_INLINE PY_LONG_LONG __Pyx_PyInt_As_PY_LONG_LONG(PyObject *x) {
-    const PY_LONG_LONG neg_one = (PY_LONG_LONG) -1, const_zero = 0;
+static CYTHON_INLINE Py_intptr_t __Pyx_PyInt_As_Py_intptr_t(PyObject *x) {
+    const Py_intptr_t neg_one = (Py_intptr_t) -1, const_zero = 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
     if (likely(PyInt_Check(x))) {
-        if (sizeof(PY_LONG_LONG) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(PY_LONG_LONG, long, PyInt_AS_LONG(x))
+        if (sizeof(Py_intptr_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(Py_intptr_t, long, PyInt_AS_LONG(x))
         } else {
             long val = PyInt_AS_LONG(x);
             if (is_unsigned && unlikely(val < 0)) {
                 goto raise_neg_overflow;
             }
-            return (PY_LONG_LONG) val;
+            return (Py_intptr_t) val;
         }
     } else
 #endif
@@ -8182,7 +8182,7 @@ static CYTHON_INLINE PY_LONG_LONG __Pyx_PyInt_As_PY_LONG_LONG(PyObject *x) {
  #if CYTHON_USE_PYLONG_INTERNALS
             switch (Py_SIZE(x)) {
                 case  0: return 0;
-                case  1: __PYX_VERIFY_RETURN_INT(PY_LONG_LONG, digit, ((PyLongObject*)x)->ob_digit[0]);
+                case  1: __PYX_VERIFY_RETURN_INT(Py_intptr_t, digit, ((PyLongObject*)x)->ob_digit[0]);
             }
  #endif
 #endif
@@ -8194,30 +8194,30 @@ static CYTHON_INLINE PY_LONG_LONG __Pyx_PyInt_As_PY_LONG_LONG(PyObject *x) {
             {
                 int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
                 if (unlikely(result < 0))
-                    return (PY_LONG_LONG) -1;
+                    return (Py_intptr_t) -1;
                 if (unlikely(result == 1))
                     goto raise_neg_overflow;
             }
 #endif
-            if (sizeof(PY_LONG_LONG) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT(PY_LONG_LONG, unsigned long, PyLong_AsUnsignedLong(x))
-            } else if (sizeof(PY_LONG_LONG) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT(PY_LONG_LONG, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+            if (sizeof(Py_intptr_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT(Py_intptr_t, unsigned long, PyLong_AsUnsignedLong(x))
+            } else if (sizeof(Py_intptr_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT(Py_intptr_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
             }
         } else {
 #if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
  #if CYTHON_USE_PYLONG_INTERNALS
             switch (Py_SIZE(x)) {
                 case  0: return 0;
-                case  1: __PYX_VERIFY_RETURN_INT(PY_LONG_LONG,  digit, +(((PyLongObject*)x)->ob_digit[0]));
-                case -1: __PYX_VERIFY_RETURN_INT(PY_LONG_LONG, sdigit, -(sdigit) ((PyLongObject*)x)->ob_digit[0]);
+                case  1: __PYX_VERIFY_RETURN_INT(Py_intptr_t,  digit, +(((PyLongObject*)x)->ob_digit[0]));
+                case -1: __PYX_VERIFY_RETURN_INT(Py_intptr_t, sdigit, -(sdigit) ((PyLongObject*)x)->ob_digit[0]);
             }
  #endif
 #endif
-            if (sizeof(PY_LONG_LONG) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT(PY_LONG_LONG, long, PyLong_AsLong(x))
-            } else if (sizeof(PY_LONG_LONG) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT(PY_LONG_LONG, PY_LONG_LONG, PyLong_AsLongLong(x))
+            if (sizeof(Py_intptr_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT(Py_intptr_t, long, PyLong_AsLong(x))
+            } else if (sizeof(Py_intptr_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT(Py_intptr_t, PY_LONG_LONG, PyLong_AsLongLong(x))
             }
         }
         {
@@ -8225,7 +8225,7 @@ static CYTHON_INLINE PY_LONG_LONG __Pyx_PyInt_As_PY_LONG_LONG(PyObject *x) {
             PyErr_SetString(PyExc_RuntimeError,
                             "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
 #else
-            PY_LONG_LONG val;
+            Py_intptr_t val;
             PyObject *v = __Pyx_PyNumber_Int(x);
  #if PY_MAJOR_VERSION < 3
             if (likely(v) && !PyLong_Check(v)) {
@@ -8245,24 +8245,24 @@ static CYTHON_INLINE PY_LONG_LONG __Pyx_PyInt_As_PY_LONG_LONG(PyObject *x) {
                     return val;
             }
 #endif
-            return (PY_LONG_LONG) -1;
+            return (Py_intptr_t) -1;
         }
     } else {
-        PY_LONG_LONG val;
+        Py_intptr_t val;
         PyObject *tmp = __Pyx_PyNumber_Int(x);
-        if (!tmp) return (PY_LONG_LONG) -1;
-        val = __Pyx_PyInt_As_PY_LONG_LONG(tmp);
+        if (!tmp) return (Py_intptr_t) -1;
+        val = __Pyx_PyInt_As_Py_intptr_t(tmp);
         Py_DECREF(tmp);
         return val;
     }
 raise_overflow:
     PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to PY_LONG_LONG");
-    return (PY_LONG_LONG) -1;
+        "value too large to convert to Py_intptr_t");
+    return (Py_intptr_t) -1;
 raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to PY_LONG_LONG");
-    return (PY_LONG_LONG) -1;
+        "can't convert negative value to Py_intptr_t");
+    return (Py_intptr_t) -1;
 }
 
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
@@ -8291,30 +8291,135 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     }
 }
 
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_PY_LONG_LONG(PY_LONG_LONG value) {
-    const PY_LONG_LONG neg_one = (PY_LONG_LONG) -1, const_zero = 0;
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_Py_intptr_t(Py_intptr_t value) {
+    const Py_intptr_t neg_one = (Py_intptr_t) -1, const_zero = 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(PY_LONG_LONG) < sizeof(long)) {
+        if (sizeof(Py_intptr_t) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(PY_LONG_LONG) <= sizeof(unsigned long)) {
+        } else if (sizeof(Py_intptr_t) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
-        } else if (sizeof(PY_LONG_LONG) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(Py_intptr_t) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
         }
     } else {
-        if (sizeof(PY_LONG_LONG) <= sizeof(long)) {
+        if (sizeof(Py_intptr_t) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(PY_LONG_LONG) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(Py_intptr_t) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
         }
     }
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(PY_LONG_LONG),
+        return _PyLong_FromByteArray(bytes, sizeof(Py_intptr_t),
                                      little, !is_unsigned);
     }
+}
+
+static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
+    const long neg_one = (long) -1, const_zero = 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(long) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(long, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (long) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
+ #if CYTHON_USE_PYLONG_INTERNALS
+            switch (Py_SIZE(x)) {
+                case  0: return 0;
+                case  1: __PYX_VERIFY_RETURN_INT(long, digit, ((PyLongObject*)x)->ob_digit[0]);
+            }
+ #endif
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (long) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(long) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT(long, unsigned long, PyLong_AsUnsignedLong(x))
+            } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT(long, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+            }
+        } else {
+#if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
+ #if CYTHON_USE_PYLONG_INTERNALS
+            switch (Py_SIZE(x)) {
+                case  0: return 0;
+                case  1: __PYX_VERIFY_RETURN_INT(long,  digit, +(((PyLongObject*)x)->ob_digit[0]));
+                case -1: __PYX_VERIFY_RETURN_INT(long, sdigit, -(sdigit) ((PyLongObject*)x)->ob_digit[0]);
+            }
+ #endif
+#endif
+            if (sizeof(long) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT(long, long, PyLong_AsLong(x))
+            } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT(long, PY_LONG_LONG, PyLong_AsLongLong(x))
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            long val;
+            PyObject *v = __Pyx_PyNumber_Int(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (long) -1;
+        }
+    } else {
+        long val;
+        PyObject *tmp = __Pyx_PyNumber_Int(x);
+        if (!tmp) return (long) -1;
+        val = __Pyx_PyInt_As_long(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to long");
+    return (long) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to long");
+    return (long) -1;
 }
 
 #if CYTHON_CCOMPLEX
@@ -8686,111 +8791,6 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to int");
     return (int) -1;
-}
-
-static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
-    const long neg_one = (long) -1, const_zero = 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(long) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(long, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (long) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
- #if CYTHON_USE_PYLONG_INTERNALS
-            switch (Py_SIZE(x)) {
-                case  0: return 0;
-                case  1: __PYX_VERIFY_RETURN_INT(long, digit, ((PyLongObject*)x)->ob_digit[0]);
-            }
- #endif
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (long) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(long) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT(long, unsigned long, PyLong_AsUnsignedLong(x))
-            } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT(long, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-            }
-        } else {
-#if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
- #if CYTHON_USE_PYLONG_INTERNALS
-            switch (Py_SIZE(x)) {
-                case  0: return 0;
-                case  1: __PYX_VERIFY_RETURN_INT(long,  digit, +(((PyLongObject*)x)->ob_digit[0]));
-                case -1: __PYX_VERIFY_RETURN_INT(long, sdigit, -(sdigit) ((PyLongObject*)x)->ob_digit[0]);
-            }
- #endif
-#endif
-            if (sizeof(long) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT(long, long, PyLong_AsLong(x))
-            } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT(long, PY_LONG_LONG, PyLong_AsLongLong(x))
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            long val;
-            PyObject *v = __Pyx_PyNumber_Int(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (long) -1;
-        }
-    } else {
-        long val;
-        PyObject *tmp = __Pyx_PyNumber_Int(x);
-        if (!tmp) return (long) -1;
-        val = __Pyx_PyInt_As_long(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to long");
-    return (long) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to long");
-    return (long) -1;
 }
 
 static int __Pyx_check_binary_version(void) {
