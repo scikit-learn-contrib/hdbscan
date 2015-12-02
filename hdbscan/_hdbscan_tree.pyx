@@ -401,6 +401,22 @@ cdef get_probabilities(np.ndarray tree, dict cluster_map, np.ndarray labels):
 
     return result
 
+cpdef outlier_scores(tree):
+
+    result = np.zeros(labels.shape[0])
+    deaths = max_lambdas(tree)
+    root_cluster = tree['parent'].min()
+
+    for row in tree:
+        point = row['child']
+        if point >= root_cluster:
+            continue
+
+        cluster = row['parent']
+        lambda_max = deaths[cluster]
+        result[point] = (lambda_max - row['lambda']) / lambda_max
+
+    return result
 
 cpdef tuple get_clusters(np.ndarray tree, dict stability):
     """
