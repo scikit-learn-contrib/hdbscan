@@ -401,11 +401,31 @@ cdef get_probabilities(np.ndarray tree, dict cluster_map, np.ndarray labels):
 
     return result
 
-cpdef outlier_scores(tree):
+cpdef np.ndarray[np.double_t, ndim=1] outlier_scores(np.ndarray tree):
+
+    cdef np.ndarray[np.double_t, ndim=1] result
+    cdef np.ndarray[np.double_t, ndim=1] deaths
+    cdef np.intp_t root_cluster
+    cdef np.intp_t point
+    cdef np.intp_t parent
+    cdef np.intp_t cluster
+    cdef np.double_t lambda_max
 
     result = np.zeros(labels.shape[0])
     deaths = max_lambdas(tree)
     root_cluster = tree['parent'].min()
+
+    topological_sort_order = np.argsort(tree['parent'])
+    topologically_sorted_tree = tree[topological_sort_order]
+
+    for row in topologically_sorted_tree:
+        cluster = row['child']
+        if cluster < root_cluster:
+            break
+
+        parent = row['parent']
+        if deaths[cluster] > deaths[parent]:
+            deaths[parent] = deaths[cluster]
 
     for row in tree:
         point = row['child']
