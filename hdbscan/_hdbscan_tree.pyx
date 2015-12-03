@@ -1,4 +1,4 @@
-#cython: boundscheck=False, nonecheck=False, initializedcheck=False
+#cython: boundscheck=False, nonecheck=False, initializedcheck=False, profile=True
 # Tree handling (condensing, finding stable clusters) for hdbscan
 # Authors: Leland McInnes
 # License: 3-clause BSD
@@ -7,6 +7,12 @@ import numpy as np
 cimport numpy as np
 
 cdef np.double_t INFTY = np.inf
+
+cdef struct TreeEdge_t:
+    np.intp_t parent
+    np.intp_t child
+    np.float_t lambda_val
+    np.intp_t child_size
 
 cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy, np.intp_t bfs_root):
 
@@ -126,7 +132,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     return np.array(result_list, dtype=[
                                         ('parent', np.intp),
                                         ('child', np.intp),
-                                        ('lambda', float),
+                                        ('lambda_val', float),
                                         ('child_size', np.intp)
                                        ])
 
@@ -156,15 +162,15 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
     cdef np.intp_t smallest_cluster = condensed_tree['parent'].min()
     cdef np.intp_t num_clusters = condensed_tree['parent'].max() - smallest_cluster + 1
 
-    sorted_child_data = np.sort(condensed_tree[['child', 'lambda']], axis=0)
+    sorted_child_data = np.sort(condensed_tree[['child', 'lambda_val']], axis=0)
     births_arr = np.nan * np.ones(largest_child + 1, dtype=np.double)
     births = (<np.double_t *> births_arr.data)
     sorted_children = sorted_child_data['child']
-    sorted_lambdas = sorted_child_data['lambda']
+    sorted_lambdas = sorted_child_data['lambda_val']
 
     parents = condensed_tree['parent']
     sizes = condensed_tree['child_size']
-    lambdas = condensed_tree['lambda']
+    lambdas = condensed_tree['lambda_val']
 
     current_child = -1
     min_lambda = 0
@@ -226,11 +232,11 @@ cdef max_lambdas(np.ndarray tree):
 
     cdef np.intp_t largest_parent = tree['parent'].max()
 
-    sorted_parent_data = np.sort(tree[['parent', 'lambda']], axis=0)
+    sorted_parent_data = np.sort(tree[['parent', 'lambda_val']], axis=0)
     deaths_arr = np.zeros(largest_parent + 1, dtype=np.double)
     deaths = (<np.double_t *> deaths_arr.data)
     sorted_parents = sorted_parent_data['parent']
-    sorted_lambdas = sorted_parent_data['lambda']
+    sorted_lambdas = sorted_parent_data['lambda_val']
 
     current_parent = -1
     max_lambda = 0
@@ -345,20 +351,30 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(np.ndarray tree, set clusters, d
 
     cdef np.intp_t root_cluster
     cdef np.ndarray[np.intp_t, ndim=1] result_arr
+    cdef np.ndarray[np.intp_t, ndim=1] parent_array
+    cdef np.ndarray[np.intp_t, ndim=1] child_array
     cdef np.intp_t *result
     cdef TreeUnionFind union_find
+    cdef np.intp_t parent
+    cdef np.intp_t child
     cdef np.intp_t n
     cdef np.intp_t cluster
 
-    root_cluster = tree['parent'].min()
+    child_array = tree['child']
+    parent_array = tree['parent']
+
+    root_cluster = parent_array.min()
     result_arr = np.empty(root_cluster, dtype=np.intp)
     result = (<np.intp_t *> result_arr.data)
 
-    union_find = TreeUnionFind(tree['parent'].max() + 1)
 
-    for row in tree:
-        if row['child'] not in clusters:
-            union_find.union_(row['parent'], row['child'])
+    union_find = TreeUnionFind(parent_array.max() + 1)
+
+    for n in range(tree.shape[0]):
+        child = child_array[n]
+        parent = parent_array[n]
+        if child not in clusters:
+            union_find.union_(parent, child)
 
     for n in range(root_cluster):
         cluster = union_find.find(n)
@@ -373,19 +389,27 @@ cdef get_probabilities(np.ndarray tree, dict cluster_map, np.ndarray labels):
 
     cdef np.ndarray[np.double_t, ndim=1] result
     cdef np.ndarray[np.double_t, ndim=1] deaths
+    cdef np.ndarray[np.double_t, ndim=1] lambda_array
+    cdef np.ndarray[np.intp_t, ndim=1] child_array
+    cdef np.ndarray[np.intp_t, ndim=1] parent_array
     cdef np.intp_t root_cluster
+    cdef np.intp_t n
     cdef np.intp_t point
     cdef np.intp_t cluster_num
     cdef np.intp_t cluster
     cdef np.double_t max_lambda
     cdef np.double_t lambda_
 
+    child_array = tree['child']
+    parent_array = tree['parent']
+    lambda_array = tree['lambda_val']
+
     result = np.zeros(labels.shape[0])
     deaths = max_lambdas(tree)
-    root_cluster = tree['parent'].min()
+    root_cluster = parent_array.min()
 
-    for row in tree:
-        point = row['child']
+    for n in range(tree.shape[0]):
+        point = child_array[n]
         if point >= root_cluster:
             continue
 
@@ -396,7 +420,7 @@ cdef get_probabilities(np.ndarray tree, dict cluster_map, np.ndarray labels):
 
         cluster = cluster_map[cluster_num]
         max_lambda = deaths[cluster]
-        lambda_ = min(row['lambda'], max_lambda)
+        lambda_ = min(lambda_array[n], max_lambda)
         result[point] = lambda_ / max_lambda
 
     return result
@@ -405,36 +429,43 @@ cpdef np.ndarray[np.double_t, ndim=1] outlier_scores(np.ndarray tree):
 
     cdef np.ndarray[np.double_t, ndim=1] result
     cdef np.ndarray[np.double_t, ndim=1] deaths
+    cdef np.ndarray[np.double_t, ndim=1] lambda_array
+    cdef np.ndarray[np.intp_t, ndim=1] child_array
+    cdef np.ndarray[np.intp_t, ndim=1] parent_array
     cdef np.intp_t root_cluster
     cdef np.intp_t point
     cdef np.intp_t parent
     cdef np.intp_t cluster
     cdef np.double_t lambda_max
 
+    child_array = tree['child']
+    parent_array = tree['parent']
+    lambda_array = tree['lambda_val']
+
     deaths = max_lambdas(tree)
-    root_cluster = tree['parent'].min()
+    root_cluster = parent_array.min()
     result = np.zeros(root_cluster, dtype=np.double)
 
-    topological_sort_order = np.argsort(tree['parent'])
-    topologically_sorted_tree = tree[topological_sort_order]
+    topological_sort_order = np.argsort(parent_array)
+    #topologically_sorted_tree = tree[topological_sort_order]
 
-    for row in topologically_sorted_tree:
-        cluster = row['child']
+    for n in topological_sort_order:
+        cluster = child_array[n]
         if cluster < root_cluster:
             break
 
-        parent = row['parent']
+        parent = parent_array[n]
         if deaths[cluster] > deaths[parent]:
             deaths[parent] = deaths[cluster]
 
-    for row in tree:
-        point = row['child']
+    for n in range(tree.shape[0]):
+        point = child_array[n]
         if point >= root_cluster:
             continue
 
-        cluster = row['parent']
+        cluster = parent_array[n]
         lambda_max = deaths[cluster]
-        result[point] = (lambda_max - row['lambda']) / lambda_max
+        result[point] = (lambda_max - lambda_array[n]) / lambda_max
 
     return result
 
