@@ -8,12 +8,6 @@ cimport numpy as np
 
 cdef np.double_t INFTY = np.inf
 
-cdef struct TreeEdge_t:
-    np.intp_t parent
-    np.intp_t child
-    np.float_t lambda_val
-    np.intp_t child_size
-
 cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy, np.intp_t bfs_root):
 
     """
