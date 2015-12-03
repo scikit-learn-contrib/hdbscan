@@ -13,7 +13,7 @@ cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy, np.intp_
     """
     Perform a breadth first search on a tree in scipy hclust format.
     """
-    
+
     cdef list to_process
     cdef np.intp_t max_node
     cdef np.intp_t num_points
@@ -28,13 +28,13 @@ cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy, np.intp_
 
     while to_process:
         result.extend(to_process)
-        to_process = [x - num_points for x in 
+        to_process = [x - num_points for x in
                           to_process if x >= num_points]
         if to_process:
             to_process = hierarchy[to_process,:2].flatten().astype(np.intp).tolist()
 
     return result
-        
+
 cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                           np.intp_t min_cluster_size=10):
 
@@ -55,22 +55,22 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     cdef double lambda_value
     cdef np.intp_t left_count
     cdef np.intp_t right_count
-    
+
     root = 2 * hierarchy.shape[0]
     num_points = root // 2 + 1
     next_label = num_points + 1
-    
+
     node_list = bfs_from_hierarchy(hierarchy, root)
-    
+
     relabel = np.empty(len(node_list), dtype=np.intp)
     relabel[root] = num_points
     result_list = []
     ignore = np.zeros(len(node_list), dtype=np.int)
-    
+
     for node in node_list:
         if ignore[node] or node < num_points:
             continue
-            
+
         children = hierarchy[node - num_points]
         left = <np.intp_t> children[0]
         right = <np.intp_t> children[1]
@@ -88,41 +88,41 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
             right_count = <np.intp_t> hierarchy[right - num_points][3]
         else:
             right_count = 1
-        
+
         if left_count >= min_cluster_size and right_count >= min_cluster_size:
             relabel[left] = next_label
             next_label += 1
             result_list.append((relabel[node], relabel[left], lambda_value, left_count))
-            
+
             relabel[right] = next_label
             next_label += 1
             result_list.append((relabel[node], relabel[right], lambda_value, right_count))
-            
+
         elif left_count < min_cluster_size and right_count < min_cluster_size:
             for sub_node in bfs_from_hierarchy(hierarchy, left):
                 if sub_node < num_points:
                     result_list.append((relabel[node], sub_node, lambda_value, 1))
                 ignore[sub_node] = True
-                
+
             for sub_node in bfs_from_hierarchy(hierarchy, right):
                 if sub_node < num_points:
                     result_list.append((relabel[node], sub_node, lambda_value, 1))
                 ignore[sub_node] = True
-                
+
         elif left_count < min_cluster_size:
             relabel[right] = relabel[node]
             for sub_node in bfs_from_hierarchy(hierarchy, left):
                 if sub_node < num_points:
                     result_list.append((relabel[node], sub_node, lambda_value, 1))
                 ignore[sub_node] = True
-                
+
         else:
             relabel[left] = relabel[node]
             for sub_node in bfs_from_hierarchy(hierarchy, right):
                 if sub_node < num_points:
                     result_list.append((relabel[node], sub_node, lambda_value, 1))
                 ignore[sub_node] = True
-                
+
     return np.array(result_list, dtype=[
                                         ('parent', np.intp),
                                         ('child', np.intp),
@@ -203,7 +203,7 @@ cdef list bfs_from_cluster_tree(np.ndarray tree, np.intp_t bfs_root):
 
     result = []
     to_process = np.array([bfs_root], dtype=np.intp)
-    
+
     while to_process.shape[0] > 0:
         result.extend(to_process.tolist())
         to_process = tree['child'][np.in1d(tree['parent'], to_process)]
