@@ -108,6 +108,12 @@ Based on the paper:
 Installing
 ----------
 
+Fastest install, presuming you have anaconda:
+
+.. code:: bash
+
+    conda install -c lmcinnes hdbscan
+
 Fast install, presuming you have sklearn and all its requirements installed:
 
 .. code:: bash
@@ -120,7 +126,7 @@ the dependencies manually using anaconda followed by pulling hdbscan from pip:
 .. code:: bash
 
     conda install cython
-    conda install sklearn
+    conda install scikit-learn
     pip install hdbscan
 
 For a manual install get this package:
@@ -142,7 +148,7 @@ or
 
 .. code:: bash
 
-    conda install sklearn cython
+    conda install scikit-learn cython
 
 Install the package
 
