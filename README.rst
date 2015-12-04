@@ -16,12 +16,6 @@ HDBSCAN is ideal for exploratory data analysis; it's a fast and robust
 algorithm that you can trust to return meaningful clusters (if there
 are any).
 
-**WARNING**: Numpy version 1.10.1 introduced `performance regressions in structured
-array access <https://github.com/numpy/numpy/issues/6467>`_ ; this does have
-a notable performance impact on hdbscan. Consider upgrading to a newer version,
-or downgrading in the meantime if performance counts. I will be working to
-ensure hdbscan performance regardless of this issue in coming releases.
-
 Based on the paper:
     R. Campello, D. Moulavi, and J. Sander, *Density-Based Clustering Based on
     Hierarchical Density Estimates*
