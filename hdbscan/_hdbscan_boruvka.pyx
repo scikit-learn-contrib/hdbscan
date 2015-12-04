@@ -122,6 +122,9 @@ cdef inline np.double_t kdtree_min_dist_dual(dist_metrics.DistanceMetric metric,
 
     return metric._rdist_to_dist(rdist)
 
+# As above, but this time we use the rdist as per the kdtree
+# implementation. This allows us to release the GIL over
+# larger sections of code
 cdef inline np.double_t kdtree_min_rdist_dual(dist_metrics.DistanceMetric metric,
                                               np.intp_t node1,
                                               np.intp_t node2,
@@ -154,8 +157,24 @@ cdef inline np.double_t kdtree_min_rdist_dual(dist_metrics.DistanceMetric metric
 
     return rdist
 
-
 cdef class BoruvkaUnionFind (object):
+    """Efficient union find implementation.
+
+    Parameters
+    ----------
+
+    size : int
+        The total size of the set of objects to
+        track via the union find structure.
+
+    Attributes
+    ----------
+
+    is_component : array of bool; shape (size, 1)
+        Array specifying whether each element of the
+        set is the root node, or identifier for
+        a component.
+    """
 
     cdef np.ndarray _data_arr
     cdef np.intp_t[:,::1] _data
@@ -168,6 +187,7 @@ cdef class BoruvkaUnionFind (object):
         self.is_component = np.ones(size, dtype=np.bool)
 
     cdef int union_(self, np.intp_t x, np.intp_t y) except -1:
+        """Union together elements x and y"""
         cdef np.intp_t x_root = self.find(x)
         cdef np.intp_t y_root = self.find(y)
 
@@ -182,12 +202,14 @@ cdef class BoruvkaUnionFind (object):
         return 0
 
     cdef np.intp_t find(self, np.intp_t x) except -1:
+        """Find the root or identifier for the component that x is in"""
         if self._data[x, 0] != x:
             self._data[x, 0] = self.find(self._data[x, 0])
             self.is_component[x] = False
         return self._data[x, 0]
 
     cdef np.ndarray[np.intp_t, ndim=1] components(self):
+        """Return an array of all component roots/identifiers"""
         return self.is_component.nonzero()[0]
 
 def _core_dist_query(tree, data, min_samples):
@@ -196,6 +218,32 @@ def _core_dist_query(tree, data, min_samples):
 cdef class KDTreeBoruvkaAlgorithm (object):
     """A Dual Tree Boruvka Algorithm implemented for the sklearn
     KDTree space tree implementation.
+
+    Parameters
+    ----------
+
+    tree : KDTree
+        The kd-tree to run Dual Tree Boruvka over.
+
+    min_samples : int (default 5)
+        The min_samples parameter of HDBSCAN used to
+        determine core distances.
+
+    metric : string (default 'euclidean')
+        The metric used to compute distances for the tree
+
+    leaf_size : int (default 20)
+        The Boruvka algorithm benefits from a smaller leaf size than
+        standard kd-tree nearest neighbor searches. The tree passed in
+        is used for a kNN search for core distance. A second tree is
+        constructed with a smaller leaf size for Boruvka; this is that
+        leaf size.
+
+    alpha : float (default 1.0)
+        The alpha distance scaling parameter as per Robust Single Linkage.
+
+    **kwargs :
+        Keyword args passed to the metric.
     """
 
     cdef object tree
@@ -295,8 +343,8 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         self.core_distance_ptr = <np.double_t *> &self.core_distance[0]
         self.bounds_ptr = <np.double_t *> &self.bounds[0]
 
-    @cython.profile(True)
     cdef _compute_bounds(self):
+        """Initialize core distances"""
 
         cdef np.intp_t n
 
@@ -329,6 +377,8 @@ cdef class KDTreeBoruvkaAlgorithm (object):
             self.bounds_arr[n] = <np.double_t> DBL_MAX
 
     cdef _initialize_components(self):
+        """Initialize components of the min spanning tree (eventually there
+        is only one component; initially each point is its own component)"""
 
         cdef np.intp_t n
 
@@ -342,6 +392,10 @@ cdef class KDTreeBoruvkaAlgorithm (object):
             self.component_of_node[n] = -(n+1)
 
     cdef int update_components(self) except -1:
+        """Having found the nearest neighbor not in the same component for
+        each current component (via tree traversal), run through adding
+        edges to the min spanning tree and recomputing components via
+        union find."""
 
         cdef np.intp_t source
         cdef np.intp_t sink
@@ -412,6 +466,10 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         return self.components.shape[0]
 
     cdef int dual_tree_traversal(self, np.intp_t node1, np.intp_t node2) nogil except -1:
+        """Perform a dual tree traversal, pruning wherever possible, to find the nearest
+        neighbor not in the same component for each component. This is akin to a
+        standard dual tree NN search, but we also prune whenever all points in query
+        and reference nodes are in the same component."""
 
         cdef np.intp_t[::1] point_indices1, point_indices2
 
@@ -452,9 +510,13 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         cdef np.double_t left_dist
         cdef np.double_t right_dist
 
+        # Compute the distance between the query and reference nodes
         node_dist = kdtree_min_rdist_dual(self.dist,
                                           node1, node2, self.node_bounds, self.num_features)
 
+        # If the distance between the nodes is less than the current bound for the query
+        # and the nodes are not in the same component continue; otherwise we get to prune
+        # this branch and return early.
         if node_dist < self.bounds_ptr[node1]:
             if self.component_of_node_ptr[node1] == self.component_of_node_ptr[node2] and \
                     self.component_of_node_ptr[node1] >= 0:
@@ -463,6 +525,32 @@ cdef class KDTreeBoruvkaAlgorithm (object):
             return 0
 
 
+        # Case 1: Both nodes are leaves
+        #       for each pair of points in node1 x node2 we need
+        #       to compute the distance and see if it better than
+        #       the current nearest neighbor for the component of
+        #       the point in the query node.
+        #
+        #       We get to take some shortcuts:
+        #           - if the core distance for a point is larger than
+        #             the distance to the nearst neighbor of the
+        #             component of the point ... then we can't get
+        #             a better mutual reachability distance and we
+        #             can skip computing anything for that point
+        #           - if the points are in the same component we
+        #             don't have to compute the distance.
+        #
+        #       We also have some catches:
+        #           - we need to compute mutual reachability distance
+        #             not just the ordinary distance; this involves
+        #             fiddling with core distances.
+        #           - We need to scale distances according to alpha,
+        #             but don't want to lose performance in the case
+        #             that alpha is 1.0.
+        #
+        #       Finally we can compute new bounds for the query node
+        #       based on the distances found here, so do that and
+        #       propagate the results up the tree.
         if node1_info.is_leaf and node2_info.is_leaf:
 
             new_upper_bound = 0.0
@@ -506,6 +594,9 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                 new_upper_bound = max(new_upper_bound, self.candidate_distance_ptr[component1])
                 new_lower_bound = min(new_lower_bound, self.candidate_distance_ptr[component1])
 
+            # Compute new bounds for the query node, and
+            # then propagate the results of that computation
+            # up the tree.
             new_bound = min(new_upper_bound, new_lower_bound + 2 * node1_info.radius)
             if new_bound < self.bounds_ptr[node1]:
                 self.bounds_ptr[node1] = new_bound
@@ -536,7 +627,13 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                     else:
                         break
 
-
+        # Case 2a: The query node is a leaf, or is smaller than
+        #          the reference node.
+        #
+        #       We descend in the reference tree. We first
+        #       compute distances between nodes to determine
+        #       whether we should prioritise the left or
+        #       right branch in the reference tree.
         elif node1_info.is_leaf or (not node2_info.is_leaf
                                     and node2_info.radius > node1_info.radius):
 
@@ -559,6 +656,14 @@ cdef class KDTreeBoruvkaAlgorithm (object):
             else:
                 self.dual_tree_traversal(node1, right)
                 self.dual_tree_traversal(node1, left)
+
+        # Case 2b: The reference node is a leaf, or is smaller than
+        #          the query node.
+        #
+        #       We descend in the query tree. We first
+        #       compute distances between nodes to determine
+        #       whether we should prioritise the left or
+        #       right branch in the query tree.
         else:
             left = 2 * node1 + 1
             right = 2 * node1 + 2
@@ -584,6 +689,8 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         return 0
 
     def spanning_tree(self):
+        """Compute the minimum spanning tree of the data held by
+        the tree passed in at construction"""
 
         #cdef np.intp_t num_components
         #cdef np.intp_t num_nodes
@@ -597,6 +704,35 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         return self.edges
 
 cdef class BallTreeBoruvkaAlgorithm (object):
+    """A Dual Tree Boruvka Algorithm implemented for the sklearn
+    BallTree space tree implementation.
+
+    Parameters
+    ----------
+
+    tree : BallTree
+        The ball-tree to run Dual Tree Boruvka over.
+
+    min_samples : int (default 5)
+        The min_samples parameter of HDBSCAN used to
+        determine core distances.
+
+    metric : string (default 'euclidean')
+        The metric used to compute distances for the tree
+
+    leaf_size : int (default 20)
+        The Boruvka algorithm benefits from a smaller leaf size than
+        standard kd-tree nearest neighbor searches. The tree passed in
+        is used for a kNN search for core distance. A second tree is
+        constructed with a smaller leaf size for Boruvka; this is that
+        leaf size.
+
+    alpha : float (default 1.0)
+        The alpha distance scaling parameter as per Robust Single Linkage.
+
+    **kwargs :
+        Keyword args passed to the metric.
+    """
 
     cdef object tree
     cdef object core_dist_tree
@@ -695,6 +831,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         self.bounds_ptr = <np.double_t *> &self.bounds[0]
 
     cdef _compute_bounds(self):
+        """Initialize core distances"""
 
         cdef np.intp_t n
 
@@ -724,6 +861,8 @@ cdef class BallTreeBoruvkaAlgorithm (object):
             self.bounds_arr[n] = <np.double_t> DBL_MAX
 
     cdef _initialize_components(self):
+        """Initialize components of the min spanning tree (eventually there
+        is only one component; initially each point is its own component)"""
 
         cdef np.intp_t n
 
@@ -737,6 +876,10 @@ cdef class BallTreeBoruvkaAlgorithm (object):
             self.component_of_node[n] = -(n+1)
 
     cdef update_components(self):
+        """Having found the nearest neighbor not in the same component for
+        each current component (via tree traversal), run through adding
+        edges to the min spanning tree and recomputing components via
+        union find."""
 
         cdef np.intp_t source
         cdef np.intp_t sink
@@ -807,6 +950,10 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         return self.components.shape[0]
 
     cdef int dual_tree_traversal(self, np.intp_t node1, np.intp_t node2) except -1:
+        """Perform a dual tree traversal, pruning wherever possible, to find the nearest
+        neighbor not in the same component for each component. This is akin to a
+        standard dual tree NN search, but we also prune whenever all points in query
+        and reference nodes are in the same component."""
 
         cdef np.intp_t[::1] point_indices1, point_indices2
 
@@ -850,6 +997,9 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         node_dist = balltree_min_dist_dual(node1_info.radius, node2_info.radius,
                                     node1, node2, self.centroid_distances)
 
+        # If the distance between the nodes is less than the current bound for the query
+        # and the nodes are not in the same component continue; otherwise we get to prune
+        # this branch and return early.
         if node_dist < self.bounds_ptr[node1]:
             if self.component_of_node_ptr[node1] == self.component_of_node_ptr[node2] and \
                     self.component_of_node_ptr[node1] >= 0:
@@ -858,6 +1008,32 @@ cdef class BallTreeBoruvkaAlgorithm (object):
             return 0
 
 
+        # Case 1: Both nodes are leaves
+        #       for each pair of points in node1 x node2 we need
+        #       to compute the distance and see if it better than
+        #       the current nearest neighbor for the component of
+        #       the point in the query node.
+        #
+        #       We get to take some shortcuts:
+        #           - if the core distance for a point is larger than
+        #             the distance to the nearst neighbor of the
+        #             component of the point ... then we can't get
+        #             a better mutual reachability distance and we
+        #             can skip computing anything for that point
+        #           - if the points are in the same component we
+        #             don't have to compute the distance.
+        #
+        #       We also have some catches:
+        #           - we need to compute mutual reachability distance
+        #             not just the ordinary distance; this involves
+        #             fiddling with core distances.
+        #           - We need to scale distances according to alpha,
+        #             but don't want to lose performance in the case
+        #             that alpha is 1.0.
+        #
+        #       Finally we can compute new bounds for the query node
+        #       based on the distances found here, so do that and
+        #       propagate the results up the tree.
         if node1_info.is_leaf and node2_info.is_leaf:
 
             new_bound = 0.0
@@ -900,6 +1076,9 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                 new_upper_bound = max(new_upper_bound, self.candidate_distance_ptr[component1])
                 new_lower_bound = min(new_lower_bound, self.candidate_distance_ptr[component1])
 
+            # Compute new bounds for the query node, and
+            # then propagate the results of that computation
+            # up the tree.
             new_bound = min(new_upper_bound, new_lower_bound + 2 * node1_info.radius)
             if new_bound < self.bounds_ptr[node1]:
                 self.bounds_ptr[node1] = new_bound
@@ -931,6 +1110,13 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                         break
 
 
+        # Case 2a: The query node is a leaf, or is smaller than
+        #          the reference node.
+        #
+        #       We descend in the reference tree. We first
+        #       compute distances between nodes to determine
+        #       whether we should prioritise the left or
+        #       right branch in the reference tree.
         elif node1_info.is_leaf or (not node2_info.is_leaf
                                     and node2_info.radius > node1_info.radius):
 
@@ -953,6 +1139,14 @@ cdef class BallTreeBoruvkaAlgorithm (object):
             else:
                 self.dual_tree_traversal(node1, right)
                 self.dual_tree_traversal(node1, left)
+
+        # Case 2b: The reference node is a leaf, or is smaller than
+        #          the query node.
+        #
+        #       We descend in the query tree. We first
+        #       compute distances between nodes to determine
+        #       whether we should prioritise the left or
+        #       right branch in the query tree.
         else:
             left = 2 * node1 + 1
             right = 2 * node1 + 2
@@ -978,6 +1172,8 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         return 0
 
     cpdef spanning_tree(self):
+        """Compute the minimum spanning tree of the data held by
+        the tree passed in at construction"""
 
         cdef np.intp_t num_components
         cdef np.intp_t num_nodes
