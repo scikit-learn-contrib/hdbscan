@@ -108,12 +108,6 @@ Based on the paper:
 Installing
 ----------
 
-Fastest install, presuming you have anaconda:
-
-.. code:: bash
-
-    conda install -c lmcinnes hdbscan
-
 Fast install, presuming you have sklearn and all its requirements installed:
 
 .. code:: bash
@@ -155,6 +149,8 @@ Install the package
 .. code:: bash
 
     python setup.py install
+
+Coming soon: installing via conda.
 
 ---------
 Licensing
