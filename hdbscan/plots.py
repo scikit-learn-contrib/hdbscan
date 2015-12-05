@@ -111,15 +111,15 @@ class CondensedTree(object):
         cluster_y_coords = {root: 0.0}
 
         for cluster in range(last_leaf, root - 1, -1):
-            split = self._raw_tree[['child', 'lambda']]
+            split = self._raw_tree[['child', 'lambda_val']]
             split = split[(self._raw_tree['parent'] == cluster) &
                           (self._raw_tree['child_size'] > 1)]
             if len(split['child']) > 1:
                 left_child, right_child = split['child']
                 cluster_x_coords[cluster] = np.mean([cluster_x_coords[left_child],
                                                      cluster_x_coords[right_child]])
-                cluster_y_coords[left_child] = split['lambda'][0]
-                cluster_y_coords[right_child] = split['lambda'][1]
+                cluster_y_coords[left_child] = split['lambda_val'][0]
+                cluster_y_coords[right_child] = split['lambda_val'][1]
 
         # We use bars to plot the 'icicles', so we need to generate centers, tops, 
         # bottoms and widths for each rectangle. We can go through each cluster 
@@ -150,20 +150,20 @@ class CondensedTree(object):
             cluster_bounds[c][CB_LEFT] = cluster_x_coords[c] * scaling - (current_size / 2.0)
             cluster_bounds[c][CB_RIGHT] = cluster_x_coords[c] * scaling + (current_size / 2.0)
             cluster_bounds[c][CB_BOTTOM] = cluster_y_coords[c]
-            cluster_bounds[c][CB_TOP] = np.max(c_children['lambda'])
+            cluster_bounds[c][CB_TOP] = np.max(c_children['lambda_val'])
 
-            for i in np.argsort(c_children['lambda']):
+            for i in np.argsort(c_children['lambda_val']):
                 row = c_children[i]
-                if row['lambda'] != current_lambda:
+                if row['lambda_val'] != current_lambda:
                     bar_centers.append(cluster_x_coords[c] * scaling)
-                    bar_tops.append(row['lambda'] - current_lambda)
+                    bar_tops.append(row['lambda_val'] - current_lambda)
                     bar_bottoms.append(current_lambda)
                     bar_widths.append(current_size)
                 if log_size:
                     current_size = np.log(np.exp(current_size) - row['child_size'])
                 else:
                     current_size -= row['child_size']
-                current_lambda = row['lambda']
+                current_lambda = row['lambda_val']
 
         # Finally we need the horizontal lines that occur at cluster splits.
         line_xs = []
@@ -349,7 +349,7 @@ class CondensedTree(object):
         """Return a pandas dataframe representation of the condensed tree.
 
         Each row of the dataframe corresponds to an edge in the tree.
-        The columns of the dataframe are `parent`, `child`, `lambda`
+        The columns of the dataframe are `parent`, `child`, `lambda_val`
         and `child_size`. 
 
         The `parent` and `child` are the ids of the
@@ -357,7 +357,7 @@ class CondensedTree(object):
         of points in the original dataset represent individual points, while
         ids greater than the number of points are clusters.
 
-        The `lambda` value is the value (1/distance) at which the `child`
+        The `lambda_val` value is the value (1/distance) at which the `child`
         node leaves the cluster.
 
         The `child_size` is the number of points in the `child` node.
@@ -389,7 +389,7 @@ class CondensedTree(object):
 
         result = DiGraph()
         for row in self._raw_tree:
-            result.add_edge(row['parent'], row['child'], weight=row['lambda'])
+            result.add_edge(row['parent'], row['child'], weight=row['lambda_val'])
 
         set_node_attributes(result, 'size', dict(self._raw_tree[['child', 'child_size']]))
 
