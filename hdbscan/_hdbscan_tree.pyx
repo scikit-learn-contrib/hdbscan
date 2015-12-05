@@ -1,4 +1,4 @@
-#cython: boundscheck=False, nonecheck=False, initializedcheck=False, profile=True
+#cython: boundscheck=False, nonecheck=False, initializedcheck=False
 # Tree handling (condensing, finding stable clusters) for hdbscan
 # Authors: Leland McInnes
 # License: 3-clause BSD
