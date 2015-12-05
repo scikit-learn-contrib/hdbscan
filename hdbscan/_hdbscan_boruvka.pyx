@@ -351,6 +351,9 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.intp_t, ndim=2] knn_indices
 
+        # A shortcut: if we have a lot of points then we can split the points into
+        # four piles and query them in parallel. On multicore systems (most systems)
+        # this amounts to a 2x-3x wall clock improvement.
         if self.tree.data.shape[0] > 16384:
             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
@@ -370,6 +373,9 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
 
+        # Since we do everything in terms of rdist to free up the GIL
+        # we need to convert all the core distances beforehand
+        # to make comparison feasible.
         for n in range(self.num_points):
             self.core_distance[n] = self.dist._dist_to_rdist(self.core_distance[n])
 
