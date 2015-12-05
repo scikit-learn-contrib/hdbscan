@@ -120,7 +120,7 @@ the dependencies manually using anaconda followed by pulling hdbscan from pip:
 .. code:: bash
 
     conda install cython
-    conda install sklearn
+    conda install scikit-learn
     pip install hdbscan
 
 For a manual install get this package:
@@ -142,13 +142,15 @@ or
 
 .. code:: bash
 
-    conda install sklearn cython
+    conda install scikit-learn cython
 
 Install the package
 
 .. code:: bash
 
     python setup.py install
+
+Coming soon: installing via conda.
 
 ---------
 Licensing
