@@ -418,6 +418,16 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 
         cdef NodeData_t node_info
 
+        # For each component there should be a:
+        #   - candidate point (a point in the component)
+        #   - candiate neighbor (the point to join with)
+        #   - candidate_distance (the distance from point to neighbor)
+        #
+        # We will go through and and an edge to the edge list
+        # for each of these, and the union the two points
+        # together in the union find structure
+
+
         for c in range(self.components.shape[0]):
             component = self.components[c]
             source = self.candidate_point[component]
@@ -428,6 +438,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
             current_source_component = self.component_union_find.find(source)
             current_sink_component = self.component_union_find.find(sink)
             if current_source_component == current_sink_component:
+                # We've already joined these, so ignore this edge
                 self.candidate_point[component] = -1
                 self.candidate_neighbor[component] = -1
                 self.candidate_distance[component] = DBL_MAX
@@ -436,17 +447,30 @@ cdef class KDTreeBoruvkaAlgorithm (object):
             self.edges[self.num_edges, 1] = sink
             self.edges[self.num_edges, 2] = self.dist._rdist_to_dist(self.candidate_distance[component])
             self.num_edges += 1
+
             self.component_union_find.union_(source, sink)
+
+            # Reset everything,and check if we're done
             self.candidate_distance[component] = DBL_MAX
             if self.num_edges == self.num_points - 1:
                 self.components = self.component_union_find.components()
                 return self.components.shape[0]
 
+        # After having joined everything in the union find data
+        # structure we need to go through and determine the components
+        # of each point for easy lookup.
+        #
+        # Have done that we then go through and set the component
+        # of each node, as this provides fast pruning in later
+        # tree traversals.
         for n in range(self.tree.data.shape[0]):
             self.component_of_point[n] = self.component_union_find.find(n)
 
         for n in range(self.tree.node_data.shape[0] - 1, -1, -1):
             node_info = self.node_data[n]
+            # Case 1:
+            #    If the node is a leaf we need to check that every point
+            #    in the node is of the same component
             if node_info.is_leaf:
                 current_component = self.component_of_point[self.idx_array[node_info.idx_start]]
                 for i in range(node_info.idx_start + 1, node_info.idx_end):
@@ -455,12 +479,20 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                         break
                 else:
                     self.component_of_node[n] = current_component
+            # Case 2:
+            #    If the node is not a leaf we only need to check
+            #    that both child nodes are in the same component
             else:
                 child1 = 2 * n + 1
                 child2 = 2 * n + 2
                 if self.component_of_node[child1] == self.component_of_node[child2]:
                     self.component_of_node[n] = self.component_of_node[child1]
 
+        # Since we're working with mutual reachability distance we often have
+        # ties or near ties; because of that we can benefit by not resetting the
+        # bounds unless we get stuck (don't join any components). Thus
+        # we check for that, and only reset bounds in the case where we have
+        # the same number of components as we did going in.
         last_num_components = self.components.shape[0]
         self.components = self.component_union_find.components()
 
@@ -902,6 +934,15 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
         cdef NodeData_t node_info
 
+        # For each component there should be a:
+        #   - candidate point (a point in the component)
+        #   - candiate neighbor (the point to join with)
+        #   - candidate_distance (the distance from point to neighbor)
+        #
+        # We will go through and and an edge to the edge list
+        # for each of these, and the union the two points
+        # together in the union find structure
+
         for c in range(self.components.shape[0]):
             component = self.components[c]
             source = self.candidate_point[component]
@@ -920,17 +961,29 @@ cdef class BallTreeBoruvkaAlgorithm (object):
             self.edges[self.num_edges, 1] = sink
             self.edges[self.num_edges, 2] = self.candidate_distance[component]
             self.num_edges += 1
+
             self.component_union_find.union_(source, sink)
+
             self.candidate_distance[component] = DBL_MAX
             if self.num_edges == self.num_points - 1:
                 self.components = self.component_union_find.components()
                 return self.components.shape[0]
 
+        # After having joined everything in the union find data
+        # structure we need to go through and determine the components
+        # of each point for easy lookup.
+        #
+        # Have done that we then go through and set the component
+        # of each node, as this provides fast pruning in later
+        # tree traversals.
         for n in range(self.tree.data.shape[0]):
             self.component_of_point[n] = self.component_union_find.find(n)
 
         for n in range(self.tree.node_data.shape[0] - 1, -1, -1):
             node_info = self.node_data[n]
+            # Case 1:
+            #    If the node is a leaf we need to check that every point
+            #    in the node is of the same component
             if node_info.is_leaf:
                 current_component = self.component_of_point[self.idx_array[node_info.idx_start]]
                 for i in range(node_info.idx_start + 1, node_info.idx_end):
@@ -939,12 +992,20 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                         break
                 else:
                     self.component_of_node[n] = current_component
+            # Case 2:
+            #    If the node is not a leaf we only need to check
+            #    that both child nodes are in the same component
             else:
                 child1 = 2 * n + 1
                 child2 = 2 * n + 2
                 if self.component_of_node[child1] == self.component_of_node[child2]:
                     self.component_of_node[n] = self.component_of_node[child1]
 
+        # Since we're working with mutual reachability distance we often have
+        # ties or near ties; because of that we can benefit by not resetting the
+        # bounds unless we get stuck (don't join any components). Thus
+        # we check for that, and only reset bounds in the case where we have
+        # the same number of components as we did going in.
         last_num_components = self.components.shape[0]
         self.components = self.component_union_find.components()
 
