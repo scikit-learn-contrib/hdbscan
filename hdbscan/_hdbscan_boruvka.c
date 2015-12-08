@@ -866,7 +866,7 @@ enum  {
 };
 struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t;
 
-/* "hdbscan/_hdbscan_boruvka.pyx":74
+/* "hdbscan/_hdbscan_boruvka.pyx":73
  * # Define the NodeData struct used in sklearn trees for faster
  * # access to the node data internals in Cython.
  * cdef struct NodeData_t:             # <<<<<<<<<<<<<<
@@ -901,7 +901,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric {
 };
 
 
-/* "hdbscan/_hdbscan_boruvka.pyx":160
+/* "hdbscan/_hdbscan_boruvka.pyx":159
  *     return rdist
  * 
  * cdef class BoruvkaUnionFind (object):             # <<<<<<<<<<<<<<
@@ -917,7 +917,7 @@ struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind {
 };
 
 
-/* "hdbscan/_hdbscan_boruvka.pyx":218
+/* "hdbscan/_hdbscan_boruvka.pyx":217
  *     return tree.query(data, k=min_samples, dualtree=True, breadth_first=True)
  * 
  * cdef class KDTreeBoruvkaAlgorithm (object):             # <<<<<<<<<<<<<<
@@ -934,6 +934,7 @@ struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm {
   __Pyx_memviewslice _raw_data;
   __Pyx_memviewslice node_bounds;
   __pyx_t_5numpy_double_t alpha;
+  __pyx_t_5numpy_int8_t approx_min_span_tree;
   __pyx_t_5numpy_intp_t min_samples;
   __pyx_t_5numpy_intp_t num_points;
   __pyx_t_5numpy_intp_t num_nodes;
@@ -970,7 +971,7 @@ struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm {
 };
 
 
-/* "hdbscan/_hdbscan_boruvka.pyx":712
+/* "hdbscan/_hdbscan_boruvka.pyx":781
  *         return self.edges
  * 
  * cdef class BallTreeBoruvkaAlgorithm (object):             # <<<<<<<<<<<<<<
@@ -986,6 +987,7 @@ struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm {
   PyArrayObject *_data;
   __Pyx_memviewslice _raw_data;
   __pyx_t_5numpy_double_t alpha;
+  __pyx_t_5numpy_int8_t approx_min_span_tree;
   __pyx_t_5numpy_intp_t min_samples;
   __pyx_t_5numpy_intp_t num_points;
   __pyx_t_5numpy_intp_t num_nodes;
@@ -1022,7 +1024,7 @@ struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm {
 };
 
 
-/* "hdbscan/_hdbscan_boruvka.pyx":346
+/* "hdbscan/_hdbscan_boruvka.pyx":353
  *         self.bounds_ptr = <np.double_t *> &self.bounds[0]
  * 
  *     cdef _compute_bounds(self):             # <<<<<<<<<<<<<<
@@ -1036,12 +1038,12 @@ struct __pyx_obj_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct___compute_bounds
 };
 
 
-/* "hdbscan/_hdbscan_boruvka.pyx":365
+/* "hdbscan/_hdbscan_boruvka.pyx":374
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
- *                                  (self.core_dist_tree, points, self.min_samples)             # <<<<<<<<<<<<<<
- *                                   for points in datasets)])
- *         else:
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+ *                                  (self.core_dist_tree, points, self.min_samples + 1)             # <<<<<<<<<<<<<<
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
  */
 struct __pyx_obj_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_1_genexpr {
   PyObject_HEAD
@@ -1052,7 +1054,7 @@ struct __pyx_obj_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_1_genexpr {
 };
 
 
-/* "hdbscan/_hdbscan_boruvka.pyx":839
+/* "hdbscan/_hdbscan_boruvka.pyx":916
  *         self.bounds_ptr = <np.double_t *> &self.bounds[0]
  * 
  *     cdef _compute_bounds(self):             # <<<<<<<<<<<<<<
@@ -1066,12 +1068,12 @@ struct __pyx_obj_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_2__compute_bound
 };
 
 
-/* "hdbscan/_hdbscan_boruvka.pyx":855
+/* "hdbscan/_hdbscan_boruvka.pyx":934
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
  *                                  (self.core_dist_tree, points, self.min_samples)             # <<<<<<<<<<<<<<
- *                                   for points in datasets)])
- *         else:
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
  */
 struct __pyx_obj_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_3_genexpr {
   PyObject_HEAD
@@ -1178,7 +1180,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
 
 
-/* "hdbscan/_hdbscan_boruvka.pyx":160
+/* "hdbscan/_hdbscan_boruvka.pyx":159
  *     return rdist
  * 
  * cdef class BoruvkaUnionFind (object):             # <<<<<<<<<<<<<<
@@ -1194,7 +1196,7 @@ struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind {
 static struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *__pyx_vtabptr_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind;
 
 
-/* "hdbscan/_hdbscan_boruvka.pyx":218
+/* "hdbscan/_hdbscan_boruvka.pyx":217
  *     return tree.query(data, k=min_samples, dualtree=True, breadth_first=True)
  * 
  * cdef class KDTreeBoruvkaAlgorithm (object):             # <<<<<<<<<<<<<<
@@ -1211,7 +1213,7 @@ struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm {
 static struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *__pyx_vtabptr_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm;
 
 
-/* "hdbscan/_hdbscan_boruvka.pyx":712
+/* "hdbscan/_hdbscan_boruvka.pyx":781
  *         return self.edges
  * 
  * cdef class BallTreeBoruvkaAlgorithm (object):             # <<<<<<<<<<<<<<
@@ -1469,6 +1471,7 @@ static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
 
 static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname);
 
+#define __Pyx_BufPtrStrided2d(type, buf, i0, s0, i1, s1) (type)((char*)buf + i0 * s0 + i1 * s1)
 static CYTHON_INLINE void __Pyx_ErrRestore(PyObject *type, PyObject *value, PyObject *tb);
 static CYTHON_INLINE void __Pyx_ErrFetch(PyObject **type, PyObject **value, PyObject **tb);
 
@@ -1650,6 +1653,8 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_Py_intptr_t(Py_intptr_t value);
 static CYTHON_INLINE Py_intptr_t __Pyx_PyInt_As_Py_intptr_t(PyObject *);
 
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+
+static CYTHON_INLINE npy_int8 __Pyx_PyInt_As_npy_int8(PyObject *);
 
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
@@ -2002,7 +2007,7 @@ static PyObject *__pyx_builtin_IndexError;
 static PyObject *__pyx_builtin_KeyError;
 static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind___init__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *__pyx_v_self, PyObject *__pyx_v_size); /* proto */
 static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka__core_dist_query(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_tree, PyObject *__pyx_v_data, PyObject *__pyx_v_min_samples); /* proto */
-static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *__pyx_v_self, PyObject *__pyx_v_tree, PyObject *__pyx_v_min_samples, PyObject *__pyx_v_metric, PyObject *__pyx_v_leaf_size, PyObject *__pyx_v_alpha, PyObject *__pyx_v_kwargs); /* proto */
+static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *__pyx_v_self, PyObject *__pyx_v_tree, PyObject *__pyx_v_min_samples, PyObject *__pyx_v_metric, PyObject *__pyx_v_leaf_size, PyObject *__pyx_v_alpha, PyObject *__pyx_v_approx_min_span_tree, PyObject *__pyx_v_kwargs); /* proto */
 static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_15_compute_bounds_genexpr(PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_2spanning_tree(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_13core_distance___get__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *__pyx_v_self); /* proto */
@@ -2025,7 +2030,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_9
 static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_9idx_array_2__set__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_9node_data___get__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *__pyx_v_self); /* proto */
 static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_9node_data_2__set__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
-static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___init__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *__pyx_v_self, PyObject *__pyx_v_tree, PyObject *__pyx_v_min_samples, PyObject *__pyx_v_metric, PyObject *__pyx_v_alpha, PyObject *__pyx_v_leaf_size, PyObject *__pyx_v_kwargs); /* proto */
+static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___init__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *__pyx_v_self, PyObject *__pyx_v_tree, PyObject *__pyx_v_min_samples, PyObject *__pyx_v_metric, PyObject *__pyx_v_alpha, PyObject *__pyx_v_leaf_size, PyObject *__pyx_v_approx_min_span_tree, PyObject *__pyx_v_kwargs); /* proto */
 static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_15_compute_bounds_genexpr(PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_2spanning_tree(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_13core_distance___get__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *__pyx_v_self); /* proto */
@@ -2211,6 +2216,7 @@ static char __pyx_k_core_dist_query[] = "_core_dist_query";
 static char __pyx_k_dtype_is_object[] = "dtype_is_object";
 static char __pyx_k_sklearn_neighbors[] = "sklearn.neighbors";
 static char __pyx_k_strided_and_direct[] = "<strided and direct>";
+static char __pyx_k_approx_min_span_tree[] = "approx_min_span_tree";
 static char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static char __pyx_k_Expected_16s_got_200s[] = "Expected %.16s, got %.200s";
 static char __pyx_k_contiguous_and_direct[] = "<contiguous and direct>";
@@ -2293,6 +2299,7 @@ static PyObject *__pyx_kp_b__24;
 static PyObject *__pyx_kp_u__25;
 static PyObject *__pyx_n_s_allocate_buffer;
 static PyObject *__pyx_n_s_alpha;
+static PyObject *__pyx_n_s_approx_min_span_tree;
 static PyObject *__pyx_n_s_arange;
 static PyObject *__pyx_n_s_args;
 static PyObject *__pyx_n_s_array;
@@ -2431,7 +2438,7 @@ static PyObject *__pyx_tuple__35;
 static PyObject *__pyx_tuple__36;
 static PyObject *__pyx_codeobj__31;
 
-/* "hdbscan/_hdbscan_boruvka.pyx":83
+/* "hdbscan/_hdbscan_boruvka.pyx":82
  * # Define a function giving the minimum distance between two
  * # nodes of a ball tree
  * cdef inline np.double_t balltree_min_dist_dual(np.double_t radius1,             # <<<<<<<<<<<<<<
@@ -2448,7 +2455,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   long __pyx_t_4;
   __pyx_t_5numpy_double_t __pyx_t_5;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":88
+  /* "hdbscan/_hdbscan_boruvka.pyx":87
  *                                                np.intp_t node2,
  *                                                np.double_t[:, ::1] centroid_dist) nogil except -1:
  *     cdef np.double_t dist_pt = centroid_dist[node1, node2]             # <<<<<<<<<<<<<<
@@ -2459,7 +2466,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   __pyx_t_2 = __pyx_v_node2;
   __pyx_v_dist_pt = (*((__pyx_t_5numpy_double_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=0 */ (__pyx_v_centroid_dist.data + __pyx_t_1 * __pyx_v_centroid_dist.strides[0]) )) + __pyx_t_2)) )));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":89
+  /* "hdbscan/_hdbscan_boruvka.pyx":88
  *                                                np.double_t[:, ::1] centroid_dist) nogil except -1:
  *     cdef np.double_t dist_pt = centroid_dist[node1, node2]
  *     return max(0, (dist_pt - radius1 - radius2))             # <<<<<<<<<<<<<<
@@ -2476,7 +2483,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   __pyx_r = __pyx_t_5;
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":83
+  /* "hdbscan/_hdbscan_boruvka.pyx":82
  * # Define a function giving the minimum distance between two
  * # nodes of a ball tree
  * cdef inline np.double_t balltree_min_dist_dual(np.double_t radius1,             # <<<<<<<<<<<<<<
@@ -2489,7 +2496,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":93
+/* "hdbscan/_hdbscan_boruvka.pyx":92
  * # Define a function giving the minimum distance between two
  * # nodes of a kd-tree
  * cdef inline np.double_t kdtree_min_dist_dual(dist_metrics.DistanceMetric metric,             # <<<<<<<<<<<<<<
@@ -2542,7 +2549,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("kdtree_min_dist_dual", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":99
+  /* "hdbscan/_hdbscan_boruvka.pyx":98
  *                                              np.intp_t num_features) except -1:
  * 
  *     cdef np.double_t d, d1, d2, rdist=0.0             # <<<<<<<<<<<<<<
@@ -2551,7 +2558,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
  */
   __pyx_v_rdist = 0.0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":100
+  /* "hdbscan/_hdbscan_boruvka.pyx":99
  * 
  *     cdef np.double_t d, d1, d2, rdist=0.0
  *     cdef np.double_t zero = 0.0             # <<<<<<<<<<<<<<
@@ -2560,7 +2567,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
  */
   __pyx_v_zero = 0.0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":103
+  /* "hdbscan/_hdbscan_boruvka.pyx":102
  *     cdef np.intp_t j
  * 
  *     if metric.p == INF:             # <<<<<<<<<<<<<<
@@ -2570,7 +2577,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   __pyx_t_1 = ((__pyx_v_metric->p == __pyx_v_7hdbscan_16_hdbscan_boruvka_INF) != 0);
   if (__pyx_t_1) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":104
+    /* "hdbscan/_hdbscan_boruvka.pyx":103
  * 
  *     if metric.p == INF:
  *         for j in range(num_features):             # <<<<<<<<<<<<<<
@@ -2581,7 +2588,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
     for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
       __pyx_v_j = __pyx_t_3;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":105
+      /* "hdbscan/_hdbscan_boruvka.pyx":104
  *     if metric.p == INF:
  *         for j in range(num_features):
  *             d1 = (node_bounds[0, node1, j]             # <<<<<<<<<<<<<<
@@ -2592,7 +2599,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_5 = __pyx_v_node1;
       __pyx_t_6 = __pyx_v_j;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":106
+      /* "hdbscan/_hdbscan_boruvka.pyx":105
  *         for j in range(num_features):
  *             d1 = (node_bounds[0, node1, j]
  *                   - node_bounds[1, node2, j])             # <<<<<<<<<<<<<<
@@ -2604,7 +2611,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_9 = __pyx_v_j;
       __pyx_v_d1 = ((*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_4 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_5 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_6)) ))) - (*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_7 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_8 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_9)) ))));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":107
+      /* "hdbscan/_hdbscan_boruvka.pyx":106
  *             d1 = (node_bounds[0, node1, j]
  *                   - node_bounds[1, node2, j])
  *             d2 = (node_bounds[0, node2, j]             # <<<<<<<<<<<<<<
@@ -2615,7 +2622,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_11 = __pyx_v_node2;
       __pyx_t_12 = __pyx_v_j;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":108
+      /* "hdbscan/_hdbscan_boruvka.pyx":107
  *                   - node_bounds[1, node2, j])
  *             d2 = (node_bounds[0, node2, j]
  *                   - node_bounds[1, node1, j])             # <<<<<<<<<<<<<<
@@ -2627,7 +2634,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_15 = __pyx_v_j;
       __pyx_v_d2 = ((*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_10 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_11 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_12)) ))) - (*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_13 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_14 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_15)) ))));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":109
+      /* "hdbscan/_hdbscan_boruvka.pyx":108
  *             d2 = (node_bounds[0, node2, j]
  *                   - node_bounds[1, node1, j])
  *             d = (d1 + fabs(d1)) + (d2 + fabs(d2))             # <<<<<<<<<<<<<<
@@ -2636,7 +2643,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
  */
       __pyx_v_d = ((__pyx_v_d1 + fabs(__pyx_v_d1)) + (__pyx_v_d2 + fabs(__pyx_v_d2)));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":111
+      /* "hdbscan/_hdbscan_boruvka.pyx":110
  *             d = (d1 + fabs(d1)) + (d2 + fabs(d2))
  * 
  *             rdist = max(rdist, 0.5 * d)             # <<<<<<<<<<<<<<
@@ -2656,7 +2663,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   }
   /*else*/ {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":114
+    /* "hdbscan/_hdbscan_boruvka.pyx":113
  *     else:
  *         # here we'll use the fact that x + abs(x) = 2 * max(x, 0)
  *         for j in range(num_features):             # <<<<<<<<<<<<<<
@@ -2667,7 +2674,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
     for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
       __pyx_v_j = __pyx_t_3;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":115
+      /* "hdbscan/_hdbscan_boruvka.pyx":114
  *         # here we'll use the fact that x + abs(x) = 2 * max(x, 0)
  *         for j in range(num_features):
  *             d1 = (node_bounds[0, node1, j]             # <<<<<<<<<<<<<<
@@ -2678,7 +2685,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_20 = __pyx_v_node1;
       __pyx_t_21 = __pyx_v_j;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":116
+      /* "hdbscan/_hdbscan_boruvka.pyx":115
  *         for j in range(num_features):
  *             d1 = (node_bounds[0, node1, j]
  *                   - node_bounds[1, node2, j])             # <<<<<<<<<<<<<<
@@ -2690,7 +2697,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_24 = __pyx_v_j;
       __pyx_v_d1 = ((*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_19 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_20 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_21)) ))) - (*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_22 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_23 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_24)) ))));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":117
+      /* "hdbscan/_hdbscan_boruvka.pyx":116
  *             d1 = (node_bounds[0, node1, j]
  *                   - node_bounds[1, node2, j])
  *             d2 = (node_bounds[0, node2, j]             # <<<<<<<<<<<<<<
@@ -2701,7 +2708,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_26 = __pyx_v_node2;
       __pyx_t_27 = __pyx_v_j;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":118
+      /* "hdbscan/_hdbscan_boruvka.pyx":117
  *                   - node_bounds[1, node2, j])
  *             d2 = (node_bounds[0, node2, j]
  *                   - node_bounds[1, node1, j])             # <<<<<<<<<<<<<<
@@ -2713,7 +2720,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_30 = __pyx_v_j;
       __pyx_v_d2 = ((*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_25 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_26 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_27)) ))) - (*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_28 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_29 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_30)) ))));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":119
+      /* "hdbscan/_hdbscan_boruvka.pyx":118
  *             d2 = (node_bounds[0, node2, j]
  *                   - node_bounds[1, node1, j])
  *             d = (d1 + fabs(d1)) + (d2 + fabs(d2))             # <<<<<<<<<<<<<<
@@ -2722,7 +2729,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
  */
       __pyx_v_d = ((__pyx_v_d1 + fabs(__pyx_v_d1)) + (__pyx_v_d2 + fabs(__pyx_v_d2)));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":121
+      /* "hdbscan/_hdbscan_boruvka.pyx":120
  *             d = (d1 + fabs(d1)) + (d2 + fabs(d2))
  * 
  *             rdist += pow(0.5 * d, metric.p)             # <<<<<<<<<<<<<<
@@ -2734,18 +2741,18 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   }
   __pyx_L3:;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":123
+  /* "hdbscan/_hdbscan_boruvka.pyx":122
  *             rdist += pow(0.5 * d, metric.p)
  * 
  *     return metric._rdist_to_dist(rdist)             # <<<<<<<<<<<<<<
  * 
  * # As above, but this time we use the rdist as per the kdtree
  */
-  __pyx_t_31 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_metric->__pyx_vtab)->_rdist_to_dist(__pyx_v_metric, __pyx_v_rdist); if (unlikely(__pyx_t_31 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_31 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_metric->__pyx_vtab)->_rdist_to_dist(__pyx_v_metric, __pyx_v_rdist); if (unlikely(__pyx_t_31 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 122; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = __pyx_t_31;
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":93
+  /* "hdbscan/_hdbscan_boruvka.pyx":92
  * # Define a function giving the minimum distance between two
  * # nodes of a kd-tree
  * cdef inline np.double_t kdtree_min_dist_dual(dist_metrics.DistanceMetric metric,             # <<<<<<<<<<<<<<
@@ -2762,7 +2769,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":128
+/* "hdbscan/_hdbscan_boruvka.pyx":127
  * # implementation. This allows us to release the GIL over
  * # larger sections of code
  * cdef inline np.double_t kdtree_min_rdist_dual(dist_metrics.DistanceMetric metric,             # <<<<<<<<<<<<<<
@@ -2809,7 +2816,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   __pyx_t_5numpy_intp_t __pyx_t_29;
   __pyx_t_5numpy_intp_t __pyx_t_30;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":134
+  /* "hdbscan/_hdbscan_boruvka.pyx":133
  *                                               np.intp_t num_features) nogil except -1:
  * 
  *     cdef np.double_t d, d1, d2, rdist=0.0             # <<<<<<<<<<<<<<
@@ -2818,7 +2825,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
  */
   __pyx_v_rdist = 0.0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":135
+  /* "hdbscan/_hdbscan_boruvka.pyx":134
  * 
  *     cdef np.double_t d, d1, d2, rdist=0.0
  *     cdef np.double_t zero = 0.0             # <<<<<<<<<<<<<<
@@ -2827,7 +2834,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
  */
   __pyx_v_zero = 0.0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":138
+  /* "hdbscan/_hdbscan_boruvka.pyx":137
  *     cdef np.intp_t j
  * 
  *     if metric.p == INF:             # <<<<<<<<<<<<<<
@@ -2837,7 +2844,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   __pyx_t_1 = ((__pyx_v_metric->p == __pyx_v_7hdbscan_16_hdbscan_boruvka_INF) != 0);
   if (__pyx_t_1) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":139
+    /* "hdbscan/_hdbscan_boruvka.pyx":138
  * 
  *     if metric.p == INF:
  *         for j in range(num_features):             # <<<<<<<<<<<<<<
@@ -2848,7 +2855,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
     for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
       __pyx_v_j = __pyx_t_3;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":140
+      /* "hdbscan/_hdbscan_boruvka.pyx":139
  *     if metric.p == INF:
  *         for j in range(num_features):
  *             d1 = (node_bounds[0, node1, j]             # <<<<<<<<<<<<<<
@@ -2859,7 +2866,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_5 = __pyx_v_node1;
       __pyx_t_6 = __pyx_v_j;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":141
+      /* "hdbscan/_hdbscan_boruvka.pyx":140
  *         for j in range(num_features):
  *             d1 = (node_bounds[0, node1, j]
  *                   - node_bounds[1, node2, j])             # <<<<<<<<<<<<<<
@@ -2871,7 +2878,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_9 = __pyx_v_j;
       __pyx_v_d1 = ((*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_4 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_5 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_6)) ))) - (*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_7 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_8 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_9)) ))));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":142
+      /* "hdbscan/_hdbscan_boruvka.pyx":141
  *             d1 = (node_bounds[0, node1, j]
  *                   - node_bounds[1, node2, j])
  *             d2 = (node_bounds[0, node2, j]             # <<<<<<<<<<<<<<
@@ -2882,7 +2889,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_11 = __pyx_v_node2;
       __pyx_t_12 = __pyx_v_j;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":143
+      /* "hdbscan/_hdbscan_boruvka.pyx":142
  *                   - node_bounds[1, node2, j])
  *             d2 = (node_bounds[0, node2, j]
  *                   - node_bounds[1, node1, j])             # <<<<<<<<<<<<<<
@@ -2894,7 +2901,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_15 = __pyx_v_j;
       __pyx_v_d2 = ((*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_10 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_11 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_12)) ))) - (*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_13 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_14 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_15)) ))));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":144
+      /* "hdbscan/_hdbscan_boruvka.pyx":143
  *             d2 = (node_bounds[0, node2, j]
  *                   - node_bounds[1, node1, j])
  *             d = (d1 + fabs(d1)) + (d2 + fabs(d2))             # <<<<<<<<<<<<<<
@@ -2903,7 +2910,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
  */
       __pyx_v_d = ((__pyx_v_d1 + fabs(__pyx_v_d1)) + (__pyx_v_d2 + fabs(__pyx_v_d2)));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":146
+      /* "hdbscan/_hdbscan_boruvka.pyx":145
  *             d = (d1 + fabs(d1)) + (d2 + fabs(d2))
  * 
  *             rdist = max(rdist, 0.5 * d)             # <<<<<<<<<<<<<<
@@ -2923,7 +2930,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   }
   /*else*/ {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":149
+    /* "hdbscan/_hdbscan_boruvka.pyx":148
  *     else:
  *         # here we'll use the fact that x + abs(x) = 2 * max(x, 0)
  *         for j in range(num_features):             # <<<<<<<<<<<<<<
@@ -2934,7 +2941,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
     for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
       __pyx_v_j = __pyx_t_3;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":150
+      /* "hdbscan/_hdbscan_boruvka.pyx":149
  *         # here we'll use the fact that x + abs(x) = 2 * max(x, 0)
  *         for j in range(num_features):
  *             d1 = (node_bounds[0, node1, j]             # <<<<<<<<<<<<<<
@@ -2945,7 +2952,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_20 = __pyx_v_node1;
       __pyx_t_21 = __pyx_v_j;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":151
+      /* "hdbscan/_hdbscan_boruvka.pyx":150
  *         for j in range(num_features):
  *             d1 = (node_bounds[0, node1, j]
  *                   - node_bounds[1, node2, j])             # <<<<<<<<<<<<<<
@@ -2957,7 +2964,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_24 = __pyx_v_j;
       __pyx_v_d1 = ((*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_19 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_20 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_21)) ))) - (*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_22 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_23 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_24)) ))));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":152
+      /* "hdbscan/_hdbscan_boruvka.pyx":151
  *             d1 = (node_bounds[0, node1, j]
  *                   - node_bounds[1, node2, j])
  *             d2 = (node_bounds[0, node2, j]             # <<<<<<<<<<<<<<
@@ -2968,7 +2975,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_26 = __pyx_v_node2;
       __pyx_t_27 = __pyx_v_j;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":153
+      /* "hdbscan/_hdbscan_boruvka.pyx":152
  *                   - node_bounds[1, node2, j])
  *             d2 = (node_bounds[0, node2, j]
  *                   - node_bounds[1, node1, j])             # <<<<<<<<<<<<<<
@@ -2980,7 +2987,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
       __pyx_t_30 = __pyx_v_j;
       __pyx_v_d2 = ((*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_25 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_26 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_27)) ))) - (*((__pyx_t_5numpy_double_t *) ( /* dim=2 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_node_bounds.data + __pyx_t_28 * __pyx_v_node_bounds.strides[0]) ) + __pyx_t_29 * __pyx_v_node_bounds.strides[1]) )) + __pyx_t_30)) ))));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":154
+      /* "hdbscan/_hdbscan_boruvka.pyx":153
  *             d2 = (node_bounds[0, node2, j]
  *                   - node_bounds[1, node1, j])
  *             d = (d1 + fabs(d1)) + (d2 + fabs(d2))             # <<<<<<<<<<<<<<
@@ -2989,7 +2996,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
  */
       __pyx_v_d = ((__pyx_v_d1 + fabs(__pyx_v_d1)) + (__pyx_v_d2 + fabs(__pyx_v_d2)));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":156
+      /* "hdbscan/_hdbscan_boruvka.pyx":155
  *             d = (d1 + fabs(d1)) + (d2 + fabs(d2))
  * 
  *             rdist += pow(0.5 * d, metric.p)             # <<<<<<<<<<<<<<
@@ -3001,7 +3008,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   }
   __pyx_L3:;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":158
+  /* "hdbscan/_hdbscan_boruvka.pyx":157
  *             rdist += pow(0.5 * d, metric.p)
  * 
  *     return rdist             # <<<<<<<<<<<<<<
@@ -3011,7 +3018,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   __pyx_r = __pyx_v_rdist;
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":128
+  /* "hdbscan/_hdbscan_boruvka.pyx":127
  * # implementation. This allows us to release the GIL over
  * # larger sections of code
  * cdef inline np.double_t kdtree_min_rdist_dual(dist_metrics.DistanceMetric metric,             # <<<<<<<<<<<<<<
@@ -3024,7 +3031,7 @@ static CYTHON_INLINE __pyx_t_5numpy_double_t __pyx_f_7hdbscan_16_hdbscan_boruvka
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":183
+/* "hdbscan/_hdbscan_boruvka.pyx":182
  *     cdef np.ndarray is_component
  * 
  *     def __init__(self, size):             # <<<<<<<<<<<<<<
@@ -3060,7 +3067,7 @@ static int __pyx_pw_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_1__init__(PyO
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -3071,7 +3078,7 @@ static int __pyx_pw_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_1__init__(PyO
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("hdbscan._hdbscan_boruvka.BoruvkaUnionFind.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3101,19 +3108,19 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind___init__(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":184
+  /* "hdbscan/_hdbscan_boruvka.pyx":183
  * 
  *     def __init__(self, size):
  *         self._data_arr = np.zeros((size, 2), dtype=np.intp)             # <<<<<<<<<<<<<<
  *         self._data_arr.T[0] = np.arange(size)
  *         self._data = (<np.intp_t[:size, :2:1]> (<np.intp_t *> self._data_arr.data))
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_size);
   __Pyx_GIVEREF(__pyx_v_size);
@@ -3121,42 +3128,42 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind___init__(stru
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
   PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_int_2);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_intp); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_intp); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_5) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_5) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_5);
   __Pyx_GOTREF(__pyx_v_self->_data_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->_data_arr));
   __pyx_v_self->_data_arr = ((PyArrayObject *)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":185
+  /* "hdbscan/_hdbscan_boruvka.pyx":184
  *     def __init__(self, size):
  *         self._data_arr = np.zeros((size, 2), dtype=np.intp)
  *         self._data_arr.T[0] = np.arange(size)             # <<<<<<<<<<<<<<
  *         self._data = (<np.intp_t[:size, :2:1]> (<np.intp_t *> self._data_arr.data))
  *         self.is_component = np.ones(size, dtype=np.bool)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_arange); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_arange); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = NULL;
@@ -3170,27 +3177,27 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind___init__(stru
     }
   }
   if (!__pyx_t_1) {
-    __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_size); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_size); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
   } else {
-    __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1); __pyx_t_1 = NULL;
     __Pyx_INCREF(__pyx_v_size);
     __Pyx_GIVEREF(__pyx_v_size);
     PyTuple_SET_ITEM(__pyx_t_2, 0+1, __pyx_v_size);
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, NULL); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, NULL); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->_data_arr), __pyx_n_s_T); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->_data_arr), __pyx_n_s_T); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  if (unlikely(__Pyx_SetItemInt(__pyx_t_3, 0, __pyx_t_5, long, 1, __Pyx_PyInt_From_long, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(__Pyx_SetItemInt(__pyx_t_3, 0, __pyx_t_5, long, 1, __Pyx_PyInt_From_long, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":186
+  /* "hdbscan/_hdbscan_boruvka.pyx":185
  *         self._data_arr = np.zeros((size, 2), dtype=np.intp)
  *         self._data_arr.T[0] = np.arange(size)
  *         self._data = (<np.intp_t[:size, :2:1]> (<np.intp_t *> self._data_arr.data))             # <<<<<<<<<<<<<<
@@ -3198,68 +3205,68 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind___init__(stru
  * 
  */
   __pyx_t_6 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->_data_arr->data);
-  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_size); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_size); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (!__pyx_t_6) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_3 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
   __pyx_t_5 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_t_7), ((Py_ssize_t)2));
-  if (unlikely(!__pyx_t_3 || !__pyx_t_5 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_3 || !__pyx_t_5 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_8 = __pyx_array_new(__pyx_t_5, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "c", (char *) __pyx_t_6);
-  if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_9 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_8));
-  if (unlikely(!__pyx_t_9.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_9.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(((PyObject *)__pyx_t_8)); __pyx_t_8 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->_data, 0);
   __pyx_v_self->_data = __pyx_t_9;
   __pyx_t_9.memview = NULL;
   __pyx_t_9.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":187
+  /* "hdbscan/_hdbscan_boruvka.pyx":186
  *         self._data_arr.T[0] = np.arange(size)
  *         self._data = (<np.intp_t[:size, :2:1]> (<np.intp_t *> self._data_arr.data))
  *         self.is_component = np.ones(size, dtype=np.bool)             # <<<<<<<<<<<<<<
  * 
  *     cdef int union_(self, np.intp_t x, np.intp_t y) except -1:
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_ones); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_ones); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_size);
   __Pyx_GIVEREF(__pyx_v_size);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_size);
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_bool); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_bool); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_4);
   __Pyx_GOTREF(__pyx_v_self->is_component);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->is_component));
   __pyx_v_self->is_component = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":183
+  /* "hdbscan/_hdbscan_boruvka.pyx":182
  *     cdef np.ndarray is_component
  * 
  *     def __init__(self, size):             # <<<<<<<<<<<<<<
@@ -3285,7 +3292,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind___init__(stru
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":189
+/* "hdbscan/_hdbscan_boruvka.pyx":188
  *         self.is_component = np.ones(size, dtype=np.bool)
  * 
  *     cdef int union_(self, np.intp_t x, np.intp_t y) except -1:             # <<<<<<<<<<<<<<
@@ -3320,27 +3327,27 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_union_(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("union_", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":191
+  /* "hdbscan/_hdbscan_boruvka.pyx":190
  *     cdef int union_(self, np.intp_t x, np.intp_t y) except -1:
  *         """Union together elements x and y"""
  *         cdef np.intp_t x_root = self.find(x)             # <<<<<<<<<<<<<<
  *         cdef np.intp_t y_root = self.find(y)
  * 
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->__pyx_vtab)->find(__pyx_v_self, __pyx_v_x); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->__pyx_vtab)->find(__pyx_v_self, __pyx_v_x); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 190; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_x_root = __pyx_t_1;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":192
+  /* "hdbscan/_hdbscan_boruvka.pyx":191
  *         """Union together elements x and y"""
  *         cdef np.intp_t x_root = self.find(x)
  *         cdef np.intp_t y_root = self.find(y)             # <<<<<<<<<<<<<<
  * 
  *         if self._data[x_root, 1] < self._data[y_root, 1]:
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->__pyx_vtab)->find(__pyx_v_self, __pyx_v_y); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->__pyx_vtab)->find(__pyx_v_self, __pyx_v_y); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_y_root = __pyx_t_1;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":194
+  /* "hdbscan/_hdbscan_boruvka.pyx":193
  *         cdef np.intp_t y_root = self.find(y)
  * 
  *         if self._data[x_root, 1] < self._data[y_root, 1]:             # <<<<<<<<<<<<<<
@@ -3354,7 +3361,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_union_(struct 
   __pyx_t_5 = (((*((__pyx_t_5numpy_intp_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ (__pyx_v_self->_data.data + __pyx_t_1 * __pyx_v_self->_data.strides[0]) )) + __pyx_t_2)) ))) < (*((__pyx_t_5numpy_intp_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ (__pyx_v_self->_data.data + __pyx_t_3 * __pyx_v_self->_data.strides[0]) )) + __pyx_t_4)) )))) != 0);
   if (__pyx_t_5) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":195
+    /* "hdbscan/_hdbscan_boruvka.pyx":194
  * 
  *         if self._data[x_root, 1] < self._data[y_root, 1]:
  *             self._data[x_root, 0] = y_root             # <<<<<<<<<<<<<<
@@ -3367,7 +3374,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_union_(struct 
     goto __pyx_L3;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":196
+  /* "hdbscan/_hdbscan_boruvka.pyx":195
  *         if self._data[x_root, 1] < self._data[y_root, 1]:
  *             self._data[x_root, 0] = y_root
  *         elif self._data[x_root, 1] > self._data[y_root, 1]:             # <<<<<<<<<<<<<<
@@ -3381,7 +3388,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_union_(struct 
   __pyx_t_5 = (((*((__pyx_t_5numpy_intp_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ (__pyx_v_self->_data.data + __pyx_t_8 * __pyx_v_self->_data.strides[0]) )) + __pyx_t_9)) ))) > (*((__pyx_t_5numpy_intp_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ (__pyx_v_self->_data.data + __pyx_t_10 * __pyx_v_self->_data.strides[0]) )) + __pyx_t_11)) )))) != 0);
   if (__pyx_t_5) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":197
+    /* "hdbscan/_hdbscan_boruvka.pyx":196
  *             self._data[x_root, 0] = y_root
  *         elif self._data[x_root, 1] > self._data[y_root, 1]:
  *             self._data[y_root, 0] = x_root             # <<<<<<<<<<<<<<
@@ -3395,7 +3402,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_union_(struct 
   }
   /*else*/ {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":199
+    /* "hdbscan/_hdbscan_boruvka.pyx":198
  *             self._data[y_root, 0] = x_root
  *         else:
  *             self._data[y_root, 0] = x_root             # <<<<<<<<<<<<<<
@@ -3406,7 +3413,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_union_(struct 
     __pyx_t_15 = 0;
     *((__pyx_t_5numpy_intp_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ (__pyx_v_self->_data.data + __pyx_t_14 * __pyx_v_self->_data.strides[0]) )) + __pyx_t_15)) )) = __pyx_v_x_root;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":200
+    /* "hdbscan/_hdbscan_boruvka.pyx":199
  *         else:
  *             self._data[y_root, 0] = x_root
  *             self._data[x_root, 1] += 1             # <<<<<<<<<<<<<<
@@ -3419,7 +3426,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_union_(struct 
   }
   __pyx_L3:;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":202
+  /* "hdbscan/_hdbscan_boruvka.pyx":201
  *             self._data[x_root, 1] += 1
  * 
  *         return 0             # <<<<<<<<<<<<<<
@@ -3429,7 +3436,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_union_(struct 
   __pyx_r = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":189
+  /* "hdbscan/_hdbscan_boruvka.pyx":188
  *         self.is_component = np.ones(size, dtype=np.bool)
  * 
  *     cdef int union_(self, np.intp_t x, np.intp_t y) except -1:             # <<<<<<<<<<<<<<
@@ -3446,7 +3453,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_union_(struct 
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":204
+/* "hdbscan/_hdbscan_boruvka.pyx":203
  *         return 0
  * 
  *     cdef np.intp_t find(self, np.intp_t x) except -1:             # <<<<<<<<<<<<<<
@@ -3471,7 +3478,7 @@ static __pyx_t_5numpy_intp_t __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionF
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("find", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":206
+  /* "hdbscan/_hdbscan_boruvka.pyx":205
  *     cdef np.intp_t find(self, np.intp_t x) except -1:
  *         """Find the root or identifier for the component that x is in"""
  *         if self._data[x, 0] != x:             # <<<<<<<<<<<<<<
@@ -3483,7 +3490,7 @@ static __pyx_t_5numpy_intp_t __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionF
   __pyx_t_3 = (((*((__pyx_t_5numpy_intp_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ (__pyx_v_self->_data.data + __pyx_t_1 * __pyx_v_self->_data.strides[0]) )) + __pyx_t_2)) ))) != __pyx_v_x) != 0);
   if (__pyx_t_3) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":207
+    /* "hdbscan/_hdbscan_boruvka.pyx":206
  *         """Find the root or identifier for the component that x is in"""
  *         if self._data[x, 0] != x:
  *             self._data[x, 0] = self.find(self._data[x, 0])             # <<<<<<<<<<<<<<
@@ -3492,24 +3499,24 @@ static __pyx_t_5numpy_intp_t __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionF
  */
     __pyx_t_4 = __pyx_v_x;
     __pyx_t_5 = 0;
-    __pyx_t_6 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->__pyx_vtab)->find(__pyx_v_self, (*((__pyx_t_5numpy_intp_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ (__pyx_v_self->_data.data + __pyx_t_4 * __pyx_v_self->_data.strides[0]) )) + __pyx_t_5)) )))); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 207; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->__pyx_vtab)->find(__pyx_v_self, (*((__pyx_t_5numpy_intp_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ (__pyx_v_self->_data.data + __pyx_t_4 * __pyx_v_self->_data.strides[0]) )) + __pyx_t_5)) )))); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_7 = __pyx_v_x;
     __pyx_t_8 = 0;
     *((__pyx_t_5numpy_intp_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ (__pyx_v_self->_data.data + __pyx_t_7 * __pyx_v_self->_data.strides[0]) )) + __pyx_t_8)) )) = __pyx_t_6;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":208
+    /* "hdbscan/_hdbscan_boruvka.pyx":207
  *         if self._data[x, 0] != x:
  *             self._data[x, 0] = self.find(self._data[x, 0])
  *             self.is_component[x] = False             # <<<<<<<<<<<<<<
  *         return self._data[x, 0]
  * 
  */
-    if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->is_component), __pyx_v_x, Py_False, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 208; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->is_component), __pyx_v_x, Py_False, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 207; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     goto __pyx_L3;
   }
   __pyx_L3:;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":209
+  /* "hdbscan/_hdbscan_boruvka.pyx":208
  *             self._data[x, 0] = self.find(self._data[x, 0])
  *             self.is_component[x] = False
  *         return self._data[x, 0]             # <<<<<<<<<<<<<<
@@ -3521,7 +3528,7 @@ static __pyx_t_5numpy_intp_t __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionF
   __pyx_r = (*((__pyx_t_5numpy_intp_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ (__pyx_v_self->_data.data + __pyx_t_6 * __pyx_v_self->_data.strides[0]) )) + __pyx_t_9)) )));
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":204
+  /* "hdbscan/_hdbscan_boruvka.pyx":203
  *         return 0
  * 
  *     cdef np.intp_t find(self, np.intp_t x) except -1:             # <<<<<<<<<<<<<<
@@ -3538,7 +3545,7 @@ static __pyx_t_5numpy_intp_t __pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionF
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":211
+/* "hdbscan/_hdbscan_boruvka.pyx":210
  *         return self._data[x, 0]
  * 
  *     cdef np.ndarray[np.intp_t, ndim=1] components(self):             # <<<<<<<<<<<<<<
@@ -3557,7 +3564,7 @@ static PyArrayObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_com
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("components", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":213
+  /* "hdbscan/_hdbscan_boruvka.pyx":212
  *     cdef np.ndarray[np.intp_t, ndim=1] components(self):
  *         """Return an array of all component roots/identifiers"""
  *         return self.is_component.nonzero()[0]             # <<<<<<<<<<<<<<
@@ -3565,7 +3572,7 @@ static PyArrayObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_com
  * def _core_dist_query(tree, data, min_samples):
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->is_component), __pyx_n_s_nonzero); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 213; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->is_component), __pyx_n_s_nonzero); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 212; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3578,22 +3585,22 @@ static PyArrayObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_com
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 213; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 212; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 213; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 212; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 213; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 212; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 213; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 212; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":211
+  /* "hdbscan/_hdbscan_boruvka.pyx":210
  *         return self._data[x, 0]
  * 
  *     cdef np.ndarray[np.intp_t, ndim=1] components(self):             # <<<<<<<<<<<<<<
@@ -3614,7 +3621,7 @@ static PyArrayObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_com
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":215
+/* "hdbscan/_hdbscan_boruvka.pyx":214
  *         return self.is_component.nonzero()[0]
  * 
  * def _core_dist_query(tree, data, min_samples):             # <<<<<<<<<<<<<<
@@ -3656,16 +3663,16 @@ static PyObject *__pyx_pw_7hdbscan_16_hdbscan_boruvka_1_core_dist_query(PyObject
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_data)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_core_dist_query", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("_core_dist_query", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_min_samples)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_core_dist_query", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("_core_dist_query", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_core_dist_query") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_core_dist_query") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -3680,7 +3687,7 @@ static PyObject *__pyx_pw_7hdbscan_16_hdbscan_boruvka_1_core_dist_query(PyObject
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_core_dist_query", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("_core_dist_query", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("hdbscan._hdbscan_boruvka._core_dist_query", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3705,7 +3712,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka__core_dist_query(CYTHON_UN
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_core_dist_query", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":216
+  /* "hdbscan/_hdbscan_boruvka.pyx":215
  * 
  * def _core_dist_query(tree, data, min_samples):
  *     return tree.query(data, k=min_samples, dualtree=True, breadth_first=True)             # <<<<<<<<<<<<<<
@@ -3713,19 +3720,19 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka__core_dist_query(CYTHON_UN
  * cdef class KDTreeBoruvkaAlgorithm (object):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_n_s_query); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_n_s_query); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_data);
   __Pyx_GIVEREF(__pyx_v_data);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_data);
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_k, __pyx_v_min_samples) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dualtree, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_breadth_first, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_k, __pyx_v_min_samples) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dualtree, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_breadth_first, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -3734,7 +3741,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka__core_dist_query(CYTHON_UN
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":215
+  /* "hdbscan/_hdbscan_boruvka.pyx":214
  *         return self.is_component.nonzero()[0]
  * 
  * def _core_dist_query(tree, data, min_samples):             # <<<<<<<<<<<<<<
@@ -3756,12 +3763,12 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka__core_dist_query(CYTHON_UN
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":293
+/* "hdbscan/_hdbscan_boruvka.pyx":298
  *     cdef np.ndarray candidate_distance_arr
  * 
- *     def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20, alpha=1.0, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20,             # <<<<<<<<<<<<<<
+ *                  alpha=1.0, approx_min_span_tree=False, **kwargs):
  * 
- *         self.core_dist_tree = tree
  */
 
 /* Python wrapper */
@@ -3772,6 +3779,7 @@ static int __pyx_pw_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1__init
   PyObject *__pyx_v_metric = 0;
   PyObject *__pyx_v_leaf_size = 0;
   PyObject *__pyx_v_alpha = 0;
+  PyObject *__pyx_v_approx_min_span_tree = 0;
   PyObject *__pyx_v_kwargs = 0;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -3782,16 +3790,26 @@ static int __pyx_pw_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1__init
   __pyx_v_kwargs = PyDict_New(); if (unlikely(!__pyx_v_kwargs)) return -1;
   __Pyx_GOTREF(__pyx_v_kwargs);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_tree,&__pyx_n_s_min_samples,&__pyx_n_s_metric,&__pyx_n_s_leaf_size,&__pyx_n_s_alpha,0};
-    PyObject* values[5] = {0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_tree,&__pyx_n_s_min_samples,&__pyx_n_s_metric,&__pyx_n_s_leaf_size,&__pyx_n_s_alpha,&__pyx_n_s_approx_min_span_tree,0};
+    PyObject* values[6] = {0,0,0,0,0,0};
     values[1] = ((PyObject *)__pyx_int_5);
     values[2] = ((PyObject *)__pyx_n_s_euclidean);
     values[3] = ((PyObject *)__pyx_int_20);
     values[4] = ((PyObject *)__pyx_float_1_0);
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":299
+ * 
+ *     def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20,
+ *                  alpha=1.0, approx_min_span_tree=False, **kwargs):             # <<<<<<<<<<<<<<
+ * 
+ *         self.core_dist_tree = tree
+ */
+    values[5] = ((PyObject *)Py_False);
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
         case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
         case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
@@ -3825,12 +3843,18 @@ static int __pyx_pw_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1__init
           PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_alpha);
           if (value) { values[4] = value; kw_args--; }
         }
+        case  5:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_approx_min_span_tree);
+          if (value) { values[5] = value; kw_args--; }
+        }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, pos_args, "__init__") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 293; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, pos_args, "__init__") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 298; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
         case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
         case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
@@ -3845,17 +3869,26 @@ static int __pyx_pw_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1__init
     __pyx_v_metric = values[2];
     __pyx_v_leaf_size = values[3];
     __pyx_v_alpha = values[4];
+    __pyx_v_approx_min_span_tree = values[5];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 5, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 293; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 6, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 298; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
   __Pyx_AddTraceback("hdbscan._hdbscan_boruvka.KDTreeBoruvkaAlgorithm.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init__(((struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self), __pyx_v_tree, __pyx_v_min_samples, __pyx_v_metric, __pyx_v_leaf_size, __pyx_v_alpha, __pyx_v_kwargs);
+  __pyx_r = __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init__(((struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self), __pyx_v_tree, __pyx_v_min_samples, __pyx_v_metric, __pyx_v_leaf_size, __pyx_v_alpha, __pyx_v_approx_min_span_tree, __pyx_v_kwargs);
+
+  /* "hdbscan/_hdbscan_boruvka.pyx":298
+ *     cdef np.ndarray candidate_distance_arr
+ * 
+ *     def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20,             # <<<<<<<<<<<<<<
+ *                  alpha=1.0, approx_min_span_tree=False, **kwargs):
+ * 
+ */
 
   /* function exit code */
   __Pyx_XDECREF(__pyx_v_kwargs);
@@ -3863,7 +3896,7 @@ static int __pyx_pw_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1__init
   return __pyx_r;
 }
 
-static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *__pyx_v_self, PyObject *__pyx_v_tree, PyObject *__pyx_v_min_samples, PyObject *__pyx_v_metric, PyObject *__pyx_v_leaf_size, PyObject *__pyx_v_alpha, PyObject *__pyx_v_kwargs) {
+static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *__pyx_v_self, PyObject *__pyx_v_tree, PyObject *__pyx_v_min_samples, PyObject *__pyx_v_metric, PyObject *__pyx_v_leaf_size, PyObject *__pyx_v_alpha, PyObject *__pyx_v_approx_min_span_tree, PyObject *__pyx_v_kwargs) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3875,27 +3908,28 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init_
   __Pyx_memviewslice __pyx_t_7 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __pyx_t_5numpy_intp_t __pyx_t_8;
   __pyx_t_5numpy_double_t __pyx_t_9;
-  Py_ssize_t __pyx_t_10;
-  PyObject *__pyx_t_11 = NULL;
-  __Pyx_memviewslice __pyx_t_12 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __pyx_t_5numpy_int8_t __pyx_t_10;
+  Py_ssize_t __pyx_t_11;
+  PyObject *__pyx_t_12 = NULL;
   __Pyx_memviewslice __pyx_t_13 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __pyx_t_5numpy_double_t *__pyx_t_14;
-  struct __pyx_array_obj *__pyx_t_15 = NULL;
-  __Pyx_memviewslice __pyx_t_16 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __pyx_t_5numpy_intp_t *__pyx_t_17;
-  Py_ssize_t __pyx_t_18;
+  __Pyx_memviewslice __pyx_t_14 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __pyx_t_5numpy_double_t *__pyx_t_15;
+  struct __pyx_array_obj *__pyx_t_16 = NULL;
+  __Pyx_memviewslice __pyx_t_17 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __pyx_t_5numpy_intp_t *__pyx_t_18;
   Py_ssize_t __pyx_t_19;
   Py_ssize_t __pyx_t_20;
   Py_ssize_t __pyx_t_21;
   Py_ssize_t __pyx_t_22;
   Py_ssize_t __pyx_t_23;
+  Py_ssize_t __pyx_t_24;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":295
- *     def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20, alpha=1.0, **kwargs):
+  /* "hdbscan/_hdbscan_boruvka.pyx":301
+ *                  alpha=1.0, approx_min_span_tree=False, **kwargs):
  * 
  *         self.core_dist_tree = tree             # <<<<<<<<<<<<<<
  *         self.tree = KDTree(tree.data, metric=metric, leaf_size=leaf_size)
@@ -3907,27 +3941,27 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init_
   __Pyx_DECREF(__pyx_v_self->core_dist_tree);
   __pyx_v_self->core_dist_tree = __pyx_v_tree;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":296
+  /* "hdbscan/_hdbscan_boruvka.pyx":302
  * 
  *         self.core_dist_tree = tree
  *         self.tree = KDTree(tree.data, metric=metric, leaf_size=leaf_size)             # <<<<<<<<<<<<<<
  *         self._data = np.array(self.tree.data)
  *         self._raw_data = self.tree.data
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_KDTree); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_KDTree); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 302; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_n_s_data); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_n_s_data); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 302; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 302; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 302; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_metric, __pyx_v_metric) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_leaf_size, __pyx_v_leaf_size) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 296; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_metric, __pyx_v_metric) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 302; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_leaf_size, __pyx_v_leaf_size) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 302; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 302; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3938,19 +3972,19 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init_
   __pyx_v_self->tree = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":297
+  /* "hdbscan/_hdbscan_boruvka.pyx":303
  *         self.core_dist_tree = tree
  *         self.tree = KDTree(tree.data, metric=metric, leaf_size=leaf_size)
  *         self._data = np.array(self.tree.data)             # <<<<<<<<<<<<<<
  *         self._raw_data = self.tree.data
  *         self.node_bounds = self.tree.node_bounds
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 297; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 303; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 297; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 303; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 297; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 303; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -3963,180 +3997,190 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init_
     }
   }
   if (!__pyx_t_1) {
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 297; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 303; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GOTREF(__pyx_t_4);
   } else {
-    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 297; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 303; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1); __pyx_t_1 = NULL;
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 297; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 303; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 297; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 303; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_4);
   __Pyx_GOTREF(__pyx_v_self->_data);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->_data));
   __pyx_v_self->_data = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":298
+  /* "hdbscan/_hdbscan_boruvka.pyx":304
  *         self.tree = KDTree(tree.data, metric=metric, leaf_size=leaf_size)
  *         self._data = np.array(self.tree.data)
  *         self._raw_data = self.tree.data             # <<<<<<<<<<<<<<
  *         self.node_bounds = self.tree.node_bounds
  *         self.min_samples = min_samples
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 298; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 304; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_5numpy_double_t(__pyx_t_4);
-  if (unlikely(!__pyx_t_6.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 298; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_6.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 304; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->_raw_data, 0);
   __pyx_v_self->_raw_data = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":299
+  /* "hdbscan/_hdbscan_boruvka.pyx":305
  *         self._data = np.array(self.tree.data)
  *         self._raw_data = self.tree.data
  *         self.node_bounds = self.tree.node_bounds             # <<<<<<<<<<<<<<
  *         self.min_samples = min_samples
  *         self.alpha = alpha
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_bounds); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 299; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_bounds); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 305; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_d_d_dc_nn___pyx_t_5numpy_double_t(__pyx_t_4);
-  if (unlikely(!__pyx_t_7.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 299; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_7.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 305; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->node_bounds, 0);
   __pyx_v_self->node_bounds = __pyx_t_7;
   __pyx_t_7.memview = NULL;
   __pyx_t_7.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":300
+  /* "hdbscan/_hdbscan_boruvka.pyx":306
  *         self._raw_data = self.tree.data
  *         self.node_bounds = self.tree.node_bounds
  *         self.min_samples = min_samples             # <<<<<<<<<<<<<<
  *         self.alpha = alpha
- * 
+ *         self.approx_min_span_tree = approx_min_span_tree
  */
-  __pyx_t_8 = __Pyx_PyInt_As_Py_intptr_t(__pyx_v_min_samples); if (unlikely((__pyx_t_8 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 300; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyInt_As_Py_intptr_t(__pyx_v_min_samples); if (unlikely((__pyx_t_8 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 306; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_self->min_samples = __pyx_t_8;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":301
+  /* "hdbscan/_hdbscan_boruvka.pyx":307
  *         self.node_bounds = self.tree.node_bounds
  *         self.min_samples = min_samples
  *         self.alpha = alpha             # <<<<<<<<<<<<<<
+ *         self.approx_min_span_tree = approx_min_span_tree
+ * 
+ */
+  __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_v_alpha); if (unlikely((__pyx_t_9 == (npy_double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 307; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_v_self->alpha = __pyx_t_9;
+
+  /* "hdbscan/_hdbscan_boruvka.pyx":308
+ *         self.min_samples = min_samples
+ *         self.alpha = alpha
+ *         self.approx_min_span_tree = approx_min_span_tree             # <<<<<<<<<<<<<<
  * 
  *         self.num_points = self.tree.data.shape[0]
  */
-  __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_v_alpha); if (unlikely((__pyx_t_9 == (npy_double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 301; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_v_self->alpha = __pyx_t_9;
+  __pyx_t_10 = __Pyx_PyInt_As_npy_int8(__pyx_v_approx_min_span_tree); if (unlikely((__pyx_t_10 == (npy_int8)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 308; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_v_self->approx_min_span_tree = __pyx_t_10;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":303
- *         self.alpha = alpha
+  /* "hdbscan/_hdbscan_boruvka.pyx":310
+ *         self.approx_min_span_tree = approx_min_span_tree
  * 
  *         self.num_points = self.tree.data.shape[0]             # <<<<<<<<<<<<<<
  *         self.num_features = self.tree.data.shape[1]
  *         self.num_nodes = self.tree.node_data.shape[0]
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 303; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 310; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 303; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 310; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 303; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 310; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_8 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_8 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 303; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_8 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 310; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_self->num_points = __pyx_t_8;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":304
+  /* "hdbscan/_hdbscan_boruvka.pyx":311
  * 
  *         self.num_points = self.tree.data.shape[0]
  *         self.num_features = self.tree.data.shape[1]             # <<<<<<<<<<<<<<
  *         self.num_nodes = self.tree.node_data.shape[0]
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 304; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 304; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 304; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_8 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_8 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 304; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_8 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_self->num_features = __pyx_t_8;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":305
+  /* "hdbscan/_hdbscan_boruvka.pyx":312
  *         self.num_points = self.tree.data.shape[0]
  *         self.num_features = self.tree.data.shape[1]
  *         self.num_nodes = self.tree.node_data.shape[0]             # <<<<<<<<<<<<<<
  * 
  *         self.dist = dist_metrics.DistanceMetric.get_metric(metric, **kwargs)
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 305; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 305; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 305; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_8 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_8 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 305; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_8 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_self->num_nodes = __pyx_t_8;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":307
+  /* "hdbscan/_hdbscan_boruvka.pyx":314
  *         self.num_nodes = self.tree.node_data.shape[0]
  * 
  *         self.dist = dist_metrics.DistanceMetric.get_metric(metric, **kwargs)             # <<<<<<<<<<<<<<
  * 
  *         self.components = np.arange(self.num_points)
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)((PyObject*)__pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric)), __pyx_n_s_get_metric); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 307; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)((PyObject*)__pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric)), __pyx_n_s_get_metric); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 307; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_metric);
   __Pyx_GIVEREF(__pyx_v_metric);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_metric);
   __pyx_t_5 = __pyx_v_kwargs;
   __Pyx_INCREF(__pyx_t_5);
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 307; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 307; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_self->dist);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->dist));
   __pyx_v_self->dist = ((struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":309
+  /* "hdbscan/_hdbscan_boruvka.pyx":316
  *         self.dist = dist_metrics.DistanceMetric.get_metric(metric, **kwargs)
  * 
  *         self.components = np.arange(self.num_points)             # <<<<<<<<<<<<<<
  *         self.bounds_arr = np.empty(self.num_nodes, np.double)
  *         self.component_of_point_arr = np.empty(self.num_points, dtype=np.intp)
  */
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 309; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_arange); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 309; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_arange); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 309; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_4 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -4149,49 +4193,49 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init_
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 309; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_1 = PyTuple_New(1+1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 309; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyTuple_New(1+1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_4); __pyx_t_4 = NULL;
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_1, 0+1, __pyx_t_5);
     __pyx_t_5 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 309; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 309; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_self->components);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->components));
   __pyx_v_self->components = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":310
+  /* "hdbscan/_hdbscan_boruvka.pyx":317
  * 
  *         self.components = np.arange(self.num_points)
  *         self.bounds_arr = np.empty(self.num_nodes, np.double)             # <<<<<<<<<<<<<<
  *         self.component_of_point_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.component_of_node_arr = np.empty(self.num_nodes, dtype=np.intp)
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 310; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 317; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 310; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 317; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_nodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 310; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_nodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 317; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 310; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 317; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_double); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 310; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_double); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 317; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
-  __pyx_t_10 = 0;
+  __pyx_t_11 = 0;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
     __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_1);
     if (likely(__pyx_t_5)) {
@@ -4199,246 +4243,246 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init_
       __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_1, function);
-      __pyx_t_10 = 1;
+      __pyx_t_11 = 1;
     }
   }
-  __pyx_t_11 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 310; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_12 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 317; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_12);
   if (__pyx_t_5) {
-    __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_5); __pyx_t_5 = NULL;
+    __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_5); __pyx_t_5 = NULL;
   }
   __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_11, 0+__pyx_t_10, __pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_12, 0+__pyx_t_11, __pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_11, 1+__pyx_t_10, __pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_12, 1+__pyx_t_11, __pyx_t_4);
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_11, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 310; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_12, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 317; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 310; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 317; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_self->bounds_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->bounds_arr));
   __pyx_v_self->bounds_arr = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":311
+  /* "hdbscan/_hdbscan_boruvka.pyx":318
  *         self.components = np.arange(self.num_points)
  *         self.bounds_arr = np.empty(self.num_nodes, np.double)
  *         self.component_of_point_arr = np.empty(self.num_points, dtype=np.intp)             # <<<<<<<<<<<<<<
  *         self.component_of_node_arr = np.empty(self.num_nodes, dtype=np.intp)
  *         self.candidate_neighbor_arr = np.empty(self.num_points, dtype=np.intp)
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_12 = PyTuple_New(1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_12);
   __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_intp); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_intp); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_11, __pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_12, __pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 311; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->component_of_point_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->component_of_point_arr));
   __pyx_v_self->component_of_point_arr = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":312
+  /* "hdbscan/_hdbscan_boruvka.pyx":319
  *         self.bounds_arr = np.empty(self.num_nodes, np.double)
  *         self.component_of_point_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.component_of_node_arr = np.empty(self.num_nodes, dtype=np.intp)             # <<<<<<<<<<<<<<
  *         self.candidate_neighbor_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.candidate_point_arr = np.empty(self.num_points, dtype=np.intp)
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_nodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_nodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_12 = PyTuple_New(1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_12);
   __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_intp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_intp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_11, __pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_12, __pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 312; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_4);
   __Pyx_GOTREF(__pyx_v_self->component_of_node_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->component_of_node_arr));
   __pyx_v_self->component_of_node_arr = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":313
+  /* "hdbscan/_hdbscan_boruvka.pyx":320
  *         self.component_of_point_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.component_of_node_arr = np.empty(self.num_nodes, dtype=np.intp)
  *         self.candidate_neighbor_arr = np.empty(self.num_points, dtype=np.intp)             # <<<<<<<<<<<<<<
  *         self.candidate_point_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.candidate_distance_arr = np.empty(self.num_points, dtype=np.double)
  */
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_empty); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_empty); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_12 = PyTuple_New(1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_12);
   __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_intp); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_intp); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_11, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_12, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->candidate_neighbor_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->candidate_neighbor_arr));
   __pyx_v_self->candidate_neighbor_arr = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":314
+  /* "hdbscan/_hdbscan_boruvka.pyx":321
  *         self.component_of_node_arr = np.empty(self.num_nodes, dtype=np.intp)
  *         self.candidate_neighbor_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.candidate_point_arr = np.empty(self.num_points, dtype=np.intp)             # <<<<<<<<<<<<<<
  *         self.candidate_distance_arr = np.empty(self.num_points, dtype=np.double)
  *         self.component_union_find = BoruvkaUnionFind(self.num_points)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_12 = PyTuple_New(1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_12);
   __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_intp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_intp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_11, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_12, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 314; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_self->candidate_point_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->candidate_point_arr));
   __pyx_v_self->candidate_point_arr = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":315
+  /* "hdbscan/_hdbscan_boruvka.pyx":322
  *         self.candidate_neighbor_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.candidate_point_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.candidate_distance_arr = np.empty(self.num_points, dtype=np.double)             # <<<<<<<<<<<<<<
  *         self.component_union_find = BoruvkaUnionFind(self.num_points)
  * 
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 315; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 322; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 315; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 322; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 315; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 322; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 315; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_12 = PyTuple_New(1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 322; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_12);
   __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 315; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 322; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 315; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 322; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_double); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 315; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_double); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 322; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 315; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 322; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_11, __pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 315; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_12, __pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 322; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 315; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 322; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->candidate_distance_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->candidate_distance_arr));
   __pyx_v_self->candidate_distance_arr = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":316
+  /* "hdbscan/_hdbscan_boruvka.pyx":323
  *         self.candidate_point_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.candidate_distance_arr = np.empty(self.num_points, dtype=np.double)
  *         self.component_union_find = BoruvkaUnionFind(self.num_points)             # <<<<<<<<<<<<<<
  * 
  *         self.edges = np.empty((self.num_points - 1, 3))
  */
-  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 323; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 323; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)__pyx_ptype_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)__pyx_ptype_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 323; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_GIVEREF(__pyx_t_3);
@@ -4447,21 +4491,21 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init_
   __pyx_v_self->component_union_find = ((struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":318
+  /* "hdbscan/_hdbscan_boruvka.pyx":325
  *         self.component_union_find = BoruvkaUnionFind(self.num_points)
  * 
  *         self.edges = np.empty((self.num_points - 1, 3))             # <<<<<<<<<<<<<<
  *         self.num_edges = 0
  * 
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 325; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 325; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_12);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_long((__pyx_v_self->num_points - 1)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_From_long((__pyx_v_self->num_points - 1)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 325; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 325; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
@@ -4470,39 +4514,39 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init_
   PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_int_3);
   __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_11))) {
-    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_11);
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_12))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_12);
     if (likely(__pyx_t_2)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_12);
       __Pyx_INCREF(__pyx_t_2);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_11, function);
+      __Pyx_DECREF_SET(__pyx_t_12, function);
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 325; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GOTREF(__pyx_t_3);
   } else {
-    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 325; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 325; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 318; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 325; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->edges);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->edges));
   __pyx_v_self->edges = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":319
+  /* "hdbscan/_hdbscan_boruvka.pyx":326
  * 
  *         self.edges = np.empty((self.num_points - 1, 3))
  *         self.num_edges = 0             # <<<<<<<<<<<<<<
@@ -4511,318 +4555,318 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init_
  */
   __pyx_v_self->num_edges = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":321
+  /* "hdbscan/_hdbscan_boruvka.pyx":328
  *         self.num_edges = 0
  * 
  *         self.idx_array = self.tree.idx_array             # <<<<<<<<<<<<<<
  *         self.node_data = self.tree.node_data
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_idx_array); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_idx_array); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 328; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_t_3);
-  if (unlikely(!__pyx_t_12.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_13 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_t_3);
+  if (unlikely(!__pyx_t_13.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 328; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->idx_array, 0);
-  __pyx_v_self->idx_array = __pyx_t_12;
-  __pyx_t_12.memview = NULL;
-  __pyx_t_12.data = NULL;
+  __pyx_v_self->idx_array = __pyx_t_13;
+  __pyx_t_13.memview = NULL;
+  __pyx_t_13.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":322
+  /* "hdbscan/_hdbscan_boruvka.pyx":329
  * 
  *         self.idx_array = self.tree.idx_array
  *         self.node_data = self.tree.node_data             # <<<<<<<<<<<<<<
  * 
  *         self.bounds = (<np.double_t[:self.num_nodes:1]> (<np.double_t *> self.bounds_arr.data))
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 322; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 329; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_13 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t(__pyx_t_3);
-  if (unlikely(!__pyx_t_13.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 322; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t(__pyx_t_3);
+  if (unlikely(!__pyx_t_14.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 329; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->node_data, 0);
-  __pyx_v_self->node_data = __pyx_t_13;
-  __pyx_t_13.memview = NULL;
-  __pyx_t_13.data = NULL;
+  __pyx_v_self->node_data = __pyx_t_14;
+  __pyx_t_14.memview = NULL;
+  __pyx_t_14.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":324
+  /* "hdbscan/_hdbscan_boruvka.pyx":331
  *         self.node_data = self.tree.node_data
  * 
  *         self.bounds = (<np.double_t[:self.num_nodes:1]> (<np.double_t *> self.bounds_arr.data))             # <<<<<<<<<<<<<<
  *         self.component_of_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.component_of_point_arr.data))
  *         self.component_of_node = (<np.intp_t[:self.num_nodes:1]> (<np.intp_t *> self.component_of_node_arr.data))
  */
-  __pyx_t_14 = ((__pyx_t_5numpy_double_t *)__pyx_v_self->bounds_arr->data);
-  if (!__pyx_t_14) {
+  __pyx_t_15 = ((__pyx_t_5numpy_double_t *)__pyx_v_self->bounds_arr->data);
+  if (!__pyx_t_15) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 324; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 331; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_11 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t);
+  __pyx_t_12 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t);
   __pyx_t_3 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_nodes));
-  if (unlikely(!__pyx_t_11 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_11))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 324; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_11);
+  if (unlikely(!__pyx_t_12 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_12))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 331; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_12);
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_15 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_11), (char *) "fortran", (char *) __pyx_t_14);
-  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 324; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_15);
+  __pyx_t_16 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_12), (char *) "fortran", (char *) __pyx_t_15);
+  if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 331; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_16);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_16 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(((PyObject *)__pyx_t_15));
-  if (unlikely(!__pyx_t_16.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 324; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  __pyx_t_17 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(((PyObject *)__pyx_t_16));
+  if (unlikely(!__pyx_t_17.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 331; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_16)); __pyx_t_16 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->bounds, 0);
-  __pyx_v_self->bounds = __pyx_t_16;
-  __pyx_t_16.memview = NULL;
-  __pyx_t_16.data = NULL;
+  __pyx_v_self->bounds = __pyx_t_17;
+  __pyx_t_17.memview = NULL;
+  __pyx_t_17.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":325
+  /* "hdbscan/_hdbscan_boruvka.pyx":332
  * 
  *         self.bounds = (<np.double_t[:self.num_nodes:1]> (<np.double_t *> self.bounds_arr.data))
  *         self.component_of_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.component_of_point_arr.data))             # <<<<<<<<<<<<<<
  *         self.component_of_node = (<np.intp_t[:self.num_nodes:1]> (<np.intp_t *> self.component_of_node_arr.data))
  *         self.candidate_neighbor = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_neighbor_arr.data))
  */
-  __pyx_t_17 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->component_of_point_arr->data);
-  if (!__pyx_t_17) {
+  __pyx_t_18 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->component_of_point_arr->data);
+  if (!__pyx_t_18) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 325; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 332; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_3 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
-  __pyx_t_11 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
-  if (unlikely(!__pyx_t_3 || !__pyx_t_11 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 325; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_12 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
+  if (unlikely(!__pyx_t_3 || !__pyx_t_12 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 332; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_15 = __pyx_array_new(__pyx_t_11, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "fortran", (char *) __pyx_t_17);
-  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 325; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_15);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __Pyx_GOTREF(__pyx_t_12);
+  __pyx_t_16 = __pyx_array_new(__pyx_t_12, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "fortran", (char *) __pyx_t_18);
+  if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 332; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_16);
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_15));
-  if (unlikely(!__pyx_t_12.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 325; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
+  __pyx_t_13 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_16));
+  if (unlikely(!__pyx_t_13.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 332; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_16)); __pyx_t_16 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->component_of_point, 0);
-  __pyx_v_self->component_of_point = __pyx_t_12;
-  __pyx_t_12.memview = NULL;
-  __pyx_t_12.data = NULL;
+  __pyx_v_self->component_of_point = __pyx_t_13;
+  __pyx_t_13.memview = NULL;
+  __pyx_t_13.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":326
+  /* "hdbscan/_hdbscan_boruvka.pyx":333
  *         self.bounds = (<np.double_t[:self.num_nodes:1]> (<np.double_t *> self.bounds_arr.data))
  *         self.component_of_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.component_of_point_arr.data))
  *         self.component_of_node = (<np.intp_t[:self.num_nodes:1]> (<np.intp_t *> self.component_of_node_arr.data))             # <<<<<<<<<<<<<<
  *         self.candidate_neighbor = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_neighbor_arr.data))
  *         self.candidate_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_point_arr.data))
  */
-  __pyx_t_17 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->component_of_node_arr->data);
-  if (!__pyx_t_17) {
+  __pyx_t_18 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->component_of_node_arr->data);
+  if (!__pyx_t_18) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 326; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 333; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_11 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
+  __pyx_t_12 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
   __pyx_t_3 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_nodes));
-  if (unlikely(!__pyx_t_11 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_11))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 326; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_11);
+  if (unlikely(!__pyx_t_12 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_12))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 333; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_12);
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_15 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_11), (char *) "fortran", (char *) __pyx_t_17);
-  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 326; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_15);
+  __pyx_t_16 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_12), (char *) "fortran", (char *) __pyx_t_18);
+  if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 333; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_16);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_15));
-  if (unlikely(!__pyx_t_12.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 326; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  __pyx_t_13 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_16));
+  if (unlikely(!__pyx_t_13.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 333; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_16)); __pyx_t_16 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->component_of_node, 0);
-  __pyx_v_self->component_of_node = __pyx_t_12;
-  __pyx_t_12.memview = NULL;
-  __pyx_t_12.data = NULL;
+  __pyx_v_self->component_of_node = __pyx_t_13;
+  __pyx_t_13.memview = NULL;
+  __pyx_t_13.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":327
+  /* "hdbscan/_hdbscan_boruvka.pyx":334
  *         self.component_of_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.component_of_point_arr.data))
  *         self.component_of_node = (<np.intp_t[:self.num_nodes:1]> (<np.intp_t *> self.component_of_node_arr.data))
  *         self.candidate_neighbor = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_neighbor_arr.data))             # <<<<<<<<<<<<<<
  *         self.candidate_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_point_arr.data))
  *         self.candidate_distance = (<np.double_t[:self.num_points:1]> (<np.double_t *> self.candidate_distance_arr.data))
  */
-  __pyx_t_17 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->candidate_neighbor_arr->data);
-  if (!__pyx_t_17) {
+  __pyx_t_18 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->candidate_neighbor_arr->data);
+  if (!__pyx_t_18) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 327; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 334; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_3 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
-  __pyx_t_11 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
-  if (unlikely(!__pyx_t_3 || !__pyx_t_11 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 327; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_12 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
+  if (unlikely(!__pyx_t_3 || !__pyx_t_12 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 334; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_15 = __pyx_array_new(__pyx_t_11, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "fortran", (char *) __pyx_t_17);
-  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 327; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_15);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __Pyx_GOTREF(__pyx_t_12);
+  __pyx_t_16 = __pyx_array_new(__pyx_t_12, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "fortran", (char *) __pyx_t_18);
+  if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 334; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_16);
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_15));
-  if (unlikely(!__pyx_t_12.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 327; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
+  __pyx_t_13 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_16));
+  if (unlikely(!__pyx_t_13.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 334; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_16)); __pyx_t_16 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->candidate_neighbor, 0);
-  __pyx_v_self->candidate_neighbor = __pyx_t_12;
-  __pyx_t_12.memview = NULL;
-  __pyx_t_12.data = NULL;
+  __pyx_v_self->candidate_neighbor = __pyx_t_13;
+  __pyx_t_13.memview = NULL;
+  __pyx_t_13.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":328
+  /* "hdbscan/_hdbscan_boruvka.pyx":335
  *         self.component_of_node = (<np.intp_t[:self.num_nodes:1]> (<np.intp_t *> self.component_of_node_arr.data))
  *         self.candidate_neighbor = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_neighbor_arr.data))
  *         self.candidate_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_point_arr.data))             # <<<<<<<<<<<<<<
  *         self.candidate_distance = (<np.double_t[:self.num_points:1]> (<np.double_t *> self.candidate_distance_arr.data))
  * 
  */
-  __pyx_t_17 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->candidate_point_arr->data);
-  if (!__pyx_t_17) {
+  __pyx_t_18 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->candidate_point_arr->data);
+  if (!__pyx_t_18) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 328; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 335; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_11 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
+  __pyx_t_12 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
   __pyx_t_3 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
-  if (unlikely(!__pyx_t_11 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_11))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 328; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_11);
+  if (unlikely(!__pyx_t_12 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_12))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 335; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_12);
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_15 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_11), (char *) "fortran", (char *) __pyx_t_17);
-  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 328; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_15);
+  __pyx_t_16 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_12), (char *) "fortran", (char *) __pyx_t_18);
+  if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 335; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_16);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_15));
-  if (unlikely(!__pyx_t_12.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 328; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  __pyx_t_13 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_16));
+  if (unlikely(!__pyx_t_13.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 335; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_16)); __pyx_t_16 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->candidate_point, 0);
-  __pyx_v_self->candidate_point = __pyx_t_12;
-  __pyx_t_12.memview = NULL;
-  __pyx_t_12.data = NULL;
+  __pyx_v_self->candidate_point = __pyx_t_13;
+  __pyx_t_13.memview = NULL;
+  __pyx_t_13.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":329
+  /* "hdbscan/_hdbscan_boruvka.pyx":336
  *         self.candidate_neighbor = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_neighbor_arr.data))
  *         self.candidate_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_point_arr.data))
  *         self.candidate_distance = (<np.double_t[:self.num_points:1]> (<np.double_t *> self.candidate_distance_arr.data))             # <<<<<<<<<<<<<<
  * 
  *         #self._centroid_distances_arr = self.dist.pairwise(self.tree.node_bounds[0])
  */
-  __pyx_t_14 = ((__pyx_t_5numpy_double_t *)__pyx_v_self->candidate_distance_arr->data);
-  if (!__pyx_t_14) {
+  __pyx_t_15 = ((__pyx_t_5numpy_double_t *)__pyx_v_self->candidate_distance_arr->data);
+  if (!__pyx_t_15) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 329; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 336; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_3 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t);
-  __pyx_t_11 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
-  if (unlikely(!__pyx_t_3 || !__pyx_t_11 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 329; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_12 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
+  if (unlikely(!__pyx_t_3 || !__pyx_t_12 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 336; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_15 = __pyx_array_new(__pyx_t_11, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "fortran", (char *) __pyx_t_14);
-  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 329; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_15);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __Pyx_GOTREF(__pyx_t_12);
+  __pyx_t_16 = __pyx_array_new(__pyx_t_12, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "fortran", (char *) __pyx_t_15);
+  if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 336; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_16);
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_16 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(((PyObject *)__pyx_t_15));
-  if (unlikely(!__pyx_t_16.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 329; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
+  __pyx_t_17 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(((PyObject *)__pyx_t_16));
+  if (unlikely(!__pyx_t_17.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 336; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_16)); __pyx_t_16 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->candidate_distance, 0);
-  __pyx_v_self->candidate_distance = __pyx_t_16;
-  __pyx_t_16.memview = NULL;
-  __pyx_t_16.data = NULL;
+  __pyx_v_self->candidate_distance = __pyx_t_17;
+  __pyx_t_17.memview = NULL;
+  __pyx_t_17.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":334
+  /* "hdbscan/_hdbscan_boruvka.pyx":341
  *         #self.centroid_distances = (<np.double_t [:self.num_nodes, :self.num_nodes:1]> (<np.double_t *> self._centroid_distances_arr.data))
  * 
  *         self._initialize_components()             # <<<<<<<<<<<<<<
  *         self._compute_bounds()
  * 
  */
-  __pyx_t_3 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->_initialize_components(__pyx_v_self); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 334; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->_initialize_components(__pyx_v_self); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 341; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":335
+  /* "hdbscan/_hdbscan_boruvka.pyx":342
  * 
  *         self._initialize_components()
  *         self._compute_bounds()             # <<<<<<<<<<<<<<
  * 
  *         # Set up fast pointer access to arrays
  */
-  __pyx_t_3 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->_compute_bounds(__pyx_v_self); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 335; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->_compute_bounds(__pyx_v_self); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 342; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":338
+  /* "hdbscan/_hdbscan_boruvka.pyx":345
  * 
  *         # Set up fast pointer access to arrays
  *         self.component_of_point_ptr = <np.intp_t *> &self.component_of_point[0]             # <<<<<<<<<<<<<<
  *         self.component_of_node_ptr = <np.intp_t *> &self.component_of_node[0]
  *         self.candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]
  */
-  __pyx_t_10 = 0;
-  __pyx_v_self->component_of_point_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_point.data) + __pyx_t_10)) )))));
+  __pyx_t_11 = 0;
+  __pyx_v_self->component_of_point_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_point.data) + __pyx_t_11)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":339
+  /* "hdbscan/_hdbscan_boruvka.pyx":346
  *         # Set up fast pointer access to arrays
  *         self.component_of_point_ptr = <np.intp_t *> &self.component_of_point[0]
  *         self.component_of_node_ptr = <np.intp_t *> &self.component_of_node[0]             # <<<<<<<<<<<<<<
  *         self.candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]
  *         self.candidate_neighbor_ptr = <np.intp_t *> &self.candidate_neighbor[0]
  */
-  __pyx_t_18 = 0;
-  __pyx_v_self->component_of_node_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_node.data) + __pyx_t_18)) )))));
+  __pyx_t_19 = 0;
+  __pyx_v_self->component_of_node_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_node.data) + __pyx_t_19)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":340
+  /* "hdbscan/_hdbscan_boruvka.pyx":347
  *         self.component_of_point_ptr = <np.intp_t *> &self.component_of_point[0]
  *         self.component_of_node_ptr = <np.intp_t *> &self.component_of_node[0]
  *         self.candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]             # <<<<<<<<<<<<<<
  *         self.candidate_neighbor_ptr = <np.intp_t *> &self.candidate_neighbor[0]
  *         self.candidate_point_ptr = <np.intp_t *> &self.candidate_point[0]
  */
-  __pyx_t_19 = 0;
-  __pyx_v_self->candidate_distance_ptr = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_19)) )))));
+  __pyx_t_20 = 0;
+  __pyx_v_self->candidate_distance_ptr = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_20)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":341
+  /* "hdbscan/_hdbscan_boruvka.pyx":348
  *         self.component_of_node_ptr = <np.intp_t *> &self.component_of_node[0]
  *         self.candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]
  *         self.candidate_neighbor_ptr = <np.intp_t *> &self.candidate_neighbor[0]             # <<<<<<<<<<<<<<
  *         self.candidate_point_ptr = <np.intp_t *> &self.candidate_point[0]
  *         self.core_distance_ptr = <np.double_t *> &self.core_distance[0]
  */
-  __pyx_t_20 = 0;
-  __pyx_v_self->candidate_neighbor_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_neighbor.data) + __pyx_t_20)) )))));
+  __pyx_t_21 = 0;
+  __pyx_v_self->candidate_neighbor_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_neighbor.data) + __pyx_t_21)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":342
+  /* "hdbscan/_hdbscan_boruvka.pyx":349
  *         self.candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]
  *         self.candidate_neighbor_ptr = <np.intp_t *> &self.candidate_neighbor[0]
  *         self.candidate_point_ptr = <np.intp_t *> &self.candidate_point[0]             # <<<<<<<<<<<<<<
  *         self.core_distance_ptr = <np.double_t *> &self.core_distance[0]
  *         self.bounds_ptr = <np.double_t *> &self.bounds[0]
  */
-  __pyx_t_21 = 0;
-  __pyx_v_self->candidate_point_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_point.data) + __pyx_t_21)) )))));
+  __pyx_t_22 = 0;
+  __pyx_v_self->candidate_point_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_point.data) + __pyx_t_22)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":343
+  /* "hdbscan/_hdbscan_boruvka.pyx":350
  *         self.candidate_neighbor_ptr = <np.intp_t *> &self.candidate_neighbor[0]
  *         self.candidate_point_ptr = <np.intp_t *> &self.candidate_point[0]
  *         self.core_distance_ptr = <np.double_t *> &self.core_distance[0]             # <<<<<<<<<<<<<<
  *         self.bounds_ptr = <np.double_t *> &self.bounds[0]
  * 
  */
-  __pyx_t_22 = 0;
-  __pyx_v_self->core_distance_ptr = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->core_distance.data) + __pyx_t_22)) )))));
+  __pyx_t_23 = 0;
+  __pyx_v_self->core_distance_ptr = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->core_distance.data) + __pyx_t_23)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":344
+  /* "hdbscan/_hdbscan_boruvka.pyx":351
  *         self.candidate_point_ptr = <np.intp_t *> &self.candidate_point[0]
  *         self.core_distance_ptr = <np.double_t *> &self.core_distance[0]
  *         self.bounds_ptr = <np.double_t *> &self.bounds[0]             # <<<<<<<<<<<<<<
  * 
  *     cdef _compute_bounds(self):
  */
-  __pyx_t_23 = 0;
-  __pyx_v_self->bounds_ptr = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->bounds.data) + __pyx_t_23)) )))));
+  __pyx_t_24 = 0;
+  __pyx_v_self->bounds_ptr = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->bounds.data) + __pyx_t_24)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":293
+  /* "hdbscan/_hdbscan_boruvka.pyx":298
  *     cdef np.ndarray candidate_distance_arr
  * 
- *     def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20, alpha=1.0, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20,             # <<<<<<<<<<<<<<
+ *                  alpha=1.0, approx_min_span_tree=False, **kwargs):
  * 
- *         self.core_dist_tree = tree
  */
 
   /* function exit code */
@@ -4836,11 +4880,11 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init_
   __Pyx_XDECREF(__pyx_t_5);
   __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_t_7, 1);
-  __Pyx_XDECREF(__pyx_t_11);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
+  __Pyx_XDECREF(__pyx_t_12);
   __PYX_XDEC_MEMVIEW(&__pyx_t_13, 1);
-  __Pyx_XDECREF(((PyObject *)__pyx_t_15));
-  __PYX_XDEC_MEMVIEW(&__pyx_t_16, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_14, 1);
+  __Pyx_XDECREF(((PyObject *)__pyx_t_16));
+  __PYX_XDEC_MEMVIEW(&__pyx_t_17, 1);
   __Pyx_AddTraceback("hdbscan._hdbscan_boruvka.KDTreeBoruvkaAlgorithm.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
@@ -4849,12 +4893,12 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm___init_
 }
 static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_15_compute_bounds_2generator(__pyx_GeneratorObject *__pyx_generator, PyObject *__pyx_sent_value); /* proto */
 
-/* "hdbscan/_hdbscan_boruvka.pyx":365
+/* "hdbscan/_hdbscan_boruvka.pyx":374
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
- *                                  (self.core_dist_tree, points, self.min_samples)             # <<<<<<<<<<<<<<
- *                                   for points in datasets)])
- *         else:
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+ *                                  (self.core_dist_tree, points, self.min_samples + 1)             # <<<<<<<<<<<<<<
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
  */
 
 static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_15_compute_bounds_genexpr(PyObject *__pyx_self) {
@@ -4875,7 +4919,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
   __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_GeneratorObject *gen = __Pyx_Generator_New((__pyx_generator_body_t) __pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_15_compute_bounds_2generator, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_KDTreeBoruvkaAlgorithm__compute); if (unlikely(!gen)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 365; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_GeneratorObject *gen = __Pyx_Generator_New((__pyx_generator_body_t) __pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_15_compute_bounds_2generator, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_KDTreeBoruvkaAlgorithm__compute); if (unlikely(!gen)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -4916,27 +4960,27 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 365; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":366
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
- *                                  (self.core_dist_tree, points, self.min_samples)
- *                                   for points in datasets)])             # <<<<<<<<<<<<<<
- *         else:
- *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
+  /* "hdbscan/_hdbscan_boruvka.pyx":375
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+ *                                  (self.core_dist_tree, points, self.min_samples + 1)
+ *                                   for points in datasets)             # <<<<<<<<<<<<<<
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
+ *             knn_indices = np.vstack([x[1] for x in knn_data])
  */
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_datasets)) { __Pyx_RaiseClosureNameError("datasets"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 366; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_datasets)) { __Pyx_RaiseClosureNameError("datasets"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 375; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
   if (unlikely(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_datasets == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 366; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 375; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_1 = __pyx_cur_scope->__pyx_outer_scope->__pyx_v_datasets; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 366; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 375; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 366; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 375; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_points);
@@ -4944,41 +4988,41 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
     __Pyx_GIVEREF(__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":364
+    /* "hdbscan/_hdbscan_boruvka.pyx":373
  *                         ]
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)             # <<<<<<<<<<<<<<
- *                                  (self.core_dist_tree, points, self.min_samples)
- *                                   for points in datasets)])
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)             # <<<<<<<<<<<<<<
+ *                                  (self.core_dist_tree, points, self.min_samples + 1)
+ *                                   for points in datasets)
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_delayed); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_delayed); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_core_dist_query); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_core_dist_query); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5);
     __pyx_t_5 = 0;
-    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_check_pickle, Py_False) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_check_pickle, Py_False) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":365
+    /* "hdbscan/_hdbscan_boruvka.pyx":374
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
- *                                  (self.core_dist_tree, points, self.min_samples)             # <<<<<<<<<<<<<<
- *                                   for points in datasets)])
- *         else:
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+ *                                  (self.core_dist_tree, points, self.min_samples + 1)             # <<<<<<<<<<<<<<
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
  */
-    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 365; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
-    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 365; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
-    __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self->min_samples); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 365; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+    __pyx_t_5 = __Pyx_PyInt_From_long((__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self->min_samples + 1)); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_6 = NULL;
     __pyx_t_8 = 0;
@@ -4992,7 +5036,7 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
         __pyx_t_8 = 1;
       }
     }
-    __pyx_t_4 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 365; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     if (__pyx_t_6) {
       __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -5006,7 +5050,7 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_4, 2+__pyx_t_8, __pyx_t_5);
     __pyx_t_5 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 365; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -5025,24 +5069,24 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
     __pyx_cur_scope->__pyx_t_0 = 0;
     __Pyx_XGOTREF(__pyx_t_1);
     __pyx_t_2 = __pyx_cur_scope->__pyx_t_1;
-    if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 365; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":366
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
- *                                  (self.core_dist_tree, points, self.min_samples)
- *                                   for points in datasets)])             # <<<<<<<<<<<<<<
- *         else:
- *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
+    /* "hdbscan/_hdbscan_boruvka.pyx":375
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+ *                                  (self.core_dist_tree, points, self.min_samples + 1)
+ *                                   for points in datasets)             # <<<<<<<<<<<<<<
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
+ *             knn_indices = np.vstack([x[1] for x in knn_data])
  */
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":365
+  /* "hdbscan/_hdbscan_boruvka.pyx":374
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
- *                                  (self.core_dist_tree, points, self.min_samples)             # <<<<<<<<<<<<<<
- *                                   for points in datasets)])
- *         else:
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+ *                                  (self.core_dist_tree, points, self.min_samples + 1)             # <<<<<<<<<<<<<<
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
  */
 
   /* function exit code */
@@ -5064,7 +5108,7 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
   return NULL;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":346
+/* "hdbscan/_hdbscan_boruvka.pyx":353
  *         self.bounds_ptr = <np.double_t *> &self.bounds[0]
  * 
  *     cdef _compute_bounds(self):             # <<<<<<<<<<<<<<
@@ -5075,8 +5119,11 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
 static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__compute_bounds(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *__pyx_v_self) {
   struct __pyx_obj_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct___compute_bounds *__pyx_cur_scope;
   __pyx_t_5numpy_intp_t __pyx_v_n;
+  __pyx_t_5numpy_intp_t __pyx_v_i;
+  __pyx_t_5numpy_intp_t __pyx_v_m;
   PyArrayObject *__pyx_v_knn_dist = 0;
-  CYTHON_UNUSED PyArrayObject *__pyx_v_knn_indices = 0;
+  PyArrayObject *__pyx_v_knn_indices = 0;
+  PyObject *__pyx_v_knn_data = NULL;
   PyObject *__pyx_v_x = NULL;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_knn_dist;
   __Pyx_Buffer __pyx_pybuffer_knn_dist;
@@ -5100,8 +5147,8 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
   PyObject *__pyx_t_14 = NULL;
   PyObject *__pyx_t_15 = NULL;
   PyObject *__pyx_t_16 = NULL;
-  PyObject *(*__pyx_t_17)(PyObject *);
-  PyArrayObject *__pyx_t_18 = NULL;
+  PyArrayObject *__pyx_t_17 = NULL;
+  PyObject *(*__pyx_t_18)(PyObject *);
   __pyx_t_5numpy_double_t *__pyx_t_19;
   struct __pyx_array_obj *__pyx_t_20 = NULL;
   __Pyx_memviewslice __pyx_t_21 = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -5110,6 +5157,16 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
   __pyx_t_5numpy_intp_t __pyx_t_24;
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_t_25;
   __pyx_t_5numpy_intp_t __pyx_t_26;
+  long __pyx_t_27;
+  __pyx_t_5numpy_intp_t __pyx_t_28;
+  __pyx_t_5numpy_intp_t __pyx_t_29;
+  __pyx_t_5numpy_intp_t __pyx_t_30;
+  __pyx_t_5numpy_intp_t __pyx_t_31;
+  __pyx_t_5numpy_intp_t __pyx_t_32;
+  __pyx_t_5numpy_intp_t __pyx_t_33;
+  __pyx_t_5numpy_intp_t __pyx_t_34;
+  __pyx_t_5numpy_intp_t __pyx_t_35;
+  __pyx_t_5numpy_intp_t __pyx_t_36;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -5132,42 +5189,42 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
   __pyx_pybuffernd_knn_indices.data = NULL;
   __pyx_pybuffernd_knn_indices.rcbuffer = &__pyx_pybuffer_knn_indices;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":357
+  /* "hdbscan/_hdbscan_boruvka.pyx":366
  *         # four piles and query them in parallel. On multicore systems (most systems)
  *         # this amounts to a 2x-3x wall clock improvement.
  *         if self.tree.data.shape[0] > 16384:             # <<<<<<<<<<<<<<
  *             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
  *                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 357; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 366; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 357; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 366; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 357; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 366; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_int_16384, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 357; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_int_16384, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 366; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 357; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 366; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_3) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":358
+    /* "hdbscan/_hdbscan_boruvka.pyx":367
  *         # this amounts to a 2x-3x wall clock improvement.
  *         if self.tree.data.shape[0] > 16384:
  *             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),             # <<<<<<<<<<<<<<
  *                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
  *                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 358; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 367; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 358; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 367; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 358; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 367; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyObject_GetSlice(__pyx_t_1, 0, __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4), NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 358; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_GetSlice(__pyx_t_1, 0, __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4), NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 367; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -5181,37 +5238,37 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
       }
     }
     if (!__pyx_t_1) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 358; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 367; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_2);
     } else {
-      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 358; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 367; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1); __pyx_t_1 = NULL;
       __Pyx_GIVEREF(__pyx_t_5);
       PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_5);
       __pyx_t_5 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 358; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 367; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":359
+    /* "hdbscan/_hdbscan_boruvka.pyx":368
  *         if self.tree.data.shape[0] > 16384:
  *             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
  *                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),             # <<<<<<<<<<<<<<
  *                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
  *                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
  */
-    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 359; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_asarray); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 359; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_asarray); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 359; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_6, __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4), __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 2), NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 359; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_6, __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4), __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 2), NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_6 = NULL;
@@ -5225,37 +5282,37 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 359; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_GOTREF(__pyx_t_4);
     } else {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 359; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
       __Pyx_GIVEREF(__pyx_t_1);
       PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_1);
       __pyx_t_1 = 0;
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 359; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":360
+    /* "hdbscan/_hdbscan_boruvka.pyx":369
  *             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
  *                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
  *                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),             # <<<<<<<<<<<<<<
  *                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
  *                         ]
  */
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 360; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 369; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_asarray); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 360; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_asarray); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 369; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 360; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 369; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_6 = __Pyx_PyObject_GetSlice(__pyx_t_7, __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 2), (3 * __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4)), NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 360; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_GetSlice(__pyx_t_7, __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 2), (3 * __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4)), NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 369; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __pyx_t_7 = NULL;
@@ -5269,37 +5326,37 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
       }
     }
     if (!__pyx_t_7) {
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 360; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 369; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_5);
     } else {
-      __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 360; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 369; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_7); __pyx_t_7 = NULL;
       __Pyx_GIVEREF(__pyx_t_6);
       PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_t_6);
       __pyx_t_6 = 0;
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_8, NULL); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 360; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_8, NULL); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 369; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":361
+    /* "hdbscan/_hdbscan_boruvka.pyx":370
  *                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
  *                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
  *                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])             # <<<<<<<<<<<<<<
  *                         ]
  * 
  */
-    __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 370; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_asarray); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_asarray); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 370; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 370; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_7 = __Pyx_PyObject_GetSlice(__pyx_t_8, (3 * __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4)), __pyx_cur_scope->__pyx_v_self->num_points, NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_GetSlice(__pyx_t_8, (3 * __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4)), __pyx_cur_scope->__pyx_v_self->num_points, NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 370; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __pyx_t_8 = NULL;
@@ -5313,30 +5370,30 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
       }
     }
     if (!__pyx_t_8) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 370; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else {
-      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 370; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8); __pyx_t_8 = NULL;
       __Pyx_GIVEREF(__pyx_t_7);
       PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_7);
       __pyx_t_7 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 370; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":358
+    /* "hdbscan/_hdbscan_boruvka.pyx":367
  *         # this amounts to a 2x-3x wall clock improvement.
  *         if self.tree.data.shape[0] > 16384:
  *             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),             # <<<<<<<<<<<<<<
  *                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
  *                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
  */
-    __pyx_t_6 = PyList_New(4); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 358; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyList_New(4); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 367; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_2);
     PyList_SET_ITEM(__pyx_t_6, 0, __pyx_t_2);
@@ -5354,148 +5411,149 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
     __pyx_cur_scope->__pyx_v_datasets = ((PyObject*)__pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":364
+    /* "hdbscan/_hdbscan_boruvka.pyx":373
  *                         ]
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)             # <<<<<<<<<<<<<<
- *                                  (self.core_dist_tree, points, self.min_samples)
- *                                   for points in datasets)])
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)             # <<<<<<<<<<<<<<
+ *                                  (self.core_dist_tree, points, self.min_samples + 1)
+ *                                   for points in datasets)
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_Parallel); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_vstack); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_n_jobs, __pyx_int_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_5); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Parallel); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = PyDict_New(); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_9);
-    if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_n_jobs, __pyx_int_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_9); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":365
+    /* "hdbscan/_hdbscan_boruvka.pyx":374
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
- *                                  (self.core_dist_tree, points, self.min_samples)             # <<<<<<<<<<<<<<
- *                                   for points in datasets)])
- *         else:
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+ *                                  (self.core_dist_tree, points, self.min_samples + 1)             # <<<<<<<<<<<<<<
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
  */
-    __pyx_t_9 = __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_15_compute_bounds_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 365; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_2 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_7))) {
-      __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_7);
-      if (likely(__pyx_t_2)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-        __Pyx_INCREF(__pyx_t_2);
+    __pyx_t_5 = __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_15_compute_bounds_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_1 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_4);
+      if (likely(__pyx_t_1)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+        __Pyx_INCREF(__pyx_t_1);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_7, function);
+        __Pyx_DECREF_SET(__pyx_t_4, function);
       }
     }
-    if (!__pyx_t_2) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_9); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __Pyx_GOTREF(__pyx_t_4);
+    if (!__pyx_t_1) {
+      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_GOTREF(__pyx_t_6);
     } else {
-      __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_8);
-      __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_2); __pyx_t_2 = NULL;
-      __Pyx_GIVEREF(__pyx_t_9);
-      PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_t_9);
-      __pyx_t_9 = 0;
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_8, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-
-    /* "hdbscan/_hdbscan_boruvka.pyx":364
- *                         ]
- * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)             # <<<<<<<<<<<<<<
- *                                  (self.core_dist_tree, points, self.min_samples)
- *                                   for points in datasets)])
- */
-    if (likely(PyList_CheckExact(__pyx_t_4)) || PyTuple_CheckExact(__pyx_t_4)) {
-      __pyx_t_7 = __pyx_t_4; __Pyx_INCREF(__pyx_t_7); __pyx_t_10 = 0;
-      __pyx_t_11 = NULL;
-    } else {
-      __pyx_t_10 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_11 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1); __pyx_t_1 = NULL;
+      __Pyx_GIVEREF(__pyx_t_5);
+      PyTuple_SET_ITEM(__pyx_t_2, 0+1, __pyx_t_5);
+      __pyx_t_5 = 0;
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_2, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_v_knn_data = __pyx_t_6;
+    __pyx_t_6 = 0;
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":376
+ *                                  (self.core_dist_tree, points, self.min_samples + 1)
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])             # <<<<<<<<<<<<<<
+ *             knn_indices = np.vstack([x[1] for x in knn_data])
+ *         else:
+ */
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_vstack); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_4);
+    if (likely(PyList_CheckExact(__pyx_v_knn_data)) || PyTuple_CheckExact(__pyx_v_knn_data)) {
+      __pyx_t_5 = __pyx_v_knn_data; __Pyx_INCREF(__pyx_t_5); __pyx_t_10 = 0;
+      __pyx_t_11 = NULL;
+    } else {
+      __pyx_t_10 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_v_knn_data); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_11 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
     for (;;) {
       if (likely(!__pyx_t_11)) {
-        if (likely(PyList_CheckExact(__pyx_t_7))) {
-          if (__pyx_t_10 >= PyList_GET_SIZE(__pyx_t_7)) break;
+        if (likely(PyList_CheckExact(__pyx_t_5))) {
+          if (__pyx_t_10 >= PyList_GET_SIZE(__pyx_t_5)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_4 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_10); __Pyx_INCREF(__pyx_t_4); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_10); __Pyx_INCREF(__pyx_t_1); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_4 = PySequence_ITEM(__pyx_t_7, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_4);
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_5, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_1);
           #endif
         } else {
-          if (__pyx_t_10 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
+          if (__pyx_t_10 >= PyTuple_GET_SIZE(__pyx_t_5)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_10); __Pyx_INCREF(__pyx_t_4); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_10); __Pyx_INCREF(__pyx_t_1); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_4 = PySequence_ITEM(__pyx_t_7, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_4);
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_5, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_1);
           #endif
         }
       } else {
-        __pyx_t_4 = __pyx_t_11(__pyx_t_7);
-        if (unlikely(!__pyx_t_4)) {
+        __pyx_t_1 = __pyx_t_11(__pyx_t_5);
+        if (unlikely(!__pyx_t_1)) {
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
-        __Pyx_GOTREF(__pyx_t_4);
+        __Pyx_GOTREF(__pyx_t_1);
       }
-      __Pyx_XDECREF_SET(__pyx_v_x, __pyx_t_4);
-      __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_x, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-      __Pyx_GOTREF(__pyx_t_4);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_7)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_7);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-      }
-    }
-    if (!__pyx_t_7) {
-      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_GOTREF(__pyx_t_6);
-    } else {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_7); __pyx_t_7 = NULL;
-      __Pyx_GIVEREF(__pyx_t_1);
-      PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_t_1);
+      __Pyx_XDECREF_SET(__pyx_v_x, __pyx_t_1);
       __pyx_t_1 = 0;
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __Pyx_GOTREF(__pyx_t_1);
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
+      if (likely(__pyx_t_5)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+        __Pyx_INCREF(__pyx_t_5);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_2, function);
+      }
+    }
+    if (!__pyx_t_5) {
+      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_GOTREF(__pyx_t_6);
+    } else {
+      __pyx_t_1 = PyTuple_New(1+1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_5); __pyx_t_5 = NULL;
+      __Pyx_GIVEREF(__pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_1, 0+1, __pyx_t_4);
+      __pyx_t_4 = 0;
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_12 = ((PyArrayObject *)__pyx_t_6);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -5511,78 +5569,187 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
         }
       }
       __pyx_pybuffernd_knn_dist.diminfo[0].strides = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_knn_dist.diminfo[0].shape = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_knn_dist.diminfo[1].strides = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_knn_dist.diminfo[1].shape = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 376; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __pyx_t_12 = 0;
     __pyx_v_knn_dist = ((PyArrayObject *)__pyx_t_6);
+    __pyx_t_6 = 0;
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":377
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
+ *             knn_indices = np.vstack([x[1] for x in knn_data])             # <<<<<<<<<<<<<<
+ *         else:
+ *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
+ */
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_vstack); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    if (likely(PyList_CheckExact(__pyx_v_knn_data)) || PyTuple_CheckExact(__pyx_v_knn_data)) {
+      __pyx_t_4 = __pyx_v_knn_data; __Pyx_INCREF(__pyx_t_4); __pyx_t_10 = 0;
+      __pyx_t_11 = NULL;
+    } else {
+      __pyx_t_10 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_v_knn_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_11 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
+    for (;;) {
+      if (likely(!__pyx_t_11)) {
+        if (likely(PyList_CheckExact(__pyx_t_4))) {
+          if (__pyx_t_10 >= PyList_GET_SIZE(__pyx_t_4)) break;
+          #if CYTHON_COMPILING_IN_CPYTHON
+          __pyx_t_5 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_10); __Pyx_INCREF(__pyx_t_5); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          #else
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_4, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_5);
+          #endif
+        } else {
+          if (__pyx_t_10 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
+          #if CYTHON_COMPILING_IN_CPYTHON
+          __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_10); __Pyx_INCREF(__pyx_t_5); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          #else
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_4, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_5);
+          #endif
+        }
+      } else {
+        __pyx_t_5 = __pyx_t_11(__pyx_t_4);
+        if (unlikely(!__pyx_t_5)) {
+          PyObject* exc_type = PyErr_Occurred();
+          if (exc_type) {
+            if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          }
+          break;
+        }
+        __Pyx_GOTREF(__pyx_t_5);
+      }
+      __Pyx_XDECREF_SET(__pyx_v_x, __pyx_t_5);
+      __pyx_t_5 = 0;
+      __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_x, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __Pyx_GOTREF(__pyx_t_5);
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_5))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
+      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+      if (likely(__pyx_t_4)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+        __Pyx_INCREF(__pyx_t_4);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_1, function);
+      }
+    }
+    if (!__pyx_t_4) {
+      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_GOTREF(__pyx_t_6);
+    } else {
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
+      __Pyx_GIVEREF(__pyx_t_2);
+      PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_2);
+      __pyx_t_2 = 0;
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_17 = ((PyArrayObject *)__pyx_t_6);
+    {
+      __Pyx_BufFmt_StackElem __pyx_stack[1];
+      __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer);
+      __pyx_t_13 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer, (PyObject*)__pyx_t_17, &__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
+      if (unlikely(__pyx_t_13 < 0)) {
+        PyErr_Fetch(&__pyx_t_16, &__pyx_t_15, &__pyx_t_14);
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer, (PyObject*)__pyx_v_knn_indices, &__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+          Py_XDECREF(__pyx_t_16); Py_XDECREF(__pyx_t_15); Py_XDECREF(__pyx_t_14);
+          __Pyx_RaiseBufferFallbackError();
+        } else {
+          PyErr_Restore(__pyx_t_16, __pyx_t_15, __pyx_t_14);
+        }
+      }
+      __pyx_pybuffernd_knn_indices.diminfo[0].strides = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_knn_indices.diminfo[0].shape = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_knn_indices.diminfo[1].strides = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_knn_indices.diminfo[1].shape = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.shape[1];
+      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
+    __pyx_t_17 = 0;
+    __pyx_v_knn_indices = ((PyArrayObject *)__pyx_t_6);
     __pyx_t_6 = 0;
     goto __pyx_L3;
   }
   /*else*/ {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":368
- *                                   for points in datasets)])
+    /* "hdbscan/_hdbscan_boruvka.pyx":379
+ *             knn_indices = np.vstack([x[1] for x in knn_data])
  *         else:
  *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,             # <<<<<<<<<<<<<<
- *                                                               k=self.min_samples,
+ *                                                               k=self.min_samples + 1,
  *                                                               dualtree=True,
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->core_dist_tree, __pyx_n_s_query); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->core_dist_tree, __pyx_n_s_query); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_5);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
-    __pyx_t_5 = 0;
-    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
+    __pyx_t_1 = 0;
+    __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":369
+    /* "hdbscan/_hdbscan_boruvka.pyx":380
  *         else:
  *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
- *                                                               k=self.min_samples,             # <<<<<<<<<<<<<<
+ *                                                               k=self.min_samples + 1,             # <<<<<<<<<<<<<<
  *                                                               dualtree=True,
  *                                                               breadth_first=True)
  */
-    __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t(__pyx_cur_scope->__pyx_v_self->min_samples); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 369; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_k, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_2 = __Pyx_PyInt_From_long((__pyx_cur_scope->__pyx_v_self->min_samples + 1)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 380; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_k, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":370
+    /* "hdbscan/_hdbscan_boruvka.pyx":381
  *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
- *                                                               k=self.min_samples,
+ *                                                               k=self.min_samples + 1,
  *                                                               dualtree=True,             # <<<<<<<<<<<<<<
  *                                                               breadth_first=True)
  * 
  */
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dualtree, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dualtree, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":371
- *                                                               k=self.min_samples,
+    /* "hdbscan/_hdbscan_boruvka.pyx":382
+ *                                                               k=self.min_samples + 1,
  *                                                               dualtree=True,
  *                                                               breadth_first=True)             # <<<<<<<<<<<<<<
  * 
- *         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
+ *         self.core_distance_arr = knn_dist[:, self.min_samples].copy()
  */
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_breadth_first, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_breadth_first, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":368
- *                                   for points in datasets)])
+    /* "hdbscan/_hdbscan_boruvka.pyx":379
+ *             knn_indices = np.vstack([x[1] for x in knn_data])
  *         else:
  *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,             # <<<<<<<<<<<<<<
- *                                                               k=self.min_samples,
+ *                                                               k=self.min_samples + 1,
  *                                                               dualtree=True,
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
-      PyObject* sequence = __pyx_t_1;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
+      PyObject* sequence = __pyx_t_2;
       #if CYTHON_COMPILING_IN_CPYTHON
       Py_ssize_t size = Py_SIZE(sequence);
       #else
@@ -5591,171 +5758,171 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       #if CYTHON_COMPILING_IN_CPYTHON
       if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_5 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_4 = PyTuple_GET_ITEM(sequence, 1); 
+        __pyx_t_1 = PyTuple_GET_ITEM(sequence, 0); 
+        __pyx_t_5 = PyTuple_GET_ITEM(sequence, 1); 
       } else {
-        __pyx_t_5 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_4 = PyList_GET_ITEM(sequence, 1); 
+        __pyx_t_1 = PyList_GET_ITEM(sequence, 0); 
+        __pyx_t_5 = PyList_GET_ITEM(sequence, 1); 
       }
+      __Pyx_INCREF(__pyx_t_1);
       __Pyx_INCREF(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_4);
       #else
-      __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_5 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_4 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_4);
       #endif
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_17 = Py_TYPE(__pyx_t_6)->tp_iternext;
-      index = 0; __pyx_t_5 = __pyx_t_17(__pyx_t_6); if (unlikely(!__pyx_t_5)) goto __pyx_L6_unpacking_failed;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_18 = Py_TYPE(__pyx_t_6)->tp_iternext;
+      index = 0; __pyx_t_1 = __pyx_t_18(__pyx_t_6); if (unlikely(!__pyx_t_1)) goto __pyx_L8_unpacking_failed;
+      __Pyx_GOTREF(__pyx_t_1);
+      index = 1; __pyx_t_5 = __pyx_t_18(__pyx_t_6); if (unlikely(!__pyx_t_5)) goto __pyx_L8_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_5);
-      index = 1; __pyx_t_4 = __pyx_t_17(__pyx_t_6); if (unlikely(!__pyx_t_4)) goto __pyx_L6_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_4);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_17(__pyx_t_6), 2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_17 = NULL;
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_18(__pyx_t_6), 2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_18 = NULL;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      goto __pyx_L7_unpacking_done;
-      __pyx_L6_unpacking_failed:;
+      goto __pyx_L9_unpacking_done;
+      __pyx_L8_unpacking_failed:;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_17 = NULL;
+      __pyx_t_18 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_L7_unpacking_done:;
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_L9_unpacking_done:;
     }
-    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_12 = ((PyArrayObject *)__pyx_t_5);
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = ((PyArrayObject *)__pyx_t_1);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_knn_dist.rcbuffer->pybuffer);
       __pyx_t_13 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_dist.rcbuffer->pybuffer, (PyObject*)__pyx_t_12, &__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
       if (unlikely(__pyx_t_13 < 0)) {
-        PyErr_Fetch(&__pyx_t_16, &__pyx_t_15, &__pyx_t_14);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_dist.rcbuffer->pybuffer, (PyObject*)__pyx_v_knn_dist, &__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
-          Py_XDECREF(__pyx_t_16); Py_XDECREF(__pyx_t_15); Py_XDECREF(__pyx_t_14);
-          __Pyx_RaiseBufferFallbackError();
-        } else {
-          PyErr_Restore(__pyx_t_16, __pyx_t_15, __pyx_t_14);
-        }
-      }
-      __pyx_pybuffernd_knn_dist.diminfo[0].strides = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_knn_dist.diminfo[0].shape = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_knn_dist.diminfo[1].strides = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_knn_dist.diminfo[1].shape = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    }
-    __pyx_t_12 = 0;
-    __pyx_v_knn_dist = ((PyArrayObject *)__pyx_t_5);
-    __pyx_t_5 = 0;
-    __pyx_t_18 = ((PyArrayObject *)__pyx_t_4);
-    {
-      __Pyx_BufFmt_StackElem __pyx_stack[1];
-      __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer);
-      __pyx_t_13 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer, (PyObject*)__pyx_t_18, &__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
-      if (unlikely(__pyx_t_13 < 0)) {
         PyErr_Fetch(&__pyx_t_14, &__pyx_t_15, &__pyx_t_16);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer, (PyObject*)__pyx_v_knn_indices, &__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_dist.rcbuffer->pybuffer, (PyObject*)__pyx_v_knn_dist, &__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
           Py_XDECREF(__pyx_t_14); Py_XDECREF(__pyx_t_15); Py_XDECREF(__pyx_t_16);
           __Pyx_RaiseBufferFallbackError();
         } else {
           PyErr_Restore(__pyx_t_14, __pyx_t_15, __pyx_t_16);
         }
       }
-      __pyx_pybuffernd_knn_indices.diminfo[0].strides = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_knn_indices.diminfo[0].shape = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_knn_indices.diminfo[1].strides = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_knn_indices.diminfo[1].shape = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 368; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_pybuffernd_knn_dist.diminfo[0].strides = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_knn_dist.diminfo[0].shape = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_knn_dist.diminfo[1].strides = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_knn_dist.diminfo[1].shape = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.shape[1];
+      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_18 = 0;
-    __pyx_v_knn_indices = ((PyArrayObject *)__pyx_t_4);
-    __pyx_t_4 = 0;
+    __pyx_t_12 = 0;
+    __pyx_v_knn_dist = ((PyArrayObject *)__pyx_t_1);
+    __pyx_t_1 = 0;
+    __pyx_t_17 = ((PyArrayObject *)__pyx_t_5);
+    {
+      __Pyx_BufFmt_StackElem __pyx_stack[1];
+      __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer);
+      __pyx_t_13 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer, (PyObject*)__pyx_t_17, &__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
+      if (unlikely(__pyx_t_13 < 0)) {
+        PyErr_Fetch(&__pyx_t_16, &__pyx_t_15, &__pyx_t_14);
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer, (PyObject*)__pyx_v_knn_indices, &__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+          Py_XDECREF(__pyx_t_16); Py_XDECREF(__pyx_t_15); Py_XDECREF(__pyx_t_14);
+          __Pyx_RaiseBufferFallbackError();
+        } else {
+          PyErr_Restore(__pyx_t_16, __pyx_t_15, __pyx_t_14);
+        }
+      }
+      __pyx_pybuffernd_knn_indices.diminfo[0].strides = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_knn_indices.diminfo[0].shape = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_knn_indices.diminfo[1].strides = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_knn_indices.diminfo[1].shape = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.shape[1];
+      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 379; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
+    __pyx_t_17 = 0;
+    __pyx_v_knn_indices = ((PyArrayObject *)__pyx_t_5);
+    __pyx_t_5 = 0;
   }
   __pyx_L3:;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":373
+  /* "hdbscan/_hdbscan_boruvka.pyx":384
  *                                                               breadth_first=True)
  * 
- *         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()             # <<<<<<<<<<<<<<
+ *         self.core_distance_arr = knn_dist[:, self.min_samples].copy()             # <<<<<<<<<<<<<<
  *         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
  * 
  */
-  __pyx_t_4 = __Pyx_PyInt_From_long((__pyx_cur_scope->__pyx_v_self->min_samples - 1)); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_cur_scope->__pyx_v_self->min_samples); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 384; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 384; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_slice_);
   __Pyx_GIVEREF(__pyx_slice_);
-  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_slice_);
-  __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_4);
-  __pyx_t_4 = 0;
-  __pyx_t_4 = PyObject_GetItem(((PyObject *)__pyx_v_knn_dist), __pyx_t_5); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_copy); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_slice_);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_5);
+  __pyx_t_5 = 0;
+  __pyx_t_5 = PyObject_GetItem(((PyObject *)__pyx_v_knn_dist), __pyx_t_1); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 384; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
-    }
-  }
-  if (__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_copy); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 384; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_5 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_5);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+    }
+  }
+  if (__pyx_t_5) {
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 384; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  } else {
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 384; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  }
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 384; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_cur_scope->__pyx_v_self->core_distance_arr);
   __Pyx_DECREF(((PyObject *)__pyx_cur_scope->__pyx_v_self->core_distance_arr));
-  __pyx_cur_scope->__pyx_v_self->core_distance_arr = ((PyArrayObject *)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_cur_scope->__pyx_v_self->core_distance_arr = ((PyArrayObject *)__pyx_t_2);
+  __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":374
+  /* "hdbscan/_hdbscan_boruvka.pyx":385
  * 
- *         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
+ *         self.core_distance_arr = knn_dist[:, self.min_samples].copy()
  *         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))             # <<<<<<<<<<<<<<
  * 
  *         # Since we do everything in terms of rdist to free up the GIL
  */
   __pyx_t_19 = ((__pyx_t_5numpy_double_t *)__pyx_cur_scope->__pyx_v_self->core_distance_arr->data);
-  if (unlikely(!__pyx_cur_scope->__pyx_v_self)) { __Pyx_RaiseUnboundLocalError("self"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+  if (unlikely(!__pyx_cur_scope->__pyx_v_self)) { __Pyx_RaiseUnboundLocalError("self"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 385; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
   if (!__pyx_t_19) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 385; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_5 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t);
-  __pyx_t_1 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_cur_scope->__pyx_v_self->num_points));
-  if (unlikely(!__pyx_t_5 || !__pyx_t_1 || !PyBytes_AsString(__pyx_t_5))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_1 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t);
+  __pyx_t_2 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_cur_scope->__pyx_v_self->num_points));
+  if (unlikely(!__pyx_t_1 || !__pyx_t_2 || !PyBytes_AsString(__pyx_t_1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 385; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_20 = __pyx_array_new(__pyx_t_1, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_5), (char *) "fortran", (char *) __pyx_t_19);
-  if (unlikely(!__pyx_t_20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_20 = __pyx_array_new(__pyx_t_2, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_1), (char *) "fortran", (char *) __pyx_t_19);
+  if (unlikely(!__pyx_t_20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 385; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_20);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_21 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(((PyObject *)__pyx_t_20));
-  if (unlikely(!__pyx_t_21.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_21.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 385; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(((PyObject *)__pyx_t_20)); __pyx_t_20 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_cur_scope->__pyx_v_self->core_distance, 0);
   __pyx_cur_scope->__pyx_v_self->core_distance = __pyx_t_21;
   __pyx_t_21.memview = NULL;
   __pyx_t_21.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":379
+  /* "hdbscan/_hdbscan_boruvka.pyx":390
  *         # we need to convert all the core distances beforehand
  *         # to make comparison feasible.
  *         for n in range(self.num_points):             # <<<<<<<<<<<<<<
@@ -5766,21 +5933,119 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
   for (__pyx_t_23 = 0; __pyx_t_23 < __pyx_t_22; __pyx_t_23+=1) {
     __pyx_v_n = __pyx_t_23;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":380
+    /* "hdbscan/_hdbscan_boruvka.pyx":391
  *         # to make comparison feasible.
  *         for n in range(self.num_points):
  *             self.core_distance[n] = self.dist._dist_to_rdist(self.core_distance[n])             # <<<<<<<<<<<<<<
  * 
- *         for n in range(self.num_nodes):
+ *         # Since we already computed NN distances for the min_samples closest points
  */
     __pyx_t_24 = __pyx_v_n;
-    __pyx_t_25 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_cur_scope->__pyx_v_self->dist->__pyx_vtab)->_dist_to_rdist(__pyx_cur_scope->__pyx_v_self->dist, (*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_cur_scope->__pyx_v_self->core_distance.data) + __pyx_t_24)) )))); if (unlikely(__pyx_t_25 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 380; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_25 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_cur_scope->__pyx_v_self->dist->__pyx_vtab)->_dist_to_rdist(__pyx_cur_scope->__pyx_v_self->dist, (*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_cur_scope->__pyx_v_self->core_distance.data) + __pyx_t_24)) )))); if (unlikely(__pyx_t_25 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 391; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_26 = __pyx_v_n;
     *((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_cur_scope->__pyx_v_self->core_distance.data) + __pyx_t_26)) )) = __pyx_t_25;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":382
- *             self.core_distance[n] = self.dist._dist_to_rdist(self.core_distance[n])
+  /* "hdbscan/_hdbscan_boruvka.pyx":398
+ *         # get quite a few, and they are the hard ones to get, so fill in any we ca
+ *         # and then run update components.
+ *         for n in range(self.num_points):             # <<<<<<<<<<<<<<
+ *             for i in range(1, self.min_samples + 1):
+ *                 m = knn_indices[n, i]
+ */
+  __pyx_t_22 = __pyx_cur_scope->__pyx_v_self->num_points;
+  for (__pyx_t_23 = 0; __pyx_t_23 < __pyx_t_22; __pyx_t_23+=1) {
+    __pyx_v_n = __pyx_t_23;
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":399
+ *         # and then run update components.
+ *         for n in range(self.num_points):
+ *             for i in range(1, self.min_samples + 1):             # <<<<<<<<<<<<<<
+ *                 m = knn_indices[n, i]
+ *                 if self.core_distance[m] <= self.core_distance[n]:
+ */
+    __pyx_t_27 = (__pyx_cur_scope->__pyx_v_self->min_samples + 1);
+    for (__pyx_t_28 = 1; __pyx_t_28 < __pyx_t_27; __pyx_t_28+=1) {
+      __pyx_v_i = __pyx_t_28;
+
+      /* "hdbscan/_hdbscan_boruvka.pyx":400
+ *         for n in range(self.num_points):
+ *             for i in range(1, self.min_samples + 1):
+ *                 m = knn_indices[n, i]             # <<<<<<<<<<<<<<
+ *                 if self.core_distance[m] <= self.core_distance[n]:
+ *                     self.candidate_point[n] = n
+ */
+      __pyx_t_29 = __pyx_v_n;
+      __pyx_t_30 = __pyx_v_i;
+      __pyx_v_m = (*__Pyx_BufPtrStrided2d(__pyx_t_5numpy_intp_t *, __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.buf, __pyx_t_29, __pyx_pybuffernd_knn_indices.diminfo[0].strides, __pyx_t_30, __pyx_pybuffernd_knn_indices.diminfo[1].strides));
+
+      /* "hdbscan/_hdbscan_boruvka.pyx":401
+ *             for i in range(1, self.min_samples + 1):
+ *                 m = knn_indices[n, i]
+ *                 if self.core_distance[m] <= self.core_distance[n]:             # <<<<<<<<<<<<<<
+ *                     self.candidate_point[n] = n
+ *                     self.candidate_neighbor[n] = m
+ */
+      __pyx_t_31 = __pyx_v_m;
+      __pyx_t_32 = __pyx_v_n;
+      __pyx_t_3 = (((*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_cur_scope->__pyx_v_self->core_distance.data) + __pyx_t_31)) ))) <= (*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_cur_scope->__pyx_v_self->core_distance.data) + __pyx_t_32)) )))) != 0);
+      if (__pyx_t_3) {
+
+        /* "hdbscan/_hdbscan_boruvka.pyx":402
+ *                 m = knn_indices[n, i]
+ *                 if self.core_distance[m] <= self.core_distance[n]:
+ *                     self.candidate_point[n] = n             # <<<<<<<<<<<<<<
+ *                     self.candidate_neighbor[n] = m
+ *                     self.candidate_distance[n] = self.core_distance[n]
+ */
+        __pyx_t_33 = __pyx_v_n;
+        *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_cur_scope->__pyx_v_self->candidate_point.data) + __pyx_t_33)) )) = __pyx_v_n;
+
+        /* "hdbscan/_hdbscan_boruvka.pyx":403
+ *                 if self.core_distance[m] <= self.core_distance[n]:
+ *                     self.candidate_point[n] = n
+ *                     self.candidate_neighbor[n] = m             # <<<<<<<<<<<<<<
+ *                     self.candidate_distance[n] = self.core_distance[n]
+ *                     break
+ */
+        __pyx_t_34 = __pyx_v_n;
+        *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_cur_scope->__pyx_v_self->candidate_neighbor.data) + __pyx_t_34)) )) = __pyx_v_m;
+
+        /* "hdbscan/_hdbscan_boruvka.pyx":404
+ *                     self.candidate_point[n] = n
+ *                     self.candidate_neighbor[n] = m
+ *                     self.candidate_distance[n] = self.core_distance[n]             # <<<<<<<<<<<<<<
+ *                     break
+ * 
+ */
+        __pyx_t_35 = __pyx_v_n;
+        __pyx_t_36 = __pyx_v_n;
+        *((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_cur_scope->__pyx_v_self->candidate_distance.data) + __pyx_t_36)) )) = (*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_cur_scope->__pyx_v_self->core_distance.data) + __pyx_t_35)) )));
+
+        /* "hdbscan/_hdbscan_boruvka.pyx":405
+ *                     self.candidate_neighbor[n] = m
+ *                     self.candidate_distance[n] = self.core_distance[n]
+ *                     break             # <<<<<<<<<<<<<<
+ * 
+ *         self.update_components()
+ */
+        goto __pyx_L15_break;
+      }
+    }
+    __pyx_L15_break:;
+  }
+
+  /* "hdbscan/_hdbscan_boruvka.pyx":407
+ *                     break
+ * 
+ *         self.update_components()             # <<<<<<<<<<<<<<
+ * 
+ *         for n in range(self.num_nodes):
+ */
+  __pyx_t_13 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_cur_scope->__pyx_v_self->__pyx_vtab)->update_components(__pyx_cur_scope->__pyx_v_self); if (unlikely(__pyx_t_13 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 407; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+
+  /* "hdbscan/_hdbscan_boruvka.pyx":409
+ *         self.update_components()
  * 
  *         for n in range(self.num_nodes):             # <<<<<<<<<<<<<<
  *             self.bounds_arr[n] = <np.double_t> DBL_MAX
@@ -5790,20 +6055,20 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
   for (__pyx_t_23 = 0; __pyx_t_23 < __pyx_t_22; __pyx_t_23+=1) {
     __pyx_v_n = __pyx_t_23;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":383
+    /* "hdbscan/_hdbscan_boruvka.pyx":410
  * 
  *         for n in range(self.num_nodes):
  *             self.bounds_arr[n] = <np.double_t> DBL_MAX             # <<<<<<<<<<<<<<
  * 
  *     cdef _initialize_components(self):
  */
-    __pyx_t_5 = PyFloat_FromDouble(((__pyx_t_5numpy_double_t)DBL_MAX)); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 383; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_5);
-    if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_cur_scope->__pyx_v_self->bounds_arr), __pyx_v_n, __pyx_t_5, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 383; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_1 = PyFloat_FromDouble(((__pyx_t_5numpy_double_t)DBL_MAX)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 410; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_cur_scope->__pyx_v_self->bounds_arr), __pyx_v_n, __pyx_t_1, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 410; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":346
+  /* "hdbscan/_hdbscan_boruvka.pyx":353
  *         self.bounds_ptr = <np.double_t *> &self.bounds[0]
  * 
  *     cdef _compute_bounds(self):             # <<<<<<<<<<<<<<
@@ -5839,6 +6104,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
   __pyx_L2:;
   __Pyx_XDECREF((PyObject *)__pyx_v_knn_dist);
   __Pyx_XDECREF((PyObject *)__pyx_v_knn_indices);
+  __Pyx_XDECREF(__pyx_v_knn_data);
   __Pyx_XDECREF(__pyx_v_x);
   __Pyx_DECREF(((PyObject *)__pyx_cur_scope));
   __Pyx_XGIVEREF(__pyx_r);
@@ -5846,7 +6112,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__c
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":385
+/* "hdbscan/_hdbscan_boruvka.pyx":412
  *             self.bounds_arr[n] = <np.double_t> DBL_MAX
  * 
  *     cdef _initialize_components(self):             # <<<<<<<<<<<<<<
@@ -5867,7 +6133,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__i
   __pyx_t_5numpy_intp_t __pyx_t_7;
   __Pyx_RefNannySetupContext("_initialize_components", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":391
+  /* "hdbscan/_hdbscan_boruvka.pyx":418
  *         cdef np.intp_t n
  * 
  *         for n in range(self.num_points):             # <<<<<<<<<<<<<<
@@ -5878,7 +6144,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__i
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_n = __pyx_t_2;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":392
+    /* "hdbscan/_hdbscan_boruvka.pyx":419
  * 
  *         for n in range(self.num_points):
  *             self.component_of_point[n] = n             # <<<<<<<<<<<<<<
@@ -5888,7 +6154,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__i
     __pyx_t_3 = __pyx_v_n;
     *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_point.data) + __pyx_t_3)) )) = __pyx_v_n;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":393
+    /* "hdbscan/_hdbscan_boruvka.pyx":420
  *         for n in range(self.num_points):
  *             self.component_of_point[n] = n
  *             self.candidate_neighbor[n] = -1             # <<<<<<<<<<<<<<
@@ -5898,7 +6164,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__i
     __pyx_t_4 = __pyx_v_n;
     *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_neighbor.data) + __pyx_t_4)) )) = -1;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":394
+    /* "hdbscan/_hdbscan_boruvka.pyx":421
  *             self.component_of_point[n] = n
  *             self.candidate_neighbor[n] = -1
  *             self.candidate_point[n] = -1             # <<<<<<<<<<<<<<
@@ -5908,7 +6174,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__i
     __pyx_t_5 = __pyx_v_n;
     *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_point.data) + __pyx_t_5)) )) = -1;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":395
+    /* "hdbscan/_hdbscan_boruvka.pyx":422
  *             self.candidate_neighbor[n] = -1
  *             self.candidate_point[n] = -1
  *             self.candidate_distance[n] = DBL_MAX             # <<<<<<<<<<<<<<
@@ -5919,7 +6185,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__i
     *((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_6)) )) = DBL_MAX;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":397
+  /* "hdbscan/_hdbscan_boruvka.pyx":424
  *             self.candidate_distance[n] = DBL_MAX
  * 
  *         for n in range(self.num_nodes):             # <<<<<<<<<<<<<<
@@ -5930,7 +6196,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__i
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_n = __pyx_t_2;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":398
+    /* "hdbscan/_hdbscan_boruvka.pyx":425
  * 
  *         for n in range(self.num_nodes):
  *             self.component_of_node[n] = -(n+1)             # <<<<<<<<<<<<<<
@@ -5941,7 +6207,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__i
     *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_node.data) + __pyx_t_7)) )) = (-(__pyx_v_n + 1));
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":385
+  /* "hdbscan/_hdbscan_boruvka.pyx":412
  *             self.bounds_arr[n] = <np.double_t> DBL_MAX
  * 
  *     cdef _initialize_components(self):             # <<<<<<<<<<<<<<
@@ -5956,7 +6222,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__i
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":400
+/* "hdbscan/_hdbscan_boruvka.pyx":427
  *             self.component_of_node[n] = -(n+1)
  * 
  *     cdef int update_components(self) except -1:             # <<<<<<<<<<<<<<
@@ -6015,8 +6281,8 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("update_components", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":421
- *         cdef NodeData_t node_info
+  /* "hdbscan/_hdbscan_boruvka.pyx":458
+ * 
  * 
  *         for c in range(self.components.shape[0]):             # <<<<<<<<<<<<<<
  *             component = self.components[c]
@@ -6026,20 +6292,20 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_c = __pyx_t_2;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":422
+    /* "hdbscan/_hdbscan_boruvka.pyx":459
  * 
  *         for c in range(self.components.shape[0]):
  *             component = self.components[c]             # <<<<<<<<<<<<<<
  *             source = self.candidate_point[component]
  *             sink = self.candidate_neighbor[component]
  */
-    __pyx_t_3 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->components), __pyx_v_c, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 422; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_3 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->components), __pyx_v_c, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 459; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_3); if (unlikely((__pyx_t_4 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 422; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_3); if (unlikely((__pyx_t_4 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 459; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_component = __pyx_t_4;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":423
+    /* "hdbscan/_hdbscan_boruvka.pyx":460
  *         for c in range(self.components.shape[0]):
  *             component = self.components[c]
  *             source = self.candidate_point[component]             # <<<<<<<<<<<<<<
@@ -6049,7 +6315,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     __pyx_t_4 = __pyx_v_component;
     __pyx_v_source = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_point.data) + __pyx_t_4)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":424
+    /* "hdbscan/_hdbscan_boruvka.pyx":461
  *             component = self.components[c]
  *             source = self.candidate_point[component]
  *             sink = self.candidate_neighbor[component]             # <<<<<<<<<<<<<<
@@ -6059,7 +6325,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     __pyx_t_5 = __pyx_v_component;
     __pyx_v_sink = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_neighbor.data) + __pyx_t_5)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":425
+    /* "hdbscan/_hdbscan_boruvka.pyx":462
  *             source = self.candidate_point[component]
  *             sink = self.candidate_neighbor[component]
  *             if source == -1 or sink == -1:             # <<<<<<<<<<<<<<
@@ -6077,7 +6343,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":426
+      /* "hdbscan/_hdbscan_boruvka.pyx":463
  *             sink = self.candidate_neighbor[component]
  *             if source == -1 or sink == -1:
  *                 continue             # <<<<<<<<<<<<<<
@@ -6087,39 +6353,39 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
       goto __pyx_L3_continue;
     }
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":428
+    /* "hdbscan/_hdbscan_boruvka.pyx":465
  *                 continue
  *                 # raise ValueError('Source or sink of edge is not defined!')
  *             current_source_component = self.component_union_find.find(source)             # <<<<<<<<<<<<<<
  *             current_sink_component = self.component_union_find.find(sink)
  *             if current_source_component == current_sink_component:
  */
-    __pyx_t_8 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->find(__pyx_v_self->component_union_find, __pyx_v_source); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 428; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->find(__pyx_v_self->component_union_find, __pyx_v_source); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 465; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_current_source_component = __pyx_t_8;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":429
+    /* "hdbscan/_hdbscan_boruvka.pyx":466
  *                 # raise ValueError('Source or sink of edge is not defined!')
  *             current_source_component = self.component_union_find.find(source)
  *             current_sink_component = self.component_union_find.find(sink)             # <<<<<<<<<<<<<<
  *             if current_source_component == current_sink_component:
- *                 self.candidate_point[component] = -1
+ *                 # We've already joined these, so ignore this edge
  */
-    __pyx_t_8 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->find(__pyx_v_self->component_union_find, __pyx_v_sink); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 429; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->find(__pyx_v_self->component_union_find, __pyx_v_sink); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 466; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_current_sink_component = __pyx_t_8;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":430
+    /* "hdbscan/_hdbscan_boruvka.pyx":467
  *             current_source_component = self.component_union_find.find(source)
  *             current_sink_component = self.component_union_find.find(sink)
  *             if current_source_component == current_sink_component:             # <<<<<<<<<<<<<<
+ *                 # We've already joined these, so ignore this edge
  *                 self.candidate_point[component] = -1
- *                 self.candidate_neighbor[component] = -1
  */
     __pyx_t_6 = ((__pyx_v_current_source_component == __pyx_v_current_sink_component) != 0);
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":431
- *             current_sink_component = self.component_union_find.find(sink)
+      /* "hdbscan/_hdbscan_boruvka.pyx":469
  *             if current_source_component == current_sink_component:
+ *                 # We've already joined these, so ignore this edge
  *                 self.candidate_point[component] = -1             # <<<<<<<<<<<<<<
  *                 self.candidate_neighbor[component] = -1
  *                 self.candidate_distance[component] = DBL_MAX
@@ -6127,8 +6393,8 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
       __pyx_t_8 = __pyx_v_component;
       *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_point.data) + __pyx_t_8)) )) = -1;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":432
- *             if current_source_component == current_sink_component:
+      /* "hdbscan/_hdbscan_boruvka.pyx":470
+ *                 # We've already joined these, so ignore this edge
  *                 self.candidate_point[component] = -1
  *                 self.candidate_neighbor[component] = -1             # <<<<<<<<<<<<<<
  *                 self.candidate_distance[component] = DBL_MAX
@@ -6137,7 +6403,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
       __pyx_t_9 = __pyx_v_component;
       *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_neighbor.data) + __pyx_t_9)) )) = -1;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":433
+      /* "hdbscan/_hdbscan_boruvka.pyx":471
  *                 self.candidate_point[component] = -1
  *                 self.candidate_neighbor[component] = -1
  *                 self.candidate_distance[component] = DBL_MAX             # <<<<<<<<<<<<<<
@@ -6147,7 +6413,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
       __pyx_t_10 = __pyx_v_component;
       *((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_10)) )) = DBL_MAX;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":434
+      /* "hdbscan/_hdbscan_boruvka.pyx":472
  *                 self.candidate_neighbor[component] = -1
  *                 self.candidate_distance[component] = DBL_MAX
  *                 continue             # <<<<<<<<<<<<<<
@@ -6157,18 +6423,18 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
       goto __pyx_L3_continue;
     }
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":435
+    /* "hdbscan/_hdbscan_boruvka.pyx":473
  *                 self.candidate_distance[component] = DBL_MAX
  *                 continue
  *             self.edges[self.num_edges, 0] = source             # <<<<<<<<<<<<<<
  *             self.edges[self.num_edges, 1] = sink
  *             self.edges[self.num_edges, 2] = self.dist._rdist_to_dist(self.candidate_distance[component])
  */
-    __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_source); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 435; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_source); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 473; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_11 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_edges); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 435; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_edges); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 473; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 435; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 473; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_GIVEREF(__pyx_t_11);
     PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_11);
@@ -6176,22 +6442,22 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     __Pyx_GIVEREF(__pyx_int_0);
     PyTuple_SET_ITEM(__pyx_t_12, 1, __pyx_int_0);
     __pyx_t_11 = 0;
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_self->edges), __pyx_t_12, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 435; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_self->edges), __pyx_t_12, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 473; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":436
+    /* "hdbscan/_hdbscan_boruvka.pyx":474
  *                 continue
  *             self.edges[self.num_edges, 0] = source
  *             self.edges[self.num_edges, 1] = sink             # <<<<<<<<<<<<<<
  *             self.edges[self.num_edges, 2] = self.dist._rdist_to_dist(self.candidate_distance[component])
  *             self.num_edges += 1
  */
-    __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_sink); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 436; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_sink); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 474; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_12 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_edges); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 436; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_edges); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 474; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 436; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 474; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_GIVEREF(__pyx_t_12);
     PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_12);
@@ -6199,24 +6465,24 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     __Pyx_GIVEREF(__pyx_int_1);
     PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_int_1);
     __pyx_t_12 = 0;
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_self->edges), __pyx_t_11, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 436; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_self->edges), __pyx_t_11, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 474; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":437
+    /* "hdbscan/_hdbscan_boruvka.pyx":475
  *             self.edges[self.num_edges, 0] = source
  *             self.edges[self.num_edges, 1] = sink
  *             self.edges[self.num_edges, 2] = self.dist._rdist_to_dist(self.candidate_distance[component])             # <<<<<<<<<<<<<<
  *             self.num_edges += 1
- *             self.component_union_find.union_(source, sink)
+ * 
  */
     __pyx_t_13 = __pyx_v_component;
-    __pyx_t_14 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->dist->__pyx_vtab)->_rdist_to_dist(__pyx_v_self->dist, (*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_13)) )))); if (unlikely(__pyx_t_14 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 437; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_3 = PyFloat_FromDouble(__pyx_t_14); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 437; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_14 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->dist->__pyx_vtab)->_rdist_to_dist(__pyx_v_self->dist, (*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_13)) )))); if (unlikely(__pyx_t_14 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 475; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyFloat_FromDouble(__pyx_t_14); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 475; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_11 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_edges); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 437; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_edges); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 475; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 437; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 475; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_GIVEREF(__pyx_t_11);
     PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_11);
@@ -6224,31 +6490,31 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     __Pyx_GIVEREF(__pyx_int_2);
     PyTuple_SET_ITEM(__pyx_t_12, 1, __pyx_int_2);
     __pyx_t_11 = 0;
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_self->edges), __pyx_t_12, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 437; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_self->edges), __pyx_t_12, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 475; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":438
+    /* "hdbscan/_hdbscan_boruvka.pyx":476
  *             self.edges[self.num_edges, 1] = sink
  *             self.edges[self.num_edges, 2] = self.dist._rdist_to_dist(self.candidate_distance[component])
  *             self.num_edges += 1             # <<<<<<<<<<<<<<
+ * 
  *             self.component_union_find.union_(source, sink)
- *             self.candidate_distance[component] = DBL_MAX
  */
     __pyx_v_self->num_edges = (__pyx_v_self->num_edges + 1);
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":439
- *             self.edges[self.num_edges, 2] = self.dist._rdist_to_dist(self.candidate_distance[component])
+    /* "hdbscan/_hdbscan_boruvka.pyx":478
  *             self.num_edges += 1
+ * 
  *             self.component_union_find.union_(source, sink)             # <<<<<<<<<<<<<<
- *             self.candidate_distance[component] = DBL_MAX
- *             if self.num_edges == self.num_points - 1:
+ * 
+ *             # Reset everything,and check if we're done
  */
-    __pyx_t_15 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->union_(__pyx_v_self->component_union_find, __pyx_v_source, __pyx_v_sink); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 439; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_15 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->union_(__pyx_v_self->component_union_find, __pyx_v_source, __pyx_v_sink); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 478; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":440
- *             self.num_edges += 1
- *             self.component_union_find.union_(source, sink)
+    /* "hdbscan/_hdbscan_boruvka.pyx":481
+ * 
+ *             # Reset everything,and check if we're done
  *             self.candidate_distance[component] = DBL_MAX             # <<<<<<<<<<<<<<
  *             if self.num_edges == self.num_points - 1:
  *                 self.components = self.component_union_find.components()
@@ -6256,8 +6522,8 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     __pyx_t_16 = __pyx_v_component;
     *((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_16)) )) = DBL_MAX;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":441
- *             self.component_union_find.union_(source, sink)
+    /* "hdbscan/_hdbscan_boruvka.pyx":482
+ *             # Reset everything,and check if we're done
  *             self.candidate_distance[component] = DBL_MAX
  *             if self.num_edges == self.num_points - 1:             # <<<<<<<<<<<<<<
  *                 self.components = self.component_union_find.components()
@@ -6266,14 +6532,14 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     __pyx_t_6 = ((__pyx_v_self->num_edges == (__pyx_v_self->num_points - 1)) != 0);
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":442
+      /* "hdbscan/_hdbscan_boruvka.pyx":483
  *             self.candidate_distance[component] = DBL_MAX
  *             if self.num_edges == self.num_points - 1:
  *                 self.components = self.component_union_find.components()             # <<<<<<<<<<<<<<
  *                 return self.components.shape[0]
  * 
  */
-      __pyx_t_3 = ((PyObject *)((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->components(__pyx_v_self->component_union_find)); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 442; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = ((PyObject *)((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->components(__pyx_v_self->component_union_find)); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 483; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       __Pyx_GOTREF(__pyx_v_self->components);
@@ -6281,12 +6547,12 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
       __pyx_v_self->components = ((PyArrayObject *)__pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":443
+      /* "hdbscan/_hdbscan_boruvka.pyx":484
  *             if self.num_edges == self.num_points - 1:
  *                 self.components = self.component_union_find.components()
  *                 return self.components.shape[0]             # <<<<<<<<<<<<<<
  * 
- *         for n in range(self.tree.data.shape[0]):
+ *         # After having joined everything in the union find data
  */
       __pyx_r = (__pyx_v_self->components->dimensions[0]);
       goto __pyx_L0;
@@ -6294,74 +6560,74 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     __pyx_L3_continue:;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":445
- *                 return self.components.shape[0]
- * 
+  /* "hdbscan/_hdbscan_boruvka.pyx":493
+ *         # of each node, as this provides fast pruning in later
+ *         # tree traversals.
  *         for n in range(self.tree.data.shape[0]):             # <<<<<<<<<<<<<<
  *             self.component_of_point[n] = self.component_union_find.find(n)
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 445; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 493; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_shape); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 445; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_shape); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 493; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 445; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 493; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_17 = __Pyx_PyInt_As_long(__pyx_t_3); if (unlikely((__pyx_t_17 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 445; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_17 = __Pyx_PyInt_As_long(__pyx_t_3); if (unlikely((__pyx_t_17 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 493; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_17; __pyx_t_2+=1) {
     __pyx_v_n = __pyx_t_2;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":446
- * 
+    /* "hdbscan/_hdbscan_boruvka.pyx":494
+ *         # tree traversals.
  *         for n in range(self.tree.data.shape[0]):
  *             self.component_of_point[n] = self.component_union_find.find(n)             # <<<<<<<<<<<<<<
  * 
  *         for n in range(self.tree.node_data.shape[0] - 1, -1, -1):
  */
-    __pyx_t_18 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->find(__pyx_v_self->component_union_find, __pyx_v_n); if (unlikely(__pyx_t_18 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 446; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_18 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->find(__pyx_v_self->component_union_find, __pyx_v_n); if (unlikely(__pyx_t_18 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 494; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_19 = __pyx_v_n;
     *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_point.data) + __pyx_t_19)) )) = __pyx_t_18;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":448
+  /* "hdbscan/_hdbscan_boruvka.pyx":496
  *             self.component_of_point[n] = self.component_union_find.find(n)
  * 
  *         for n in range(self.tree.node_data.shape[0] - 1, -1, -1):             # <<<<<<<<<<<<<<
  *             node_info = self.node_data[n]
- *             if node_info.is_leaf:
+ *             # Case 1:
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 448; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 496; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_shape); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 448; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_shape); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 496; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 448; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 496; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = PyNumber_Subtract(__pyx_t_3, __pyx_int_1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 448; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_12 = PyNumber_Subtract(__pyx_t_3, __pyx_int_1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 496; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_17 = __Pyx_PyInt_As_long(__pyx_t_12); if (unlikely((__pyx_t_17 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 448; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_17 = __Pyx_PyInt_As_long(__pyx_t_12); if (unlikely((__pyx_t_17 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 496; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   for (__pyx_t_2 = __pyx_t_17; __pyx_t_2 > -1; __pyx_t_2-=1) {
     __pyx_v_n = __pyx_t_2;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":449
+    /* "hdbscan/_hdbscan_boruvka.pyx":497
  * 
  *         for n in range(self.tree.node_data.shape[0] - 1, -1, -1):
  *             node_info = self.node_data[n]             # <<<<<<<<<<<<<<
- *             if node_info.is_leaf:
- *                 current_component = self.component_of_point[self.idx_array[node_info.idx_start]]
+ *             # Case 1:
+ *             #    If the node is a leaf we need to check that every point
  */
     __pyx_t_18 = __pyx_v_n;
     __pyx_v_node_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_18)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":450
- *         for n in range(self.tree.node_data.shape[0] - 1, -1, -1):
- *             node_info = self.node_data[n]
+    /* "hdbscan/_hdbscan_boruvka.pyx":501
+ *             #    If the node is a leaf we need to check that every point
+ *             #    in the node is of the same component
  *             if node_info.is_leaf:             # <<<<<<<<<<<<<<
  *                 current_component = self.component_of_point[self.idx_array[node_info.idx_start]]
  *                 for i in range(node_info.idx_start + 1, node_info.idx_end):
@@ -6369,8 +6635,8 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     __pyx_t_6 = (__pyx_v_node_info.is_leaf != 0);
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":451
- *             node_info = self.node_data[n]
+      /* "hdbscan/_hdbscan_boruvka.pyx":502
+ *             #    in the node is of the same component
  *             if node_info.is_leaf:
  *                 current_component = self.component_of_point[self.idx_array[node_info.idx_start]]             # <<<<<<<<<<<<<<
  *                 for i in range(node_info.idx_start + 1, node_info.idx_end):
@@ -6380,7 +6646,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
       __pyx_t_21 = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->idx_array.data) + __pyx_t_20)) )));
       __pyx_v_current_component = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_point.data) + __pyx_t_21)) )));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":452
+      /* "hdbscan/_hdbscan_boruvka.pyx":503
  *             if node_info.is_leaf:
  *                 current_component = self.component_of_point[self.idx_array[node_info.idx_start]]
  *                 for i in range(node_info.idx_start + 1, node_info.idx_end):             # <<<<<<<<<<<<<<
@@ -6391,7 +6657,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
       for (__pyx_t_23 = (__pyx_v_node_info.idx_start + 1); __pyx_t_23 < __pyx_t_22; __pyx_t_23+=1) {
         __pyx_v_i = __pyx_t_23;
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":453
+        /* "hdbscan/_hdbscan_boruvka.pyx":504
  *                 current_component = self.component_of_point[self.idx_array[node_info.idx_start]]
  *                 for i in range(node_info.idx_start + 1, node_info.idx_end):
  *                     p = self.idx_array[i]             # <<<<<<<<<<<<<<
@@ -6401,7 +6667,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
         __pyx_t_24 = __pyx_v_i;
         __pyx_v_p = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->idx_array.data) + __pyx_t_24)) )));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":454
+        /* "hdbscan/_hdbscan_boruvka.pyx":505
  *                 for i in range(node_info.idx_start + 1, node_info.idx_end):
  *                     p = self.idx_array[i]
  *                     if self.component_of_point[p] != current_component:             # <<<<<<<<<<<<<<
@@ -6412,7 +6678,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
         __pyx_t_6 = (((*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_point.data) + __pyx_t_25)) ))) != __pyx_v_current_component) != 0);
         if (__pyx_t_6) {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":455
+          /* "hdbscan/_hdbscan_boruvka.pyx":506
  *                     p = self.idx_array[i]
  *                     if self.component_of_point[p] != current_component:
  *                         break             # <<<<<<<<<<<<<<
@@ -6424,12 +6690,12 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
       }
       /*else*/ {
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":457
+        /* "hdbscan/_hdbscan_boruvka.pyx":508
  *                         break
  *                 else:
  *                     self.component_of_node[n] = current_component             # <<<<<<<<<<<<<<
- *             else:
- *                 child1 = 2 * n + 1
+ *             # Case 2:
+ *             #    If the node is not a leaf we only need to check
  */
         __pyx_t_23 = __pyx_v_n;
         *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_node.data) + __pyx_t_23)) )) = __pyx_v_current_component;
@@ -6439,8 +6705,8 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     }
     /*else*/ {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":459
- *                     self.component_of_node[n] = current_component
+      /* "hdbscan/_hdbscan_boruvka.pyx":513
+ *             #    that both child nodes are in the same component
  *             else:
  *                 child1 = 2 * n + 1             # <<<<<<<<<<<<<<
  *                 child2 = 2 * n + 2
@@ -6448,7 +6714,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
  */
       __pyx_v_child1 = ((2 * __pyx_v_n) + 1);
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":460
+      /* "hdbscan/_hdbscan_boruvka.pyx":514
  *             else:
  *                 child1 = 2 * n + 1
  *                 child2 = 2 * n + 2             # <<<<<<<<<<<<<<
@@ -6457,7 +6723,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
  */
       __pyx_v_child2 = ((2 * __pyx_v_n) + 2);
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":461
+      /* "hdbscan/_hdbscan_boruvka.pyx":515
  *                 child1 = 2 * n + 1
  *                 child2 = 2 * n + 2
  *                 if self.component_of_node[child1] == self.component_of_node[child2]:             # <<<<<<<<<<<<<<
@@ -6469,12 +6735,12 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
       __pyx_t_6 = (((*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_node.data) + __pyx_t_22)) ))) == (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_node.data) + __pyx_t_26)) )))) != 0);
       if (__pyx_t_6) {
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":462
+        /* "hdbscan/_hdbscan_boruvka.pyx":516
  *                 child2 = 2 * n + 2
  *                 if self.component_of_node[child1] == self.component_of_node[child2]:
  *                     self.component_of_node[n] = self.component_of_node[child1]             # <<<<<<<<<<<<<<
  * 
- *         last_num_components = self.components.shape[0]
+ *         # Since we're working with mutual reachability distance we often have
  */
         __pyx_t_27 = __pyx_v_child1;
         __pyx_t_28 = __pyx_v_n;
@@ -6486,43 +6752,98 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     __pyx_L14:;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":464
- *                     self.component_of_node[n] = self.component_of_node[child1]
- * 
- *         last_num_components = self.components.shape[0]             # <<<<<<<<<<<<<<
- *         self.components = self.component_union_find.components()
- * 
+  /* "hdbscan/_hdbscan_boruvka.pyx":525
+ *         # produce a true min spanning tree, but only and approximation
+ *         # Thus only do this if the caller is willing to accept such
+ *         if self.approx_min_span_tree:             # <<<<<<<<<<<<<<
+ *             last_num_components = self.components.shape[0]
+ *             self.components = self.component_union_find.components()
  */
-  __pyx_v_last_num_components = (__pyx_v_self->components->dimensions[0]);
-
-  /* "hdbscan/_hdbscan_boruvka.pyx":465
- * 
- *         last_num_components = self.components.shape[0]
- *         self.components = self.component_union_find.components()             # <<<<<<<<<<<<<<
- * 
- *         if self.components.shape[0] == last_num_components:
- */
-  __pyx_t_12 = ((PyObject *)((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->components(__pyx_v_self->component_union_find)); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 465; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_GIVEREF(__pyx_t_12);
-  __Pyx_GOTREF(__pyx_v_self->components);
-  __Pyx_DECREF(((PyObject *)__pyx_v_self->components));
-  __pyx_v_self->components = ((PyArrayObject *)__pyx_t_12);
-  __pyx_t_12 = 0;
-
-  /* "hdbscan/_hdbscan_boruvka.pyx":467
- *         self.components = self.component_union_find.components()
- * 
- *         if self.components.shape[0] == last_num_components:             # <<<<<<<<<<<<<<
- *             # Reset bounds
- *             for n in range(self.num_nodes):
- */
-  __pyx_t_6 = (((__pyx_v_self->components->dimensions[0]) == __pyx_v_last_num_components) != 0);
+  __pyx_t_6 = (__pyx_v_self->approx_min_span_tree != 0);
   if (__pyx_t_6) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":469
- *         if self.components.shape[0] == last_num_components:
- *             # Reset bounds
+    /* "hdbscan/_hdbscan_boruvka.pyx":526
+ *         # Thus only do this if the caller is willing to accept such
+ *         if self.approx_min_span_tree:
+ *             last_num_components = self.components.shape[0]             # <<<<<<<<<<<<<<
+ *             self.components = self.component_union_find.components()
+ * 
+ */
+    __pyx_v_last_num_components = (__pyx_v_self->components->dimensions[0]);
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":527
+ *         if self.approx_min_span_tree:
+ *             last_num_components = self.components.shape[0]
+ *             self.components = self.component_union_find.components()             # <<<<<<<<<<<<<<
+ * 
+ *             if self.components.shape[0] == last_num_components:
+ */
+    __pyx_t_12 = ((PyObject *)((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->components(__pyx_v_self->component_union_find)); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 527; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_12);
+    __Pyx_GOTREF(__pyx_v_self->components);
+    __Pyx_DECREF(((PyObject *)__pyx_v_self->components));
+    __pyx_v_self->components = ((PyArrayObject *)__pyx_t_12);
+    __pyx_t_12 = 0;
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":529
+ *             self.components = self.component_union_find.components()
+ * 
+ *             if self.components.shape[0] == last_num_components:             # <<<<<<<<<<<<<<
+ *                 # Reset bounds
+ *                 for n in range(self.num_nodes):
+ */
+    __pyx_t_6 = (((__pyx_v_self->components->dimensions[0]) == __pyx_v_last_num_components) != 0);
+    if (__pyx_t_6) {
+
+      /* "hdbscan/_hdbscan_boruvka.pyx":531
+ *             if self.components.shape[0] == last_num_components:
+ *                 # Reset bounds
+ *                 for n in range(self.num_nodes):             # <<<<<<<<<<<<<<
+ *                     self.bounds_arr[n] = <np.double_t> DBL_MAX
+ *         else:
+ */
+      __pyx_t_2 = __pyx_v_self->num_nodes;
+      for (__pyx_t_29 = 0; __pyx_t_29 < __pyx_t_2; __pyx_t_29+=1) {
+        __pyx_v_n = __pyx_t_29;
+
+        /* "hdbscan/_hdbscan_boruvka.pyx":532
+ *                 # Reset bounds
+ *                 for n in range(self.num_nodes):
+ *                     self.bounds_arr[n] = <np.double_t> DBL_MAX             # <<<<<<<<<<<<<<
+ *         else:
+ *             self.components = self.component_union_find.components()
+ */
+        __pyx_t_12 = PyFloat_FromDouble(((__pyx_t_5numpy_double_t)DBL_MAX)); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 532; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_12);
+        if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->bounds_arr), __pyx_v_n, __pyx_t_12, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 532; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      }
+      goto __pyx_L20;
+    }
+    __pyx_L20:;
+    goto __pyx_L19;
+  }
+  /*else*/ {
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":534
+ *                     self.bounds_arr[n] = <np.double_t> DBL_MAX
+ *         else:
+ *             self.components = self.component_union_find.components()             # <<<<<<<<<<<<<<
+ * 
+ *             for n in range(self.num_nodes):
+ */
+    __pyx_t_12 = ((PyObject *)((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->components(__pyx_v_self->component_union_find)); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 534; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_12);
+    __Pyx_GOTREF(__pyx_v_self->components);
+    __Pyx_DECREF(((PyObject *)__pyx_v_self->components));
+    __pyx_v_self->components = ((PyArrayObject *)__pyx_t_12);
+    __pyx_t_12 = 0;
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":536
+ *             self.components = self.component_union_find.components()
+ * 
  *             for n in range(self.num_nodes):             # <<<<<<<<<<<<<<
  *                 self.bounds_arr[n] = <np.double_t> DBL_MAX
  * 
@@ -6531,24 +6852,23 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
     for (__pyx_t_29 = 0; __pyx_t_29 < __pyx_t_2; __pyx_t_29+=1) {
       __pyx_v_n = __pyx_t_29;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":470
- *             # Reset bounds
+      /* "hdbscan/_hdbscan_boruvka.pyx":537
+ * 
  *             for n in range(self.num_nodes):
  *                 self.bounds_arr[n] = <np.double_t> DBL_MAX             # <<<<<<<<<<<<<<
  * 
- *         return self.components.shape[0]
+ * 
  */
-      __pyx_t_12 = PyFloat_FromDouble(((__pyx_t_5numpy_double_t)DBL_MAX)); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 470; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = PyFloat_FromDouble(((__pyx_t_5numpy_double_t)DBL_MAX)); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 537; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_12);
-      if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->bounds_arr), __pyx_v_n, __pyx_t_12, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 470; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->bounds_arr), __pyx_v_n, __pyx_t_12, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 537; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     }
-    goto __pyx_L19;
   }
   __pyx_L19:;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":472
- *                 self.bounds_arr[n] = <np.double_t> DBL_MAX
+  /* "hdbscan/_hdbscan_boruvka.pyx":540
+ * 
  * 
  *         return self.components.shape[0]             # <<<<<<<<<<<<<<
  * 
@@ -6557,7 +6877,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
   __pyx_r = (__pyx_v_self->components->dimensions[0]);
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":400
+  /* "hdbscan/_hdbscan_boruvka.pyx":427
  *             self.component_of_node[n] = -(n+1)
  * 
  *     cdef int update_components(self) except -1:             # <<<<<<<<<<<<<<
@@ -6577,7 +6897,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_c
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":474
+/* "hdbscan/_hdbscan_boruvka.pyx":542
  *         return self.components.shape[0]
  * 
  *     cdef int dual_tree_traversal(self, np.intp_t node1, np.intp_t node2) nogil except -1:             # <<<<<<<<<<<<<<
@@ -6643,7 +6963,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":494
+  /* "hdbscan/_hdbscan_boruvka.pyx":562
  *         cdef double node_dist
  * 
  *         cdef NodeData_t node1_info = self.node_data[node1]             # <<<<<<<<<<<<<<
@@ -6653,7 +6973,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
   __pyx_t_1 = __pyx_v_node1;
   __pyx_v_node1_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_1)) )));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":495
+  /* "hdbscan/_hdbscan_boruvka.pyx":563
  * 
  *         cdef NodeData_t node1_info = self.node_data[node1]
  *         cdef NodeData_t node2_info = self.node_data[node2]             # <<<<<<<<<<<<<<
@@ -6663,7 +6983,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
   __pyx_t_2 = __pyx_v_node2;
   __pyx_v_node2_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_2)) )));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":503
+  /* "hdbscan/_hdbscan_boruvka.pyx":571
  *         cdef np.intp_t component2
  * 
  *         cdef np.double_t *raw_data = (<np.double_t *> &self._raw_data[0,0])             # <<<<<<<<<<<<<<
@@ -6674,17 +6994,17 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
   __pyx_t_4 = 0;
   __pyx_v_raw_data = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=0 */ (__pyx_v_self->_raw_data.data + __pyx_t_3 * __pyx_v_self->_raw_data.strides[0]) )) + __pyx_t_4)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":520
+  /* "hdbscan/_hdbscan_boruvka.pyx":588
  * 
  *         # Compute the distance between the query and reference nodes
  *         node_dist = kdtree_min_rdist_dual(self.dist,             # <<<<<<<<<<<<<<
  *                                           node1, node2, self.node_bounds, self.num_features)
  * 
  */
-  __pyx_t_5 = __pyx_f_7hdbscan_16_hdbscan_boruvka_kdtree_min_rdist_dual(__pyx_v_self->dist, __pyx_v_node1, __pyx_v_node2, __pyx_v_self->node_bounds, __pyx_v_self->num_features); if (unlikely(__pyx_t_5 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 520; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __pyx_f_7hdbscan_16_hdbscan_boruvka_kdtree_min_rdist_dual(__pyx_v_self->dist, __pyx_v_node1, __pyx_v_node2, __pyx_v_self->node_bounds, __pyx_v_self->num_features); if (unlikely(__pyx_t_5 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 588; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_node_dist = __pyx_t_5;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":526
+  /* "hdbscan/_hdbscan_boruvka.pyx":594
  *         # and the nodes are not in the same component continue; otherwise we get to prune
  *         # this branch and return early.
  *         if node_dist < self.bounds_ptr[node1]:             # <<<<<<<<<<<<<<
@@ -6694,7 +7014,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
   __pyx_t_6 = ((__pyx_v_node_dist < (__pyx_v_self->bounds_ptr[__pyx_v_node1])) != 0);
   if (__pyx_t_6) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":527
+    /* "hdbscan/_hdbscan_boruvka.pyx":595
  *         # this branch and return early.
  *         if node_dist < self.bounds_ptr[node1]:
  *             if self.component_of_node_ptr[node1] == self.component_of_node_ptr[node2] and \             # <<<<<<<<<<<<<<
@@ -6708,7 +7028,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
       goto __pyx_L5_bool_binop_done;
     }
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":528
+    /* "hdbscan/_hdbscan_boruvka.pyx":596
  *         if node_dist < self.bounds_ptr[node1]:
  *             if self.component_of_node_ptr[node1] == self.component_of_node_ptr[node2] and \
  *                     self.component_of_node_ptr[node1] >= 0:             # <<<<<<<<<<<<<<
@@ -6720,7 +7040,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
     __pyx_L5_bool_binop_done:;
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":529
+      /* "hdbscan/_hdbscan_boruvka.pyx":597
  *             if self.component_of_node_ptr[node1] == self.component_of_node_ptr[node2] and \
  *                     self.component_of_node_ptr[node1] >= 0:
  *                 return 0             # <<<<<<<<<<<<<<
@@ -6734,7 +7054,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
   }
   /*else*/ {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":531
+    /* "hdbscan/_hdbscan_boruvka.pyx":599
  *                 return 0
  *         else:
  *             return 0             # <<<<<<<<<<<<<<
@@ -6746,7 +7066,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
   }
   __pyx_L3:;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":560
+  /* "hdbscan/_hdbscan_boruvka.pyx":628
  *         #       based on the distances found here, so do that and
  *         #       propagate the results up the tree.
  *         if node1_info.is_leaf and node2_info.is_leaf:             # <<<<<<<<<<<<<<
@@ -6764,7 +7084,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
   __pyx_L8_bool_binop_done:;
   if (__pyx_t_6) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":562
+    /* "hdbscan/_hdbscan_boruvka.pyx":630
  *         if node1_info.is_leaf and node2_info.is_leaf:
  * 
  *             new_upper_bound = 0.0             # <<<<<<<<<<<<<<
@@ -6773,7 +7093,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
  */
     __pyx_v_new_upper_bound = 0.0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":563
+    /* "hdbscan/_hdbscan_boruvka.pyx":631
  * 
  *             new_upper_bound = 0.0
  *             new_lower_bound = DBL_MAX             # <<<<<<<<<<<<<<
@@ -6782,7 +7102,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
  */
     __pyx_v_new_lower_bound = DBL_MAX;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":565
+    /* "hdbscan/_hdbscan_boruvka.pyx":633
  *             new_lower_bound = DBL_MAX
  * 
  *             point_indices1 = self.idx_array[node1_info.idx_start:node1_info.idx_end]             # <<<<<<<<<<<<<<
@@ -6809,7 +7129,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tre
     0,
     1) < 0))
 {
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 565; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 633; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 }
 
 __PYX_XDEC_MEMVIEW(&__pyx_t_8, 0);
@@ -6817,7 +7137,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_8, 0);
     __pyx_t_9.memview = NULL;
     __pyx_t_9.data = NULL;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":566
+    /* "hdbscan/_hdbscan_boruvka.pyx":634
  * 
  *             point_indices1 = self.idx_array[node1_info.idx_start:node1_info.idx_end]
  *             point_indices2 = self.idx_array[node2_info.idx_start:node2_info.idx_end]             # <<<<<<<<<<<<<<
@@ -6844,7 +7164,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_8, 0);
     0,
     1) < 0))
 {
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 634; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 }
 
 __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
@@ -6852,7 +7172,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
     __pyx_t_8.memview = NULL;
     __pyx_t_8.data = NULL;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":568
+    /* "hdbscan/_hdbscan_boruvka.pyx":636
  *             point_indices2 = self.idx_array[node2_info.idx_start:node2_info.idx_end]
  * 
  *             for i in range(point_indices1.shape[0]):             # <<<<<<<<<<<<<<
@@ -6863,7 +7183,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
     for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
       __pyx_v_i = __pyx_t_12;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":570
+      /* "hdbscan/_hdbscan_boruvka.pyx":638
  *             for i in range(point_indices1.shape[0]):
  * 
  *                 p = point_indices1[i]             # <<<<<<<<<<<<<<
@@ -6873,7 +7193,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
       __pyx_t_13 = __pyx_v_i;
       __pyx_v_p = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_point_indices1.data) + __pyx_t_13)) )));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":571
+      /* "hdbscan/_hdbscan_boruvka.pyx":639
  * 
  *                 p = point_indices1[i]
  *                 component1 = self.component_of_point_ptr[p]             # <<<<<<<<<<<<<<
@@ -6882,7 +7202,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
       __pyx_v_component1 = (__pyx_v_self->component_of_point_ptr[__pyx_v_p]);
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":573
+      /* "hdbscan/_hdbscan_boruvka.pyx":641
  *                 component1 = self.component_of_point_ptr[p]
  * 
  *                 if self.core_distance_ptr[p] > self.candidate_distance_ptr[component1]:             # <<<<<<<<<<<<<<
@@ -6892,7 +7212,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
       __pyx_t_6 = (((__pyx_v_self->core_distance_ptr[__pyx_v_p]) > (__pyx_v_self->candidate_distance_ptr[__pyx_v_component1])) != 0);
       if (__pyx_t_6) {
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":574
+        /* "hdbscan/_hdbscan_boruvka.pyx":642
  * 
  *                 if self.core_distance_ptr[p] > self.candidate_distance_ptr[component1]:
  *                     continue             # <<<<<<<<<<<<<<
@@ -6902,7 +7222,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         goto __pyx_L10_continue;
       }
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":576
+      /* "hdbscan/_hdbscan_boruvka.pyx":644
  *                     continue
  * 
  *                 for j in range(point_indices2.shape[0]):             # <<<<<<<<<<<<<<
@@ -6913,7 +7233,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
       for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_14; __pyx_t_15+=1) {
         __pyx_v_j = __pyx_t_15;
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":578
+        /* "hdbscan/_hdbscan_boruvka.pyx":646
  *                 for j in range(point_indices2.shape[0]):
  * 
  *                     q = point_indices2[j]             # <<<<<<<<<<<<<<
@@ -6923,7 +7243,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         __pyx_t_16 = __pyx_v_j;
         __pyx_v_q = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_point_indices2.data) + __pyx_t_16)) )));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":579
+        /* "hdbscan/_hdbscan_boruvka.pyx":647
  * 
  *                     q = point_indices2[j]
  *                     component2 = self.component_of_point_ptr[q]             # <<<<<<<<<<<<<<
@@ -6932,7 +7252,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
         __pyx_v_component2 = (__pyx_v_self->component_of_point_ptr[__pyx_v_q]);
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":581
+        /* "hdbscan/_hdbscan_boruvka.pyx":649
  *                     component2 = self.component_of_point_ptr[q]
  * 
  *                     if self.core_distance_ptr[q] > self.candidate_distance_ptr[component1]:             # <<<<<<<<<<<<<<
@@ -6942,7 +7262,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         __pyx_t_6 = (((__pyx_v_self->core_distance_ptr[__pyx_v_q]) > (__pyx_v_self->candidate_distance_ptr[__pyx_v_component1])) != 0);
         if (__pyx_t_6) {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":582
+          /* "hdbscan/_hdbscan_boruvka.pyx":650
  * 
  *                     if self.core_distance_ptr[q] > self.candidate_distance_ptr[component1]:
  *                         continue             # <<<<<<<<<<<<<<
@@ -6952,7 +7272,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
           goto __pyx_L13_continue;
         }
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":584
+        /* "hdbscan/_hdbscan_boruvka.pyx":652
  *                         continue
  * 
  *                     if component1 != component2:             # <<<<<<<<<<<<<<
@@ -6962,17 +7282,17 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         __pyx_t_6 = ((__pyx_v_component1 != __pyx_v_component2) != 0);
         if (__pyx_t_6) {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":586
+          /* "hdbscan/_hdbscan_boruvka.pyx":654
  *                     if component1 != component2:
  * 
  *                         d = self.dist.rdist(&raw_data[self.num_features * p],             # <<<<<<<<<<<<<<
  *                                             &raw_data[self.num_features * q],
  *                                             self.num_features)
  */
-          __pyx_t_17 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->dist->__pyx_vtab)->rdist(__pyx_v_self->dist, (&(__pyx_v_raw_data[(__pyx_v_self->num_features * __pyx_v_p)])), (&(__pyx_v_raw_data[(__pyx_v_self->num_features * __pyx_v_q)])), __pyx_v_self->num_features); if (unlikely(__pyx_t_17 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 586; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_17 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->dist->__pyx_vtab)->rdist(__pyx_v_self->dist, (&(__pyx_v_raw_data[(__pyx_v_self->num_features * __pyx_v_p)])), (&(__pyx_v_raw_data[(__pyx_v_self->num_features * __pyx_v_q)])), __pyx_v_self->num_features); if (unlikely(__pyx_t_17 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 654; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __pyx_v_d = __pyx_t_17;
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":591
+          /* "hdbscan/_hdbscan_boruvka.pyx":659
  * 
  *                         # mr_dist = max(distances[i, j], self.core_distance_ptr[p], self.core_distance_ptr[q])
  *                         if self.alpha != 1.0:             # <<<<<<<<<<<<<<
@@ -6982,7 +7302,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
           __pyx_t_6 = ((__pyx_v_self->alpha != 1.0) != 0);
           if (__pyx_t_6) {
 
-            /* "hdbscan/_hdbscan_boruvka.pyx":592
+            /* "hdbscan/_hdbscan_boruvka.pyx":660
  *                         # mr_dist = max(distances[i, j], self.core_distance_ptr[p], self.core_distance_ptr[q])
  *                         if self.alpha != 1.0:
  *                             mr_dist = max(d / self.alpha, self.core_distance_ptr[p], self.core_distance_ptr[q])             # <<<<<<<<<<<<<<
@@ -6999,7 +7319,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
               #ifdef WITH_THREAD
               PyGILState_Release(__pyx_gilstate_save);
               #endif
-              {__pyx_filename = __pyx_f[0]; __pyx_lineno = 592; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+              {__pyx_filename = __pyx_f[0]; __pyx_lineno = 660; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             }
             __pyx_t_19 = (__pyx_v_d / __pyx_v_self->alpha);
             if (((__pyx_t_5 > __pyx_t_19) != 0)) {
@@ -7018,7 +7338,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
           }
           /*else*/ {
 
-            /* "hdbscan/_hdbscan_boruvka.pyx":594
+            /* "hdbscan/_hdbscan_boruvka.pyx":662
  *                             mr_dist = max(d / self.alpha, self.core_distance_ptr[p], self.core_distance_ptr[q])
  *                         else:
  *                             mr_dist = max(d, self.core_distance_ptr[p], self.core_distance_ptr[q])             # <<<<<<<<<<<<<<
@@ -7043,7 +7363,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
           }
           __pyx_L17:;
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":595
+          /* "hdbscan/_hdbscan_boruvka.pyx":663
  *                         else:
  *                             mr_dist = max(d, self.core_distance_ptr[p], self.core_distance_ptr[q])
  *                         if mr_dist < self.candidate_distance_ptr[component1]:             # <<<<<<<<<<<<<<
@@ -7053,7 +7373,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
           __pyx_t_6 = ((__pyx_v_mr_dist < (__pyx_v_self->candidate_distance_ptr[__pyx_v_component1])) != 0);
           if (__pyx_t_6) {
 
-            /* "hdbscan/_hdbscan_boruvka.pyx":596
+            /* "hdbscan/_hdbscan_boruvka.pyx":664
  *                             mr_dist = max(d, self.core_distance_ptr[p], self.core_distance_ptr[q])
  *                         if mr_dist < self.candidate_distance_ptr[component1]:
  *                             self.candidate_distance_ptr[component1] = mr_dist             # <<<<<<<<<<<<<<
@@ -7062,7 +7382,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
             (__pyx_v_self->candidate_distance_ptr[__pyx_v_component1]) = __pyx_v_mr_dist;
 
-            /* "hdbscan/_hdbscan_boruvka.pyx":597
+            /* "hdbscan/_hdbscan_boruvka.pyx":665
  *                         if mr_dist < self.candidate_distance_ptr[component1]:
  *                             self.candidate_distance_ptr[component1] = mr_dist
  *                             self.candidate_neighbor_ptr[component1] = q             # <<<<<<<<<<<<<<
@@ -7071,7 +7391,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
             (__pyx_v_self->candidate_neighbor_ptr[__pyx_v_component1]) = __pyx_v_q;
 
-            /* "hdbscan/_hdbscan_boruvka.pyx":598
+            /* "hdbscan/_hdbscan_boruvka.pyx":666
  *                             self.candidate_distance_ptr[component1] = mr_dist
  *                             self.candidate_neighbor_ptr[component1] = q
  *                             self.candidate_point_ptr[component1] = p             # <<<<<<<<<<<<<<
@@ -7088,7 +7408,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         __pyx_L13_continue:;
       }
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":600
+      /* "hdbscan/_hdbscan_boruvka.pyx":668
  *                             self.candidate_point_ptr[component1] = p
  * 
  *                 new_upper_bound = max(new_upper_bound, self.candidate_distance_ptr[component1])             # <<<<<<<<<<<<<<
@@ -7104,7 +7424,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
       }
       __pyx_v_new_upper_bound = __pyx_t_5;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":601
+      /* "hdbscan/_hdbscan_boruvka.pyx":669
  * 
  *                 new_upper_bound = max(new_upper_bound, self.candidate_distance_ptr[component1])
  *                 new_lower_bound = min(new_lower_bound, self.candidate_distance_ptr[component1])             # <<<<<<<<<<<<<<
@@ -7122,7 +7442,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
       __pyx_L10_continue:;
     }
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":606
+    /* "hdbscan/_hdbscan_boruvka.pyx":674
  *             # then propagate the results of that computation
  *             # up the tree.
  *             new_bound = min(new_upper_bound, new_lower_bound + 2 * node1_info.radius)             # <<<<<<<<<<<<<<
@@ -7138,7 +7458,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
     }
     __pyx_v_new_bound = __pyx_t_19;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":607
+    /* "hdbscan/_hdbscan_boruvka.pyx":675
  *             # up the tree.
  *             new_bound = min(new_upper_bound, new_lower_bound + 2 * node1_info.radius)
  *             if new_bound < self.bounds_ptr[node1]:             # <<<<<<<<<<<<<<
@@ -7148,7 +7468,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
     __pyx_t_6 = ((__pyx_v_new_bound < (__pyx_v_self->bounds_ptr[__pyx_v_node1])) != 0);
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":608
+      /* "hdbscan/_hdbscan_boruvka.pyx":676
  *             new_bound = min(new_upper_bound, new_lower_bound + 2 * node1_info.radius)
  *             if new_bound < self.bounds_ptr[node1]:
  *                 self.bounds_ptr[node1] = new_bound             # <<<<<<<<<<<<<<
@@ -7157,7 +7477,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
       (__pyx_v_self->bounds_ptr[__pyx_v_node1]) = __pyx_v_new_bound;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":611
+      /* "hdbscan/_hdbscan_boruvka.pyx":679
  * 
  *                 # Propagate bounds up the tree
  *                 while node1 > 0:             # <<<<<<<<<<<<<<
@@ -7168,7 +7488,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         __pyx_t_6 = ((__pyx_v_node1 > 0) != 0);
         if (!__pyx_t_6) break;
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":612
+        /* "hdbscan/_hdbscan_boruvka.pyx":680
  *                 # Propagate bounds up the tree
  *                 while node1 > 0:
  *                     parent = (node1 - 1) // 2             # <<<<<<<<<<<<<<
@@ -7177,7 +7497,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
         __pyx_v_parent = __Pyx_div_long((__pyx_v_node1 - 1), 2);
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":613
+        /* "hdbscan/_hdbscan_boruvka.pyx":681
  *                 while node1 > 0:
  *                     parent = (node1 - 1) // 2
  *                     left = 2 * parent + 1             # <<<<<<<<<<<<<<
@@ -7186,7 +7506,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
         __pyx_v_left = ((2 * __pyx_v_parent) + 1);
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":614
+        /* "hdbscan/_hdbscan_boruvka.pyx":682
  *                     parent = (node1 - 1) // 2
  *                     left = 2 * parent + 1
  *                     right = 2 * parent + 2             # <<<<<<<<<<<<<<
@@ -7195,7 +7515,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
         __pyx_v_right = ((2 * __pyx_v_parent) + 2);
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":616
+        /* "hdbscan/_hdbscan_boruvka.pyx":684
  *                     right = 2 * parent + 2
  * 
  *                     parent_info = self.node_data[parent]             # <<<<<<<<<<<<<<
@@ -7205,7 +7525,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         __pyx_t_12 = __pyx_v_parent;
         __pyx_v_parent_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_12)) )));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":617
+        /* "hdbscan/_hdbscan_boruvka.pyx":685
  * 
  *                     parent_info = self.node_data[parent]
  *                     left_info = self.node_data[left]             # <<<<<<<<<<<<<<
@@ -7215,7 +7535,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         __pyx_t_15 = __pyx_v_left;
         __pyx_v_left_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_15)) )));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":618
+        /* "hdbscan/_hdbscan_boruvka.pyx":686
  *                     parent_info = self.node_data[parent]
  *                     left_info = self.node_data[left]
  *                     right_info = self.node_data[right]             # <<<<<<<<<<<<<<
@@ -7225,7 +7545,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         __pyx_t_21 = __pyx_v_right;
         __pyx_v_right_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_21)) )));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":621
+        /* "hdbscan/_hdbscan_boruvka.pyx":689
  * 
  *                     bound_max = max(self.bounds_ptr[left],
  *                                     self.bounds_ptr[right])             # <<<<<<<<<<<<<<
@@ -7234,7 +7554,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
         __pyx_t_19 = (__pyx_v_self->bounds_ptr[__pyx_v_right]);
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":620
+        /* "hdbscan/_hdbscan_boruvka.pyx":688
  *                     right_info = self.node_data[right]
  * 
  *                     bound_max = max(self.bounds_ptr[left],             # <<<<<<<<<<<<<<
@@ -7243,7 +7563,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
         __pyx_t_20 = (__pyx_v_self->bounds_ptr[__pyx_v_left]);
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":621
+        /* "hdbscan/_hdbscan_boruvka.pyx":689
  * 
  *                     bound_max = max(self.bounds_ptr[left],
  *                                     self.bounds_ptr[right])             # <<<<<<<<<<<<<<
@@ -7257,7 +7577,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         }
         __pyx_v_bound_max = __pyx_t_5;
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":623
+        /* "hdbscan/_hdbscan_boruvka.pyx":691
  *                                     self.bounds_ptr[right])
  *                     bound_min = min(self.bounds_ptr[left] + 2 * (parent_info.radius - left_info.radius),
  *                                     self.bounds_ptr[right] + 2 * (parent_info.radius - right_info.radius))             # <<<<<<<<<<<<<<
@@ -7266,7 +7586,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
         __pyx_t_5 = ((__pyx_v_self->bounds_ptr[__pyx_v_right]) + (2.0 * (__pyx_v_parent_info.radius - __pyx_v_right_info.radius)));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":622
+        /* "hdbscan/_hdbscan_boruvka.pyx":690
  *                     bound_max = max(self.bounds_ptr[left],
  *                                     self.bounds_ptr[right])
  *                     bound_min = min(self.bounds_ptr[left] + 2 * (parent_info.radius - left_info.radius),             # <<<<<<<<<<<<<<
@@ -7275,7 +7595,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
         __pyx_t_19 = ((__pyx_v_self->bounds_ptr[__pyx_v_left]) + (2.0 * (__pyx_v_parent_info.radius - __pyx_v_left_info.radius)));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":623
+        /* "hdbscan/_hdbscan_boruvka.pyx":691
  *                                     self.bounds_ptr[right])
  *                     bound_min = min(self.bounds_ptr[left] + 2 * (parent_info.radius - left_info.radius),
  *                                     self.bounds_ptr[right] + 2 * (parent_info.radius - right_info.radius))             # <<<<<<<<<<<<<<
@@ -7289,7 +7609,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         }
         __pyx_v_bound_min = __pyx_t_20;
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":625
+        /* "hdbscan/_hdbscan_boruvka.pyx":693
  *                                     self.bounds_ptr[right] + 2 * (parent_info.radius - right_info.radius))
  * 
  *                     if bound_min > 0:             # <<<<<<<<<<<<<<
@@ -7299,7 +7619,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         __pyx_t_6 = ((__pyx_v_bound_min > 0.0) != 0);
         if (__pyx_t_6) {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":626
+          /* "hdbscan/_hdbscan_boruvka.pyx":694
  * 
  *                     if bound_min > 0:
  *                         new_bound = min(bound_max, bound_min)             # <<<<<<<<<<<<<<
@@ -7318,7 +7638,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         }
         /*else*/ {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":628
+          /* "hdbscan/_hdbscan_boruvka.pyx":696
  *                         new_bound = min(bound_max, bound_min)
  *                     else:
  *                         new_bound = bound_max             # <<<<<<<<<<<<<<
@@ -7329,7 +7649,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         }
         __pyx_L22:;
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":630
+        /* "hdbscan/_hdbscan_boruvka.pyx":698
  *                         new_bound = bound_max
  * 
  *                     if new_bound < self.bounds_ptr[parent]:             # <<<<<<<<<<<<<<
@@ -7339,7 +7659,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         __pyx_t_6 = ((__pyx_v_new_bound < (__pyx_v_self->bounds_ptr[__pyx_v_parent])) != 0);
         if (__pyx_t_6) {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":631
+          /* "hdbscan/_hdbscan_boruvka.pyx":699
  * 
  *                     if new_bound < self.bounds_ptr[parent]:
  *                         self.bounds_ptr[parent] = new_bound             # <<<<<<<<<<<<<<
@@ -7348,7 +7668,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
           (__pyx_v_self->bounds_ptr[__pyx_v_parent]) = __pyx_v_new_bound;
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":632
+          /* "hdbscan/_hdbscan_boruvka.pyx":700
  *                     if new_bound < self.bounds_ptr[parent]:
  *                         self.bounds_ptr[parent] = new_bound
  *                         node1 = parent             # <<<<<<<<<<<<<<
@@ -7360,7 +7680,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
         }
         /*else*/ {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":634
+          /* "hdbscan/_hdbscan_boruvka.pyx":702
  *                         node1 = parent
  *                     else:
  *                         break             # <<<<<<<<<<<<<<
@@ -7378,7 +7698,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
     goto __pyx_L7;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":643
+  /* "hdbscan/_hdbscan_boruvka.pyx":711
  *         #       whether we should prioritise the left or
  *         #       right branch in the reference tree.
  *         elif node1_info.is_leaf or (not node2_info.is_leaf             # <<<<<<<<<<<<<<
@@ -7392,7 +7712,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
     goto __pyx_L24_bool_binop_done;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":644
+  /* "hdbscan/_hdbscan_boruvka.pyx":712
  *         #       right branch in the reference tree.
  *         elif node1_info.is_leaf or (not node2_info.is_leaf
  *                                     and node2_info.radius > node1_info.radius):             # <<<<<<<<<<<<<<
@@ -7410,7 +7730,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
   __pyx_L24_bool_binop_done:;
   if (__pyx_t_6) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":646
+    /* "hdbscan/_hdbscan_boruvka.pyx":714
  *                                     and node2_info.radius > node1_info.radius):
  * 
  *             left = 2 * node2 + 1             # <<<<<<<<<<<<<<
@@ -7419,7 +7739,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
     __pyx_v_left = ((2 * __pyx_v_node2) + 1);
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":647
+    /* "hdbscan/_hdbscan_boruvka.pyx":715
  * 
  *             left = 2 * node2 + 1
  *             right = 2 * node2 + 2             # <<<<<<<<<<<<<<
@@ -7428,7 +7748,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
     __pyx_v_right = ((2 * __pyx_v_node2) + 2);
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":649
+    /* "hdbscan/_hdbscan_boruvka.pyx":717
  *             right = 2 * node2 + 2
  * 
  *             node2_info = self.node_data[left]             # <<<<<<<<<<<<<<
@@ -7438,17 +7758,17 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
     __pyx_t_22 = __pyx_v_left;
     __pyx_v_node2_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_22)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":651
+    /* "hdbscan/_hdbscan_boruvka.pyx":719
  *             node2_info = self.node_data[left]
  * 
  *             left_dist = kdtree_min_rdist_dual(self.dist,             # <<<<<<<<<<<<<<
  *                                       node1, left, self.node_bounds, self.num_features)
  * 
  */
-    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_kdtree_min_rdist_dual(__pyx_v_self->dist, __pyx_v_node1, __pyx_v_left, __pyx_v_self->node_bounds, __pyx_v_self->num_features); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 651; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_kdtree_min_rdist_dual(__pyx_v_self->dist, __pyx_v_node1, __pyx_v_left, __pyx_v_self->node_bounds, __pyx_v_self->num_features); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 719; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_left_dist = __pyx_t_19;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":654
+    /* "hdbscan/_hdbscan_boruvka.pyx":722
  *                                       node1, left, self.node_bounds, self.num_features)
  * 
  *             node2_info = self.node_data[right]             # <<<<<<<<<<<<<<
@@ -7458,17 +7778,17 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
     __pyx_t_23 = __pyx_v_right;
     __pyx_v_node2_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_23)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":656
+    /* "hdbscan/_hdbscan_boruvka.pyx":724
  *             node2_info = self.node_data[right]
  * 
  *             right_dist = kdtree_min_rdist_dual(self.dist,             # <<<<<<<<<<<<<<
  *                                       node1, right, self.node_bounds, self.num_features)
  * 
  */
-    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_kdtree_min_rdist_dual(__pyx_v_self->dist, __pyx_v_node1, __pyx_v_right, __pyx_v_self->node_bounds, __pyx_v_self->num_features); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 656; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_kdtree_min_rdist_dual(__pyx_v_self->dist, __pyx_v_node1, __pyx_v_right, __pyx_v_self->node_bounds, __pyx_v_self->num_features); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 724; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_right_dist = __pyx_t_19;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":659
+    /* "hdbscan/_hdbscan_boruvka.pyx":727
  *                                       node1, right, self.node_bounds, self.num_features)
  * 
  *             if left_dist < right_dist:             # <<<<<<<<<<<<<<
@@ -7478,51 +7798,51 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
     __pyx_t_6 = ((__pyx_v_left_dist < __pyx_v_right_dist) != 0);
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":660
+      /* "hdbscan/_hdbscan_boruvka.pyx":728
  * 
  *             if left_dist < right_dist:
  *                 self.dual_tree_traversal(node1, left)             # <<<<<<<<<<<<<<
  *                 self.dual_tree_traversal(node1, right)
  *             else:
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_left); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 660; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_left); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 728; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":661
+      /* "hdbscan/_hdbscan_boruvka.pyx":729
  *             if left_dist < right_dist:
  *                 self.dual_tree_traversal(node1, left)
  *                 self.dual_tree_traversal(node1, right)             # <<<<<<<<<<<<<<
  *             else:
  *                 self.dual_tree_traversal(node1, right)
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_right); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 661; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_right); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 729; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       goto __pyx_L27;
     }
     /*else*/ {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":663
+      /* "hdbscan/_hdbscan_boruvka.pyx":731
  *                 self.dual_tree_traversal(node1, right)
  *             else:
  *                 self.dual_tree_traversal(node1, right)             # <<<<<<<<<<<<<<
  *                 self.dual_tree_traversal(node1, left)
  * 
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_right); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 663; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_right); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 731; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":664
+      /* "hdbscan/_hdbscan_boruvka.pyx":732
  *             else:
  *                 self.dual_tree_traversal(node1, right)
  *                 self.dual_tree_traversal(node1, left)             # <<<<<<<<<<<<<<
  * 
  *         # Case 2b: The reference node is a leaf, or is smaller than
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_left); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 664; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_left); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 732; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __pyx_L27:;
     goto __pyx_L7;
   }
   /*else*/ {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":674
+    /* "hdbscan/_hdbscan_boruvka.pyx":742
  *         #       right branch in the query tree.
  *         else:
  *             left = 2 * node1 + 1             # <<<<<<<<<<<<<<
@@ -7531,7 +7851,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
     __pyx_v_left = ((2 * __pyx_v_node1) + 1);
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":675
+    /* "hdbscan/_hdbscan_boruvka.pyx":743
  *         else:
  *             left = 2 * node1 + 1
  *             right = 2 * node1 + 2             # <<<<<<<<<<<<<<
@@ -7540,7 +7860,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
  */
     __pyx_v_right = ((2 * __pyx_v_node1) + 2);
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":677
+    /* "hdbscan/_hdbscan_boruvka.pyx":745
  *             right = 2 * node1 + 2
  * 
  *             node1_info = self.node_data[left]             # <<<<<<<<<<<<<<
@@ -7550,17 +7870,17 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
     __pyx_t_24 = __pyx_v_left;
     __pyx_v_node1_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_24)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":679
+    /* "hdbscan/_hdbscan_boruvka.pyx":747
  *             node1_info = self.node_data[left]
  * 
  *             left_dist = kdtree_min_rdist_dual(self.dist,             # <<<<<<<<<<<<<<
  *                                       left, node2, self.node_bounds, self.num_features)
  * 
  */
-    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_kdtree_min_rdist_dual(__pyx_v_self->dist, __pyx_v_left, __pyx_v_node2, __pyx_v_self->node_bounds, __pyx_v_self->num_features); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 679; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_kdtree_min_rdist_dual(__pyx_v_self->dist, __pyx_v_left, __pyx_v_node2, __pyx_v_self->node_bounds, __pyx_v_self->num_features); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 747; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_left_dist = __pyx_t_19;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":682
+    /* "hdbscan/_hdbscan_boruvka.pyx":750
  *                                       left, node2, self.node_bounds, self.num_features)
  * 
  *             node1_info = self.node_data[right]             # <<<<<<<<<<<<<<
@@ -7570,17 +7890,17 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
     __pyx_t_25 = __pyx_v_right;
     __pyx_v_node1_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_25)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":684
+    /* "hdbscan/_hdbscan_boruvka.pyx":752
  *             node1_info = self.node_data[right]
  * 
  *             right_dist = kdtree_min_rdist_dual(self.dist,             # <<<<<<<<<<<<<<
  *                                       right, node2, self.node_bounds, self.num_features)
  * 
  */
-    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_kdtree_min_rdist_dual(__pyx_v_self->dist, __pyx_v_right, __pyx_v_node2, __pyx_v_self->node_bounds, __pyx_v_self->num_features); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 684; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_kdtree_min_rdist_dual(__pyx_v_self->dist, __pyx_v_right, __pyx_v_node2, __pyx_v_self->node_bounds, __pyx_v_self->num_features); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 752; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_right_dist = __pyx_t_19;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":687
+    /* "hdbscan/_hdbscan_boruvka.pyx":755
  *                                       right, node2, self.node_bounds, self.num_features)
  * 
  *             if left_dist < right_dist:             # <<<<<<<<<<<<<<
@@ -7590,50 +7910,50 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
     __pyx_t_6 = ((__pyx_v_left_dist < __pyx_v_right_dist) != 0);
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":688
+      /* "hdbscan/_hdbscan_boruvka.pyx":756
  * 
  *             if left_dist < right_dist:
  *                 self.dual_tree_traversal(left, node2)             # <<<<<<<<<<<<<<
  *                 self.dual_tree_traversal(right, node2)
  *             else:
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_left, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 688; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_left, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 756; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":689
+      /* "hdbscan/_hdbscan_boruvka.pyx":757
  *             if left_dist < right_dist:
  *                 self.dual_tree_traversal(left, node2)
  *                 self.dual_tree_traversal(right, node2)             # <<<<<<<<<<<<<<
  *             else:
  *                 self.dual_tree_traversal(right, node2)
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_right, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 689; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_right, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 757; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       goto __pyx_L28;
     }
     /*else*/ {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":691
+      /* "hdbscan/_hdbscan_boruvka.pyx":759
  *                 self.dual_tree_traversal(right, node2)
  *             else:
  *                 self.dual_tree_traversal(right, node2)             # <<<<<<<<<<<<<<
  *                 self.dual_tree_traversal(left, node2)
  * 
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_right, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 691; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_right, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 759; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":692
+      /* "hdbscan/_hdbscan_boruvka.pyx":760
  *             else:
  *                 self.dual_tree_traversal(right, node2)
  *                 self.dual_tree_traversal(left, node2)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_left, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 692; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_left, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 760; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __pyx_L28:;
   }
   __pyx_L7:;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":695
+  /* "hdbscan/_hdbscan_boruvka.pyx":763
  * 
  * 
  *         return 0             # <<<<<<<<<<<<<<
@@ -7643,7 +7963,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
   __pyx_r = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":474
+  /* "hdbscan/_hdbscan_boruvka.pyx":542
  *         return self.components.shape[0]
  * 
  *     cdef int dual_tree_traversal(self, np.intp_t node1, np.intp_t node2) nogil except -1:             # <<<<<<<<<<<<<<
@@ -7671,7 +7991,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 0);
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":697
+/* "hdbscan/_hdbscan_boruvka.pyx":765
  *         return 0
  * 
  *     def spanning_tree(self):             # <<<<<<<<<<<<<<
@@ -7696,6 +8016,7 @@ static PyObject *__pyx_pw_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_3
 static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_2spanning_tree(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *__pyx_v_self) {
   PyObject *__pyx_v_num_components = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_num_nodes = NULL;
+  CYTHON_UNUSED long __pyx_v_iteration;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -7707,79 +8028,88 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_2
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("spanning_tree", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":704
+  /* "hdbscan/_hdbscan_boruvka.pyx":772
  *         #cdef np.intp_t num_nodes
  * 
  *         num_components = self.tree.data.shape[0]             # <<<<<<<<<<<<<<
  *         num_nodes = self.tree.node_data.shape[0]
- *         while num_components > 1:
+ *         iteration = 0
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 704; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 772; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 704; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 772; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 704; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 772; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_num_components = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":705
+  /* "hdbscan/_hdbscan_boruvka.pyx":773
  * 
  *         num_components = self.tree.data.shape[0]
  *         num_nodes = self.tree.node_data.shape[0]             # <<<<<<<<<<<<<<
+ *         iteration = 0
  *         while num_components > 1:
- *             self.dual_tree_traversal(0, 0)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 705; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 773; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 705; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 773; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 705; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 773; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_num_nodes = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":706
+  /* "hdbscan/_hdbscan_boruvka.pyx":774
  *         num_components = self.tree.data.shape[0]
  *         num_nodes = self.tree.node_data.shape[0]
+ *         iteration = 0             # <<<<<<<<<<<<<<
+ *         while num_components > 1:
+ *             self.dual_tree_traversal(0, 0)
+ */
+  __pyx_v_iteration = 0;
+
+  /* "hdbscan/_hdbscan_boruvka.pyx":775
+ *         num_nodes = self.tree.node_data.shape[0]
+ *         iteration = 0
  *         while num_components > 1:             # <<<<<<<<<<<<<<
  *             self.dual_tree_traversal(0, 0)
  *             num_components = self.update_components()
  */
   while (1) {
-    __pyx_t_1 = PyObject_RichCompare(__pyx_v_num_components, __pyx_int_1, Py_GT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 706; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 706; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyObject_RichCompare(__pyx_v_num_components, __pyx_int_1, Py_GT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 775; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 775; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (!__pyx_t_3) break;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":707
- *         num_nodes = self.tree.node_data.shape[0]
+    /* "hdbscan/_hdbscan_boruvka.pyx":776
+ *         iteration = 0
  *         while num_components > 1:
  *             self.dual_tree_traversal(0, 0)             # <<<<<<<<<<<<<<
  *             num_components = self.update_components()
  * 
  */
-    __pyx_t_4 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, 0, 0); if (unlikely(__pyx_t_4 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 707; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, 0, 0); if (unlikely(__pyx_t_4 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 776; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":708
+    /* "hdbscan/_hdbscan_boruvka.pyx":777
  *         while num_components > 1:
  *             self.dual_tree_traversal(0, 0)
  *             num_components = self.update_components()             # <<<<<<<<<<<<<<
  * 
  *         return self.edges
  */
-    __pyx_t_4 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->update_components(__pyx_v_self); if (unlikely(__pyx_t_4 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 708; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 708; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->update_components(__pyx_v_self); if (unlikely(__pyx_t_4 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 777; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 777; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF_SET(__pyx_v_num_components, __pyx_t_1);
     __pyx_t_1 = 0;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":710
+  /* "hdbscan/_hdbscan_boruvka.pyx":779
  *             num_components = self.update_components()
  * 
  *         return self.edges             # <<<<<<<<<<<<<<
@@ -7791,7 +8121,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_2
   __pyx_r = ((PyObject *)__pyx_v_self->edges);
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":697
+  /* "hdbscan/_hdbscan_boruvka.pyx":765
  *         return 0
  * 
  *     def spanning_tree(self):             # <<<<<<<<<<<<<<
@@ -7813,7 +8143,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_2
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":261
+/* "hdbscan/_hdbscan_boruvka.pyx":266
  *     cdef np.intp_t num_features
  * 
  *     cdef public np.double_t[::1] core_distance             # <<<<<<<<<<<<<<
@@ -7843,7 +8173,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->core_distance, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 261; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->core_distance, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 266; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7882,7 +8212,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_13core_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 261; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 266; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->core_distance, 0);
   __pyx_v_self->core_distance = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -7900,7 +8230,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_13core_
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":262
+/* "hdbscan/_hdbscan_boruvka.pyx":267
  * 
  *     cdef public np.double_t[::1] core_distance
  *     cdef public np.double_t[::1] bounds             # <<<<<<<<<<<<<<
@@ -7930,7 +8260,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_6
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->bounds, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 262; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->bounds, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7969,7 +8299,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_6bounds
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 262; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->bounds, 0);
   __pyx_v_self->bounds = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -7987,7 +8317,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_6bounds
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":263
+/* "hdbscan/_hdbscan_boruvka.pyx":268
  *     cdef public np.double_t[::1] core_distance
  *     cdef public np.double_t[::1] bounds
  *     cdef public np.intp_t[::1] component_of_point             # <<<<<<<<<<<<<<
@@ -8017,7 +8347,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->component_of_point, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->component_of_point, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 268; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8056,7 +8386,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_18compo
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 268; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->component_of_point, 0);
   __pyx_v_self->component_of_point = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -8074,7 +8404,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_18compo
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":264
+/* "hdbscan/_hdbscan_boruvka.pyx":269
  *     cdef public np.double_t[::1] bounds
  *     cdef public np.intp_t[::1] component_of_point
  *     cdef public np.intp_t[::1] component_of_node             # <<<<<<<<<<<<<<
@@ -8104,7 +8434,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->component_of_node, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 264; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->component_of_node, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8143,7 +8473,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_17compo
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 264; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->component_of_node, 0);
   __pyx_v_self->component_of_node = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -8161,7 +8491,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_17compo
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":265
+/* "hdbscan/_hdbscan_boruvka.pyx":270
  *     cdef public np.intp_t[::1] component_of_point
  *     cdef public np.intp_t[::1] component_of_node
  *     cdef public np.intp_t[::1] candidate_neighbor             # <<<<<<<<<<<<<<
@@ -8191,7 +8521,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->candidate_neighbor, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 265; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->candidate_neighbor, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 270; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8230,7 +8560,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_18candi
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 265; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 270; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->candidate_neighbor, 0);
   __pyx_v_self->candidate_neighbor = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -8248,7 +8578,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_18candi
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":266
+/* "hdbscan/_hdbscan_boruvka.pyx":271
  *     cdef public np.intp_t[::1] component_of_node
  *     cdef public np.intp_t[::1] candidate_neighbor
  *     cdef public np.intp_t[::1] candidate_point             # <<<<<<<<<<<<<<
@@ -8278,7 +8608,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->candidate_point, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 266; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->candidate_point, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 271; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8317,7 +8647,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_15candi
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 266; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 271; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->candidate_point, 0);
   __pyx_v_self->candidate_point = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -8335,7 +8665,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_15candi
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":267
+/* "hdbscan/_hdbscan_boruvka.pyx":272
  *     cdef public np.intp_t[::1] candidate_neighbor
  *     cdef public np.intp_t[::1] candidate_point
  *     cdef public np.double_t[::1] candidate_distance             # <<<<<<<<<<<<<<
@@ -8365,7 +8695,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->candidate_distance, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->candidate_distance, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 272; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8404,7 +8734,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_18candi
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 272; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->candidate_distance, 0);
   __pyx_v_self->candidate_distance = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -8422,7 +8752,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_18candi
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":268
+/* "hdbscan/_hdbscan_boruvka.pyx":273
  *     cdef public np.intp_t[::1] candidate_point
  *     cdef public np.double_t[::1] candidate_distance
  *     cdef public np.double_t[:,::1] centroid_distances             # <<<<<<<<<<<<<<
@@ -8452,7 +8782,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->centroid_distances, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 268; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->centroid_distances, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 273; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8491,7 +8821,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_18centr
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_5numpy_double_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 268; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 273; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->centroid_distances, 0);
   __pyx_v_self->centroid_distances = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -8509,7 +8839,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_18centr
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":269
+/* "hdbscan/_hdbscan_boruvka.pyx":274
  *     cdef public np.double_t[::1] candidate_distance
  *     cdef public np.double_t[:,::1] centroid_distances
  *     cdef public np.intp_t[::1] idx_array             # <<<<<<<<<<<<<<
@@ -8539,7 +8869,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_9
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->idx_array, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->idx_array, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 274; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8578,7 +8908,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_9idx_ar
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 274; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->idx_array, 0);
   __pyx_v_self->idx_array = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -8596,7 +8926,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_9idx_ar
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":270
+/* "hdbscan/_hdbscan_boruvka.pyx":275
  *     cdef public np.double_t[:,::1] centroid_distances
  *     cdef public np.intp_t[::1] idx_array
  *     cdef public NodeData_t[::1] node_data             # <<<<<<<<<<<<<<
@@ -8626,7 +8956,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_9
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->node_data, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 270; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->node_data, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 275; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8665,7 +8995,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_9node_d
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 270; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 275; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->node_data, 0);
   __pyx_v_self->node_data = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -8683,12 +9013,12 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_9node_d
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":786
+/* "hdbscan/_hdbscan_boruvka.pyx":861
  *     cdef np.ndarray candidate_distance_arr
  * 
- *     def __init__(self, tree, min_samples=5, metric='euclidean', alpha=1.0, leaf_size=20, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __init__(self, tree, min_samples=5, metric='euclidean',             # <<<<<<<<<<<<<<
+ *                  alpha=1.0, leaf_size=20, approx_min_span_tree=False, **kwargs):
  * 
- *         self.core_dist_tree = tree
  */
 
 /* Python wrapper */
@@ -8699,6 +9029,7 @@ static int __pyx_pw_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_1__in
   PyObject *__pyx_v_metric = 0;
   PyObject *__pyx_v_alpha = 0;
   PyObject *__pyx_v_leaf_size = 0;
+  PyObject *__pyx_v_approx_min_span_tree = 0;
   PyObject *__pyx_v_kwargs = 0;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -8709,16 +9040,26 @@ static int __pyx_pw_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_1__in
   __pyx_v_kwargs = PyDict_New(); if (unlikely(!__pyx_v_kwargs)) return -1;
   __Pyx_GOTREF(__pyx_v_kwargs);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_tree,&__pyx_n_s_min_samples,&__pyx_n_s_metric,&__pyx_n_s_alpha,&__pyx_n_s_leaf_size,0};
-    PyObject* values[5] = {0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_tree,&__pyx_n_s_min_samples,&__pyx_n_s_metric,&__pyx_n_s_alpha,&__pyx_n_s_leaf_size,&__pyx_n_s_approx_min_span_tree,0};
+    PyObject* values[6] = {0,0,0,0,0,0};
     values[1] = ((PyObject *)__pyx_int_5);
     values[2] = ((PyObject *)__pyx_n_s_euclidean);
     values[3] = ((PyObject *)__pyx_float_1_0);
     values[4] = ((PyObject *)__pyx_int_20);
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":862
+ * 
+ *     def __init__(self, tree, min_samples=5, metric='euclidean',
+ *                  alpha=1.0, leaf_size=20, approx_min_span_tree=False, **kwargs):             # <<<<<<<<<<<<<<
+ * 
+ *         self.core_dist_tree = tree
+ */
+    values[5] = ((PyObject *)Py_False);
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
         case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
         case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
@@ -8752,12 +9093,18 @@ static int __pyx_pw_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_1__in
           PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_leaf_size);
           if (value) { values[4] = value; kw_args--; }
         }
+        case  5:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_approx_min_span_tree);
+          if (value) { values[5] = value; kw_args--; }
+        }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, pos_args, "__init__") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 786; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, pos_args, "__init__") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 861; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
         case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
         case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
@@ -8772,17 +9119,26 @@ static int __pyx_pw_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_1__in
     __pyx_v_metric = values[2];
     __pyx_v_alpha = values[3];
     __pyx_v_leaf_size = values[4];
+    __pyx_v_approx_min_span_tree = values[5];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 5, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 786; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 6, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 861; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
   __Pyx_AddTraceback("hdbscan._hdbscan_boruvka.BallTreeBoruvkaAlgorithm.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___init__(((struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self), __pyx_v_tree, __pyx_v_min_samples, __pyx_v_metric, __pyx_v_alpha, __pyx_v_leaf_size, __pyx_v_kwargs);
+  __pyx_r = __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___init__(((struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self), __pyx_v_tree, __pyx_v_min_samples, __pyx_v_metric, __pyx_v_alpha, __pyx_v_leaf_size, __pyx_v_approx_min_span_tree, __pyx_v_kwargs);
+
+  /* "hdbscan/_hdbscan_boruvka.pyx":861
+ *     cdef np.ndarray candidate_distance_arr
+ * 
+ *     def __init__(self, tree, min_samples=5, metric='euclidean',             # <<<<<<<<<<<<<<
+ *                  alpha=1.0, leaf_size=20, approx_min_span_tree=False, **kwargs):
+ * 
+ */
 
   /* function exit code */
   __Pyx_XDECREF(__pyx_v_kwargs);
@@ -8790,7 +9146,7 @@ static int __pyx_pw_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_1__in
   return __pyx_r;
 }
 
-static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___init__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *__pyx_v_self, PyObject *__pyx_v_tree, PyObject *__pyx_v_min_samples, PyObject *__pyx_v_metric, PyObject *__pyx_v_alpha, PyObject *__pyx_v_leaf_size, PyObject *__pyx_v_kwargs) {
+static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___init__(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *__pyx_v_self, PyObject *__pyx_v_tree, PyObject *__pyx_v_min_samples, PyObject *__pyx_v_metric, PyObject *__pyx_v_alpha, PyObject *__pyx_v_leaf_size, PyObject *__pyx_v_approx_min_span_tree, PyObject *__pyx_v_kwargs) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8801,27 +9157,28 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___ini
   __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __pyx_t_5numpy_intp_t __pyx_t_7;
   __pyx_t_5numpy_double_t __pyx_t_8;
-  Py_ssize_t __pyx_t_9;
-  PyObject *__pyx_t_10 = NULL;
-  __Pyx_memviewslice __pyx_t_11 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __pyx_t_5numpy_int8_t __pyx_t_9;
+  Py_ssize_t __pyx_t_10;
+  PyObject *__pyx_t_11 = NULL;
   __Pyx_memviewslice __pyx_t_12 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __pyx_t_5numpy_double_t *__pyx_t_13;
-  struct __pyx_array_obj *__pyx_t_14 = NULL;
-  __Pyx_memviewslice __pyx_t_15 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __pyx_t_5numpy_intp_t *__pyx_t_16;
-  Py_ssize_t __pyx_t_17;
+  __Pyx_memviewslice __pyx_t_13 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __pyx_t_5numpy_double_t *__pyx_t_14;
+  struct __pyx_array_obj *__pyx_t_15 = NULL;
+  __Pyx_memviewslice __pyx_t_16 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __pyx_t_5numpy_intp_t *__pyx_t_17;
   Py_ssize_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
   Py_ssize_t __pyx_t_20;
   Py_ssize_t __pyx_t_21;
   Py_ssize_t __pyx_t_22;
+  Py_ssize_t __pyx_t_23;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":788
- *     def __init__(self, tree, min_samples=5, metric='euclidean', alpha=1.0, leaf_size=20, **kwargs):
+  /* "hdbscan/_hdbscan_boruvka.pyx":864
+ *                  alpha=1.0, leaf_size=20, approx_min_span_tree=False, **kwargs):
  * 
  *         self.core_dist_tree = tree             # <<<<<<<<<<<<<<
  *         self.tree = BallTree(tree.data, metric=metric, leaf_size=leaf_size)
@@ -8833,27 +9190,27 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___ini
   __Pyx_DECREF(__pyx_v_self->core_dist_tree);
   __pyx_v_self->core_dist_tree = __pyx_v_tree;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":789
+  /* "hdbscan/_hdbscan_boruvka.pyx":865
  * 
  *         self.core_dist_tree = tree
  *         self.tree = BallTree(tree.data, metric=metric, leaf_size=leaf_size)             # <<<<<<<<<<<<<<
  *         self._data = np.array(self.tree.data)
  *         self._raw_data = self.tree.data
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_BallTree); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 789; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_BallTree); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_n_s_data); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 789; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tree, __pyx_n_s_data); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 789; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 789; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_metric, __pyx_v_metric) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 789; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_leaf_size, __pyx_v_leaf_size) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 789; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 789; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_metric, __pyx_v_metric) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_leaf_size, __pyx_v_leaf_size) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -8864,19 +9221,19 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___ini
   __pyx_v_self->tree = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":790
+  /* "hdbscan/_hdbscan_boruvka.pyx":866
  *         self.core_dist_tree = tree
  *         self.tree = BallTree(tree.data, metric=metric, leaf_size=leaf_size)
  *         self._data = np.array(self.tree.data)             # <<<<<<<<<<<<<<
  *         self._raw_data = self.tree.data
  *         self.min_samples = min_samples
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 790; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 866; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 790; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 866; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 790; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 866; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -8889,163 +9246,173 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___ini
     }
   }
   if (!__pyx_t_1) {
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 790; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 866; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GOTREF(__pyx_t_4);
   } else {
-    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 790; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 866; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1); __pyx_t_1 = NULL;
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 790; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 866; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 790; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 866; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_4);
   __Pyx_GOTREF(__pyx_v_self->_data);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->_data));
   __pyx_v_self->_data = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":791
+  /* "hdbscan/_hdbscan_boruvka.pyx":867
  *         self.tree = BallTree(tree.data, metric=metric, leaf_size=leaf_size)
  *         self._data = np.array(self.tree.data)
  *         self._raw_data = self.tree.data             # <<<<<<<<<<<<<<
  *         self.min_samples = min_samples
  *         self.alpha = alpha
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 791; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_5numpy_double_t(__pyx_t_4);
-  if (unlikely(!__pyx_t_6.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 791; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_6.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->_raw_data, 0);
   __pyx_v_self->_raw_data = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":792
+  /* "hdbscan/_hdbscan_boruvka.pyx":868
  *         self._data = np.array(self.tree.data)
  *         self._raw_data = self.tree.data
  *         self.min_samples = min_samples             # <<<<<<<<<<<<<<
  *         self.alpha = alpha
- * 
+ *         self.approx_min_span_tree = approx_min_span_tree
  */
-  __pyx_t_7 = __Pyx_PyInt_As_Py_intptr_t(__pyx_v_min_samples); if (unlikely((__pyx_t_7 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 792; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyInt_As_Py_intptr_t(__pyx_v_min_samples); if (unlikely((__pyx_t_7 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 868; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_self->min_samples = __pyx_t_7;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":793
+  /* "hdbscan/_hdbscan_boruvka.pyx":869
  *         self._raw_data = self.tree.data
  *         self.min_samples = min_samples
  *         self.alpha = alpha             # <<<<<<<<<<<<<<
+ *         self.approx_min_span_tree = approx_min_span_tree
+ * 
+ */
+  __pyx_t_8 = __pyx_PyFloat_AsDouble(__pyx_v_alpha); if (unlikely((__pyx_t_8 == (npy_double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 869; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_v_self->alpha = __pyx_t_8;
+
+  /* "hdbscan/_hdbscan_boruvka.pyx":870
+ *         self.min_samples = min_samples
+ *         self.alpha = alpha
+ *         self.approx_min_span_tree = approx_min_span_tree             # <<<<<<<<<<<<<<
  * 
  *         self.num_points = self.tree.data.shape[0]
  */
-  __pyx_t_8 = __pyx_PyFloat_AsDouble(__pyx_v_alpha); if (unlikely((__pyx_t_8 == (npy_double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 793; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_v_self->alpha = __pyx_t_8;
+  __pyx_t_9 = __Pyx_PyInt_As_npy_int8(__pyx_v_approx_min_span_tree); if (unlikely((__pyx_t_9 == (npy_int8)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 870; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_v_self->approx_min_span_tree = __pyx_t_9;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":795
- *         self.alpha = alpha
+  /* "hdbscan/_hdbscan_boruvka.pyx":872
+ *         self.approx_min_span_tree = approx_min_span_tree
  * 
  *         self.num_points = self.tree.data.shape[0]             # <<<<<<<<<<<<<<
  *         self.num_features = self.tree.data.shape[1]
  *         self.num_nodes = self.tree.node_data.shape[0]
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 795; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 872; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 795; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 872; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 795; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 872; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_7 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_7 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 795; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_7 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 872; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_self->num_points = __pyx_t_7;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":796
+  /* "hdbscan/_hdbscan_boruvka.pyx":873
  * 
  *         self.num_points = self.tree.data.shape[0]
  *         self.num_features = self.tree.data.shape[1]             # <<<<<<<<<<<<<<
  *         self.num_nodes = self.tree.node_data.shape[0]
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 796; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 796; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 796; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_7 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_7 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 796; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_7 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_self->num_features = __pyx_t_7;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":797
+  /* "hdbscan/_hdbscan_boruvka.pyx":874
  *         self.num_points = self.tree.data.shape[0]
  *         self.num_features = self.tree.data.shape[1]
  *         self.num_nodes = self.tree.node_data.shape[0]             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 797; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 874; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 797; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 874; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 797; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 874; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_7 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_7 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 797; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_7 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 874; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_self->num_nodes = __pyx_t_7;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":800
+  /* "hdbscan/_hdbscan_boruvka.pyx":877
  * 
  * 
  *         self.dist = dist_metrics.DistanceMetric.get_metric(metric, **kwargs)             # <<<<<<<<<<<<<<
  * 
  *         self.components = np.arange(self.num_points)
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)((PyObject*)__pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric)), __pyx_n_s_get_metric); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 800; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)((PyObject*)__pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric)), __pyx_n_s_get_metric); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 877; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 800; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 877; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_metric);
   __Pyx_GIVEREF(__pyx_v_metric);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_metric);
   __pyx_t_5 = __pyx_v_kwargs;
   __Pyx_INCREF(__pyx_t_5);
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 800; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 877; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 800; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 877; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_self->dist);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->dist));
   __pyx_v_self->dist = ((struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":802
+  /* "hdbscan/_hdbscan_boruvka.pyx":879
  *         self.dist = dist_metrics.DistanceMetric.get_metric(metric, **kwargs)
  * 
  *         self.components = np.arange(self.num_points)             # <<<<<<<<<<<<<<
  *         self.bounds_arr = np.empty(self.num_nodes, np.double)
  *         self.component_of_point_arr = np.empty(self.num_points, dtype=np.intp)
  */
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 802; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 879; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_arange); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 802; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_arange); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 879; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 802; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 879; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_4 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -9058,49 +9425,49 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___ini
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 802; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 879; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_1 = PyTuple_New(1+1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 802; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyTuple_New(1+1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 879; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_4); __pyx_t_4 = NULL;
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_1, 0+1, __pyx_t_5);
     __pyx_t_5 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 802; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 879; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 802; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 879; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_self->components);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->components));
   __pyx_v_self->components = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":803
+  /* "hdbscan/_hdbscan_boruvka.pyx":880
  * 
  *         self.components = np.arange(self.num_points)
  *         self.bounds_arr = np.empty(self.num_nodes, np.double)             # <<<<<<<<<<<<<<
  *         self.component_of_point_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.component_of_node_arr = np.empty(self.num_nodes, dtype=np.intp)
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 803; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 880; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 803; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 880; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_nodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 803; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_nodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 880; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 803; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 880; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_double); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 803; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_double); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 880; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
-  __pyx_t_9 = 0;
+  __pyx_t_10 = 0;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
     __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_1);
     if (likely(__pyx_t_5)) {
@@ -9108,246 +9475,246 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___ini
       __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_1, function);
-      __pyx_t_9 = 1;
+      __pyx_t_10 = 1;
     }
   }
-  __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 803; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_11 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 880; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
   if (__pyx_t_5) {
-    __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_5); __pyx_t_5 = NULL;
+    __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_5); __pyx_t_5 = NULL;
   }
   __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_10, 0+__pyx_t_9, __pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_11, 0+__pyx_t_10, __pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_11, 1+__pyx_t_10, __pyx_t_4);
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_10, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 803; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_11, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 880; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 803; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 880; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_self->bounds_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->bounds_arr));
   __pyx_v_self->bounds_arr = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":804
+  /* "hdbscan/_hdbscan_boruvka.pyx":881
  *         self.components = np.arange(self.num_points)
  *         self.bounds_arr = np.empty(self.num_nodes, np.double)
  *         self.component_of_point_arr = np.empty(self.num_points, dtype=np.intp)             # <<<<<<<<<<<<<<
  *         self.component_of_node_arr = np.empty(self.num_nodes, dtype=np.intp)
  *         self.candidate_neighbor_arr = np.empty(self.num_points, dtype=np.intp)
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 804; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 804; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 804; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 804; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
   __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 804; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 804; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_intp); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 804; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_intp); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 804; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_10, __pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 804; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_11, __pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 804; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->component_of_point_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->component_of_point_arr));
   __pyx_v_self->component_of_point_arr = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":805
+  /* "hdbscan/_hdbscan_boruvka.pyx":882
  *         self.bounds_arr = np.empty(self.num_nodes, np.double)
  *         self.component_of_point_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.component_of_node_arr = np.empty(self.num_nodes, dtype=np.intp)             # <<<<<<<<<<<<<<
  *         self.candidate_neighbor_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.candidate_point_arr = np.empty(self.num_points, dtype=np.intp)
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 882; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 882; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_nodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_nodes); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 882; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 882; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
   __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 882; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 882; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_intp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_intp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 882; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 882; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_10, __pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_11, __pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 882; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 882; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_4);
   __Pyx_GOTREF(__pyx_v_self->component_of_node_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->component_of_node_arr));
   __pyx_v_self->component_of_node_arr = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":806
+  /* "hdbscan/_hdbscan_boruvka.pyx":883
  *         self.component_of_point_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.component_of_node_arr = np.empty(self.num_nodes, dtype=np.intp)
  *         self.candidate_neighbor_arr = np.empty(self.num_points, dtype=np.intp)             # <<<<<<<<<<<<<<
  *         self.candidate_point_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.candidate_distance_arr = np.empty(self.num_points, dtype=np.double)
  */
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 806; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 883; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_empty); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 806; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_empty); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 883; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 806; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 883; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 806; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 883; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
   __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 806; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 883; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 806; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 883; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_intp); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 806; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_intp); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 883; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 806; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 883; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_10, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 806; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_11, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 883; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 806; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 883; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->candidate_neighbor_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->candidate_neighbor_arr));
   __pyx_v_self->candidate_neighbor_arr = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":807
+  /* "hdbscan/_hdbscan_boruvka.pyx":884
  *         self.component_of_node_arr = np.empty(self.num_nodes, dtype=np.intp)
  *         self.candidate_neighbor_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.candidate_point_arr = np.empty(self.num_points, dtype=np.intp)             # <<<<<<<<<<<<<<
  *         self.candidate_distance_arr = np.empty(self.num_points, dtype=np.double)
  *         self.component_union_find = BoruvkaUnionFind(self.num_points)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 807; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 884; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 807; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 884; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 807; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 884; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 807; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 884; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
   __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 807; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 884; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 807; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 884; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_intp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 807; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_intp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 884; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 807; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 884; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_10, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 807; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_11, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 884; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 807; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 884; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_self->candidate_point_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->candidate_point_arr));
   __pyx_v_self->candidate_point_arr = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":808
+  /* "hdbscan/_hdbscan_boruvka.pyx":885
  *         self.candidate_neighbor_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.candidate_point_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.candidate_distance_arr = np.empty(self.num_points, dtype=np.double)             # <<<<<<<<<<<<<<
  *         self.component_union_find = BoruvkaUnionFind(self.num_points)
  * 
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 885; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 885; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 885; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 885; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
   __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 885; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 885; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_double); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_double); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 885; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 885; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_10, __pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_11, __pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 885; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 885; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->candidate_distance_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->candidate_distance_arr));
   __pyx_v_self->candidate_distance_arr = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":809
+  /* "hdbscan/_hdbscan_boruvka.pyx":886
  *         self.candidate_point_arr = np.empty(self.num_points, dtype=np.intp)
  *         self.candidate_distance_arr = np.empty(self.num_points, dtype=np.double)
  *         self.component_union_find = BoruvkaUnionFind(self.num_points)             # <<<<<<<<<<<<<<
  * 
  *         self.edges = np.empty((self.num_points - 1, 3))
  */
-  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 809; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_points); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 886; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 809; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 886; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)__pyx_ptype_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 809; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)((PyObject*)__pyx_ptype_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind)), __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 886; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_GIVEREF(__pyx_t_3);
@@ -9356,21 +9723,21 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___ini
   __pyx_v_self->component_union_find = ((struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":811
+  /* "hdbscan/_hdbscan_boruvka.pyx":888
  *         self.component_union_find = BoruvkaUnionFind(self.num_points)
  * 
  *         self.edges = np.empty((self.num_points - 1, 3))             # <<<<<<<<<<<<<<
  *         self.num_edges = 0
  * 
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 811; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 888; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 811; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 888; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_long((__pyx_v_self->num_points - 1)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 811; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_From_long((__pyx_v_self->num_points - 1)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 888; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 811; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 888; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
@@ -9379,39 +9746,39 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___ini
   PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_int_3);
   __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_10))) {
-    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_10);
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_11))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_11);
     if (likely(__pyx_t_2)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
       __Pyx_INCREF(__pyx_t_2);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_10, function);
+      __Pyx_DECREF_SET(__pyx_t_11, function);
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 811; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 888; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GOTREF(__pyx_t_3);
   } else {
-    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 811; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 888; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 811; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 888; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 811; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 888; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->edges);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->edges));
   __pyx_v_self->edges = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":812
+  /* "hdbscan/_hdbscan_boruvka.pyx":889
  * 
  *         self.edges = np.empty((self.num_points - 1, 3))
  *         self.num_edges = 0             # <<<<<<<<<<<<<<
@@ -9420,395 +9787,395 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___ini
  */
   __pyx_v_self->num_edges = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":814
+  /* "hdbscan/_hdbscan_boruvka.pyx":891
  *         self.num_edges = 0
  * 
  *         self.idx_array = self.tree.idx_array             # <<<<<<<<<<<<<<
  *         self.node_data = self.tree.node_data
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_idx_array); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 814; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_idx_array); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_11 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_t_3);
-  if (unlikely(!__pyx_t_11.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 814; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_t_3);
+  if (unlikely(!__pyx_t_12.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->idx_array, 0);
-  __pyx_v_self->idx_array = __pyx_t_11;
-  __pyx_t_11.memview = NULL;
-  __pyx_t_11.data = NULL;
+  __pyx_v_self->idx_array = __pyx_t_12;
+  __pyx_t_12.memview = NULL;
+  __pyx_t_12.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":815
+  /* "hdbscan/_hdbscan_boruvka.pyx":892
  * 
  *         self.idx_array = self.tree.idx_array
  *         self.node_data = self.tree.node_data             # <<<<<<<<<<<<<<
  * 
  *         self.bounds = (<np.double_t[:self.num_nodes:1]> (<np.double_t *> self.bounds_arr.data))
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 815; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 892; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t(__pyx_t_3);
-  if (unlikely(!__pyx_t_12.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 815; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_13 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t(__pyx_t_3);
+  if (unlikely(!__pyx_t_13.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 892; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->node_data, 0);
-  __pyx_v_self->node_data = __pyx_t_12;
-  __pyx_t_12.memview = NULL;
-  __pyx_t_12.data = NULL;
+  __pyx_v_self->node_data = __pyx_t_13;
+  __pyx_t_13.memview = NULL;
+  __pyx_t_13.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":817
+  /* "hdbscan/_hdbscan_boruvka.pyx":894
  *         self.node_data = self.tree.node_data
  * 
  *         self.bounds = (<np.double_t[:self.num_nodes:1]> (<np.double_t *> self.bounds_arr.data))             # <<<<<<<<<<<<<<
  *         self.component_of_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.component_of_point_arr.data))
  *         self.component_of_node = (<np.intp_t[:self.num_nodes:1]> (<np.intp_t *> self.component_of_node_arr.data))
  */
-  __pyx_t_13 = ((__pyx_t_5numpy_double_t *)__pyx_v_self->bounds_arr->data);
-  if (!__pyx_t_13) {
+  __pyx_t_14 = ((__pyx_t_5numpy_double_t *)__pyx_v_self->bounds_arr->data);
+  if (!__pyx_t_14) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 817; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_10 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t);
+  __pyx_t_11 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t);
   __pyx_t_3 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_nodes));
-  if (unlikely(!__pyx_t_10 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_10))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 817; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
+  if (unlikely(!__pyx_t_11 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_11))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_14 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_10), (char *) "fortran", (char *) __pyx_t_13);
-  if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 817; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_14);
+  __pyx_t_15 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_11), (char *) "fortran", (char *) __pyx_t_14);
+  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_15);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_15 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(((PyObject *)__pyx_t_14));
-  if (unlikely(!__pyx_t_15.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 817; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_14)); __pyx_t_14 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_16 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(((PyObject *)__pyx_t_15));
+  if (unlikely(!__pyx_t_16.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->bounds, 0);
-  __pyx_v_self->bounds = __pyx_t_15;
-  __pyx_t_15.memview = NULL;
-  __pyx_t_15.data = NULL;
+  __pyx_v_self->bounds = __pyx_t_16;
+  __pyx_t_16.memview = NULL;
+  __pyx_t_16.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":818
+  /* "hdbscan/_hdbscan_boruvka.pyx":895
  * 
  *         self.bounds = (<np.double_t[:self.num_nodes:1]> (<np.double_t *> self.bounds_arr.data))
  *         self.component_of_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.component_of_point_arr.data))             # <<<<<<<<<<<<<<
  *         self.component_of_node = (<np.intp_t[:self.num_nodes:1]> (<np.intp_t *> self.component_of_node_arr.data))
  *         self.candidate_neighbor = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_neighbor_arr.data))
  */
-  __pyx_t_16 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->component_of_point_arr->data);
-  if (!__pyx_t_16) {
+  __pyx_t_17 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->component_of_point_arr->data);
+  if (!__pyx_t_17) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 818; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 895; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_3 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
-  __pyx_t_10 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
-  if (unlikely(!__pyx_t_3 || !__pyx_t_10 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 818; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
+  if (unlikely(!__pyx_t_3 || !__pyx_t_11 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 895; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_14 = __pyx_array_new(__pyx_t_10, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "fortran", (char *) __pyx_t_16);
-  if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 818; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_14);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_15 = __pyx_array_new(__pyx_t_11, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "fortran", (char *) __pyx_t_17);
+  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 895; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_15);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_11 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_14));
-  if (unlikely(!__pyx_t_11.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 818; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_14)); __pyx_t_14 = 0;
+  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_15));
+  if (unlikely(!__pyx_t_12.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 895; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->component_of_point, 0);
-  __pyx_v_self->component_of_point = __pyx_t_11;
-  __pyx_t_11.memview = NULL;
-  __pyx_t_11.data = NULL;
+  __pyx_v_self->component_of_point = __pyx_t_12;
+  __pyx_t_12.memview = NULL;
+  __pyx_t_12.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":819
+  /* "hdbscan/_hdbscan_boruvka.pyx":896
  *         self.bounds = (<np.double_t[:self.num_nodes:1]> (<np.double_t *> self.bounds_arr.data))
  *         self.component_of_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.component_of_point_arr.data))
  *         self.component_of_node = (<np.intp_t[:self.num_nodes:1]> (<np.intp_t *> self.component_of_node_arr.data))             # <<<<<<<<<<<<<<
  *         self.candidate_neighbor = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_neighbor_arr.data))
  *         self.candidate_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_point_arr.data))
  */
-  __pyx_t_16 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->component_of_node_arr->data);
-  if (!__pyx_t_16) {
+  __pyx_t_17 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->component_of_node_arr->data);
+  if (!__pyx_t_17) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 819; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 896; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_10 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
+  __pyx_t_11 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
   __pyx_t_3 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_nodes));
-  if (unlikely(!__pyx_t_10 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_10))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 819; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
+  if (unlikely(!__pyx_t_11 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_11))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 896; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_14 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_10), (char *) "fortran", (char *) __pyx_t_16);
-  if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 819; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_14);
+  __pyx_t_15 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_11), (char *) "fortran", (char *) __pyx_t_17);
+  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 896; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_15);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_11 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_14));
-  if (unlikely(!__pyx_t_11.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 819; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_14)); __pyx_t_14 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_15));
+  if (unlikely(!__pyx_t_12.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 896; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->component_of_node, 0);
-  __pyx_v_self->component_of_node = __pyx_t_11;
-  __pyx_t_11.memview = NULL;
-  __pyx_t_11.data = NULL;
+  __pyx_v_self->component_of_node = __pyx_t_12;
+  __pyx_t_12.memview = NULL;
+  __pyx_t_12.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":820
+  /* "hdbscan/_hdbscan_boruvka.pyx":897
  *         self.component_of_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.component_of_point_arr.data))
  *         self.component_of_node = (<np.intp_t[:self.num_nodes:1]> (<np.intp_t *> self.component_of_node_arr.data))
  *         self.candidate_neighbor = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_neighbor_arr.data))             # <<<<<<<<<<<<<<
  *         self.candidate_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_point_arr.data))
  *         self.candidate_distance = (<np.double_t[:self.num_points:1]> (<np.double_t *> self.candidate_distance_arr.data))
  */
-  __pyx_t_16 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->candidate_neighbor_arr->data);
-  if (!__pyx_t_16) {
+  __pyx_t_17 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->candidate_neighbor_arr->data);
+  if (!__pyx_t_17) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 820; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 897; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_3 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
-  __pyx_t_10 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
-  if (unlikely(!__pyx_t_3 || !__pyx_t_10 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 820; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
+  if (unlikely(!__pyx_t_3 || !__pyx_t_11 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 897; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_14 = __pyx_array_new(__pyx_t_10, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "fortran", (char *) __pyx_t_16);
-  if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 820; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_14);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_15 = __pyx_array_new(__pyx_t_11, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "fortran", (char *) __pyx_t_17);
+  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 897; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_15);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_11 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_14));
-  if (unlikely(!__pyx_t_11.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 820; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_14)); __pyx_t_14 = 0;
+  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_15));
+  if (unlikely(!__pyx_t_12.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 897; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->candidate_neighbor, 0);
-  __pyx_v_self->candidate_neighbor = __pyx_t_11;
-  __pyx_t_11.memview = NULL;
-  __pyx_t_11.data = NULL;
+  __pyx_v_self->candidate_neighbor = __pyx_t_12;
+  __pyx_t_12.memview = NULL;
+  __pyx_t_12.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":821
+  /* "hdbscan/_hdbscan_boruvka.pyx":898
  *         self.component_of_node = (<np.intp_t[:self.num_nodes:1]> (<np.intp_t *> self.component_of_node_arr.data))
  *         self.candidate_neighbor = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_neighbor_arr.data))
  *         self.candidate_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_point_arr.data))             # <<<<<<<<<<<<<<
  *         self.candidate_distance = (<np.double_t[:self.num_points:1]> (<np.double_t *> self.candidate_distance_arr.data))
  * 
  */
-  __pyx_t_16 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->candidate_point_arr->data);
-  if (!__pyx_t_16) {
+  __pyx_t_17 = ((__pyx_t_5numpy_intp_t *)__pyx_v_self->candidate_point_arr->data);
+  if (!__pyx_t_17) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 821; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_10 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
+  __pyx_t_11 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t);
   __pyx_t_3 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
-  if (unlikely(!__pyx_t_10 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_10))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 821; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
+  if (unlikely(!__pyx_t_11 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_11))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_14 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_10), (char *) "fortran", (char *) __pyx_t_16);
-  if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 821; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_14);
+  __pyx_t_15 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_intp_t), PyBytes_AS_STRING(__pyx_t_11), (char *) "fortran", (char *) __pyx_t_17);
+  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_15);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_11 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_14));
-  if (unlikely(!__pyx_t_11.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 821; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_14)); __pyx_t_14 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(((PyObject *)__pyx_t_15));
+  if (unlikely(!__pyx_t_12.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->candidate_point, 0);
-  __pyx_v_self->candidate_point = __pyx_t_11;
-  __pyx_t_11.memview = NULL;
-  __pyx_t_11.data = NULL;
+  __pyx_v_self->candidate_point = __pyx_t_12;
+  __pyx_t_12.memview = NULL;
+  __pyx_t_12.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":822
+  /* "hdbscan/_hdbscan_boruvka.pyx":899
  *         self.candidate_neighbor = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_neighbor_arr.data))
  *         self.candidate_point = (<np.intp_t[:self.num_points:1]> (<np.intp_t *> self.candidate_point_arr.data))
  *         self.candidate_distance = (<np.double_t[:self.num_points:1]> (<np.double_t *> self.candidate_distance_arr.data))             # <<<<<<<<<<<<<<
  * 
  *         self._centroid_distances_arr = self.dist.pairwise(self.tree.node_bounds[0])
  */
-  __pyx_t_13 = ((__pyx_t_5numpy_double_t *)__pyx_v_self->candidate_distance_arr->data);
-  if (!__pyx_t_13) {
+  __pyx_t_14 = ((__pyx_t_5numpy_double_t *)__pyx_v_self->candidate_distance_arr->data);
+  if (!__pyx_t_14) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 822; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 899; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_3 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t);
-  __pyx_t_10 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
-  if (unlikely(!__pyx_t_3 || !__pyx_t_10 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 822; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_points));
+  if (unlikely(!__pyx_t_3 || !__pyx_t_11 || !PyBytes_AsString(__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 899; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_14 = __pyx_array_new(__pyx_t_10, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "fortran", (char *) __pyx_t_13);
-  if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 822; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_14);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_15 = __pyx_array_new(__pyx_t_11, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_3), (char *) "fortran", (char *) __pyx_t_14);
+  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 899; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_15);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_15 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(((PyObject *)__pyx_t_14));
-  if (unlikely(!__pyx_t_15.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 822; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_14)); __pyx_t_14 = 0;
+  __pyx_t_16 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(((PyObject *)__pyx_t_15));
+  if (unlikely(!__pyx_t_16.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 899; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->candidate_distance, 0);
-  __pyx_v_self->candidate_distance = __pyx_t_15;
-  __pyx_t_15.memview = NULL;
-  __pyx_t_15.data = NULL;
+  __pyx_v_self->candidate_distance = __pyx_t_16;
+  __pyx_t_16.memview = NULL;
+  __pyx_t_16.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":824
+  /* "hdbscan/_hdbscan_boruvka.pyx":901
  *         self.candidate_distance = (<np.double_t[:self.num_points:1]> (<np.double_t *> self.candidate_distance_arr.data))
  * 
  *         self._centroid_distances_arr = self.dist.pairwise(self.tree.node_bounds[0])             # <<<<<<<<<<<<<<
  *         self.centroid_distances = (<np.double_t [:self.num_nodes, :self.num_nodes:1]> (<np.double_t *> self._centroid_distances_arr.data))
  * 
  */
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->dist), __pyx_n_s_pairwise); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 824; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_bounds); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 824; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self->dist), __pyx_n_s_pairwise); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_bounds); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 824; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_10))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_10);
+  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_11))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_11);
     if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
       __Pyx_INCREF(__pyx_t_4);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_10, function);
+      __Pyx_DECREF_SET(__pyx_t_11, function);
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 824; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GOTREF(__pyx_t_3);
   } else {
-    __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 824; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_4); __pyx_t_4 = NULL;
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_2, 0+1, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 824; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 824; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->_centroid_distances_arr);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->_centroid_distances_arr));
   __pyx_v_self->_centroid_distances_arr = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":825
+  /* "hdbscan/_hdbscan_boruvka.pyx":902
  * 
  *         self._centroid_distances_arr = self.dist.pairwise(self.tree.node_bounds[0])
  *         self.centroid_distances = (<np.double_t [:self.num_nodes, :self.num_nodes:1]> (<np.double_t *> self._centroid_distances_arr.data))             # <<<<<<<<<<<<<<
  * 
  *         self._initialize_components()
  */
-  __pyx_t_13 = ((__pyx_t_5numpy_double_t *)__pyx_v_self->_centroid_distances_arr->data);
-  if (!__pyx_t_13) {
+  __pyx_t_14 = ((__pyx_t_5numpy_double_t *)__pyx_v_self->_centroid_distances_arr->data);
+  if (!__pyx_t_14) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 825; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 902; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_10 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t);
+  __pyx_t_11 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t);
   __pyx_t_3 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_self->num_nodes), ((Py_ssize_t)__pyx_v_self->num_nodes));
-  if (unlikely(!__pyx_t_10 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_10))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 825; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
+  if (unlikely(!__pyx_t_11 || !__pyx_t_3 || !PyBytes_AsString(__pyx_t_11))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 902; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_14 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_10), (char *) "c", (char *) __pyx_t_13);
-  if (unlikely(!__pyx_t_14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 825; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_14);
+  __pyx_t_15 = __pyx_array_new(__pyx_t_3, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_11), (char *) "c", (char *) __pyx_t_14);
+  if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 902; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_15);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_5numpy_double_t(((PyObject *)__pyx_t_14));
-  if (unlikely(!__pyx_t_6.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 825; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(((PyObject *)__pyx_t_14)); __pyx_t_14 = 0;
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_5numpy_double_t(((PyObject *)__pyx_t_15));
+  if (unlikely(!__pyx_t_6.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 902; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(((PyObject *)__pyx_t_15)); __pyx_t_15 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->centroid_distances, 0);
   __pyx_v_self->centroid_distances = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":827
+  /* "hdbscan/_hdbscan_boruvka.pyx":904
  *         self.centroid_distances = (<np.double_t [:self.num_nodes, :self.num_nodes:1]> (<np.double_t *> self._centroid_distances_arr.data))
  * 
  *         self._initialize_components()             # <<<<<<<<<<<<<<
  *         self._compute_bounds()
  * 
  */
-  __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->_initialize_components(__pyx_v_self); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 827; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __pyx_t_11 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->_initialize_components(__pyx_v_self); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 904; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":828
+  /* "hdbscan/_hdbscan_boruvka.pyx":905
  * 
  *         self._initialize_components()
  *         self._compute_bounds()             # <<<<<<<<<<<<<<
  * 
  *         # Set up fast pointer access to arrays
  */
-  __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->_compute_bounds(__pyx_v_self); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 828; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_10);
-  __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+  __pyx_t_11 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->_compute_bounds(__pyx_v_self); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 905; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_11);
+  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":831
+  /* "hdbscan/_hdbscan_boruvka.pyx":908
  * 
  *         # Set up fast pointer access to arrays
  *         self.component_of_point_ptr = <np.intp_t *> &self.component_of_point[0]             # <<<<<<<<<<<<<<
  *         self.component_of_node_ptr = <np.intp_t *> &self.component_of_node[0]
  *         self.candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]
  */
-  __pyx_t_9 = 0;
-  __pyx_v_self->component_of_point_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_point.data) + __pyx_t_9)) )))));
+  __pyx_t_10 = 0;
+  __pyx_v_self->component_of_point_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_point.data) + __pyx_t_10)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":832
+  /* "hdbscan/_hdbscan_boruvka.pyx":909
  *         # Set up fast pointer access to arrays
  *         self.component_of_point_ptr = <np.intp_t *> &self.component_of_point[0]
  *         self.component_of_node_ptr = <np.intp_t *> &self.component_of_node[0]             # <<<<<<<<<<<<<<
  *         self.candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]
  *         self.candidate_neighbor_ptr = <np.intp_t *> &self.candidate_neighbor[0]
  */
-  __pyx_t_17 = 0;
-  __pyx_v_self->component_of_node_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_node.data) + __pyx_t_17)) )))));
+  __pyx_t_18 = 0;
+  __pyx_v_self->component_of_node_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_node.data) + __pyx_t_18)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":833
+  /* "hdbscan/_hdbscan_boruvka.pyx":910
  *         self.component_of_point_ptr = <np.intp_t *> &self.component_of_point[0]
  *         self.component_of_node_ptr = <np.intp_t *> &self.component_of_node[0]
  *         self.candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]             # <<<<<<<<<<<<<<
  *         self.candidate_neighbor_ptr = <np.intp_t *> &self.candidate_neighbor[0]
  *         self.candidate_point_ptr = <np.intp_t *> &self.candidate_point[0]
  */
-  __pyx_t_18 = 0;
-  __pyx_v_self->candidate_distance_ptr = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_18)) )))));
+  __pyx_t_19 = 0;
+  __pyx_v_self->candidate_distance_ptr = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_19)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":834
+  /* "hdbscan/_hdbscan_boruvka.pyx":911
  *         self.component_of_node_ptr = <np.intp_t *> &self.component_of_node[0]
  *         self.candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]
  *         self.candidate_neighbor_ptr = <np.intp_t *> &self.candidate_neighbor[0]             # <<<<<<<<<<<<<<
  *         self.candidate_point_ptr = <np.intp_t *> &self.candidate_point[0]
  *         self.core_distance_ptr = <np.double_t *> &self.core_distance[0]
  */
-  __pyx_t_19 = 0;
-  __pyx_v_self->candidate_neighbor_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_neighbor.data) + __pyx_t_19)) )))));
+  __pyx_t_20 = 0;
+  __pyx_v_self->candidate_neighbor_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_neighbor.data) + __pyx_t_20)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":835
+  /* "hdbscan/_hdbscan_boruvka.pyx":912
  *         self.candidate_distance_ptr = <np.double_t *> &self.candidate_distance[0]
  *         self.candidate_neighbor_ptr = <np.intp_t *> &self.candidate_neighbor[0]
  *         self.candidate_point_ptr = <np.intp_t *> &self.candidate_point[0]             # <<<<<<<<<<<<<<
  *         self.core_distance_ptr = <np.double_t *> &self.core_distance[0]
  *         self.bounds_ptr = <np.double_t *> &self.bounds[0]
  */
-  __pyx_t_20 = 0;
-  __pyx_v_self->candidate_point_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_point.data) + __pyx_t_20)) )))));
+  __pyx_t_21 = 0;
+  __pyx_v_self->candidate_point_ptr = ((__pyx_t_5numpy_intp_t *)(&(*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_point.data) + __pyx_t_21)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":836
+  /* "hdbscan/_hdbscan_boruvka.pyx":913
  *         self.candidate_neighbor_ptr = <np.intp_t *> &self.candidate_neighbor[0]
  *         self.candidate_point_ptr = <np.intp_t *> &self.candidate_point[0]
  *         self.core_distance_ptr = <np.double_t *> &self.core_distance[0]             # <<<<<<<<<<<<<<
  *         self.bounds_ptr = <np.double_t *> &self.bounds[0]
  * 
  */
-  __pyx_t_21 = 0;
-  __pyx_v_self->core_distance_ptr = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->core_distance.data) + __pyx_t_21)) )))));
+  __pyx_t_22 = 0;
+  __pyx_v_self->core_distance_ptr = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->core_distance.data) + __pyx_t_22)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":837
+  /* "hdbscan/_hdbscan_boruvka.pyx":914
  *         self.candidate_point_ptr = <np.intp_t *> &self.candidate_point[0]
  *         self.core_distance_ptr = <np.double_t *> &self.core_distance[0]
  *         self.bounds_ptr = <np.double_t *> &self.bounds[0]             # <<<<<<<<<<<<<<
  * 
  *     cdef _compute_bounds(self):
  */
-  __pyx_t_22 = 0;
-  __pyx_v_self->bounds_ptr = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->bounds.data) + __pyx_t_22)) )))));
+  __pyx_t_23 = 0;
+  __pyx_v_self->bounds_ptr = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->bounds.data) + __pyx_t_23)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":786
+  /* "hdbscan/_hdbscan_boruvka.pyx":861
  *     cdef np.ndarray candidate_distance_arr
  * 
- *     def __init__(self, tree, min_samples=5, metric='euclidean', alpha=1.0, leaf_size=20, **kwargs):             # <<<<<<<<<<<<<<
+ *     def __init__(self, tree, min_samples=5, metric='euclidean',             # <<<<<<<<<<<<<<
+ *                  alpha=1.0, leaf_size=20, approx_min_span_tree=False, **kwargs):
  * 
- *         self.core_dist_tree = tree
  */
 
   /* function exit code */
@@ -9821,11 +10188,11 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___ini
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
-  __Pyx_XDECREF(__pyx_t_10);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_11, 1);
+  __Pyx_XDECREF(__pyx_t_11);
   __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
-  __Pyx_XDECREF(((PyObject *)__pyx_t_14));
-  __PYX_XDEC_MEMVIEW(&__pyx_t_15, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_13, 1);
+  __Pyx_XDECREF(((PyObject *)__pyx_t_15));
+  __PYX_XDEC_MEMVIEW(&__pyx_t_16, 1);
   __Pyx_AddTraceback("hdbscan._hdbscan_boruvka.BallTreeBoruvkaAlgorithm.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
@@ -9834,12 +10201,12 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm___ini
 }
 static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_15_compute_bounds_2generator1(__pyx_GeneratorObject *__pyx_generator, PyObject *__pyx_sent_value); /* proto */
 
-/* "hdbscan/_hdbscan_boruvka.pyx":855
+/* "hdbscan/_hdbscan_boruvka.pyx":934
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
  *                                  (self.core_dist_tree, points, self.min_samples)             # <<<<<<<<<<<<<<
- *                                   for points in datasets)])
- *         else:
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
  */
 
 static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_15_compute_bounds_genexpr(PyObject *__pyx_self) {
@@ -9860,7 +10227,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_GeneratorObject *gen = __Pyx_Generator_New((__pyx_generator_body_t) __pyx_gb_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_15_compute_bounds_2generator1, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_BallTreeBoruvkaAlgorithm__comput); if (unlikely(!gen)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 855; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_GeneratorObject *gen = __Pyx_Generator_New((__pyx_generator_body_t) __pyx_gb_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_15_compute_bounds_2generator1, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_BallTreeBoruvkaAlgorithm__comput); if (unlikely(!gen)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 934; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -9901,27 +10268,27 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 855; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 934; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":856
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+  /* "hdbscan/_hdbscan_boruvka.pyx":935
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
  *                                  (self.core_dist_tree, points, self.min_samples)
- *                                   for points in datasets)])             # <<<<<<<<<<<<<<
- *         else:
- *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
+ *                                   for points in datasets)             # <<<<<<<<<<<<<<
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
+ *             knn_indices = np.vstack([x[1] for x in knn_data])
  */
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_datasets)) { __Pyx_RaiseClosureNameError("datasets"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 856; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_datasets)) { __Pyx_RaiseClosureNameError("datasets"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 935; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
   if (unlikely(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_datasets == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 856; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 935; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_t_1 = __pyx_cur_scope->__pyx_outer_scope->__pyx_v_datasets; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_COMPILING_IN_CPYTHON
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 856; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 935; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 856; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 935; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_points);
@@ -9929,41 +10296,41 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
     __Pyx_GIVEREF(__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":854
+    /* "hdbscan/_hdbscan_boruvka.pyx":933
  *                         ]
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)             # <<<<<<<<<<<<<<
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)             # <<<<<<<<<<<<<<
  *                                  (self.core_dist_tree, points, self.min_samples)
- *                                   for points in datasets)])
+ *                                   for points in datasets)
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_delayed); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_delayed); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_core_dist_query); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_core_dist_query); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5);
     __pyx_t_5 = 0;
-    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_check_pickle, Py_False) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_check_pickle, Py_False) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, __pyx_t_5); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":855
+    /* "hdbscan/_hdbscan_boruvka.pyx":934
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
  *                                  (self.core_dist_tree, points, self.min_samples)             # <<<<<<<<<<<<<<
- *                                   for points in datasets)])
- *         else:
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
  */
-    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 855; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
-    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 855; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
-    __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self->min_samples); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 855; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 934; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 934; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+    __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self->min_samples); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 934; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_6 = NULL;
     __pyx_t_8 = 0;
@@ -9977,7 +10344,7 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
         __pyx_t_8 = 1;
       }
     }
-    __pyx_t_4 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 855; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 934; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     if (__pyx_t_6) {
       __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -9991,7 +10358,7 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_4, 2+__pyx_t_8, __pyx_t_5);
     __pyx_t_5 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 855; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 934; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -10010,24 +10377,24 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
     __pyx_cur_scope->__pyx_t_0 = 0;
     __Pyx_XGOTREF(__pyx_t_1);
     __pyx_t_2 = __pyx_cur_scope->__pyx_t_1;
-    if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 855; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(!__pyx_sent_value)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 934; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":856
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+    /* "hdbscan/_hdbscan_boruvka.pyx":935
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
  *                                  (self.core_dist_tree, points, self.min_samples)
- *                                   for points in datasets)])             # <<<<<<<<<<<<<<
- *         else:
- *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
+ *                                   for points in datasets)             # <<<<<<<<<<<<<<
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
+ *             knn_indices = np.vstack([x[1] for x in knn_data])
  */
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":855
+  /* "hdbscan/_hdbscan_boruvka.pyx":934
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
  *                                  (self.core_dist_tree, points, self.min_samples)             # <<<<<<<<<<<<<<
- *                                   for points in datasets)])
- *         else:
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
  */
 
   /* function exit code */
@@ -10049,7 +10416,7 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   return NULL;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":839
+/* "hdbscan/_hdbscan_boruvka.pyx":916
  *         self.bounds_ptr = <np.double_t *> &self.bounds[0]
  * 
  *     cdef _compute_bounds(self):             # <<<<<<<<<<<<<<
@@ -10060,8 +10427,11 @@ static PyObject *__pyx_gb_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
 static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm__compute_bounds(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *__pyx_v_self) {
   struct __pyx_obj_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_2__compute_bounds *__pyx_cur_scope;
   __pyx_t_5numpy_intp_t __pyx_v_n;
+  __pyx_t_5numpy_intp_t __pyx_v_i;
+  __pyx_t_5numpy_intp_t __pyx_v_m;
   PyArrayObject *__pyx_v_knn_dist = 0;
-  CYTHON_UNUSED PyArrayObject *__pyx_v_knn_indices = 0;
+  PyArrayObject *__pyx_v_knn_indices = 0;
+  PyObject *__pyx_v_knn_data = NULL;
   PyObject *__pyx_v_x = NULL;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_knn_dist;
   __Pyx_Buffer __pyx_pybuffer_knn_dist;
@@ -10085,13 +10455,22 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   PyObject *__pyx_t_14 = NULL;
   PyObject *__pyx_t_15 = NULL;
   PyObject *__pyx_t_16 = NULL;
-  PyObject *(*__pyx_t_17)(PyObject *);
-  PyArrayObject *__pyx_t_18 = NULL;
+  PyArrayObject *__pyx_t_17 = NULL;
+  PyObject *(*__pyx_t_18)(PyObject *);
   __pyx_t_5numpy_double_t *__pyx_t_19;
   struct __pyx_array_obj *__pyx_t_20 = NULL;
   __Pyx_memviewslice __pyx_t_21 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __pyx_t_5numpy_intp_t __pyx_t_22;
   __pyx_t_5numpy_intp_t __pyx_t_23;
+  __pyx_t_5numpy_intp_t __pyx_t_24;
+  __pyx_t_5numpy_intp_t __pyx_t_25;
+  __pyx_t_5numpy_intp_t __pyx_t_26;
+  __pyx_t_5numpy_intp_t __pyx_t_27;
+  __pyx_t_5numpy_intp_t __pyx_t_28;
+  __pyx_t_5numpy_intp_t __pyx_t_29;
+  __pyx_t_5numpy_intp_t __pyx_t_30;
+  __pyx_t_5numpy_intp_t __pyx_t_31;
+  __pyx_t_5numpy_intp_t __pyx_t_32;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -10114,42 +10493,42 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   __pyx_pybuffernd_knn_indices.data = NULL;
   __pyx_pybuffernd_knn_indices.rcbuffer = &__pyx_pybuffer_knn_indices;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":847
+  /* "hdbscan/_hdbscan_boruvka.pyx":926
  *         cdef np.ndarray[np.intp_t, ndim=2] knn_indices
  * 
  *         if self.tree.data.shape[0] > 16384:             # <<<<<<<<<<<<<<
  *             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
  *                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 847; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 926; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 847; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 926; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 847; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 926; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_int_16384, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 847; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_int_16384, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 926; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 847; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 926; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_3) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":848
+    /* "hdbscan/_hdbscan_boruvka.pyx":927
  * 
  *         if self.tree.data.shape[0] > 16384:
  *             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),             # <<<<<<<<<<<<<<
  *                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
  *                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 848; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 927; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 848; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 927; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 848; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 927; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyObject_GetSlice(__pyx_t_1, 0, __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4), NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 848; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_GetSlice(__pyx_t_1, 0, __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4), NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 927; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -10163,37 +10542,37 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       }
     }
     if (!__pyx_t_1) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 848; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 927; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_GOTREF(__pyx_t_2);
     } else {
-      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 848; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 927; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1); __pyx_t_1 = NULL;
       __Pyx_GIVEREF(__pyx_t_5);
       PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_5);
       __pyx_t_5 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 848; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 927; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":849
+    /* "hdbscan/_hdbscan_boruvka.pyx":928
  *         if self.tree.data.shape[0] > 16384:
  *             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
  *                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),             # <<<<<<<<<<<<<<
  *                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
  *                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
  */
-    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 849; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 928; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_asarray); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 849; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_asarray); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 928; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 849; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 928; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_6, __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4), __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 2), NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 849; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_6, __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4), __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 2), NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 928; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_6 = NULL;
@@ -10207,37 +10586,37 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 849; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 928; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_GOTREF(__pyx_t_4);
     } else {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 849; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 928; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6); __pyx_t_6 = NULL;
       __Pyx_GIVEREF(__pyx_t_1);
       PyTuple_SET_ITEM(__pyx_t_7, 0+1, __pyx_t_1);
       __pyx_t_1 = 0;
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 849; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 928; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":850
+    /* "hdbscan/_hdbscan_boruvka.pyx":929
  *             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
  *                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
  *                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),             # <<<<<<<<<<<<<<
  *                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
  *                         ]
  */
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 850; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 929; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_asarray); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 850; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_asarray); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 929; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 850; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 929; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_6 = __Pyx_PyObject_GetSlice(__pyx_t_7, __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 2), (3 * __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4)), NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 850; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_GetSlice(__pyx_t_7, __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 2), (3 * __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4)), NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 929; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __pyx_t_7 = NULL;
@@ -10251,37 +10630,37 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       }
     }
     if (!__pyx_t_7) {
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 850; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 929; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_5);
     } else {
-      __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 850; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 929; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_7); __pyx_t_7 = NULL;
       __Pyx_GIVEREF(__pyx_t_6);
       PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_t_6);
       __pyx_t_6 = 0;
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_8, NULL); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 850; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_8, NULL); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 929; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":851
+    /* "hdbscan/_hdbscan_boruvka.pyx":930
  *                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
  *                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
  *                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])             # <<<<<<<<<<<<<<
  *                         ]
  * 
  */
-    __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 851; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 930; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_asarray); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 851; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_asarray); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 930; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 851; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 930; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_7 = __Pyx_PyObject_GetSlice(__pyx_t_8, (3 * __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4)), __pyx_cur_scope->__pyx_v_self->num_points, NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 851; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_GetSlice(__pyx_t_8, (3 * __Pyx_div_long(__pyx_cur_scope->__pyx_v_self->num_points, 4)), __pyx_cur_scope->__pyx_v_self->num_points, NULL, NULL, NULL, 1, 1, 0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 930; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __pyx_t_8 = NULL;
@@ -10295,30 +10674,30 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       }
     }
     if (!__pyx_t_8) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 851; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 930; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else {
-      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 851; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 930; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8); __pyx_t_8 = NULL;
       __Pyx_GIVEREF(__pyx_t_7);
       PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_7);
       __pyx_t_7 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 851; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 930; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":848
+    /* "hdbscan/_hdbscan_boruvka.pyx":927
  * 
  *         if self.tree.data.shape[0] > 16384:
  *             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),             # <<<<<<<<<<<<<<
  *                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
  *                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
  */
-    __pyx_t_6 = PyList_New(4); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 848; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyList_New(4); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 927; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_2);
     PyList_SET_ITEM(__pyx_t_6, 0, __pyx_t_2);
@@ -10336,148 +10715,149 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_cur_scope->__pyx_v_datasets = ((PyObject*)__pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":854
+    /* "hdbscan/_hdbscan_boruvka.pyx":933
  *                         ]
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)             # <<<<<<<<<<<<<<
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)             # <<<<<<<<<<<<<<
  *                                  (self.core_dist_tree, points, self.min_samples)
- *                                   for points in datasets)])
+ *                                   for points in datasets)
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_Parallel); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_vstack); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_n_jobs, __pyx_int_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_5); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Parallel); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_9 = PyDict_New(); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_9);
-    if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_n_jobs, __pyx_int_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_9); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":855
+    /* "hdbscan/_hdbscan_boruvka.pyx":934
  * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+ *             knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
  *                                  (self.core_dist_tree, points, self.min_samples)             # <<<<<<<<<<<<<<
- *                                   for points in datasets)])
- *         else:
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
  */
-    __pyx_t_9 = __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_15_compute_bounds_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 855; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_2 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_7))) {
-      __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_7);
-      if (likely(__pyx_t_2)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-        __Pyx_INCREF(__pyx_t_2);
+    __pyx_t_5 = __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_15_compute_bounds_genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 934; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_1 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_4);
+      if (likely(__pyx_t_1)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+        __Pyx_INCREF(__pyx_t_1);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_7, function);
+        __Pyx_DECREF_SET(__pyx_t_4, function);
       }
     }
-    if (!__pyx_t_2) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_9); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __Pyx_GOTREF(__pyx_t_4);
+    if (!__pyx_t_1) {
+      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_GOTREF(__pyx_t_6);
     } else {
-      __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_8);
-      __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_2); __pyx_t_2 = NULL;
-      __Pyx_GIVEREF(__pyx_t_9);
-      PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_t_9);
-      __pyx_t_9 = 0;
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_8, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-
-    /* "hdbscan/_hdbscan_boruvka.pyx":854
- *                         ]
- * 
- *             knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)             # <<<<<<<<<<<<<<
- *                                  (self.core_dist_tree, points, self.min_samples)
- *                                   for points in datasets)])
- */
-    if (likely(PyList_CheckExact(__pyx_t_4)) || PyTuple_CheckExact(__pyx_t_4)) {
-      __pyx_t_7 = __pyx_t_4; __Pyx_INCREF(__pyx_t_7); __pyx_t_10 = 0;
-      __pyx_t_11 = NULL;
-    } else {
-      __pyx_t_10 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_11 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1); __pyx_t_1 = NULL;
+      __Pyx_GIVEREF(__pyx_t_5);
+      PyTuple_SET_ITEM(__pyx_t_2, 0+1, __pyx_t_5);
+      __pyx_t_5 = 0;
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_2, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_v_knn_data = __pyx_t_6;
+    __pyx_t_6 = 0;
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":936
+ *                                  (self.core_dist_tree, points, self.min_samples)
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])             # <<<<<<<<<<<<<<
+ *             knn_indices = np.vstack([x[1] for x in knn_data])
+ *         else:
+ */
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_vstack); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_4);
+    if (likely(PyList_CheckExact(__pyx_v_knn_data)) || PyTuple_CheckExact(__pyx_v_knn_data)) {
+      __pyx_t_5 = __pyx_v_knn_data; __Pyx_INCREF(__pyx_t_5); __pyx_t_10 = 0;
+      __pyx_t_11 = NULL;
+    } else {
+      __pyx_t_10 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_v_knn_data); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_11 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
     for (;;) {
       if (likely(!__pyx_t_11)) {
-        if (likely(PyList_CheckExact(__pyx_t_7))) {
-          if (__pyx_t_10 >= PyList_GET_SIZE(__pyx_t_7)) break;
+        if (likely(PyList_CheckExact(__pyx_t_5))) {
+          if (__pyx_t_10 >= PyList_GET_SIZE(__pyx_t_5)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_4 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_10); __Pyx_INCREF(__pyx_t_4); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_10); __Pyx_INCREF(__pyx_t_1); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_4 = PySequence_ITEM(__pyx_t_7, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_4);
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_5, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_1);
           #endif
         } else {
-          if (__pyx_t_10 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
+          if (__pyx_t_10 >= PyTuple_GET_SIZE(__pyx_t_5)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_10); __Pyx_INCREF(__pyx_t_4); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_10); __Pyx_INCREF(__pyx_t_1); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_4 = PySequence_ITEM(__pyx_t_7, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-          __Pyx_GOTREF(__pyx_t_4);
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_5, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_1);
           #endif
         }
       } else {
-        __pyx_t_4 = __pyx_t_11(__pyx_t_7);
-        if (unlikely(!__pyx_t_4)) {
+        __pyx_t_1 = __pyx_t_11(__pyx_t_5);
+        if (unlikely(!__pyx_t_1)) {
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
-        __Pyx_GOTREF(__pyx_t_4);
+        __Pyx_GOTREF(__pyx_t_1);
       }
-      __Pyx_XDECREF_SET(__pyx_v_x, __pyx_t_4);
-      __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_x, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-      __Pyx_GOTREF(__pyx_t_4);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_4))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_7)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_7);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-      }
-    }
-    if (!__pyx_t_7) {
-      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_GOTREF(__pyx_t_6);
-    } else {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_7); __pyx_t_7 = NULL;
-      __Pyx_GIVEREF(__pyx_t_1);
-      PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_t_1);
+      __Pyx_XDECREF_SET(__pyx_v_x, __pyx_t_1);
       __pyx_t_1 = 0;
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __Pyx_GOTREF(__pyx_t_1);
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
+      if (likely(__pyx_t_5)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+        __Pyx_INCREF(__pyx_t_5);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_2, function);
+      }
+    }
+    if (!__pyx_t_5) {
+      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_GOTREF(__pyx_t_6);
+    } else {
+      __pyx_t_1 = PyTuple_New(1+1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_5); __pyx_t_5 = NULL;
+      __Pyx_GIVEREF(__pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_1, 0+1, __pyx_t_4);
+      __pyx_t_4 = 0;
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_12 = ((PyArrayObject *)__pyx_t_6);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -10493,78 +10873,187 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
         }
       }
       __pyx_pybuffernd_knn_dist.diminfo[0].strides = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_knn_dist.diminfo[0].shape = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_knn_dist.diminfo[1].strides = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_knn_dist.diminfo[1].shape = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __pyx_t_12 = 0;
     __pyx_v_knn_dist = ((PyArrayObject *)__pyx_t_6);
+    __pyx_t_6 = 0;
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":937
+ *                                   for points in datasets)
+ *             knn_dist = np.vstack([x[0] for x in knn_data])
+ *             knn_indices = np.vstack([x[1] for x in knn_data])             # <<<<<<<<<<<<<<
+ *         else:
+ *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
+ */
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_vstack); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    if (likely(PyList_CheckExact(__pyx_v_knn_data)) || PyTuple_CheckExact(__pyx_v_knn_data)) {
+      __pyx_t_4 = __pyx_v_knn_data; __Pyx_INCREF(__pyx_t_4); __pyx_t_10 = 0;
+      __pyx_t_11 = NULL;
+    } else {
+      __pyx_t_10 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_v_knn_data); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_11 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
+    for (;;) {
+      if (likely(!__pyx_t_11)) {
+        if (likely(PyList_CheckExact(__pyx_t_4))) {
+          if (__pyx_t_10 >= PyList_GET_SIZE(__pyx_t_4)) break;
+          #if CYTHON_COMPILING_IN_CPYTHON
+          __pyx_t_5 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_10); __Pyx_INCREF(__pyx_t_5); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          #else
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_4, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_5);
+          #endif
+        } else {
+          if (__pyx_t_10 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
+          #if CYTHON_COMPILING_IN_CPYTHON
+          __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_10); __Pyx_INCREF(__pyx_t_5); __pyx_t_10++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          #else
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_4, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __Pyx_GOTREF(__pyx_t_5);
+          #endif
+        }
+      } else {
+        __pyx_t_5 = __pyx_t_11(__pyx_t_4);
+        if (unlikely(!__pyx_t_5)) {
+          PyObject* exc_type = PyErr_Occurred();
+          if (exc_type) {
+            if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          }
+          break;
+        }
+        __Pyx_GOTREF(__pyx_t_5);
+      }
+      __Pyx_XDECREF_SET(__pyx_v_x, __pyx_t_5);
+      __pyx_t_5 = 0;
+      __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_x, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __Pyx_GOTREF(__pyx_t_5);
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_5))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
+      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+      if (likely(__pyx_t_4)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+        __Pyx_INCREF(__pyx_t_4);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_1, function);
+      }
+    }
+    if (!__pyx_t_4) {
+      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_GOTREF(__pyx_t_6);
+    } else {
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
+      __Pyx_GIVEREF(__pyx_t_2);
+      PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_2);
+      __pyx_t_2 = 0;
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_17 = ((PyArrayObject *)__pyx_t_6);
+    {
+      __Pyx_BufFmt_StackElem __pyx_stack[1];
+      __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer);
+      __pyx_t_13 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer, (PyObject*)__pyx_t_17, &__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
+      if (unlikely(__pyx_t_13 < 0)) {
+        PyErr_Fetch(&__pyx_t_16, &__pyx_t_15, &__pyx_t_14);
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer, (PyObject*)__pyx_v_knn_indices, &__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+          Py_XDECREF(__pyx_t_16); Py_XDECREF(__pyx_t_15); Py_XDECREF(__pyx_t_14);
+          __Pyx_RaiseBufferFallbackError();
+        } else {
+          PyErr_Restore(__pyx_t_16, __pyx_t_15, __pyx_t_14);
+        }
+      }
+      __pyx_pybuffernd_knn_indices.diminfo[0].strides = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_knn_indices.diminfo[0].shape = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_knn_indices.diminfo[1].strides = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_knn_indices.diminfo[1].shape = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.shape[1];
+      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
+    __pyx_t_17 = 0;
+    __pyx_v_knn_indices = ((PyArrayObject *)__pyx_t_6);
     __pyx_t_6 = 0;
     goto __pyx_L3;
   }
   /*else*/ {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":858
- *                                   for points in datasets)])
+    /* "hdbscan/_hdbscan_boruvka.pyx":939
+ *             knn_indices = np.vstack([x[1] for x in knn_data])
  *         else:
  *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,             # <<<<<<<<<<<<<<
  *                                                               k=self.min_samples,
  *                                                               dualtree=True,
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->core_dist_tree, __pyx_n_s_query); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->core_dist_tree, __pyx_n_s_query); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_5);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
-    __pyx_t_5 = 0;
-    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
+    __pyx_t_1 = 0;
+    __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":859
+    /* "hdbscan/_hdbscan_boruvka.pyx":940
  *         else:
  *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
  *                                                               k=self.min_samples,             # <<<<<<<<<<<<<<
  *                                                               dualtree=True,
  *                                                               breadth_first=True)
  */
-    __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t(__pyx_cur_scope->__pyx_v_self->min_samples); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 859; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_k, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_cur_scope->__pyx_v_self->min_samples); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 940; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_k, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":860
+    /* "hdbscan/_hdbscan_boruvka.pyx":941
  *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
  *                                                               k=self.min_samples,
  *                                                               dualtree=True,             # <<<<<<<<<<<<<<
  *                                                               breadth_first=True)
  * 
  */
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dualtree, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dualtree, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":861
+    /* "hdbscan/_hdbscan_boruvka.pyx":942
  *                                                               k=self.min_samples,
  *                                                               dualtree=True,
  *                                                               breadth_first=True)             # <<<<<<<<<<<<<<
  * 
  *         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
  */
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_breadth_first, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_breadth_first, Py_True) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":858
- *                                   for points in datasets)])
+    /* "hdbscan/_hdbscan_boruvka.pyx":939
+ *             knn_indices = np.vstack([x[1] for x in knn_data])
  *         else:
  *             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,             # <<<<<<<<<<<<<<
  *                                                               k=self.min_samples,
  *                                                               dualtree=True,
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
-      PyObject* sequence = __pyx_t_1;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
+      PyObject* sequence = __pyx_t_2;
       #if CYTHON_COMPILING_IN_CPYTHON
       Py_ssize_t size = Py_SIZE(sequence);
       #else
@@ -10573,172 +11062,263 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       #if CYTHON_COMPILING_IN_CPYTHON
       if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_5 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_4 = PyTuple_GET_ITEM(sequence, 1); 
+        __pyx_t_1 = PyTuple_GET_ITEM(sequence, 0); 
+        __pyx_t_5 = PyTuple_GET_ITEM(sequence, 1); 
       } else {
-        __pyx_t_5 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_4 = PyList_GET_ITEM(sequence, 1); 
+        __pyx_t_1 = PyList_GET_ITEM(sequence, 0); 
+        __pyx_t_5 = PyList_GET_ITEM(sequence, 1); 
       }
+      __Pyx_INCREF(__pyx_t_1);
       __Pyx_INCREF(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_4);
       #else
-      __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_5 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_4 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_4);
       #endif
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_6 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_17 = Py_TYPE(__pyx_t_6)->tp_iternext;
-      index = 0; __pyx_t_5 = __pyx_t_17(__pyx_t_6); if (unlikely(!__pyx_t_5)) goto __pyx_L6_unpacking_failed;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_18 = Py_TYPE(__pyx_t_6)->tp_iternext;
+      index = 0; __pyx_t_1 = __pyx_t_18(__pyx_t_6); if (unlikely(!__pyx_t_1)) goto __pyx_L8_unpacking_failed;
+      __Pyx_GOTREF(__pyx_t_1);
+      index = 1; __pyx_t_5 = __pyx_t_18(__pyx_t_6); if (unlikely(!__pyx_t_5)) goto __pyx_L8_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_5);
-      index = 1; __pyx_t_4 = __pyx_t_17(__pyx_t_6); if (unlikely(!__pyx_t_4)) goto __pyx_L6_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_4);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_17(__pyx_t_6), 2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_17 = NULL;
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_18(__pyx_t_6), 2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_18 = NULL;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      goto __pyx_L7_unpacking_done;
-      __pyx_L6_unpacking_failed:;
+      goto __pyx_L9_unpacking_done;
+      __pyx_L8_unpacking_failed:;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_17 = NULL;
+      __pyx_t_18 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_L7_unpacking_done:;
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_L9_unpacking_done:;
     }
-    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_12 = ((PyArrayObject *)__pyx_t_5);
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = ((PyArrayObject *)__pyx_t_1);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_knn_dist.rcbuffer->pybuffer);
       __pyx_t_13 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_dist.rcbuffer->pybuffer, (PyObject*)__pyx_t_12, &__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
       if (unlikely(__pyx_t_13 < 0)) {
-        PyErr_Fetch(&__pyx_t_16, &__pyx_t_15, &__pyx_t_14);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_dist.rcbuffer->pybuffer, (PyObject*)__pyx_v_knn_dist, &__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
-          Py_XDECREF(__pyx_t_16); Py_XDECREF(__pyx_t_15); Py_XDECREF(__pyx_t_14);
-          __Pyx_RaiseBufferFallbackError();
-        } else {
-          PyErr_Restore(__pyx_t_16, __pyx_t_15, __pyx_t_14);
-        }
-      }
-      __pyx_pybuffernd_knn_dist.diminfo[0].strides = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_knn_dist.diminfo[0].shape = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_knn_dist.diminfo[1].strides = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_knn_dist.diminfo[1].shape = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    }
-    __pyx_t_12 = 0;
-    __pyx_v_knn_dist = ((PyArrayObject *)__pyx_t_5);
-    __pyx_t_5 = 0;
-    __pyx_t_18 = ((PyArrayObject *)__pyx_t_4);
-    {
-      __Pyx_BufFmt_StackElem __pyx_stack[1];
-      __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer);
-      __pyx_t_13 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer, (PyObject*)__pyx_t_18, &__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
-      if (unlikely(__pyx_t_13 < 0)) {
         PyErr_Fetch(&__pyx_t_14, &__pyx_t_15, &__pyx_t_16);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer, (PyObject*)__pyx_v_knn_indices, &__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_dist.rcbuffer->pybuffer, (PyObject*)__pyx_v_knn_dist, &__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
           Py_XDECREF(__pyx_t_14); Py_XDECREF(__pyx_t_15); Py_XDECREF(__pyx_t_16);
           __Pyx_RaiseBufferFallbackError();
         } else {
           PyErr_Restore(__pyx_t_14, __pyx_t_15, __pyx_t_16);
         }
       }
-      __pyx_pybuffernd_knn_indices.diminfo[0].strides = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_knn_indices.diminfo[0].shape = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_knn_indices.diminfo[1].strides = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_knn_indices.diminfo[1].shape = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_pybuffernd_knn_dist.diminfo[0].strides = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_knn_dist.diminfo[0].shape = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_knn_dist.diminfo[1].strides = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_knn_dist.diminfo[1].shape = __pyx_pybuffernd_knn_dist.rcbuffer->pybuffer.shape[1];
+      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_18 = 0;
-    __pyx_v_knn_indices = ((PyArrayObject *)__pyx_t_4);
-    __pyx_t_4 = 0;
+    __pyx_t_12 = 0;
+    __pyx_v_knn_dist = ((PyArrayObject *)__pyx_t_1);
+    __pyx_t_1 = 0;
+    __pyx_t_17 = ((PyArrayObject *)__pyx_t_5);
+    {
+      __Pyx_BufFmt_StackElem __pyx_stack[1];
+      __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer);
+      __pyx_t_13 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer, (PyObject*)__pyx_t_17, &__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
+      if (unlikely(__pyx_t_13 < 0)) {
+        PyErr_Fetch(&__pyx_t_16, &__pyx_t_15, &__pyx_t_14);
+        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_knn_indices.rcbuffer->pybuffer, (PyObject*)__pyx_v_knn_indices, &__Pyx_TypeInfo_nn___pyx_t_5numpy_intp_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+          Py_XDECREF(__pyx_t_16); Py_XDECREF(__pyx_t_15); Py_XDECREF(__pyx_t_14);
+          __Pyx_RaiseBufferFallbackError();
+        } else {
+          PyErr_Restore(__pyx_t_16, __pyx_t_15, __pyx_t_14);
+        }
+      }
+      __pyx_pybuffernd_knn_indices.diminfo[0].strides = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_knn_indices.diminfo[0].shape = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_knn_indices.diminfo[1].strides = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_knn_indices.diminfo[1].shape = __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.shape[1];
+      if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
+    __pyx_t_17 = 0;
+    __pyx_v_knn_indices = ((PyArrayObject *)__pyx_t_5);
+    __pyx_t_5 = 0;
   }
   __pyx_L3:;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":863
+  /* "hdbscan/_hdbscan_boruvka.pyx":944
  *                                                               breadth_first=True)
  * 
  *         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()             # <<<<<<<<<<<<<<
  *         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
  * 
  */
-  __pyx_t_4 = __Pyx_PyInt_From_long((__pyx_cur_scope->__pyx_v_self->min_samples - 1)); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 863; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 863; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyInt_From_long((__pyx_cur_scope->__pyx_v_self->min_samples - 1)); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_slice__2);
   __Pyx_GIVEREF(__pyx_slice__2);
-  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_slice__2);
-  __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_4);
-  __pyx_t_4 = 0;
-  __pyx_t_4 = PyObject_GetItem(((PyObject *)__pyx_v_knn_dist), __pyx_t_5); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 863; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_copy); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 863; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_slice__2);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_5);
+  __pyx_t_5 = 0;
+  __pyx_t_5 = PyObject_GetItem(((PyObject *)__pyx_v_knn_dist), __pyx_t_1); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
-    }
-  }
-  if (__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 863; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 863; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_copy); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 863; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_5 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_5);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+    }
+  }
+  if (__pyx_t_5) {
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  } else {
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  }
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_cur_scope->__pyx_v_self->core_distance_arr);
   __Pyx_DECREF(((PyObject *)__pyx_cur_scope->__pyx_v_self->core_distance_arr));
-  __pyx_cur_scope->__pyx_v_self->core_distance_arr = ((PyArrayObject *)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_cur_scope->__pyx_v_self->core_distance_arr = ((PyArrayObject *)__pyx_t_2);
+  __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":864
+  /* "hdbscan/_hdbscan_boruvka.pyx":945
  * 
  *         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
  *         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))             # <<<<<<<<<<<<<<
  * 
- *         for n in range(self.num_nodes):
+ *         # Since we already computed NN distances for the min_samples closest points
  */
   __pyx_t_19 = ((__pyx_t_5numpy_double_t *)__pyx_cur_scope->__pyx_v_self->core_distance_arr->data);
-  if (unlikely(!__pyx_cur_scope->__pyx_v_self)) { __Pyx_RaiseUnboundLocalError("self"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+  if (unlikely(!__pyx_cur_scope->__pyx_v_self)) { __Pyx_RaiseUnboundLocalError("self"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 945; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
   if (!__pyx_t_19) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 945; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_5 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t);
-  __pyx_t_1 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_cur_scope->__pyx_v_self->num_points));
-  if (unlikely(!__pyx_t_5 || !__pyx_t_1 || !PyBytes_AsString(__pyx_t_5))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_1 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn___pyx_t_5numpy_double_t);
+  __pyx_t_2 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_cur_scope->__pyx_v_self->num_points));
+  if (unlikely(!__pyx_t_1 || !__pyx_t_2 || !PyBytes_AsString(__pyx_t_1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 945; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_20 = __pyx_array_new(__pyx_t_1, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_5), (char *) "fortran", (char *) __pyx_t_19);
-  if (unlikely(!__pyx_t_20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_20 = __pyx_array_new(__pyx_t_2, sizeof(__pyx_t_5numpy_double_t), PyBytes_AS_STRING(__pyx_t_1), (char *) "fortran", (char *) __pyx_t_19);
+  if (unlikely(!__pyx_t_20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 945; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_20);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_21 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(((PyObject *)__pyx_t_20));
-  if (unlikely(!__pyx_t_21.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_21.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 945; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(((PyObject *)__pyx_t_20)); __pyx_t_20 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_cur_scope->__pyx_v_self->core_distance, 0);
   __pyx_cur_scope->__pyx_v_self->core_distance = __pyx_t_21;
   __pyx_t_21.memview = NULL;
   __pyx_t_21.data = NULL;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":866
- *         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
+  /* "hdbscan/_hdbscan_boruvka.pyx":952
+ *         # get quite a few, and they are the hard ones to get, so fill in any we ca
+ *         # and then run update components.
+ *         for n in range(self.num_points):             # <<<<<<<<<<<<<<
+ *             for i in range(self.min_samples - 1, 0):
+ *                 m = knn_indices[n, i]
+ */
+  __pyx_t_22 = __pyx_cur_scope->__pyx_v_self->num_points;
+  for (__pyx_t_23 = 0; __pyx_t_23 < __pyx_t_22; __pyx_t_23+=1) {
+    __pyx_v_n = __pyx_t_23;
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":953
+ *         # and then run update components.
+ *         for n in range(self.num_points):
+ *             for i in range(self.min_samples - 1, 0):             # <<<<<<<<<<<<<<
+ *                 m = knn_indices[n, i]
+ *                 if self.core_distance[m] <= self.core_distance[n]:
+ */
+    for (__pyx_t_24 = (__pyx_cur_scope->__pyx_v_self->min_samples - 1); __pyx_t_24 < 0; __pyx_t_24+=1) {
+      __pyx_v_i = __pyx_t_24;
+
+      /* "hdbscan/_hdbscan_boruvka.pyx":954
+ *         for n in range(self.num_points):
+ *             for i in range(self.min_samples - 1, 0):
+ *                 m = knn_indices[n, i]             # <<<<<<<<<<<<<<
+ *                 if self.core_distance[m] <= self.core_distance[n]:
+ *                     self.candidate_point[n] = n
+ */
+      __pyx_t_25 = __pyx_v_n;
+      __pyx_t_26 = __pyx_v_i;
+      __pyx_v_m = (*__Pyx_BufPtrStrided2d(__pyx_t_5numpy_intp_t *, __pyx_pybuffernd_knn_indices.rcbuffer->pybuffer.buf, __pyx_t_25, __pyx_pybuffernd_knn_indices.diminfo[0].strides, __pyx_t_26, __pyx_pybuffernd_knn_indices.diminfo[1].strides));
+
+      /* "hdbscan/_hdbscan_boruvka.pyx":955
+ *             for i in range(self.min_samples - 1, 0):
+ *                 m = knn_indices[n, i]
+ *                 if self.core_distance[m] <= self.core_distance[n]:             # <<<<<<<<<<<<<<
+ *                     self.candidate_point[n] = n
+ *                     self.candidate_neighbor[n] = m
+ */
+      __pyx_t_27 = __pyx_v_m;
+      __pyx_t_28 = __pyx_v_n;
+      __pyx_t_3 = (((*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_cur_scope->__pyx_v_self->core_distance.data) + __pyx_t_27)) ))) <= (*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_cur_scope->__pyx_v_self->core_distance.data) + __pyx_t_28)) )))) != 0);
+      if (__pyx_t_3) {
+
+        /* "hdbscan/_hdbscan_boruvka.pyx":956
+ *                 m = knn_indices[n, i]
+ *                 if self.core_distance[m] <= self.core_distance[n]:
+ *                     self.candidate_point[n] = n             # <<<<<<<<<<<<<<
+ *                     self.candidate_neighbor[n] = m
+ *                     self.candidate_distance[n] = self.core_distance[n]
+ */
+        __pyx_t_29 = __pyx_v_n;
+        *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_cur_scope->__pyx_v_self->candidate_point.data) + __pyx_t_29)) )) = __pyx_v_n;
+
+        /* "hdbscan/_hdbscan_boruvka.pyx":957
+ *                 if self.core_distance[m] <= self.core_distance[n]:
+ *                     self.candidate_point[n] = n
+ *                     self.candidate_neighbor[n] = m             # <<<<<<<<<<<<<<
+ *                     self.candidate_distance[n] = self.core_distance[n]
+ * 
+ */
+        __pyx_t_30 = __pyx_v_n;
+        *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_cur_scope->__pyx_v_self->candidate_neighbor.data) + __pyx_t_30)) )) = __pyx_v_m;
+
+        /* "hdbscan/_hdbscan_boruvka.pyx":958
+ *                     self.candidate_point[n] = n
+ *                     self.candidate_neighbor[n] = m
+ *                     self.candidate_distance[n] = self.core_distance[n]             # <<<<<<<<<<<<<<
+ * 
+ *         self.update_components()
+ */
+        __pyx_t_31 = __pyx_v_n;
+        __pyx_t_32 = __pyx_v_n;
+        *((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_cur_scope->__pyx_v_self->candidate_distance.data) + __pyx_t_32)) )) = (*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_cur_scope->__pyx_v_self->core_distance.data) + __pyx_t_31)) )));
+        goto __pyx_L14;
+      }
+      __pyx_L14:;
+    }
+  }
+
+  /* "hdbscan/_hdbscan_boruvka.pyx":960
+ *                     self.candidate_distance[n] = self.core_distance[n]
+ * 
+ *         self.update_components()             # <<<<<<<<<<<<<<
+ * 
+ *         for n in range(self.num_nodes):
+ */
+  __pyx_t_1 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_cur_scope->__pyx_v_self->__pyx_vtab)->update_components(__pyx_cur_scope->__pyx_v_self); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 960; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "hdbscan/_hdbscan_boruvka.pyx":962
+ *         self.update_components()
  * 
  *         for n in range(self.num_nodes):             # <<<<<<<<<<<<<<
  *             self.bounds_arr[n] = <np.double_t> DBL_MAX
@@ -10748,20 +11328,20 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   for (__pyx_t_23 = 0; __pyx_t_23 < __pyx_t_22; __pyx_t_23+=1) {
     __pyx_v_n = __pyx_t_23;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":867
+    /* "hdbscan/_hdbscan_boruvka.pyx":963
  * 
  *         for n in range(self.num_nodes):
  *             self.bounds_arr[n] = <np.double_t> DBL_MAX             # <<<<<<<<<<<<<<
  * 
  *     cdef _initialize_components(self):
  */
-    __pyx_t_5 = PyFloat_FromDouble(((__pyx_t_5numpy_double_t)DBL_MAX)); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_5);
-    if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_cur_scope->__pyx_v_self->bounds_arr), __pyx_v_n, __pyx_t_5, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_1 = PyFloat_FromDouble(((__pyx_t_5numpy_double_t)DBL_MAX)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 963; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_cur_scope->__pyx_v_self->bounds_arr), __pyx_v_n, __pyx_t_1, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 963; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":839
+  /* "hdbscan/_hdbscan_boruvka.pyx":916
  *         self.bounds_ptr = <np.double_t *> &self.bounds[0]
  * 
  *     cdef _compute_bounds(self):             # <<<<<<<<<<<<<<
@@ -10797,6 +11377,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   __pyx_L2:;
   __Pyx_XDECREF((PyObject *)__pyx_v_knn_dist);
   __Pyx_XDECREF((PyObject *)__pyx_v_knn_indices);
+  __Pyx_XDECREF(__pyx_v_knn_data);
   __Pyx_XDECREF(__pyx_v_x);
   __Pyx_DECREF(((PyObject *)__pyx_cur_scope));
   __Pyx_XGIVEREF(__pyx_r);
@@ -10804,7 +11385,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":869
+/* "hdbscan/_hdbscan_boruvka.pyx":965
  *             self.bounds_arr[n] = <np.double_t> DBL_MAX
  * 
  *     cdef _initialize_components(self):             # <<<<<<<<<<<<<<
@@ -10825,7 +11406,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   __pyx_t_5numpy_intp_t __pyx_t_7;
   __Pyx_RefNannySetupContext("_initialize_components", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":875
+  /* "hdbscan/_hdbscan_boruvka.pyx":971
  *         cdef np.intp_t n
  * 
  *         for n in range(self.num_points):             # <<<<<<<<<<<<<<
@@ -10836,7 +11417,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_n = __pyx_t_2;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":876
+    /* "hdbscan/_hdbscan_boruvka.pyx":972
  * 
  *         for n in range(self.num_points):
  *             self.component_of_point[n] = n             # <<<<<<<<<<<<<<
@@ -10846,7 +11427,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_t_3 = __pyx_v_n;
     *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_point.data) + __pyx_t_3)) )) = __pyx_v_n;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":877
+    /* "hdbscan/_hdbscan_boruvka.pyx":973
  *         for n in range(self.num_points):
  *             self.component_of_point[n] = n
  *             self.candidate_neighbor[n] = -1             # <<<<<<<<<<<<<<
@@ -10856,7 +11437,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_t_4 = __pyx_v_n;
     *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_neighbor.data) + __pyx_t_4)) )) = -1;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":878
+    /* "hdbscan/_hdbscan_boruvka.pyx":974
  *             self.component_of_point[n] = n
  *             self.candidate_neighbor[n] = -1
  *             self.candidate_point[n] = -1             # <<<<<<<<<<<<<<
@@ -10866,7 +11447,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_t_5 = __pyx_v_n;
     *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_point.data) + __pyx_t_5)) )) = -1;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":879
+    /* "hdbscan/_hdbscan_boruvka.pyx":975
  *             self.candidate_neighbor[n] = -1
  *             self.candidate_point[n] = -1
  *             self.candidate_distance[n] = DBL_MAX             # <<<<<<<<<<<<<<
@@ -10877,7 +11458,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     *((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_6)) )) = DBL_MAX;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":881
+  /* "hdbscan/_hdbscan_boruvka.pyx":977
  *             self.candidate_distance[n] = DBL_MAX
  * 
  *         for n in range(self.num_nodes):             # <<<<<<<<<<<<<<
@@ -10888,7 +11469,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_n = __pyx_t_2;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":882
+    /* "hdbscan/_hdbscan_boruvka.pyx":978
  * 
  *         for n in range(self.num_nodes):
  *             self.component_of_node[n] = -(n+1)             # <<<<<<<<<<<<<<
@@ -10899,7 +11480,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_node.data) + __pyx_t_7)) )) = (-(__pyx_v_n + 1));
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":869
+  /* "hdbscan/_hdbscan_boruvka.pyx":965
  *             self.bounds_arr[n] = <np.double_t> DBL_MAX
  * 
  *     cdef _initialize_components(self):             # <<<<<<<<<<<<<<
@@ -10914,7 +11495,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":884
+/* "hdbscan/_hdbscan_boruvka.pyx":980
  *             self.component_of_node[n] = -(n+1)
  * 
  *     cdef update_components(self):             # <<<<<<<<<<<<<<
@@ -10972,8 +11553,8 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("update_components", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":905
- *         cdef NodeData_t node_info
+  /* "hdbscan/_hdbscan_boruvka.pyx":1010
+ *         # together in the union find structure
  * 
  *         for c in range(self.components.shape[0]):             # <<<<<<<<<<<<<<
  *             component = self.components[c]
@@ -10983,20 +11564,20 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_c = __pyx_t_2;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":906
+    /* "hdbscan/_hdbscan_boruvka.pyx":1011
  * 
  *         for c in range(self.components.shape[0]):
  *             component = self.components[c]             # <<<<<<<<<<<<<<
  *             source = self.candidate_point[component]
  *             sink = self.candidate_neighbor[component]
  */
-    __pyx_t_3 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->components), __pyx_v_c, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 906; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_3 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->components), __pyx_v_c, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1011; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_3); if (unlikely((__pyx_t_4 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 906; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_3); if (unlikely((__pyx_t_4 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1011; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_component = __pyx_t_4;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":907
+    /* "hdbscan/_hdbscan_boruvka.pyx":1012
  *         for c in range(self.components.shape[0]):
  *             component = self.components[c]
  *             source = self.candidate_point[component]             # <<<<<<<<<<<<<<
@@ -11006,7 +11587,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_t_4 = __pyx_v_component;
     __pyx_v_source = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_point.data) + __pyx_t_4)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":908
+    /* "hdbscan/_hdbscan_boruvka.pyx":1013
  *             component = self.components[c]
  *             source = self.candidate_point[component]
  *             sink = self.candidate_neighbor[component]             # <<<<<<<<<<<<<<
@@ -11016,7 +11597,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_t_5 = __pyx_v_component;
     __pyx_v_sink = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_neighbor.data) + __pyx_t_5)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":909
+    /* "hdbscan/_hdbscan_boruvka.pyx":1014
  *             source = self.candidate_point[component]
  *             sink = self.candidate_neighbor[component]
  *             if source == -1 or sink == -1:             # <<<<<<<<<<<<<<
@@ -11034,7 +11615,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":910
+      /* "hdbscan/_hdbscan_boruvka.pyx":1015
  *             sink = self.candidate_neighbor[component]
  *             if source == -1 or sink == -1:
  *                 continue             # <<<<<<<<<<<<<<
@@ -11044,27 +11625,27 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       goto __pyx_L3_continue;
     }
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":912
+    /* "hdbscan/_hdbscan_boruvka.pyx":1017
  *                 continue
  *                 # raise ValueError('Source or sink of edge is not defined!')
  *             current_source_component = self.component_union_find.find(source)             # <<<<<<<<<<<<<<
  *             current_sink_component = self.component_union_find.find(sink)
  *             if current_source_component == current_sink_component:
  */
-    __pyx_t_8 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->find(__pyx_v_self->component_union_find, __pyx_v_source); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 912; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->find(__pyx_v_self->component_union_find, __pyx_v_source); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1017; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_current_source_component = __pyx_t_8;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":913
+    /* "hdbscan/_hdbscan_boruvka.pyx":1018
  *                 # raise ValueError('Source or sink of edge is not defined!')
  *             current_source_component = self.component_union_find.find(source)
  *             current_sink_component = self.component_union_find.find(sink)             # <<<<<<<<<<<<<<
  *             if current_source_component == current_sink_component:
  *                 self.candidate_point[component] = -1
  */
-    __pyx_t_8 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->find(__pyx_v_self->component_union_find, __pyx_v_sink); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 913; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->find(__pyx_v_self->component_union_find, __pyx_v_sink); if (unlikely(__pyx_t_8 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1018; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_current_sink_component = __pyx_t_8;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":914
+    /* "hdbscan/_hdbscan_boruvka.pyx":1019
  *             current_source_component = self.component_union_find.find(source)
  *             current_sink_component = self.component_union_find.find(sink)
  *             if current_source_component == current_sink_component:             # <<<<<<<<<<<<<<
@@ -11074,7 +11655,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_t_6 = ((__pyx_v_current_source_component == __pyx_v_current_sink_component) != 0);
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":915
+      /* "hdbscan/_hdbscan_boruvka.pyx":1020
  *             current_sink_component = self.component_union_find.find(sink)
  *             if current_source_component == current_sink_component:
  *                 self.candidate_point[component] = -1             # <<<<<<<<<<<<<<
@@ -11084,7 +11665,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       __pyx_t_8 = __pyx_v_component;
       *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_point.data) + __pyx_t_8)) )) = -1;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":916
+      /* "hdbscan/_hdbscan_boruvka.pyx":1021
  *             if current_source_component == current_sink_component:
  *                 self.candidate_point[component] = -1
  *                 self.candidate_neighbor[component] = -1             # <<<<<<<<<<<<<<
@@ -11094,7 +11675,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       __pyx_t_9 = __pyx_v_component;
       *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->candidate_neighbor.data) + __pyx_t_9)) )) = -1;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":917
+      /* "hdbscan/_hdbscan_boruvka.pyx":1022
  *                 self.candidate_point[component] = -1
  *                 self.candidate_neighbor[component] = -1
  *                 self.candidate_distance[component] = DBL_MAX             # <<<<<<<<<<<<<<
@@ -11104,7 +11685,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       __pyx_t_10 = __pyx_v_component;
       *((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_10)) )) = DBL_MAX;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":918
+      /* "hdbscan/_hdbscan_boruvka.pyx":1023
  *                 self.candidate_neighbor[component] = -1
  *                 self.candidate_distance[component] = DBL_MAX
  *                 continue             # <<<<<<<<<<<<<<
@@ -11114,18 +11695,18 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       goto __pyx_L3_continue;
     }
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":919
+    /* "hdbscan/_hdbscan_boruvka.pyx":1024
  *                 self.candidate_distance[component] = DBL_MAX
  *                 continue
  *             self.edges[self.num_edges, 0] = source             # <<<<<<<<<<<<<<
  *             self.edges[self.num_edges, 1] = sink
  *             self.edges[self.num_edges, 2] = self.candidate_distance[component]
  */
-    __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_source); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 919; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_source); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1024; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_11 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_edges); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 919; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_edges); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1024; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 919; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1024; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_GIVEREF(__pyx_t_11);
     PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_11);
@@ -11133,22 +11714,22 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __Pyx_GIVEREF(__pyx_int_0);
     PyTuple_SET_ITEM(__pyx_t_12, 1, __pyx_int_0);
     __pyx_t_11 = 0;
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_self->edges), __pyx_t_12, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 919; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_self->edges), __pyx_t_12, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1024; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":920
+    /* "hdbscan/_hdbscan_boruvka.pyx":1025
  *                 continue
  *             self.edges[self.num_edges, 0] = source
  *             self.edges[self.num_edges, 1] = sink             # <<<<<<<<<<<<<<
  *             self.edges[self.num_edges, 2] = self.candidate_distance[component]
  *             self.num_edges += 1
  */
-    __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_sink); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 920; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_sink); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1025; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_12 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_edges); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 920; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_edges); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1025; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 920; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1025; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_GIVEREF(__pyx_t_12);
     PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_12);
@@ -11156,23 +11737,23 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __Pyx_GIVEREF(__pyx_int_1);
     PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_int_1);
     __pyx_t_12 = 0;
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_self->edges), __pyx_t_11, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 920; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_self->edges), __pyx_t_11, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1025; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":921
+    /* "hdbscan/_hdbscan_boruvka.pyx":1026
  *             self.edges[self.num_edges, 0] = source
  *             self.edges[self.num_edges, 1] = sink
  *             self.edges[self.num_edges, 2] = self.candidate_distance[component]             # <<<<<<<<<<<<<<
  *             self.num_edges += 1
- *             self.component_union_find.union_(source, sink)
+ * 
  */
     __pyx_t_13 = __pyx_v_component;
-    __pyx_t_3 = PyFloat_FromDouble((*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_13)) )))); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 921; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyFloat_FromDouble((*((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_13)) )))); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1026; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_11 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_edges); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 921; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_edges); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1026; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 921; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1026; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_GIVEREF(__pyx_t_11);
     PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_11);
@@ -11180,31 +11761,31 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __Pyx_GIVEREF(__pyx_int_2);
     PyTuple_SET_ITEM(__pyx_t_12, 1, __pyx_int_2);
     __pyx_t_11 = 0;
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_self->edges), __pyx_t_12, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 921; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_self->edges), __pyx_t_12, __pyx_t_3) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1026; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":922
+    /* "hdbscan/_hdbscan_boruvka.pyx":1027
  *             self.edges[self.num_edges, 1] = sink
  *             self.edges[self.num_edges, 2] = self.candidate_distance[component]
  *             self.num_edges += 1             # <<<<<<<<<<<<<<
+ * 
  *             self.component_union_find.union_(source, sink)
- *             self.candidate_distance[component] = DBL_MAX
  */
     __pyx_v_self->num_edges = (__pyx_v_self->num_edges + 1);
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":923
- *             self.edges[self.num_edges, 2] = self.candidate_distance[component]
+    /* "hdbscan/_hdbscan_boruvka.pyx":1029
  *             self.num_edges += 1
+ * 
  *             self.component_union_find.union_(source, sink)             # <<<<<<<<<<<<<<
+ * 
  *             self.candidate_distance[component] = DBL_MAX
- *             if self.num_edges == self.num_points - 1:
  */
-    __pyx_t_14 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->union_(__pyx_v_self->component_union_find, __pyx_v_source, __pyx_v_sink); if (unlikely(__pyx_t_14 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 923; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_14 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->union_(__pyx_v_self->component_union_find, __pyx_v_source, __pyx_v_sink); if (unlikely(__pyx_t_14 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1029; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":924
- *             self.num_edges += 1
+    /* "hdbscan/_hdbscan_boruvka.pyx":1031
  *             self.component_union_find.union_(source, sink)
+ * 
  *             self.candidate_distance[component] = DBL_MAX             # <<<<<<<<<<<<<<
  *             if self.num_edges == self.num_points - 1:
  *                 self.components = self.component_union_find.components()
@@ -11212,8 +11793,8 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_t_15 = __pyx_v_component;
     *((__pyx_t_5numpy_double_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_double_t *) __pyx_v_self->candidate_distance.data) + __pyx_t_15)) )) = DBL_MAX;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":925
- *             self.component_union_find.union_(source, sink)
+    /* "hdbscan/_hdbscan_boruvka.pyx":1032
+ * 
  *             self.candidate_distance[component] = DBL_MAX
  *             if self.num_edges == self.num_points - 1:             # <<<<<<<<<<<<<<
  *                 self.components = self.component_union_find.components()
@@ -11222,14 +11803,14 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_t_6 = ((__pyx_v_self->num_edges == (__pyx_v_self->num_points - 1)) != 0);
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":926
+      /* "hdbscan/_hdbscan_boruvka.pyx":1033
  *             self.candidate_distance[component] = DBL_MAX
  *             if self.num_edges == self.num_points - 1:
  *                 self.components = self.component_union_find.components()             # <<<<<<<<<<<<<<
  *                 return self.components.shape[0]
  * 
  */
-      __pyx_t_3 = ((PyObject *)((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->components(__pyx_v_self->component_union_find)); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 926; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = ((PyObject *)((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->components(__pyx_v_self->component_union_find)); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1033; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       __Pyx_GOTREF(__pyx_v_self->components);
@@ -11237,15 +11818,15 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       __pyx_v_self->components = ((PyArrayObject *)__pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":927
+      /* "hdbscan/_hdbscan_boruvka.pyx":1034
  *             if self.num_edges == self.num_points - 1:
  *                 self.components = self.component_union_find.components()
  *                 return self.components.shape[0]             # <<<<<<<<<<<<<<
  * 
- *         for n in range(self.tree.data.shape[0]):
+ *         # After having joined everything in the union find data
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_self->components->dimensions[0])); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 927; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_self->components->dimensions[0])); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1034; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_r = __pyx_t_3;
       __pyx_t_3 = 0;
@@ -11254,74 +11835,74 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_L3_continue:;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":929
- *                 return self.components.shape[0]
- * 
+  /* "hdbscan/_hdbscan_boruvka.pyx":1043
+ *         # of each node, as this provides fast pruning in later
+ *         # tree traversals.
  *         for n in range(self.tree.data.shape[0]):             # <<<<<<<<<<<<<<
  *             self.component_of_point[n] = self.component_union_find.find(n)
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 929; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1043; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_shape); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 929; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_shape); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1043; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 929; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1043; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_16 = __Pyx_PyInt_As_long(__pyx_t_3); if (unlikely((__pyx_t_16 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 929; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_16 = __Pyx_PyInt_As_long(__pyx_t_3); if (unlikely((__pyx_t_16 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1043; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_16; __pyx_t_2+=1) {
     __pyx_v_n = __pyx_t_2;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":930
- * 
+    /* "hdbscan/_hdbscan_boruvka.pyx":1044
+ *         # tree traversals.
  *         for n in range(self.tree.data.shape[0]):
  *             self.component_of_point[n] = self.component_union_find.find(n)             # <<<<<<<<<<<<<<
  * 
  *         for n in range(self.tree.node_data.shape[0] - 1, -1, -1):
  */
-    __pyx_t_17 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->find(__pyx_v_self->component_union_find, __pyx_v_n); if (unlikely(__pyx_t_17 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 930; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_17 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->find(__pyx_v_self->component_union_find, __pyx_v_n); if (unlikely(__pyx_t_17 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1044; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_18 = __pyx_v_n;
     *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_point.data) + __pyx_t_18)) )) = __pyx_t_17;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":932
+  /* "hdbscan/_hdbscan_boruvka.pyx":1046
  *             self.component_of_point[n] = self.component_union_find.find(n)
  * 
  *         for n in range(self.tree.node_data.shape[0] - 1, -1, -1):             # <<<<<<<<<<<<<<
  *             node_info = self.node_data[n]
- *             if node_info.is_leaf:
+ *             # Case 1:
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 932; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1046; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_shape); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 932; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_shape); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1046; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 932; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_12, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1046; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = PyNumber_Subtract(__pyx_t_3, __pyx_int_1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 932; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_12 = PyNumber_Subtract(__pyx_t_3, __pyx_int_1); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1046; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_16 = __Pyx_PyInt_As_long(__pyx_t_12); if (unlikely((__pyx_t_16 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 932; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_16 = __Pyx_PyInt_As_long(__pyx_t_12); if (unlikely((__pyx_t_16 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1046; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   for (__pyx_t_2 = __pyx_t_16; __pyx_t_2 > -1; __pyx_t_2-=1) {
     __pyx_v_n = __pyx_t_2;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":933
+    /* "hdbscan/_hdbscan_boruvka.pyx":1047
  * 
  *         for n in range(self.tree.node_data.shape[0] - 1, -1, -1):
  *             node_info = self.node_data[n]             # <<<<<<<<<<<<<<
- *             if node_info.is_leaf:
- *                 current_component = self.component_of_point[self.idx_array[node_info.idx_start]]
+ *             # Case 1:
+ *             #    If the node is a leaf we need to check that every point
  */
     __pyx_t_17 = __pyx_v_n;
     __pyx_v_node_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_17)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":934
- *         for n in range(self.tree.node_data.shape[0] - 1, -1, -1):
- *             node_info = self.node_data[n]
+    /* "hdbscan/_hdbscan_boruvka.pyx":1051
+ *             #    If the node is a leaf we need to check that every point
+ *             #    in the node is of the same component
  *             if node_info.is_leaf:             # <<<<<<<<<<<<<<
  *                 current_component = self.component_of_point[self.idx_array[node_info.idx_start]]
  *                 for i in range(node_info.idx_start + 1, node_info.idx_end):
@@ -11329,8 +11910,8 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_t_6 = (__pyx_v_node_info.is_leaf != 0);
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":935
- *             node_info = self.node_data[n]
+      /* "hdbscan/_hdbscan_boruvka.pyx":1052
+ *             #    in the node is of the same component
  *             if node_info.is_leaf:
  *                 current_component = self.component_of_point[self.idx_array[node_info.idx_start]]             # <<<<<<<<<<<<<<
  *                 for i in range(node_info.idx_start + 1, node_info.idx_end):
@@ -11340,7 +11921,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       __pyx_t_20 = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->idx_array.data) + __pyx_t_19)) )));
       __pyx_v_current_component = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_point.data) + __pyx_t_20)) )));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":936
+      /* "hdbscan/_hdbscan_boruvka.pyx":1053
  *             if node_info.is_leaf:
  *                 current_component = self.component_of_point[self.idx_array[node_info.idx_start]]
  *                 for i in range(node_info.idx_start + 1, node_info.idx_end):             # <<<<<<<<<<<<<<
@@ -11351,7 +11932,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       for (__pyx_t_22 = (__pyx_v_node_info.idx_start + 1); __pyx_t_22 < __pyx_t_21; __pyx_t_22+=1) {
         __pyx_v_i = __pyx_t_22;
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":937
+        /* "hdbscan/_hdbscan_boruvka.pyx":1054
  *                 current_component = self.component_of_point[self.idx_array[node_info.idx_start]]
  *                 for i in range(node_info.idx_start + 1, node_info.idx_end):
  *                     p = self.idx_array[i]             # <<<<<<<<<<<<<<
@@ -11361,7 +11942,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
         __pyx_t_23 = __pyx_v_i;
         __pyx_v_p = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->idx_array.data) + __pyx_t_23)) )));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":938
+        /* "hdbscan/_hdbscan_boruvka.pyx":1055
  *                 for i in range(node_info.idx_start + 1, node_info.idx_end):
  *                     p = self.idx_array[i]
  *                     if self.component_of_point[p] != current_component:             # <<<<<<<<<<<<<<
@@ -11372,7 +11953,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
         __pyx_t_6 = (((*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_point.data) + __pyx_t_24)) ))) != __pyx_v_current_component) != 0);
         if (__pyx_t_6) {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":939
+          /* "hdbscan/_hdbscan_boruvka.pyx":1056
  *                     p = self.idx_array[i]
  *                     if self.component_of_point[p] != current_component:
  *                         break             # <<<<<<<<<<<<<<
@@ -11384,12 +11965,12 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       }
       /*else*/ {
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":941
+        /* "hdbscan/_hdbscan_boruvka.pyx":1058
  *                         break
  *                 else:
  *                     self.component_of_node[n] = current_component             # <<<<<<<<<<<<<<
- *             else:
- *                 child1 = 2 * n + 1
+ *             # Case 2:
+ *             #    If the node is not a leaf we only need to check
  */
         __pyx_t_22 = __pyx_v_n;
         *((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_node.data) + __pyx_t_22)) )) = __pyx_v_current_component;
@@ -11399,8 +11980,8 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     }
     /*else*/ {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":943
- *                     self.component_of_node[n] = current_component
+      /* "hdbscan/_hdbscan_boruvka.pyx":1063
+ *             #    that both child nodes are in the same component
  *             else:
  *                 child1 = 2 * n + 1             # <<<<<<<<<<<<<<
  *                 child2 = 2 * n + 2
@@ -11408,7 +11989,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
  */
       __pyx_v_child1 = ((2 * __pyx_v_n) + 1);
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":944
+      /* "hdbscan/_hdbscan_boruvka.pyx":1064
  *             else:
  *                 child1 = 2 * n + 1
  *                 child2 = 2 * n + 2             # <<<<<<<<<<<<<<
@@ -11417,7 +11998,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
  */
       __pyx_v_child2 = ((2 * __pyx_v_n) + 2);
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":945
+      /* "hdbscan/_hdbscan_boruvka.pyx":1065
  *                 child1 = 2 * n + 1
  *                 child2 = 2 * n + 2
  *                 if self.component_of_node[child1] == self.component_of_node[child2]:             # <<<<<<<<<<<<<<
@@ -11429,12 +12010,12 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
       __pyx_t_6 = (((*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_node.data) + __pyx_t_21)) ))) == (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_self->component_of_node.data) + __pyx_t_25)) )))) != 0);
       if (__pyx_t_6) {
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":946
+        /* "hdbscan/_hdbscan_boruvka.pyx":1066
  *                 child2 = 2 * n + 2
  *                 if self.component_of_node[child1] == self.component_of_node[child2]:
  *                     self.component_of_node[n] = self.component_of_node[child1]             # <<<<<<<<<<<<<<
  * 
- *         last_num_components = self.components.shape[0]
+ *         # Since we're working with mutual reachability distance we often have
  */
         __pyx_t_26 = __pyx_v_child1;
         __pyx_t_27 = __pyx_v_n;
@@ -11446,43 +12027,98 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_L14:;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":948
- *                     self.component_of_node[n] = self.component_of_node[child1]
- * 
- *         last_num_components = self.components.shape[0]             # <<<<<<<<<<<<<<
- *         self.components = self.component_union_find.components()
- * 
+  /* "hdbscan/_hdbscan_boruvka.pyx":1075
+ *         # produce a true min spanning tree, but only and approximation
+ *         # Thus only do this if the caller is willing to accept such
+ *         if self.approx_min_span_tree:             # <<<<<<<<<<<<<<
+ *             last_num_components = self.components.shape[0]
+ *             self.components = self.component_union_find.components()
  */
-  __pyx_v_last_num_components = (__pyx_v_self->components->dimensions[0]);
-
-  /* "hdbscan/_hdbscan_boruvka.pyx":949
- * 
- *         last_num_components = self.components.shape[0]
- *         self.components = self.component_union_find.components()             # <<<<<<<<<<<<<<
- * 
- *         if self.components.shape[0] == last_num_components:
- */
-  __pyx_t_12 = ((PyObject *)((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->components(__pyx_v_self->component_union_find)); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_12);
-  __Pyx_GIVEREF(__pyx_t_12);
-  __Pyx_GOTREF(__pyx_v_self->components);
-  __Pyx_DECREF(((PyObject *)__pyx_v_self->components));
-  __pyx_v_self->components = ((PyArrayObject *)__pyx_t_12);
-  __pyx_t_12 = 0;
-
-  /* "hdbscan/_hdbscan_boruvka.pyx":951
- *         self.components = self.component_union_find.components()
- * 
- *         if self.components.shape[0] == last_num_components:             # <<<<<<<<<<<<<<
- *             # Reset bounds
- *             for n in range(self.num_nodes):
- */
-  __pyx_t_6 = (((__pyx_v_self->components->dimensions[0]) == __pyx_v_last_num_components) != 0);
+  __pyx_t_6 = (__pyx_v_self->approx_min_span_tree != 0);
   if (__pyx_t_6) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":953
- *         if self.components.shape[0] == last_num_components:
- *             # Reset bounds
+    /* "hdbscan/_hdbscan_boruvka.pyx":1076
+ *         # Thus only do this if the caller is willing to accept such
+ *         if self.approx_min_span_tree:
+ *             last_num_components = self.components.shape[0]             # <<<<<<<<<<<<<<
+ *             self.components = self.component_union_find.components()
+ * 
+ */
+    __pyx_v_last_num_components = (__pyx_v_self->components->dimensions[0]);
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":1077
+ *         if self.approx_min_span_tree:
+ *             last_num_components = self.components.shape[0]
+ *             self.components = self.component_union_find.components()             # <<<<<<<<<<<<<<
+ * 
+ *             if self.components.shape[0] == last_num_components:
+ */
+    __pyx_t_12 = ((PyObject *)((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->components(__pyx_v_self->component_union_find)); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1077; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_12);
+    __Pyx_GOTREF(__pyx_v_self->components);
+    __Pyx_DECREF(((PyObject *)__pyx_v_self->components));
+    __pyx_v_self->components = ((PyArrayObject *)__pyx_t_12);
+    __pyx_t_12 = 0;
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":1079
+ *             self.components = self.component_union_find.components()
+ * 
+ *             if self.components.shape[0] == last_num_components:             # <<<<<<<<<<<<<<
+ *                 # Reset bounds
+ *                 for n in range(self.num_nodes):
+ */
+    __pyx_t_6 = (((__pyx_v_self->components->dimensions[0]) == __pyx_v_last_num_components) != 0);
+    if (__pyx_t_6) {
+
+      /* "hdbscan/_hdbscan_boruvka.pyx":1081
+ *             if self.components.shape[0] == last_num_components:
+ *                 # Reset bounds
+ *                 for n in range(self.num_nodes):             # <<<<<<<<<<<<<<
+ *                     self.bounds_arr[n] = <np.double_t> DBL_MAX
+ *         else:
+ */
+      __pyx_t_2 = __pyx_v_self->num_nodes;
+      for (__pyx_t_28 = 0; __pyx_t_28 < __pyx_t_2; __pyx_t_28+=1) {
+        __pyx_v_n = __pyx_t_28;
+
+        /* "hdbscan/_hdbscan_boruvka.pyx":1082
+ *                 # Reset bounds
+ *                 for n in range(self.num_nodes):
+ *                     self.bounds_arr[n] = <np.double_t> DBL_MAX             # <<<<<<<<<<<<<<
+ *         else:
+ *             self.components = self.component_union_find.components()
+ */
+        __pyx_t_12 = PyFloat_FromDouble(((__pyx_t_5numpy_double_t)DBL_MAX)); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1082; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_12);
+        if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->bounds_arr), __pyx_v_n, __pyx_t_12, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1082; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      }
+      goto __pyx_L20;
+    }
+    __pyx_L20:;
+    goto __pyx_L19;
+  }
+  /*else*/ {
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":1084
+ *                     self.bounds_arr[n] = <np.double_t> DBL_MAX
+ *         else:
+ *             self.components = self.component_union_find.components()             # <<<<<<<<<<<<<<
+ * 
+ *             for n in range(self.num_nodes):
+ */
+    __pyx_t_12 = ((PyObject *)((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *)__pyx_v_self->component_union_find->__pyx_vtab)->components(__pyx_v_self->component_union_find)); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1084; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_12);
+    __Pyx_GIVEREF(__pyx_t_12);
+    __Pyx_GOTREF(__pyx_v_self->components);
+    __Pyx_DECREF(((PyObject *)__pyx_v_self->components));
+    __pyx_v_self->components = ((PyArrayObject *)__pyx_t_12);
+    __pyx_t_12 = 0;
+
+    /* "hdbscan/_hdbscan_boruvka.pyx":1086
+ *             self.components = self.component_union_find.components()
+ * 
  *             for n in range(self.num_nodes):             # <<<<<<<<<<<<<<
  *                 self.bounds_arr[n] = <np.double_t> DBL_MAX
  * 
@@ -11491,23 +12127,22 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     for (__pyx_t_28 = 0; __pyx_t_28 < __pyx_t_2; __pyx_t_28+=1) {
       __pyx_v_n = __pyx_t_28;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":954
- *             # Reset bounds
+      /* "hdbscan/_hdbscan_boruvka.pyx":1087
+ * 
  *             for n in range(self.num_nodes):
  *                 self.bounds_arr[n] = <np.double_t> DBL_MAX             # <<<<<<<<<<<<<<
  * 
  *         return self.components.shape[0]
  */
-      __pyx_t_12 = PyFloat_FromDouble(((__pyx_t_5numpy_double_t)DBL_MAX)); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 954; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = PyFloat_FromDouble(((__pyx_t_5numpy_double_t)DBL_MAX)); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1087; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_12);
-      if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->bounds_arr), __pyx_v_n, __pyx_t_12, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 954; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->bounds_arr), __pyx_v_n, __pyx_t_12, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 0, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1087; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     }
-    goto __pyx_L19;
   }
   __pyx_L19:;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":956
+  /* "hdbscan/_hdbscan_boruvka.pyx":1089
  *                 self.bounds_arr[n] = <np.double_t> DBL_MAX
  * 
  *         return self.components.shape[0]             # <<<<<<<<<<<<<<
@@ -11515,13 +12150,13 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
  *     cdef int dual_tree_traversal(self, np.intp_t node1, np.intp_t node2) except -1:
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_12 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_self->components->dimensions[0])); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 956; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_12 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_self->components->dimensions[0])); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1089; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_12);
   __pyx_r = __pyx_t_12;
   __pyx_t_12 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":884
+  /* "hdbscan/_hdbscan_boruvka.pyx":980
  *             self.component_of_node[n] = -(n+1)
  * 
  *     cdef update_components(self):             # <<<<<<<<<<<<<<
@@ -11542,7 +12177,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":958
+/* "hdbscan/_hdbscan_boruvka.pyx":1091
  *         return self.components.shape[0]
  * 
  *     cdef int dual_tree_traversal(self, np.intp_t node1, np.intp_t node2) except -1:             # <<<<<<<<<<<<<<
@@ -11610,7 +12245,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_t
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("dual_tree_traversal", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":978
+  /* "hdbscan/_hdbscan_boruvka.pyx":1111
  *         cdef double node_dist
  * 
  *         cdef NodeData_t node1_info = self.node_data[node1]             # <<<<<<<<<<<<<<
@@ -11620,7 +12255,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_t
   __pyx_t_1 = __pyx_v_node1;
   __pyx_v_node1_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_1)) )));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":979
+  /* "hdbscan/_hdbscan_boruvka.pyx":1112
  * 
  *         cdef NodeData_t node1_info = self.node_data[node1]
  *         cdef NodeData_t node2_info = self.node_data[node2]             # <<<<<<<<<<<<<<
@@ -11630,7 +12265,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_t
   __pyx_t_2 = __pyx_v_node2;
   __pyx_v_node2_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_2)) )));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":987
+  /* "hdbscan/_hdbscan_boruvka.pyx":1120
  *         cdef np.intp_t component2
  * 
  *         cdef np.double_t *raw_data = (<np.double_t *> &self._raw_data[0,0])             # <<<<<<<<<<<<<<
@@ -11641,17 +12276,17 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_t
   __pyx_t_4 = 0;
   __pyx_v_raw_data = ((__pyx_t_5numpy_double_t *)(&(*((__pyx_t_5numpy_double_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_double_t *) ( /* dim=0 */ (__pyx_v_self->_raw_data.data + __pyx_t_3 * __pyx_v_self->_raw_data.strides[0]) )) + __pyx_t_4)) )))));
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":1003
+  /* "hdbscan/_hdbscan_boruvka.pyx":1136
  *         cdef np.double_t right_dist
  * 
  *         node_dist = balltree_min_dist_dual(node1_info.radius, node2_info.radius,             # <<<<<<<<<<<<<<
  *                                     node1, node2, self.centroid_distances)
  * 
  */
-  __pyx_t_5 = __pyx_f_7hdbscan_16_hdbscan_boruvka_balltree_min_dist_dual(__pyx_v_node1_info.radius, __pyx_v_node2_info.radius, __pyx_v_node1, __pyx_v_node2, __pyx_v_self->centroid_distances); if (unlikely(__pyx_t_5 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1003; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __pyx_f_7hdbscan_16_hdbscan_boruvka_balltree_min_dist_dual(__pyx_v_node1_info.radius, __pyx_v_node2_info.radius, __pyx_v_node1, __pyx_v_node2, __pyx_v_self->centroid_distances); if (unlikely(__pyx_t_5 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_node_dist = __pyx_t_5;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":1009
+  /* "hdbscan/_hdbscan_boruvka.pyx":1142
  *         # and the nodes are not in the same component continue; otherwise we get to prune
  *         # this branch and return early.
  *         if node_dist < self.bounds_ptr[node1]:             # <<<<<<<<<<<<<<
@@ -11661,7 +12296,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_t
   __pyx_t_6 = ((__pyx_v_node_dist < (__pyx_v_self->bounds_ptr[__pyx_v_node1])) != 0);
   if (__pyx_t_6) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1010
+    /* "hdbscan/_hdbscan_boruvka.pyx":1143
  *         # this branch and return early.
  *         if node_dist < self.bounds_ptr[node1]:
  *             if self.component_of_node_ptr[node1] == self.component_of_node_ptr[node2] and \             # <<<<<<<<<<<<<<
@@ -11675,7 +12310,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_t
       goto __pyx_L5_bool_binop_done;
     }
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1011
+    /* "hdbscan/_hdbscan_boruvka.pyx":1144
  *         if node_dist < self.bounds_ptr[node1]:
  *             if self.component_of_node_ptr[node1] == self.component_of_node_ptr[node2] and \
  *                     self.component_of_node_ptr[node1] >= 0:             # <<<<<<<<<<<<<<
@@ -11687,7 +12322,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_t
     __pyx_L5_bool_binop_done:;
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1012
+      /* "hdbscan/_hdbscan_boruvka.pyx":1145
  *             if self.component_of_node_ptr[node1] == self.component_of_node_ptr[node2] and \
  *                     self.component_of_node_ptr[node1] >= 0:
  *                 return 0             # <<<<<<<<<<<<<<
@@ -11701,7 +12336,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_t
   }
   /*else*/ {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1014
+    /* "hdbscan/_hdbscan_boruvka.pyx":1147
  *                 return 0
  *         else:
  *             return 0             # <<<<<<<<<<<<<<
@@ -11713,7 +12348,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_t
   }
   __pyx_L3:;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":1043
+  /* "hdbscan/_hdbscan_boruvka.pyx":1176
  *         #       based on the distances found here, so do that and
  *         #       propagate the results up the tree.
  *         if node1_info.is_leaf and node2_info.is_leaf:             # <<<<<<<<<<<<<<
@@ -11731,7 +12366,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_t
   __pyx_L8_bool_binop_done:;
   if (__pyx_t_6) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1045
+    /* "hdbscan/_hdbscan_boruvka.pyx":1178
  *         if node1_info.is_leaf and node2_info.is_leaf:
  * 
  *             new_bound = 0.0             # <<<<<<<<<<<<<<
@@ -11740,7 +12375,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_t
  */
     __pyx_v_new_bound = 0.0;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1047
+    /* "hdbscan/_hdbscan_boruvka.pyx":1180
  *             new_bound = 0.0
  * 
  *             point_indices1 = self.idx_array[node1_info.idx_start:node1_info.idx_end]             # <<<<<<<<<<<<<<
@@ -11767,7 +12402,7 @@ static int __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_t
     0,
     1) < 0))
 {
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1047; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 }
 
 __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
@@ -11775,7 +12410,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
     __pyx_t_9.memview = NULL;
     __pyx_t_9.data = NULL;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1048
+    /* "hdbscan/_hdbscan_boruvka.pyx":1181
  * 
  *             point_indices1 = self.idx_array[node1_info.idx_start:node1_info.idx_end]
  *             point_indices2 = self.idx_array[node2_info.idx_start:node2_info.idx_end]             # <<<<<<<<<<<<<<
@@ -11802,7 +12437,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
     0,
     1) < 0))
 {
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1048; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 }
 
 __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
@@ -11810,7 +12445,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
     __pyx_t_8.memview = NULL;
     __pyx_t_8.data = NULL;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1050
+    /* "hdbscan/_hdbscan_boruvka.pyx":1183
  *             point_indices2 = self.idx_array[node2_info.idx_start:node2_info.idx_end]
  * 
  *             for i in range(point_indices1.shape[0]):             # <<<<<<<<<<<<<<
@@ -11821,7 +12456,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
     for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
       __pyx_v_i = __pyx_t_12;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1052
+      /* "hdbscan/_hdbscan_boruvka.pyx":1185
  *             for i in range(point_indices1.shape[0]):
  * 
  *                 p = point_indices1[i]             # <<<<<<<<<<<<<<
@@ -11831,7 +12466,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
       __pyx_t_13 = __pyx_v_i;
       __pyx_v_p = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_point_indices1.data) + __pyx_t_13)) )));
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1053
+      /* "hdbscan/_hdbscan_boruvka.pyx":1186
  * 
  *                 p = point_indices1[i]
  *                 component1 = self.component_of_point_ptr[p]             # <<<<<<<<<<<<<<
@@ -11840,7 +12475,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
       __pyx_v_component1 = (__pyx_v_self->component_of_point_ptr[__pyx_v_p]);
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1055
+      /* "hdbscan/_hdbscan_boruvka.pyx":1188
  *                 component1 = self.component_of_point_ptr[p]
  * 
  *                 if self.core_distance_ptr[p] > self.candidate_distance_ptr[component1]:             # <<<<<<<<<<<<<<
@@ -11850,7 +12485,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
       __pyx_t_6 = (((__pyx_v_self->core_distance_ptr[__pyx_v_p]) > (__pyx_v_self->candidate_distance_ptr[__pyx_v_component1])) != 0);
       if (__pyx_t_6) {
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1056
+        /* "hdbscan/_hdbscan_boruvka.pyx":1189
  * 
  *                 if self.core_distance_ptr[p] > self.candidate_distance_ptr[component1]:
  *                     continue             # <<<<<<<<<<<<<<
@@ -11860,7 +12495,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         goto __pyx_L10_continue;
       }
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1058
+      /* "hdbscan/_hdbscan_boruvka.pyx":1191
  *                     continue
  * 
  *                 for j in range(point_indices2.shape[0]):             # <<<<<<<<<<<<<<
@@ -11871,7 +12506,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
       for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_14; __pyx_t_15+=1) {
         __pyx_v_j = __pyx_t_15;
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1060
+        /* "hdbscan/_hdbscan_boruvka.pyx":1193
  *                 for j in range(point_indices2.shape[0]):
  * 
  *                     q = point_indices2[j]             # <<<<<<<<<<<<<<
@@ -11881,7 +12516,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         __pyx_t_16 = __pyx_v_j;
         __pyx_v_q = (*((__pyx_t_5numpy_intp_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_intp_t *) __pyx_v_point_indices2.data) + __pyx_t_16)) )));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1061
+        /* "hdbscan/_hdbscan_boruvka.pyx":1194
  * 
  *                     q = point_indices2[j]
  *                     component2 = self.component_of_point_ptr[q]             # <<<<<<<<<<<<<<
@@ -11890,7 +12525,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
         __pyx_v_component2 = (__pyx_v_self->component_of_point_ptr[__pyx_v_q]);
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1063
+        /* "hdbscan/_hdbscan_boruvka.pyx":1196
  *                     component2 = self.component_of_point_ptr[q]
  * 
  *                     if self.core_distance_ptr[q] > self.candidate_distance_ptr[component1]:             # <<<<<<<<<<<<<<
@@ -11900,7 +12535,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         __pyx_t_6 = (((__pyx_v_self->core_distance_ptr[__pyx_v_q]) > (__pyx_v_self->candidate_distance_ptr[__pyx_v_component1])) != 0);
         if (__pyx_t_6) {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":1064
+          /* "hdbscan/_hdbscan_boruvka.pyx":1197
  * 
  *                     if self.core_distance_ptr[q] > self.candidate_distance_ptr[component1]:
  *                         continue             # <<<<<<<<<<<<<<
@@ -11910,7 +12545,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
           goto __pyx_L13_continue;
         }
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1066
+        /* "hdbscan/_hdbscan_boruvka.pyx":1199
  *                         continue
  * 
  *                     if component1 != component2:             # <<<<<<<<<<<<<<
@@ -11920,16 +12555,16 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         __pyx_t_6 = ((__pyx_v_component1 != __pyx_v_component2) != 0);
         if (__pyx_t_6) {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":1068
+          /* "hdbscan/_hdbscan_boruvka.pyx":1201
  *                     if component1 != component2:
  * 
  *                         d = self.dist.dist(&raw_data[self.num_features * p],             # <<<<<<<<<<<<<<
  *                                            &raw_data[self.num_features * q],
  *                                            self.num_features) * self.alpha
  */
-          __pyx_t_17 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->dist->__pyx_vtab)->dist(__pyx_v_self->dist, (&(__pyx_v_raw_data[(__pyx_v_self->num_features * __pyx_v_p)])), (&(__pyx_v_raw_data[(__pyx_v_self->num_features * __pyx_v_q)])), __pyx_v_self->num_features); if (unlikely(__pyx_t_17 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1068; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_17 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->dist->__pyx_vtab)->dist(__pyx_v_self->dist, (&(__pyx_v_raw_data[(__pyx_v_self->num_features * __pyx_v_p)])), (&(__pyx_v_raw_data[(__pyx_v_self->num_features * __pyx_v_q)])), __pyx_v_self->num_features); if (unlikely(__pyx_t_17 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1201; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":1070
+          /* "hdbscan/_hdbscan_boruvka.pyx":1203
  *                         d = self.dist.dist(&raw_data[self.num_features * p],
  *                                            &raw_data[self.num_features * q],
  *                                            self.num_features) * self.alpha             # <<<<<<<<<<<<<<
@@ -11938,7 +12573,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
           __pyx_v_d = (__pyx_t_17 * __pyx_v_self->alpha);
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":1072
+          /* "hdbscan/_hdbscan_boruvka.pyx":1205
  *                                            self.num_features) * self.alpha
  * 
  *                         if self.alpha != 1.0:             # <<<<<<<<<<<<<<
@@ -11948,7 +12583,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
           __pyx_t_6 = ((__pyx_v_self->alpha != 1.0) != 0);
           if (__pyx_t_6) {
 
-            /* "hdbscan/_hdbscan_boruvka.pyx":1073
+            /* "hdbscan/_hdbscan_boruvka.pyx":1206
  * 
  *                         if self.alpha != 1.0:
  *                             mr_dist = max(d / self.alpha, self.core_distance_ptr[p], self.core_distance_ptr[q])             # <<<<<<<<<<<<<<
@@ -11965,7 +12600,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
               #ifdef WITH_THREAD
               PyGILState_Release(__pyx_gilstate_save);
               #endif
-              {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1073; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+              {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1206; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             }
             __pyx_t_19 = (__pyx_v_d / __pyx_v_self->alpha);
             if (((__pyx_t_5 > __pyx_t_19) != 0)) {
@@ -11984,7 +12619,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
           }
           /*else*/ {
 
-            /* "hdbscan/_hdbscan_boruvka.pyx":1075
+            /* "hdbscan/_hdbscan_boruvka.pyx":1208
  *                             mr_dist = max(d / self.alpha, self.core_distance_ptr[p], self.core_distance_ptr[q])
  *                         else:
  *                             mr_dist = max(d, self.core_distance_ptr[p], self.core_distance_ptr[q])             # <<<<<<<<<<<<<<
@@ -12009,7 +12644,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
           }
           __pyx_L17:;
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":1077
+          /* "hdbscan/_hdbscan_boruvka.pyx":1210
  *                             mr_dist = max(d, self.core_distance_ptr[p], self.core_distance_ptr[q])
  * 
  *                         if mr_dist < self.candidate_distance_ptr[component1]:             # <<<<<<<<<<<<<<
@@ -12019,7 +12654,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
           __pyx_t_6 = ((__pyx_v_mr_dist < (__pyx_v_self->candidate_distance_ptr[__pyx_v_component1])) != 0);
           if (__pyx_t_6) {
 
-            /* "hdbscan/_hdbscan_boruvka.pyx":1078
+            /* "hdbscan/_hdbscan_boruvka.pyx":1211
  * 
  *                         if mr_dist < self.candidate_distance_ptr[component1]:
  *                             self.candidate_distance_ptr[component1] = mr_dist             # <<<<<<<<<<<<<<
@@ -12028,7 +12663,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
             (__pyx_v_self->candidate_distance_ptr[__pyx_v_component1]) = __pyx_v_mr_dist;
 
-            /* "hdbscan/_hdbscan_boruvka.pyx":1079
+            /* "hdbscan/_hdbscan_boruvka.pyx":1212
  *                         if mr_dist < self.candidate_distance_ptr[component1]:
  *                             self.candidate_distance_ptr[component1] = mr_dist
  *                             self.candidate_neighbor_ptr[component1] = q             # <<<<<<<<<<<<<<
@@ -12037,7 +12672,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
             (__pyx_v_self->candidate_neighbor_ptr[__pyx_v_component1]) = __pyx_v_q;
 
-            /* "hdbscan/_hdbscan_boruvka.pyx":1080
+            /* "hdbscan/_hdbscan_boruvka.pyx":1213
  *                             self.candidate_distance_ptr[component1] = mr_dist
  *                             self.candidate_neighbor_ptr[component1] = q
  *                             self.candidate_point_ptr[component1] = p             # <<<<<<<<<<<<<<
@@ -12054,7 +12689,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         __pyx_L13_continue:;
       }
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1082
+      /* "hdbscan/_hdbscan_boruvka.pyx":1215
  *                             self.candidate_point_ptr[component1] = p
  * 
  *                 new_upper_bound = max(new_upper_bound, self.candidate_distance_ptr[component1])             # <<<<<<<<<<<<<<
@@ -12070,7 +12705,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
       }
       __pyx_v_new_upper_bound = __pyx_t_5;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1083
+      /* "hdbscan/_hdbscan_boruvka.pyx":1216
  * 
  *                 new_upper_bound = max(new_upper_bound, self.candidate_distance_ptr[component1])
  *                 new_lower_bound = min(new_lower_bound, self.candidate_distance_ptr[component1])             # <<<<<<<<<<<<<<
@@ -12088,7 +12723,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
       __pyx_L10_continue:;
     }
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1088
+    /* "hdbscan/_hdbscan_boruvka.pyx":1221
  *             # then propagate the results of that computation
  *             # up the tree.
  *             new_bound = min(new_upper_bound, new_lower_bound + 2 * node1_info.radius)             # <<<<<<<<<<<<<<
@@ -12104,7 +12739,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
     }
     __pyx_v_new_bound = __pyx_t_19;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1089
+    /* "hdbscan/_hdbscan_boruvka.pyx":1222
  *             # up the tree.
  *             new_bound = min(new_upper_bound, new_lower_bound + 2 * node1_info.radius)
  *             if new_bound < self.bounds_ptr[node1]:             # <<<<<<<<<<<<<<
@@ -12114,7 +12749,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
     __pyx_t_6 = ((__pyx_v_new_bound < (__pyx_v_self->bounds_ptr[__pyx_v_node1])) != 0);
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1090
+      /* "hdbscan/_hdbscan_boruvka.pyx":1223
  *             new_bound = min(new_upper_bound, new_lower_bound + 2 * node1_info.radius)
  *             if new_bound < self.bounds_ptr[node1]:
  *                 self.bounds_ptr[node1] = new_bound             # <<<<<<<<<<<<<<
@@ -12123,7 +12758,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
       (__pyx_v_self->bounds_ptr[__pyx_v_node1]) = __pyx_v_new_bound;
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1093
+      /* "hdbscan/_hdbscan_boruvka.pyx":1226
  * 
  *                 # Propagate bounds up the tree
  *                 while node1 > 0:             # <<<<<<<<<<<<<<
@@ -12134,7 +12769,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         __pyx_t_6 = ((__pyx_v_node1 > 0) != 0);
         if (!__pyx_t_6) break;
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1094
+        /* "hdbscan/_hdbscan_boruvka.pyx":1227
  *                 # Propagate bounds up the tree
  *                 while node1 > 0:
  *                     parent = (node1 - 1) // 2             # <<<<<<<<<<<<<<
@@ -12143,7 +12778,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
         __pyx_v_parent = __Pyx_div_long((__pyx_v_node1 - 1), 2);
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1095
+        /* "hdbscan/_hdbscan_boruvka.pyx":1228
  *                 while node1 > 0:
  *                     parent = (node1 - 1) // 2
  *                     left = 2 * parent + 1             # <<<<<<<<<<<<<<
@@ -12152,7 +12787,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
         __pyx_v_left = ((2 * __pyx_v_parent) + 1);
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1096
+        /* "hdbscan/_hdbscan_boruvka.pyx":1229
  *                     parent = (node1 - 1) // 2
  *                     left = 2 * parent + 1
  *                     right = 2 * parent + 2             # <<<<<<<<<<<<<<
@@ -12161,7 +12796,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
         __pyx_v_right = ((2 * __pyx_v_parent) + 2);
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1098
+        /* "hdbscan/_hdbscan_boruvka.pyx":1231
  *                     right = 2 * parent + 2
  * 
  *                     parent_info = self.node_data[parent]             # <<<<<<<<<<<<<<
@@ -12171,7 +12806,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         __pyx_t_12 = __pyx_v_parent;
         __pyx_v_parent_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_12)) )));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1099
+        /* "hdbscan/_hdbscan_boruvka.pyx":1232
  * 
  *                     parent_info = self.node_data[parent]
  *                     left_info = self.node_data[left]             # <<<<<<<<<<<<<<
@@ -12181,7 +12816,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         __pyx_t_15 = __pyx_v_left;
         __pyx_v_left_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_15)) )));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1100
+        /* "hdbscan/_hdbscan_boruvka.pyx":1233
  *                     parent_info = self.node_data[parent]
  *                     left_info = self.node_data[left]
  *                     right_info = self.node_data[right]             # <<<<<<<<<<<<<<
@@ -12191,7 +12826,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         __pyx_t_21 = __pyx_v_right;
         __pyx_v_right_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_21)) )));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1103
+        /* "hdbscan/_hdbscan_boruvka.pyx":1236
  * 
  *                     bound_max = max(self.bounds_ptr[left],
  *                                     self.bounds_ptr[right])             # <<<<<<<<<<<<<<
@@ -12200,7 +12835,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
         __pyx_t_19 = (__pyx_v_self->bounds_ptr[__pyx_v_right]);
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1102
+        /* "hdbscan/_hdbscan_boruvka.pyx":1235
  *                     right_info = self.node_data[right]
  * 
  *                     bound_max = max(self.bounds_ptr[left],             # <<<<<<<<<<<<<<
@@ -12209,7 +12844,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
         __pyx_t_20 = (__pyx_v_self->bounds_ptr[__pyx_v_left]);
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1103
+        /* "hdbscan/_hdbscan_boruvka.pyx":1236
  * 
  *                     bound_max = max(self.bounds_ptr[left],
  *                                     self.bounds_ptr[right])             # <<<<<<<<<<<<<<
@@ -12223,7 +12858,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         }
         __pyx_v_bound_max = __pyx_t_5;
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1105
+        /* "hdbscan/_hdbscan_boruvka.pyx":1238
  *                                     self.bounds_ptr[right])
  *                     bound_min = min(self.bounds_ptr[left] + 2 * (parent_info.radius - left_info.radius),
  *                                     self.bounds_ptr[right] + 2 * (parent_info.radius - right_info.radius))             # <<<<<<<<<<<<<<
@@ -12232,7 +12867,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
         __pyx_t_5 = ((__pyx_v_self->bounds_ptr[__pyx_v_right]) + (2.0 * (__pyx_v_parent_info.radius - __pyx_v_right_info.radius)));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1104
+        /* "hdbscan/_hdbscan_boruvka.pyx":1237
  *                     bound_max = max(self.bounds_ptr[left],
  *                                     self.bounds_ptr[right])
  *                     bound_min = min(self.bounds_ptr[left] + 2 * (parent_info.radius - left_info.radius),             # <<<<<<<<<<<<<<
@@ -12241,7 +12876,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
         __pyx_t_19 = ((__pyx_v_self->bounds_ptr[__pyx_v_left]) + (2.0 * (__pyx_v_parent_info.radius - __pyx_v_left_info.radius)));
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1105
+        /* "hdbscan/_hdbscan_boruvka.pyx":1238
  *                                     self.bounds_ptr[right])
  *                     bound_min = min(self.bounds_ptr[left] + 2 * (parent_info.radius - left_info.radius),
  *                                     self.bounds_ptr[right] + 2 * (parent_info.radius - right_info.radius))             # <<<<<<<<<<<<<<
@@ -12255,7 +12890,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         }
         __pyx_v_bound_min = __pyx_t_20;
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1107
+        /* "hdbscan/_hdbscan_boruvka.pyx":1240
  *                                     self.bounds_ptr[right] + 2 * (parent_info.radius - right_info.radius))
  * 
  *                     if bound_min > 0:             # <<<<<<<<<<<<<<
@@ -12265,7 +12900,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         __pyx_t_6 = ((__pyx_v_bound_min > 0.0) != 0);
         if (__pyx_t_6) {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":1108
+          /* "hdbscan/_hdbscan_boruvka.pyx":1241
  * 
  *                     if bound_min > 0:
  *                         new_bound = min(bound_max, bound_min)             # <<<<<<<<<<<<<<
@@ -12284,7 +12919,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         }
         /*else*/ {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":1110
+          /* "hdbscan/_hdbscan_boruvka.pyx":1243
  *                         new_bound = min(bound_max, bound_min)
  *                     else:
  *                         new_bound = bound_max             # <<<<<<<<<<<<<<
@@ -12295,7 +12930,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         }
         __pyx_L22:;
 
-        /* "hdbscan/_hdbscan_boruvka.pyx":1112
+        /* "hdbscan/_hdbscan_boruvka.pyx":1245
  *                         new_bound = bound_max
  * 
  *                     if new_bound < self.bounds_ptr[parent]:             # <<<<<<<<<<<<<<
@@ -12305,7 +12940,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         __pyx_t_6 = ((__pyx_v_new_bound < (__pyx_v_self->bounds_ptr[__pyx_v_parent])) != 0);
         if (__pyx_t_6) {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":1113
+          /* "hdbscan/_hdbscan_boruvka.pyx":1246
  * 
  *                     if new_bound < self.bounds_ptr[parent]:
  *                         self.bounds_ptr[parent] = new_bound             # <<<<<<<<<<<<<<
@@ -12314,7 +12949,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
           (__pyx_v_self->bounds_ptr[__pyx_v_parent]) = __pyx_v_new_bound;
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":1114
+          /* "hdbscan/_hdbscan_boruvka.pyx":1247
  *                     if new_bound < self.bounds_ptr[parent]:
  *                         self.bounds_ptr[parent] = new_bound
  *                         node1 = parent             # <<<<<<<<<<<<<<
@@ -12326,7 +12961,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
         }
         /*else*/ {
 
-          /* "hdbscan/_hdbscan_boruvka.pyx":1116
+          /* "hdbscan/_hdbscan_boruvka.pyx":1249
  *                         node1 = parent
  *                     else:
  *                         break             # <<<<<<<<<<<<<<
@@ -12344,7 +12979,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
     goto __pyx_L7;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":1126
+  /* "hdbscan/_hdbscan_boruvka.pyx":1259
  *         #       whether we should prioritise the left or
  *         #       right branch in the reference tree.
  *         elif node1_info.is_leaf or (not node2_info.is_leaf             # <<<<<<<<<<<<<<
@@ -12358,7 +12993,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
     goto __pyx_L24_bool_binop_done;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":1127
+  /* "hdbscan/_hdbscan_boruvka.pyx":1260
  *         #       right branch in the reference tree.
  *         elif node1_info.is_leaf or (not node2_info.is_leaf
  *                                     and node2_info.radius > node1_info.radius):             # <<<<<<<<<<<<<<
@@ -12376,7 +13011,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
   __pyx_L24_bool_binop_done:;
   if (__pyx_t_6) {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1129
+    /* "hdbscan/_hdbscan_boruvka.pyx":1262
  *                                     and node2_info.radius > node1_info.radius):
  * 
  *             left = 2 * node2 + 1             # <<<<<<<<<<<<<<
@@ -12385,7 +13020,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
     __pyx_v_left = ((2 * __pyx_v_node2) + 1);
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1130
+    /* "hdbscan/_hdbscan_boruvka.pyx":1263
  * 
  *             left = 2 * node2 + 1
  *             right = 2 * node2 + 2             # <<<<<<<<<<<<<<
@@ -12394,7 +13029,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
     __pyx_v_right = ((2 * __pyx_v_node2) + 2);
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1132
+    /* "hdbscan/_hdbscan_boruvka.pyx":1265
  *             right = 2 * node2 + 2
  * 
  *             node2_info = self.node_data[left]             # <<<<<<<<<<<<<<
@@ -12404,17 +13039,17 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
     __pyx_t_22 = __pyx_v_left;
     __pyx_v_node2_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_22)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1134
+    /* "hdbscan/_hdbscan_boruvka.pyx":1267
  *             node2_info = self.node_data[left]
  * 
  *             left_dist = balltree_min_dist_dual(node1_info.radius, node2_info.radius,             # <<<<<<<<<<<<<<
  *                                       node1, left, self.centroid_distances)
  * 
  */
-    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_balltree_min_dist_dual(__pyx_v_node1_info.radius, __pyx_v_node2_info.radius, __pyx_v_node1, __pyx_v_left, __pyx_v_self->centroid_distances); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_balltree_min_dist_dual(__pyx_v_node1_info.radius, __pyx_v_node2_info.radius, __pyx_v_node1, __pyx_v_left, __pyx_v_self->centroid_distances); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_left_dist = __pyx_t_19;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1137
+    /* "hdbscan/_hdbscan_boruvka.pyx":1270
  *                                       node1, left, self.centroid_distances)
  * 
  *             node2_info = self.node_data[right]             # <<<<<<<<<<<<<<
@@ -12424,17 +13059,17 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
     __pyx_t_23 = __pyx_v_right;
     __pyx_v_node2_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_23)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1139
+    /* "hdbscan/_hdbscan_boruvka.pyx":1272
  *             node2_info = self.node_data[right]
  * 
  *             right_dist = balltree_min_dist_dual(node1_info.radius, node2_info.radius,             # <<<<<<<<<<<<<<
  *                                        node1, right, self.centroid_distances)
  * 
  */
-    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_balltree_min_dist_dual(__pyx_v_node1_info.radius, __pyx_v_node2_info.radius, __pyx_v_node1, __pyx_v_right, __pyx_v_self->centroid_distances); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1139; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_balltree_min_dist_dual(__pyx_v_node1_info.radius, __pyx_v_node2_info.radius, __pyx_v_node1, __pyx_v_right, __pyx_v_self->centroid_distances); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1272; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_right_dist = __pyx_t_19;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1142
+    /* "hdbscan/_hdbscan_boruvka.pyx":1275
  *                                        node1, right, self.centroid_distances)
  * 
  *             if left_dist < right_dist:             # <<<<<<<<<<<<<<
@@ -12444,51 +13079,51 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
     __pyx_t_6 = ((__pyx_v_left_dist < __pyx_v_right_dist) != 0);
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1143
+      /* "hdbscan/_hdbscan_boruvka.pyx":1276
  * 
  *             if left_dist < right_dist:
  *                 self.dual_tree_traversal(node1, left)             # <<<<<<<<<<<<<<
  *                 self.dual_tree_traversal(node1, right)
  *             else:
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_left); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_left); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1276; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1144
+      /* "hdbscan/_hdbscan_boruvka.pyx":1277
  *             if left_dist < right_dist:
  *                 self.dual_tree_traversal(node1, left)
  *                 self.dual_tree_traversal(node1, right)             # <<<<<<<<<<<<<<
  *             else:
  *                 self.dual_tree_traversal(node1, right)
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_right); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_right); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1277; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       goto __pyx_L27;
     }
     /*else*/ {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1146
+      /* "hdbscan/_hdbscan_boruvka.pyx":1279
  *                 self.dual_tree_traversal(node1, right)
  *             else:
  *                 self.dual_tree_traversal(node1, right)             # <<<<<<<<<<<<<<
  *                 self.dual_tree_traversal(node1, left)
  * 
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_right); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_right); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1279; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1147
+      /* "hdbscan/_hdbscan_boruvka.pyx":1280
  *             else:
  *                 self.dual_tree_traversal(node1, right)
  *                 self.dual_tree_traversal(node1, left)             # <<<<<<<<<<<<<<
  * 
  *         # Case 2b: The reference node is a leaf, or is smaller than
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_left); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_node1, __pyx_v_left); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1280; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __pyx_L27:;
     goto __pyx_L7;
   }
   /*else*/ {
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1157
+    /* "hdbscan/_hdbscan_boruvka.pyx":1290
  *         #       right branch in the query tree.
  *         else:
  *             left = 2 * node1 + 1             # <<<<<<<<<<<<<<
@@ -12497,7 +13132,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
     __pyx_v_left = ((2 * __pyx_v_node1) + 1);
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1158
+    /* "hdbscan/_hdbscan_boruvka.pyx":1291
  *         else:
  *             left = 2 * node1 + 1
  *             right = 2 * node1 + 2             # <<<<<<<<<<<<<<
@@ -12506,7 +13141,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
  */
     __pyx_v_right = ((2 * __pyx_v_node1) + 2);
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1160
+    /* "hdbscan/_hdbscan_boruvka.pyx":1293
  *             right = 2 * node1 + 2
  * 
  *             node1_info = self.node_data[left]             # <<<<<<<<<<<<<<
@@ -12516,17 +13151,17 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
     __pyx_t_24 = __pyx_v_left;
     __pyx_v_node1_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_24)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1162
+    /* "hdbscan/_hdbscan_boruvka.pyx":1295
  *             node1_info = self.node_data[left]
  * 
  *             left_dist = balltree_min_dist_dual(node1_info.radius, node2_info.radius,             # <<<<<<<<<<<<<<
  *                                       left, node2, self.centroid_distances)
  * 
  */
-    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_balltree_min_dist_dual(__pyx_v_node1_info.radius, __pyx_v_node2_info.radius, __pyx_v_left, __pyx_v_node2, __pyx_v_self->centroid_distances); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_balltree_min_dist_dual(__pyx_v_node1_info.radius, __pyx_v_node2_info.radius, __pyx_v_left, __pyx_v_node2, __pyx_v_self->centroid_distances); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1295; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_left_dist = __pyx_t_19;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1165
+    /* "hdbscan/_hdbscan_boruvka.pyx":1298
  *                                       left, node2, self.centroid_distances)
  * 
  *             node1_info = self.node_data[right]             # <<<<<<<<<<<<<<
@@ -12536,17 +13171,17 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
     __pyx_t_25 = __pyx_v_right;
     __pyx_v_node1_info = (*((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) ( /* dim=0 */ ((char *) (((struct __pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t *) __pyx_v_self->node_data.data) + __pyx_t_25)) )));
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1167
+    /* "hdbscan/_hdbscan_boruvka.pyx":1300
  *             node1_info = self.node_data[right]
  * 
  *             right_dist = balltree_min_dist_dual(node1_info.radius, node2_info.radius,             # <<<<<<<<<<<<<<
  *                                        right, node2, self.centroid_distances)
  * 
  */
-    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_balltree_min_dist_dual(__pyx_v_node1_info.radius, __pyx_v_node2_info.radius, __pyx_v_right, __pyx_v_node2, __pyx_v_self->centroid_distances); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_19 = __pyx_f_7hdbscan_16_hdbscan_boruvka_balltree_min_dist_dual(__pyx_v_node1_info.radius, __pyx_v_node2_info.radius, __pyx_v_right, __pyx_v_node2, __pyx_v_self->centroid_distances); if (unlikely(__pyx_t_19 == -1.0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1300; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_right_dist = __pyx_t_19;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1170
+    /* "hdbscan/_hdbscan_boruvka.pyx":1303
  *                                        right, node2, self.centroid_distances)
  * 
  *             if left_dist < right_dist:             # <<<<<<<<<<<<<<
@@ -12556,50 +13191,50 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
     __pyx_t_6 = ((__pyx_v_left_dist < __pyx_v_right_dist) != 0);
     if (__pyx_t_6) {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1171
+      /* "hdbscan/_hdbscan_boruvka.pyx":1304
  * 
  *             if left_dist < right_dist:
  *                 self.dual_tree_traversal(left, node2)             # <<<<<<<<<<<<<<
  *                 self.dual_tree_traversal(right, node2)
  *             else:
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_left, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1171; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_left, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1304; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1172
+      /* "hdbscan/_hdbscan_boruvka.pyx":1305
  *             if left_dist < right_dist:
  *                 self.dual_tree_traversal(left, node2)
  *                 self.dual_tree_traversal(right, node2)             # <<<<<<<<<<<<<<
  *             else:
  *                 self.dual_tree_traversal(right, node2)
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_right, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_right, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1305; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       goto __pyx_L28;
     }
     /*else*/ {
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1174
+      /* "hdbscan/_hdbscan_boruvka.pyx":1307
  *                 self.dual_tree_traversal(right, node2)
  *             else:
  *                 self.dual_tree_traversal(right, node2)             # <<<<<<<<<<<<<<
  *                 self.dual_tree_traversal(left, node2)
  * 
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_right, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1174; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_right, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1307; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "hdbscan/_hdbscan_boruvka.pyx":1175
+      /* "hdbscan/_hdbscan_boruvka.pyx":1308
  *             else:
  *                 self.dual_tree_traversal(right, node2)
  *                 self.dual_tree_traversal(left, node2)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_left, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, __pyx_v_left, __pyx_v_node2); if (unlikely(__pyx_t_10 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1308; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __pyx_L28:;
   }
   __pyx_L7:;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":1178
+  /* "hdbscan/_hdbscan_boruvka.pyx":1311
  * 
  * 
  *         return 0             # <<<<<<<<<<<<<<
@@ -12609,7 +13244,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
   __pyx_r = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":958
+  /* "hdbscan/_hdbscan_boruvka.pyx":1091
  *         return self.components.shape[0]
  * 
  *     cdef int dual_tree_traversal(self, np.intp_t node1, np.intp_t node2) except -1:             # <<<<<<<<<<<<<<
@@ -12630,7 +13265,7 @@ __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":1180
+/* "hdbscan/_hdbscan_boruvka.pyx":1313
  *         return 0
  * 
  *     cpdef spanning_tree(self):             # <<<<<<<<<<<<<<
@@ -12659,7 +13294,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_spanning_tree); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_spanning_tree); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_3spanning_tree)) {
       __Pyx_XDECREF(__pyx_r);
@@ -12675,10 +13310,10 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -12690,45 +13325,45 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":1187
+  /* "hdbscan/_hdbscan_boruvka.pyx":1320
  *         cdef np.intp_t num_nodes
  * 
  *         num_components = self.tree.data.shape[0]             # <<<<<<<<<<<<<<
  *         num_nodes = self.tree.node_data.shape[0]
  *         while num_components > 1:
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1187; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1320; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_1); if (unlikely((__pyx_t_5 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_1); if (unlikely((__pyx_t_5 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1320; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_num_components = __pyx_t_5;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":1188
+  /* "hdbscan/_hdbscan_boruvka.pyx":1321
  * 
  *         num_components = self.tree.data.shape[0]
  *         num_nodes = self.tree.node_data.shape[0]             # <<<<<<<<<<<<<<
  *         while num_components > 1:
  *             self.dual_tree_traversal(0, 0)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->tree, __pyx_n_s_node_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1188; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1321; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_1); if (unlikely((__pyx_t_5 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_1); if (unlikely((__pyx_t_5 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1321; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_num_nodes = __pyx_t_5;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":1189
+  /* "hdbscan/_hdbscan_boruvka.pyx":1322
  *         num_components = self.tree.data.shape[0]
  *         num_nodes = self.tree.node_data.shape[0]
  *         while num_components > 1:             # <<<<<<<<<<<<<<
@@ -12739,30 +13374,30 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
     __pyx_t_6 = ((__pyx_v_num_components > 1) != 0);
     if (!__pyx_t_6) break;
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1190
+    /* "hdbscan/_hdbscan_boruvka.pyx":1323
  *         num_nodes = self.tree.node_data.shape[0]
  *         while num_components > 1:
  *             self.dual_tree_traversal(0, 0)             # <<<<<<<<<<<<<<
  *             num_components = self.update_components()
  * 
  */
-    __pyx_t_7 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, 0, 0); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1190; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->dual_tree_traversal(__pyx_v_self, 0, 0); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1323; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "hdbscan/_hdbscan_boruvka.pyx":1191
+    /* "hdbscan/_hdbscan_boruvka.pyx":1324
  *         while num_components > 1:
  *             self.dual_tree_traversal(0, 0)
  *             num_components = self.update_components()             # <<<<<<<<<<<<<<
  * 
  *         return self.edges
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->update_components(__pyx_v_self); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = ((struct __pyx_vtabstruct_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *)__pyx_v_self->__pyx_vtab)->update_components(__pyx_v_self); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1324; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_1); if (unlikely((__pyx_t_5 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_1); if (unlikely((__pyx_t_5 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1324; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_num_components = __pyx_t_5;
   }
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":1193
+  /* "hdbscan/_hdbscan_boruvka.pyx":1326
  *             num_components = self.update_components()
  * 
  *         return self.edges             # <<<<<<<<<<<<<<
@@ -12772,7 +13407,7 @@ static PyObject *__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_
   __pyx_r = ((PyObject *)__pyx_v_self->edges);
   goto __pyx_L0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":1180
+  /* "hdbscan/_hdbscan_boruvka.pyx":1313
  *         return 0
  * 
  *     cpdef spanning_tree(self):             # <<<<<<<<<<<<<<
@@ -12817,7 +13452,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("spanning_tree", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_spanning_tree(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_spanning_tree(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1313; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12834,7 +13469,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":754
+/* "hdbscan/_hdbscan_boruvka.pyx":829
  *     cdef np.intp_t num_features
  * 
  *     cdef public np.double_t[::1] core_distance             # <<<<<<<<<<<<<<
@@ -12864,7 +13499,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->core_distance, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 754; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->core_distance, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 829; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12903,7 +13538,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_13cor
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 754; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 829; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->core_distance, 0);
   __pyx_v_self->core_distance = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -12921,7 +13556,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_13cor
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":755
+/* "hdbscan/_hdbscan_boruvka.pyx":830
  * 
  *     cdef public np.double_t[::1] core_distance
  *     cdef public np.double_t[::1] bounds             # <<<<<<<<<<<<<<
@@ -12951,7 +13586,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->bounds, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 755; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->bounds, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 830; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12990,7 +13625,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_6boun
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 755; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 830; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->bounds, 0);
   __pyx_v_self->bounds = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -13008,7 +13643,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_6boun
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":756
+/* "hdbscan/_hdbscan_boruvka.pyx":831
  *     cdef public np.double_t[::1] core_distance
  *     cdef public np.double_t[::1] bounds
  *     cdef public np.intp_t[::1] component_of_point             # <<<<<<<<<<<<<<
@@ -13038,7 +13673,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->component_of_point, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 756; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->component_of_point, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 831; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13077,7 +13712,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_18com
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 756; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 831; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->component_of_point, 0);
   __pyx_v_self->component_of_point = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -13095,7 +13730,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_18com
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":757
+/* "hdbscan/_hdbscan_boruvka.pyx":832
  *     cdef public np.double_t[::1] bounds
  *     cdef public np.intp_t[::1] component_of_point
  *     cdef public np.intp_t[::1] component_of_node             # <<<<<<<<<<<<<<
@@ -13125,7 +13760,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->component_of_node, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 757; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->component_of_node, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13164,7 +13799,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_17com
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 757; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->component_of_node, 0);
   __pyx_v_self->component_of_node = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -13182,7 +13817,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_17com
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":758
+/* "hdbscan/_hdbscan_boruvka.pyx":833
  *     cdef public np.intp_t[::1] component_of_point
  *     cdef public np.intp_t[::1] component_of_node
  *     cdef public np.intp_t[::1] candidate_neighbor             # <<<<<<<<<<<<<<
@@ -13212,7 +13847,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->candidate_neighbor, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 758; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->candidate_neighbor, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 833; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13251,7 +13886,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_18can
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 758; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 833; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->candidate_neighbor, 0);
   __pyx_v_self->candidate_neighbor = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -13269,7 +13904,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_18can
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":759
+/* "hdbscan/_hdbscan_boruvka.pyx":834
  *     cdef public np.intp_t[::1] component_of_node
  *     cdef public np.intp_t[::1] candidate_neighbor
  *     cdef public np.intp_t[::1] candidate_point             # <<<<<<<<<<<<<<
@@ -13299,7 +13934,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->candidate_point, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 759; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->candidate_point, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 834; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13338,7 +13973,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_15can
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 759; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 834; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->candidate_point, 0);
   __pyx_v_self->candidate_point = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -13356,7 +13991,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_15can
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":760
+/* "hdbscan/_hdbscan_boruvka.pyx":835
  *     cdef public np.intp_t[::1] candidate_neighbor
  *     cdef public np.intp_t[::1] candidate_point
  *     cdef public np.double_t[::1] candidate_distance             # <<<<<<<<<<<<<<
@@ -13386,7 +14021,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->candidate_distance, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 760; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->candidate_distance, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 835; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13425,7 +14060,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_18can
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_double_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 760; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 835; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->candidate_distance, 0);
   __pyx_v_self->candidate_distance = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -13443,7 +14078,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_18can
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":761
+/* "hdbscan/_hdbscan_boruvka.pyx":836
  *     cdef public np.intp_t[::1] candidate_point
  *     cdef public np.double_t[::1] candidate_distance
  *     cdef public np.double_t[:,::1] centroid_distances             # <<<<<<<<<<<<<<
@@ -13473,7 +14108,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->centroid_distances, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 761; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->centroid_distances, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_double_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_double_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 836; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13512,7 +14147,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_18cen
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_5numpy_double_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 761; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 836; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->centroid_distances, 0);
   __pyx_v_self->centroid_distances = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -13530,7 +14165,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_18cen
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":762
+/* "hdbscan/_hdbscan_boruvka.pyx":837
  *     cdef public np.double_t[::1] candidate_distance
  *     cdef public np.double_t[:,::1] centroid_distances
  *     cdef public np.intp_t[::1] idx_array             # <<<<<<<<<<<<<<
@@ -13560,7 +14195,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->idx_array, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 762; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->idx_array, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_intp_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_intp_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 837; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13599,7 +14234,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_9idx_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_intp_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 762; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 837; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->idx_array, 0);
   __pyx_v_self->idx_array = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -13617,7 +14252,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_9idx_
   return __pyx_r;
 }
 
-/* "hdbscan/_hdbscan_boruvka.pyx":763
+/* "hdbscan/_hdbscan_boruvka.pyx":838
  *     cdef public np.double_t[:,::1] centroid_distances
  *     cdef public np.intp_t[::1] idx_array
  *     cdef public NodeData_t[::1] node_data             # <<<<<<<<<<<<<<
@@ -13647,7 +14282,7 @@ static PyObject *__pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->node_data, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 763; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->node_data, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t, 0);; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 838; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13686,7 +14321,7 @@ static int __pyx_pf_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_9node
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
   __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_struct___pyx_t_7hdbscan_16_hdbscan_boruvka_NodeData_t(__pyx_v_value);
-  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 763; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_t_1.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 838; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->node_data, 0);
   __pyx_v_self->node_data = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -27813,7 +28448,7 @@ static PyTypeObject __pyx_type_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorith
   0, /*tp_setattro*/
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
-  "A Dual Tree Boruvka Algorithm implemented for the sklearn\n    KDTree space tree implementation.\n\n    Parameters\n    ----------\n\n    tree : KDTree\n        The kd-tree to run Dual Tree Boruvka over.\n\n    min_samples : int (default 5)\n        The min_samples parameter of HDBSCAN used to\n        determine core distances.\n\n    metric : string (default 'euclidean')\n        The metric used to compute distances for the tree\n\n    leaf_size : int (default 20)\n        The Boruvka algorithm benefits from a smaller leaf size than\n        standard kd-tree nearest neighbor searches. The tree passed in\n        is used for a kNN search for core distance. A second tree is\n        constructed with a smaller leaf size for Boruvka; this is that\n        leaf size.\n\n    alpha : float (default 1.0)\n        The alpha distance scaling parameter as per Robust Single Linkage.\n\n    **kwargs :\n        Keyword args passed to the metric.\n    ", /*tp_doc*/
+  "A Dual Tree Boruvka Algorithm implemented for the sklearn\n    KDTree space tree implementation.\n\n    Parameters\n    ----------\n\n    tree : KDTree\n        The kd-tree to run Dual Tree Boruvka over.\n\n    min_samples : int (default 5)\n        The min_samples parameter of HDBSCAN used to\n        determine core distances.\n\n    metric : string (default 'euclidean')\n        The metric used to compute distances for the tree\n\n    leaf_size : int (default 20)\n        The Boruvka algorithm benefits from a smaller leaf size than\n        standard kd-tree nearest neighbor searches. The tree passed in\n        is used for a kNN search for core distance. A second tree is\n        constructed with a smaller leaf size for Boruvka; this is that\n        leaf size.\n\n    alpha : float (default 1.0)\n        The alpha distance scaling parameter as per Robust Single Linkage.\n\n    approx_min_span_tree : bool (default False)\n        Take shortcuts and only approximate the min spanning tree.\n        This is considerably faster but does not return a true\n        minimal spanning tree.\n\n    **kwargs :\n        Keyword args passed to the metric.\n    ", /*tp_doc*/
   __pyx_tp_traverse_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm, /*tp_traverse*/
   __pyx_tp_clear_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm, /*tp_clear*/
   0, /*tp_richcompare*/
@@ -28220,7 +28855,7 @@ static PyTypeObject __pyx_type_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgori
   0, /*tp_setattro*/
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
-  "A Dual Tree Boruvka Algorithm implemented for the sklearn\n    BallTree space tree implementation.\n\n    Parameters\n    ----------\n\n    tree : BallTree\n        The ball-tree to run Dual Tree Boruvka over.\n\n    min_samples : int (default 5)\n        The min_samples parameter of HDBSCAN used to\n        determine core distances.\n\n    metric : string (default 'euclidean')\n        The metric used to compute distances for the tree\n\n    leaf_size : int (default 20)\n        The Boruvka algorithm benefits from a smaller leaf size than\n        standard kd-tree nearest neighbor searches. The tree passed in\n        is used for a kNN search for core distance. A second tree is\n        constructed with a smaller leaf size for Boruvka; this is that\n        leaf size.\n\n    alpha : float (default 1.0)\n        The alpha distance scaling parameter as per Robust Single Linkage.\n\n    **kwargs :\n        Keyword args passed to the metric.\n    ", /*tp_doc*/
+  "A Dual Tree Boruvka Algorithm implemented for the sklearn\n    BallTree space tree implementation.\n\n    Parameters\n    ----------\n\n    tree : BallTree\n        The ball-tree to run Dual Tree Boruvka over.\n\n    min_samples : int (default 5)\n        The min_samples parameter of HDBSCAN used to\n        determine core distances.\n\n    metric : string (default 'euclidean')\n        The metric used to compute distances for the tree\n\n    leaf_size : int (default 20)\n        The Boruvka algorithm benefits from a smaller leaf size than\n        standard kd-tree nearest neighbor searches. The tree passed in\n        is used for a kNN search for core distance. A second tree is\n        constructed with a smaller leaf size for Boruvka; this is that\n        leaf size.\n\n    alpha : float (default 1.0)\n        The alpha distance scaling parameter as per Robust Single Linkage.\n\n    approx_min_span_tree : bool (default False)\n        Take shortcuts and only approximate the min spanning tree.\n        This is considerably faster but does not return a true\n        minimal spanning tree.\n\n    **kwargs :\n        Keyword args passed to the metric.\n    ", /*tp_doc*/
   __pyx_tp_traverse_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm, /*tp_traverse*/
   __pyx_tp_clear_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm, /*tp_clear*/
   0, /*tp_richcompare*/
@@ -29425,6 +30060,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u__25, __pyx_k__25, sizeof(__pyx_k__25), 0, 1, 0, 0},
   {&__pyx_n_s_allocate_buffer, __pyx_k_allocate_buffer, sizeof(__pyx_k_allocate_buffer), 0, 0, 1, 1},
   {&__pyx_n_s_alpha, __pyx_k_alpha, sizeof(__pyx_k_alpha), 0, 0, 1, 1},
+  {&__pyx_n_s_approx_min_span_tree, __pyx_k_approx_min_span_tree, sizeof(__pyx_k_approx_min_span_tree), 0, 0, 1, 1},
   {&__pyx_n_s_arange, __pyx_k_arange, sizeof(__pyx_k_arange), 0, 0, 1, 1},
   {&__pyx_n_s_args, __pyx_k_args, sizeof(__pyx_k_args), 0, 0, 1, 1},
   {&__pyx_n_s_array, __pyx_k_array, sizeof(__pyx_k_array), 0, 0, 1, 1},
@@ -29524,7 +30160,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 802; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) {__pyx_filename = __pyx_f[2]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -29543,25 +30179,25 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":373
+  /* "hdbscan/_hdbscan_boruvka.pyx":384
  *                                                               breadth_first=True)
  * 
- *         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()             # <<<<<<<<<<<<<<
+ *         self.core_distance_arr = knn_dist[:, self.min_samples].copy()             # <<<<<<<<<<<<<<
  *         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
  * 
  */
-  __pyx_slice_ = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice_)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice_ = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice_)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 384; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice_);
   __Pyx_GIVEREF(__pyx_slice_);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":863
+  /* "hdbscan/_hdbscan_boruvka.pyx":944
  *                                                               breadth_first=True)
  * 
  *         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()             # <<<<<<<<<<<<<<
  *         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
  * 
  */
-  __pyx_slice__2 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 863; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__2 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__2);
   __Pyx_GIVEREF(__pyx_slice__2);
 
@@ -29810,17 +30446,17 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__29);
   __Pyx_GIVEREF(__pyx_tuple__29);
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":215
+  /* "hdbscan/_hdbscan_boruvka.pyx":214
  *         return self.is_component.nonzero()[0]
  * 
  * def _core_dist_query(tree, data, min_samples):             # <<<<<<<<<<<<<<
  *     return tree.query(data, k=min_samples, dualtree=True, breadth_first=True)
  * 
  */
-  __pyx_tuple__30 = PyTuple_Pack(3, __pyx_n_s_tree, __pyx_n_s_data, __pyx_n_s_min_samples); if (unlikely(!__pyx_tuple__30)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__30 = PyTuple_Pack(3, __pyx_n_s_tree, __pyx_n_s_data, __pyx_n_s_min_samples); if (unlikely(!__pyx_tuple__30)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__30);
   __Pyx_GIVEREF(__pyx_tuple__30);
-  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_leland_PycharmProjects_hd, __pyx_n_s_core_dist_query, 215, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_leland_PycharmProjects_hd, __pyx_n_s_core_dist_query, 214, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "View.MemoryView":276
  *         return self.name
@@ -29991,20 +30627,20 @@ PyMODINIT_FUNC PyInit__hdbscan_boruvka(void)
   __pyx_vtable_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind.union_ = (int (*)(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *, __pyx_t_5numpy_intp_t, __pyx_t_5numpy_intp_t))__pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_union_;
   __pyx_vtable_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind.find = (__pyx_t_5numpy_intp_t (*)(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *, __pyx_t_5numpy_intp_t))__pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_find;
   __pyx_vtable_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind.components = (PyArrayObject *(*)(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind *))__pyx_f_7hdbscan_16_hdbscan_boruvka_16BoruvkaUnionFind_components;
-  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 160; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind.tp_dict, __pyx_vtabptr_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 160; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyObject_SetAttrString(__pyx_m, "BoruvkaUnionFind", (PyObject *)&__pyx_type_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 160; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind.tp_dict, __pyx_vtabptr_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetAttrString(__pyx_m, "BoruvkaUnionFind", (PyObject *)&__pyx_type_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind = &__pyx_type_7hdbscan_16_hdbscan_boruvka_BoruvkaUnionFind;
   __pyx_vtabptr_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm = &__pyx_vtable_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm;
   __pyx_vtable_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm._compute_bounds = (PyObject *(*)(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *))__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__compute_bounds;
   __pyx_vtable_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm._initialize_components = (PyObject *(*)(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *))__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm__initialize_components;
   __pyx_vtable_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm.update_components = (int (*)(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *))__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_update_components;
   __pyx_vtable_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm.dual_tree_traversal = (int (*)(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm *, __pyx_t_5numpy_intp_t, __pyx_t_5numpy_intp_t))__pyx_f_7hdbscan_16_hdbscan_boruvka_22KDTreeBoruvkaAlgorithm_dual_tree_traversal;
-  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 217; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm.tp_dict, __pyx_vtabptr_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyObject_SetAttrString(__pyx_m, "KDTreeBoruvkaAlgorithm", (PyObject *)&__pyx_type_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm.tp_dict, __pyx_vtabptr_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 217; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetAttrString(__pyx_m, "KDTreeBoruvkaAlgorithm", (PyObject *)&__pyx_type_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 217; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm = &__pyx_type_7hdbscan_16_hdbscan_boruvka_KDTreeBoruvkaAlgorithm;
   __pyx_vtabptr_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm = &__pyx_vtable_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm;
   __pyx_vtable_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm._compute_bounds = (PyObject *(*)(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *))__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm__compute_bounds;
@@ -30012,21 +30648,21 @@ PyMODINIT_FUNC PyInit__hdbscan_boruvka(void)
   __pyx_vtable_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm.update_components = (PyObject *(*)(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *))__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_update_components;
   __pyx_vtable_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm.dual_tree_traversal = (int (*)(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *, __pyx_t_5numpy_intp_t, __pyx_t_5numpy_intp_t))__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_dual_tree_traversal;
   __pyx_vtable_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm.spanning_tree = (PyObject *(*)(struct __pyx_obj_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm *, int __pyx_skip_dispatch))__pyx_f_7hdbscan_16_hdbscan_boruvka_24BallTreeBoruvkaAlgorithm_spanning_tree;
-  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 712; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 781; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm.tp_dict, __pyx_vtabptr_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 712; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyObject_SetAttrString(__pyx_m, "BallTreeBoruvkaAlgorithm", (PyObject *)&__pyx_type_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 712; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm.tp_dict, __pyx_vtabptr_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 781; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetAttrString(__pyx_m, "BallTreeBoruvkaAlgorithm", (PyObject *)&__pyx_type_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 781; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm = &__pyx_type_7hdbscan_16_hdbscan_boruvka_BallTreeBoruvkaAlgorithm;
-  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct___compute_bounds) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 346; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct___compute_bounds) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 353; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct___compute_bounds.tp_print = 0;
   __pyx_ptype_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct___compute_bounds = &__pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct___compute_bounds;
-  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_1_genexpr) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 365; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_1_genexpr) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 374; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_1_genexpr.tp_print = 0;
   __pyx_ptype_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_1_genexpr = &__pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_1_genexpr;
-  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_2__compute_bounds) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 839; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_2__compute_bounds) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 916; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_2__compute_bounds.tp_print = 0;
   __pyx_ptype_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_2__compute_bounds = &__pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_2__compute_bounds;
-  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_3_genexpr) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 855; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_3_genexpr) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 934; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_3_genexpr.tp_print = 0;
   __pyx_ptype_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_3_genexpr = &__pyx_type_7hdbscan_16_hdbscan_boruvka___pyx_scope_struct_3_genexpr;
   if (PyType_Ready(&__pyx_type___pyx_array) < 0) {__pyx_filename = __pyx_f[2]; __pyx_lineno = 99; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -30075,26 +30711,26 @@ PyMODINIT_FUNC PyInit__hdbscan_boruvka(void)
   /*--- Function import code ---*/
   /*--- Execution code ---*/
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":54
+  /* "hdbscan/_hdbscan_boruvka.pyx":53
  * cimport cython
  * 
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":61
+  /* "hdbscan/_hdbscan_boruvka.pyx":60
  * 
  * # from scipy.spatial.distance import cdist, pdist, squareform
  * from sklearn.neighbors import KDTree, BallTree             # <<<<<<<<<<<<<<
  * 
  * import dist_metrics as dist_metrics
  */
-  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_KDTree);
   __Pyx_GIVEREF(__pyx_n_s_KDTree);
@@ -30102,39 +30738,39 @@ PyMODINIT_FUNC PyInit__hdbscan_boruvka(void)
   __Pyx_INCREF(__pyx_n_s_BallTree);
   __Pyx_GIVEREF(__pyx_n_s_BallTree);
   PyList_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_BallTree);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_sklearn_neighbors, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_sklearn_neighbors, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_KDTree); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_KDTree); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_KDTree, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_KDTree, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_BallTree); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_BallTree); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_BallTree, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_BallTree, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":63
+  /* "hdbscan/_hdbscan_boruvka.pyx":62
  * from sklearn.neighbors import KDTree, BallTree
  * 
  * import dist_metrics as dist_metrics             # <<<<<<<<<<<<<<
  * cimport dist_metrics as dist_metrics
  * 
  */
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_dist_metrics, 0, -1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_dist_metrics, 0, -1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_dist_metrics, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_dist_metrics, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":66
+  /* "hdbscan/_hdbscan_boruvka.pyx":65
  * cimport dist_metrics as dist_metrics
  * 
  * from sklearn.externals.joblib import Parallel, delayed             # <<<<<<<<<<<<<<
  * 
  * from libc.math cimport fabs, sqrt, exp, cos, pow, log
  */
-  __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_n_s_Parallel);
   __Pyx_GIVEREF(__pyx_n_s_Parallel);
@@ -30142,45 +30778,45 @@ PyMODINIT_FUNC PyInit__hdbscan_boruvka(void)
   __Pyx_INCREF(__pyx_n_s_delayed);
   __Pyx_GIVEREF(__pyx_n_s_delayed);
   PyList_SET_ITEM(__pyx_t_2, 1, __pyx_n_s_delayed);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_sklearn_externals_joblib, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_sklearn_externals_joblib, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_Parallel); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_Parallel); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Parallel, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Parallel, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_delayed); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_delayed); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_delayed, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_delayed, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":70
+  /* "hdbscan/_hdbscan_boruvka.pyx":69
  * from libc.math cimport fabs, sqrt, exp, cos, pow, log
  * 
  * cdef np.double_t INF = np.inf             # <<<<<<<<<<<<<<
  * 
  * # Define the NodeData struct used in sklearn trees for faster
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_inf); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_inf); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_3 == (npy_double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_3 == (npy_double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_7hdbscan_16_hdbscan_boruvka_INF = __pyx_t_3;
 
-  /* "hdbscan/_hdbscan_boruvka.pyx":215
+  /* "hdbscan/_hdbscan_boruvka.pyx":214
  *         return self.is_component.nonzero()[0]
  * 
  * def _core_dist_query(tree, data, min_samples):             # <<<<<<<<<<<<<<
  *     return tree.query(data, k=min_samples, dualtree=True, breadth_first=True)
  * 
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7hdbscan_16_hdbscan_boruvka_1_core_dist_query, NULL, __pyx_n_s_hdbscan__hdbscan_boruvka); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7hdbscan_16_hdbscan_boruvka_1_core_dist_query, NULL, __pyx_n_s_hdbscan__hdbscan_boruvka); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_core_dist_query, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_core_dist_query, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "hdbscan/_hdbscan_boruvka.pyx":1
@@ -32615,6 +33251,111 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
         return _PyLong_FromByteArray(bytes, sizeof(long),
                                      little, !is_unsigned);
     }
+}
+
+static CYTHON_INLINE npy_int8 __Pyx_PyInt_As_npy_int8(PyObject *x) {
+    const npy_int8 neg_one = (npy_int8) -1, const_zero = 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(npy_int8) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(npy_int8, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (npy_int8) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
+ #if CYTHON_USE_PYLONG_INTERNALS
+            switch (Py_SIZE(x)) {
+                case  0: return 0;
+                case  1: __PYX_VERIFY_RETURN_INT(npy_int8, digit, ((PyLongObject*)x)->ob_digit[0]);
+            }
+ #endif
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (npy_int8) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(npy_int8) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT(npy_int8, unsigned long, PyLong_AsUnsignedLong(x))
+            } else if (sizeof(npy_int8) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT(npy_int8, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+            }
+        } else {
+#if CYTHON_COMPILING_IN_CPYTHON && PY_MAJOR_VERSION >= 3
+ #if CYTHON_USE_PYLONG_INTERNALS
+            switch (Py_SIZE(x)) {
+                case  0: return 0;
+                case  1: __PYX_VERIFY_RETURN_INT(npy_int8,  digit, +(((PyLongObject*)x)->ob_digit[0]));
+                case -1: __PYX_VERIFY_RETURN_INT(npy_int8, sdigit, -(sdigit) ((PyLongObject*)x)->ob_digit[0]);
+            }
+ #endif
+#endif
+            if (sizeof(npy_int8) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT(npy_int8, long, PyLong_AsLong(x))
+            } else if (sizeof(npy_int8) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT(npy_int8, PY_LONG_LONG, PyLong_AsLongLong(x))
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            npy_int8 val;
+            PyObject *v = __Pyx_PyNumber_Int(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (npy_int8) -1;
+        }
+    } else {
+        npy_int8 val;
+        PyObject *tmp = __Pyx_PyNumber_Int(x);
+        if (!tmp) return (npy_int8) -1;
+        val = __Pyx_PyInt_As_npy_int8(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to npy_int8");
+    return (npy_int8) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to npy_int8");
+    return (npy_int8) -1;
 }
 
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {

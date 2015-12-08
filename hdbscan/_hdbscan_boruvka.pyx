@@ -48,7 +48,6 @@
 # we can perform more specific optimizations here for what
 # is a simpler version of the structure.
 
-
 cimport cython
 
 import numpy as np
@@ -242,6 +241,11 @@ cdef class KDTreeBoruvkaAlgorithm (object):
     alpha : float (default 1.0)
         The alpha distance scaling parameter as per Robust Single Linkage.
 
+    approx_min_span_tree : bool (default False)
+        Take shortcuts and only approximate the min spanning tree.
+        This is considerably faster but does not return a true
+        minimal spanning tree.
+
     **kwargs :
         Keyword args passed to the metric.
     """
@@ -253,6 +257,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
     cdef np.double_t[:, ::1] _raw_data
     cdef np.double_t[:, :, ::1] node_bounds
     cdef np.double_t alpha
+    cdef np.int8_t approx_min_span_tree
     cdef np.intp_t min_samples
     cdef np.intp_t num_points
     cdef np.intp_t num_nodes
@@ -290,7 +295,8 @@ cdef class KDTreeBoruvkaAlgorithm (object):
     cdef np.ndarray candidate_neighbor_arr
     cdef np.ndarray candidate_distance_arr
 
-    def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20, alpha=1.0, **kwargs):
+    def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20,
+                 alpha=1.0, approx_min_span_tree=False, **kwargs):
 
         self.core_dist_tree = tree
         self.tree = KDTree(tree.data, metric=metric, leaf_size=leaf_size)
@@ -299,6 +305,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         self.node_bounds = self.tree.node_bounds
         self.min_samples = min_samples
         self.alpha = alpha
+        self.approx_min_span_tree = approx_min_span_tree
 
         self.num_points = self.tree.data.shape[0]
         self.num_features = self.tree.data.shape[1]
@@ -347,6 +354,8 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         """Initialize core distances"""
 
         cdef np.intp_t n
+        cdef np.intp_t i
+        cdef np.intp_t m
 
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.intp_t, ndim=2] knn_indices
@@ -361,16 +370,18 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
                         ]
 
-            knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
-                                 (self.core_dist_tree, points, self.min_samples)
-                                  for points in datasets)])
+            knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+                                 (self.core_dist_tree, points, self.min_samples + 1)
+                                  for points in datasets)
+            knn_dist = np.vstack([x[0] for x in knn_data])
+            knn_indices = np.vstack([x[1] for x in knn_data])
         else:
             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
-                                                              k=self.min_samples,
+                                                              k=self.min_samples + 1,
                                                               dualtree=True,
                                                               breadth_first=True)
 
-        self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
+        self.core_distance_arr = knn_dist[:, self.min_samples].copy()
         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
 
         # Since we do everything in terms of rdist to free up the GIL
@@ -378,6 +389,22 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         # to make comparison feasible.
         for n in range(self.num_points):
             self.core_distance[n] = self.dist._dist_to_rdist(self.core_distance[n])
+
+        # Since we already computed NN distances for the min_samples closest points
+        # we can use this to do the first round of boruvka -- we won't get every
+        # point due to core_distance/mutual reachability distance issues, but we'll
+        # get quite a few, and they are the hard ones to get, so fill in any we ca
+        # and then run update components.
+        for n in range(self.num_points):
+            for i in range(1, self.min_samples + 1):
+                m = knn_indices[n, i]
+                if self.core_distance[m] <= self.core_distance[n]:
+                    self.candidate_point[n] = n
+                    self.candidate_neighbor[n] = m
+                    self.candidate_distance[n] = self.core_distance[n]
+                    break
+
+        self.update_components()
 
         for n in range(self.num_nodes):
             self.bounds_arr[n] = <np.double_t> DBL_MAX
@@ -492,14 +519,23 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         # ties or near ties; because of that we can benefit by not resetting the
         # bounds unless we get stuck (don't join any components). Thus
         # we check for that, and only reset bounds in the case where we have
-        # the same number of components as we did going in.
-        last_num_components = self.components.shape[0]
-        self.components = self.component_union_find.components()
+        # the same number of components as we did going in. This doesn't
+        # produce a true min spanning tree, but only and approximation
+        # Thus only do this if the caller is willing to accept such
+        if self.approx_min_span_tree:
+            last_num_components = self.components.shape[0]
+            self.components = self.component_union_find.components()
 
-        if self.components.shape[0] == last_num_components:
-            # Reset bounds
+            if self.components.shape[0] == last_num_components:
+                # Reset bounds
+                for n in range(self.num_nodes):
+                    self.bounds_arr[n] = <np.double_t> DBL_MAX
+        else:
+            self.components = self.component_union_find.components()
+
             for n in range(self.num_nodes):
                 self.bounds_arr[n] = <np.double_t> DBL_MAX
+
 
         return self.components.shape[0]
 
@@ -735,6 +771,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 
         num_components = self.tree.data.shape[0]
         num_nodes = self.tree.node_data.shape[0]
+        iteration = 0
         while num_components > 1:
             self.dual_tree_traversal(0, 0)
             num_components = self.update_components()
@@ -768,6 +805,11 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     alpha : float (default 1.0)
         The alpha distance scaling parameter as per Robust Single Linkage.
 
+    approx_min_span_tree : bool (default False)
+        Take shortcuts and only approximate the min spanning tree.
+        This is considerably faster but does not return a true
+        minimal spanning tree.
+
     **kwargs :
         Keyword args passed to the metric.
     """
@@ -778,6 +820,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef np.ndarray _data
     cdef np.double_t[:, ::1] _raw_data
     cdef np.double_t alpha
+    cdef np.int8_t approx_min_span_tree
     cdef np.intp_t min_samples
     cdef np.intp_t num_points
     cdef np.intp_t num_nodes
@@ -815,7 +858,8 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef np.ndarray candidate_neighbor_arr
     cdef np.ndarray candidate_distance_arr
 
-    def __init__(self, tree, min_samples=5, metric='euclidean', alpha=1.0, leaf_size=20, **kwargs):
+    def __init__(self, tree, min_samples=5, metric='euclidean',
+                 alpha=1.0, leaf_size=20, approx_min_span_tree=False, **kwargs):
 
         self.core_dist_tree = tree
         self.tree = BallTree(tree.data, metric=metric, leaf_size=leaf_size)
@@ -823,6 +867,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         self._raw_data = self.tree.data
         self.min_samples = min_samples
         self.alpha = alpha
+        self.approx_min_span_tree = approx_min_span_tree
 
         self.num_points = self.tree.data.shape[0]
         self.num_features = self.tree.data.shape[1]
@@ -872,6 +917,8 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         """Initialize core distances"""
 
         cdef np.intp_t n
+        cdef np.intp_t i
+        cdef np.intp_t m
 
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.intp_t, ndim=2] knn_indices
@@ -883,9 +930,11 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
                         ]
 
-            knn_dist = np.vstack([x[0] for x in Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+            knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
                                  (self.core_dist_tree, points, self.min_samples)
-                                  for points in datasets)])
+                                  for points in datasets)
+            knn_dist = np.vstack([x[0] for x in knn_data])
+            knn_indices = np.vstack([x[1] for x in knn_data])
         else:
             knn_dist, knn_indices = self.core_dist_tree.query(self.tree.data,
                                                               k=self.min_samples,
@@ -894,6 +943,21 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
         self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
         self.core_distance = (<np.double_t [:self.num_points:1]> (<np.double_t *> self.core_distance_arr.data))
+
+        # Since we already computed NN distances for the min_samples closest points
+        # we can use this to do the first round of boruvka -- we won't get every
+        # point due to core_distance/mutual reachability distance issues, but we'll
+        # get quite a few, and they are the hard ones to get, so fill in any we ca
+        # and then run update components.
+        for n in range(self.num_points):
+            for i in range(self.min_samples - 1, 0):
+                m = knn_indices[n, i]
+                if self.core_distance[m] <= self.core_distance[n]:
+                    self.candidate_point[n] = n
+                    self.candidate_neighbor[n] = m
+                    self.candidate_distance[n] = self.core_distance[n]
+
+        self.update_components()
 
         for n in range(self.num_nodes):
             self.bounds_arr[n] = <np.double_t> DBL_MAX
@@ -1005,12 +1069,20 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         # ties or near ties; because of that we can benefit by not resetting the
         # bounds unless we get stuck (don't join any components). Thus
         # we check for that, and only reset bounds in the case where we have
-        # the same number of components as we did going in.
-        last_num_components = self.components.shape[0]
-        self.components = self.component_union_find.components()
+        # the same number of components as we did going in. This doesn't
+        # produce a true min spanning tree, but only and approximation
+        # Thus only do this if the caller is willing to accept such
+        if self.approx_min_span_tree:
+            last_num_components = self.components.shape[0]
+            self.components = self.component_union_find.components()
 
-        if self.components.shape[0] == last_num_components:
-            # Reset bounds
+            if self.components.shape[0] == last_num_components:
+                # Reset bounds
+                for n in range(self.num_nodes):
+                    self.bounds_arr[n] = <np.double_t> DBL_MAX
+        else:
+            self.components = self.component_union_find.components()
+
             for n in range(self.num_nodes):
                 self.bounds_arr[n] = <np.double_t> DBL_MAX
 

@@ -12,6 +12,7 @@ from sklearn.utils.testing import assert_array_equal
 from sklearn.utils.testing import assert_raises
 from sklearn.utils.testing import assert_in
 from sklearn.utils.testing import assert_not_in
+from sklearn.utils.testing import assert_no_warnings
 from hdbscan import HDBSCAN
 from hdbscan import hdbscan
 from sklearn.cluster.tests.common import generate_clustered_data
@@ -114,14 +115,14 @@ def test_hdbscan_boruvka_kdtree_matches():
 
     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
-    assert_less(num_mismatches / float(data.shape[0]), 0.015)
+    assert_less(num_mismatches / float(data.shape[0]), 0.01)
 
     labels_prims = HDBSCAN(algorithm='generic').fit_predict(data)
     labels_boruvka = HDBSCAN(algorithm='boruvka_kdtree').fit_predict(data)
 
     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
-    assert_less(num_mismatches / float(data.shape[0]), 0.015)
+    assert_less(num_mismatches / float(data.shape[0]), 0.01)
 
 def test_hdbscan_boruvka_balltree_matches():
 
@@ -132,15 +133,21 @@ def test_hdbscan_boruvka_balltree_matches():
 
     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
-    assert_less(num_mismatches / float(data.shape[0]), 0.015)
+    assert_less(num_mismatches / float(data.shape[0]), 0.01)
 
     labels_prims = HDBSCAN(algorithm='generic').fit_predict(data)
     labels_boruvka = HDBSCAN(algorithm='boruvka_balltree').fit_predict(data)
 
     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
-    assert_less(num_mismatches / float(data.shape[0]), 0.015)
+    assert_less(num_mismatches / float(data.shape[0]), 0.01)
 
+def test_condensed_tree():
+
+    clusterer = HDBSCAN().fit(X)
+    ax = clusterer.condensed_tree_.plot()
+
+    assert(ax is not None)
 
 def test_hdbscan_badargs():
     assert_raises(ValueError,

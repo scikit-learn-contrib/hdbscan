@@ -149,6 +149,7 @@ def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
 
 def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
                             metric='minkowski', p=2, leaf_size=40,
+                            approx_min_span_tree=False,
                             gen_min_span_tree=False):
     if metric == 'minkowski':
         if p is None:
@@ -160,7 +161,8 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
     min_samples = min(dim - 1, min_samples)
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size)
-    alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3)
+    alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
+                                 approx_min_span_tree=approx_min_span_tree)
     min_spanning_tree = alg.spanning_tree()
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
 
@@ -174,6 +176,7 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
 
 def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
                               metric='minkowski', p=2, leaf_size=40,
+                              approx_min_span_tree=False,
                               gen_min_span_tree=False):
     if metric == 'minkowski':
         if p is None:
@@ -185,7 +188,8 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
     min_samples = min(dim - 1, min_samples)
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size)
-    alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3)
+    alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
+                                   approx_min_span_tree=approx_min_span_tree)
     min_spanning_tree = alg.spanning_tree()
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
 
@@ -200,7 +204,7 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
 def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             metric='minkowski', p=2, leaf_size=40,
             algorithm='best', memory=Memory(cachedir=None, verbose=0),
-            gen_min_span_tree=False):
+            approx_min_span_tree=False, gen_min_span_tree=False):
     """Perform HDBSCAN clustering from a vector array or distance matrix.
     
     Parameters
@@ -254,6 +258,13 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         Used to cache the output of the computation of the tree.
         By default, no caching is done. If a string is given, it is the
         path to the caching directory.
+
+    approx_min_span_tree : Bool (optional)
+        Whether to accept an only approximate minimum spanning tree.
+        For some algorithms this can provide a significant speedup, but
+        the resulting clustering is of lower quality, and may have issues.
+        If you are willing to sacrifice correctness for speed you may want
+        to explore this; in general this should be left at the default False.
 
     gen_min_span_tree : bool, optional
         Whether to generate the minimum spanning tree for later analysis.
@@ -328,6 +339,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
              result_min_span_tree) = \
                 memory.cache(_hdbscan_boruvka_kdtree)(X, min_samples, alpha,
                                                       metric, p, leaf_size,
+                                                      approx_min_span_tree,
                                                       gen_min_span_tree)
         elif algorithm == 'boruvka_balltree':
             if metric not in BallTree.valid_metrics:
@@ -336,6 +348,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
              result_min_span_tree) = \
                 memory.cache(_hdbscan_boruvka_balltree)(X, min_samples, alpha,
                                                         metric, p, leaf_size,
+                                                        approx_min_span_tree,
                                                         gen_min_span_tree)
         else:
             raise TypeError('Unknown algorithm type %s specified' % algorithm)
@@ -360,6 +373,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                  result_min_span_tree) = \
                     memory.cache(_hdbscan_boruvka_kdtree)(X, min_samples, alpha,
                                                           metric, p, leaf_size,
+                                                          approx_min_span_tree,
                                                           gen_min_span_tree)
         else:  # Metric is a valid BallTree metric
             # Need heuristic to decide when to go to boruvka; still debugging for now
@@ -374,6 +388,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                  result_min_span_tree) = \
                     memory.cache(_hdbscan_boruvka_balltree)(X, min_samples, alpha,
                                                             metric, p, leaf_size,
+                                                            approx_min_span_tree,
                                                             gen_min_span_tree)
 
     return _tree_to_labels(X, single_linkage_tree, min_cluster_size) + (result_min_span_tree,)
@@ -441,6 +456,14 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         By default, no caching is done. If a string is given, it is the
         path to the caching directory.
 
+    approx_min_span_tree : Bool, optional
+        Whether to accept an only approximate minimum spanning tree.
+        For some algorithms this can provide a significant speedup, but
+        the resulting clustering is of lower quality, and may have issues.
+        If you are willing to sacrifice correctness for speed you may want
+        to explore this; in general this should be left at the default False.
+        (default False)
+
     gen_min_span_tree: bool, optional
         Whether to generate the minimum spanning tree with regard
         to mutual reachability distance for later analysis.
@@ -493,6 +516,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                  metric='euclidean', alpha=1.0, p=None,
                  algorithm='best', leaf_size=40,
                  memory=Memory(cachedir=None, verbose=0),
+                 approx_min_span_tree=False,
                  gen_min_span_tree=False):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
@@ -503,6 +527,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self.algorithm = algorithm
         self.leaf_size = leaf_size
         self.memory = memory
+        self.approx_min_span_tree = approx_min_span_tree
         self.gen_min_span_tree = gen_min_span_tree
 
         self._condensed_tree = None
