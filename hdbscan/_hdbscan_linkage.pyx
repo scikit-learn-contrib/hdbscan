@@ -282,7 +282,7 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
     cdef np.ndarray[np.double_t, ndim=2] result_arr
     cdef np.double_t[:, ::1] result
 
-    cdef np.intp_t N, a, aa, b, bb, idx
+    cdef np.intp_t N, a, aa, b, bb, index
     cdef np.double_t delta
 
     result_arr = np.zeros((L.shape[0], L.shape[1] + 1))

@@ -5641,9 +5641,9 @@ static PyArrayObject *__pyx_f_7hdbscan_16_hdbscan_linkage_label(PyArrayObject *_
   __pyx_t_5numpy_intp_t __pyx_v_aa;
   __pyx_t_5numpy_intp_t __pyx_v_b;
   __pyx_t_5numpy_intp_t __pyx_v_bb;
+  __pyx_t_5numpy_intp_t __pyx_v_index;
   __pyx_t_5numpy_double_t __pyx_v_delta;
   struct __pyx_obj_7hdbscan_16_hdbscan_linkage_UnionFind *__pyx_v_U = NULL;
-  npy_intp __pyx_v_index;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_L;
   __Pyx_Buffer __pyx_pybuffer_L;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_result_arr;
@@ -5664,12 +5664,12 @@ static PyArrayObject *__pyx_f_7hdbscan_16_hdbscan_linkage_label(PyArrayObject *_
   struct __pyx_array_obj *__pyx_t_12 = NULL;
   __Pyx_memviewslice __pyx_t_13 = { 0, 0, { 0 }, { 0 }, { 0 } };
   npy_intp __pyx_t_14;
-  npy_intp __pyx_t_15;
-  npy_intp __pyx_t_16;
+  __pyx_t_5numpy_intp_t __pyx_t_15;
+  __pyx_t_5numpy_intp_t __pyx_t_16;
   long __pyx_t_17;
-  npy_intp __pyx_t_18;
+  __pyx_t_5numpy_intp_t __pyx_t_18;
   long __pyx_t_19;
-  npy_intp __pyx_t_20;
+  __pyx_t_5numpy_intp_t __pyx_t_20;
   long __pyx_t_21;
   __pyx_t_5numpy_intp_t __pyx_t_22;
   __pyx_t_5numpy_intp_t __pyx_t_23;
