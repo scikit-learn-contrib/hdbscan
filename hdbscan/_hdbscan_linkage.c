@@ -1241,15 +1241,6 @@ static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[], \
     PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args, \
     const char* function_name);
 
-#define __Pyx_SetItemInt(o, i, v, type, is_signed, to_py_func, is_list, wraparound, boundscheck) \
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ? \
-    __Pyx_SetItemInt_Fast(o, (Py_ssize_t)i, v, is_list, wraparound, boundscheck) : \
-    (is_list ? (PyErr_SetString(PyExc_IndexError, "list assignment index out of range"), -1) : \
-               __Pyx_SetItemInt_Generic(o, to_py_func(i), v)))
-static CYTHON_INLINE int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v);
-static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObject *v,
-                                               int is_list, int wraparound, int boundscheck);
-
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
 #if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
@@ -5508,95 +5499,68 @@ static __pyx_t_5numpy_intp_t __pyx_f_7hdbscan_16_hdbscan_linkage_9UnionFind_fast
   __pyx_t_5numpy_intp_t __pyx_v_p;
   __pyx_t_5numpy_intp_t __pyx_r;
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
-  __pyx_t_5numpy_intp_t __pyx_t_4;
-  PyObject *__pyx_t_5 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
+  int __pyx_t_1;
+  __pyx_t_5numpy_intp_t __pyx_t_2;
+  __pyx_t_5numpy_intp_t __pyx_t_3;
   __Pyx_RefNannySetupContext("fast_find", 0);
 
   /* "hdbscan/_hdbscan_linkage.pyx":272
  *     cdef np.intp_t fast_find(self, np.intp_t n):
  *         cdef np.intp_t p
  *         p = n             # <<<<<<<<<<<<<<
- *         while self.parent_arr[n] != -1:
- *             n = self.parent_arr[n]
+ *         while self.parent[n] != -1:
+ *             n = self.parent[n]
  */
   __pyx_v_p = __pyx_v_n;
 
   /* "hdbscan/_hdbscan_linkage.pyx":273
  *         cdef np.intp_t p
  *         p = n
- *         while self.parent_arr[n] != -1:             # <<<<<<<<<<<<<<
- *             n = self.parent_arr[n]
+ *         while self.parent[n] != -1:             # <<<<<<<<<<<<<<
+ *             n = self.parent[n]
  *         # label up to the root
  */
   while (1) {
-    __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->parent_arr), __pyx_v_n, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 1, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 273; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_int_neg_1, Py_NE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 273; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 273; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (!__pyx_t_3) break;
+    __pyx_t_1 = (((__pyx_v_self->parent[__pyx_v_n]) != -1) != 0);
+    if (!__pyx_t_1) break;
 
     /* "hdbscan/_hdbscan_linkage.pyx":274
  *         p = n
- *         while self.parent_arr[n] != -1:
- *             n = self.parent_arr[n]             # <<<<<<<<<<<<<<
+ *         while self.parent[n] != -1:
+ *             n = self.parent[n]             # <<<<<<<<<<<<<<
  *         # label up to the root
- *         while self.parent_arr[p] != n:
+ *         while self.parent[p] != n:
  */
-    __pyx_t_2 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->parent_arr), __pyx_v_n, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 1, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 274; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_2); if (unlikely((__pyx_t_4 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 274; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_v_n = __pyx_t_4;
+    __pyx_v_n = (__pyx_v_self->parent[__pyx_v_n]);
   }
 
   /* "hdbscan/_hdbscan_linkage.pyx":276
- *             n = self.parent_arr[n]
+ *             n = self.parent[n]
  *         # label up to the root
- *         while self.parent_arr[p] != n:             # <<<<<<<<<<<<<<
- *             p, self.parent_arr[p] = self.parent_arr[p], n
+ *         while self.parent[p] != n:             # <<<<<<<<<<<<<<
+ *             p, self.parent[p] = self.parent[p], n
  *         return n
  */
   while (1) {
-    __pyx_t_2 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->parent_arr), __pyx_v_p, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 1, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 276; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_n); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 276; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_1, Py_NE); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 276; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 276; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (!__pyx_t_3) break;
+    __pyx_t_1 = (((__pyx_v_self->parent[__pyx_v_p]) != __pyx_v_n) != 0);
+    if (!__pyx_t_1) break;
 
     /* "hdbscan/_hdbscan_linkage.pyx":277
  *         # label up to the root
- *         while self.parent_arr[p] != n:
- *             p, self.parent_arr[p] = self.parent_arr[p], n             # <<<<<<<<<<<<<<
+ *         while self.parent[p] != n:
+ *             p, self.parent[p] = self.parent[p], n             # <<<<<<<<<<<<<<
  *         return n
  * 
  */
-    __pyx_t_5 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->parent_arr), __pyx_v_p, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 1, 0); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_4 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_5); if (unlikely((__pyx_t_4 == (npy_intp)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_n); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_v_p = __pyx_t_4;
-    if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_self->parent_arr), __pyx_v_p, __pyx_t_5, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 1, 0) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 277; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_2 = (__pyx_v_self->parent[__pyx_v_p]);
+    __pyx_t_3 = __pyx_v_n;
+    __pyx_v_p = __pyx_t_2;
+    (__pyx_v_self->parent[__pyx_v_p]) = __pyx_t_3;
   }
 
   /* "hdbscan/_hdbscan_linkage.pyx":278
- *         while self.parent_arr[p] != n:
- *             p, self.parent_arr[p] = self.parent_arr[p], n
+ *         while self.parent[p] != n:
+ *             p, self.parent[p] = self.parent[p], n
  *         return n             # <<<<<<<<<<<<<<
  * 
  * cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
@@ -5613,12 +5577,6 @@ static __pyx_t_5numpy_intp_t __pyx_f_7hdbscan_16_hdbscan_linkage_9UnionFind_fast
  */
 
   /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_WriteUnraisable("hdbscan._hdbscan_linkage.UnionFind.fast_find", __pyx_clineno, __pyx_lineno, __pyx_filename, 0, 0);
-  __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -22450,54 +22408,6 @@ bad:
     return -1;
 }
 
-static CYTHON_INLINE int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v) {
-    int r;
-    if (!j) return -1;
-    r = PyObject_SetItem(o, j, v);
-    Py_DECREF(j);
-    return r;
-}
-static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObject *v, int is_list,
-                                               CYTHON_NCP_UNUSED int wraparound, CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_COMPILING_IN_CPYTHON
-    if (is_list || PyList_CheckExact(o)) {
-        Py_ssize_t n = (!wraparound) ? i : ((likely(i >= 0)) ? i : i + PyList_GET_SIZE(o));
-        if ((!boundscheck) || likely((n >= 0) & (n < PyList_GET_SIZE(o)))) {
-            PyObject* old = PyList_GET_ITEM(o, n);
-            Py_INCREF(v);
-            PyList_SET_ITEM(o, n, v);
-            Py_DECREF(old);
-            return 1;
-        }
-    } else {
-        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
-        if (likely(m && m->sq_ass_item)) {
-            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
-                Py_ssize_t l = m->sq_length(o);
-                if (likely(l >= 0)) {
-                    i += l;
-                } else {
-                    if (PyErr_ExceptionMatches(PyExc_OverflowError))
-                        PyErr_Clear();
-                    else
-                        return -1;
-                }
-            }
-            return m->sq_ass_item(o, i, v);
-        }
-    }
-#else
-#if CYTHON_COMPILING_IN_PYPY
-    if (is_list || (PySequence_Check(o) && !PyDict_Check(o))) {
-#else
-    if (is_list || PySequence_Check(o)) {
-#endif
-        return PySequence_SetItem(o, i, v);
-    }
-#endif
-    return __Pyx_SetItemInt_Generic(o, PyInt_FromSsize_t(i), v);
-}
-
 #if PY_MAJOR_VERSION < 3
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb,
                         CYTHON_UNUSED PyObject *cause) {
@@ -23193,7 +23103,7 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
 #endif
 
 
-          static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
+        static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
     PyObject *empty_list = 0;
     PyObject *module = 0;
     PyObject *global_dict = 0;
