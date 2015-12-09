@@ -13,6 +13,7 @@ from sklearn.utils.testing import assert_raises
 from sklearn.utils.testing import assert_in
 from sklearn.utils.testing import assert_not_in
 from sklearn.utils.testing import assert_no_warnings
+from sklearn.utils.testing import if_matplotlib
 from hdbscan import HDBSCAN
 from hdbscan import hdbscan
 from sklearn.cluster.tests.common import generate_clustered_data
@@ -142,12 +143,10 @@ def test_hdbscan_boruvka_balltree_matches():
 
     assert_less(num_mismatches / float(data.shape[0]), 0.01)
 
-def test_condensed_tree():
-
+def test_condensed_tree_plot():
     clusterer = HDBSCAN().fit(X)
-    ax = clusterer.condensed_tree_.plot()
+    if_matplotlib(clusterer.condensed_tree_.plot)()
 
-    assert(ax is not None)
 
 def test_hdbscan_badargs():
     assert_raises(ValueError,
