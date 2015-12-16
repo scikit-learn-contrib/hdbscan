@@ -414,8 +414,11 @@ cdef get_probabilities(np.ndarray tree, dict cluster_map, np.ndarray labels):
 
         cluster = cluster_map[cluster_num]
         max_lambda = deaths[cluster]
-        lambda_ = min(lambda_array[n], max_lambda)
-        result[point] = lambda_ / max_lambda
+        if max_lambda == 0.0:
+            result[point] = 1.0
+        else:
+            lambda_ = min(lambda_array[n], max_lambda)
+            result[point] = lambda_ / max_lambda
 
     return result
 
