@@ -149,7 +149,7 @@ def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
 
 def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
                             metric='minkowski', p=2, leaf_size=40,
-                            approx_min_span_tree=False,
+                            approx_min_span_tree=True,
                             gen_min_span_tree=False):
     if metric == 'minkowski':
         if p is None:
@@ -176,7 +176,7 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
 
 def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
                               metric='minkowski', p=2, leaf_size=40,
-                              approx_min_span_tree=False,
+                              approx_min_span_tree=True,
                               gen_min_span_tree=False):
     if metric == 'minkowski':
         if p is None:
@@ -204,7 +204,7 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
 def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             metric='minkowski', p=2, leaf_size=40,
             algorithm='best', memory=Memory(cachedir=None, verbose=0),
-            approx_min_span_tree=False, gen_min_span_tree=False):
+            approx_min_span_tree=True, gen_min_span_tree=False):
     """Perform HDBSCAN clustering from a vector array or distance matrix.
     
     Parameters
@@ -259,12 +259,13 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         By default, no caching is done. If a string is given, it is the
         path to the caching directory.
 
-    approx_min_span_tree : Bool (optional)
+    approx_min_span_tree : Bool, optional
         Whether to accept an only approximate minimum spanning tree.
         For some algorithms this can provide a significant speedup, but
-        the resulting clustering is of lower quality, and may have issues.
-        If you are willing to sacrifice correctness for speed you may want
-        to explore this; in general this should be left at the default False.
+        the resulting clustering may be of marginally lower quality.
+        If you are willing to sacrifice speed for correctness you may want
+        to explore this; in general this should be left at the default True.
+        (default True)
 
     gen_min_span_tree : bool, optional
         Whether to generate the minimum spanning tree for later analysis.
@@ -276,7 +277,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         Cluster labels for each point.  Noisy samples are given the label -1.
 
     probabilities : array [n_samples]
-        Cluster membership strengths for each point. Noisy samples are assigned 0.
+        Cluster membership strengths for each point. Noisy samples are assigned
+        0.
 
     condensed_tree : record array
         The condensed cluster hierarchy used to generate clusters.
@@ -459,10 +461,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     approx_min_span_tree : Bool, optional
         Whether to accept an only approximate minimum spanning tree.
         For some algorithms this can provide a significant speedup, but
-        the resulting clustering is of lower quality, and may have issues.
-        If you are willing to sacrifice correctness for speed you may want
-        to explore this; in general this should be left at the default False.
-        (default False)
+        the resulting clustering may be of marginally lower quality.
+        If you are willing to sacrifice speed for correctness you may want
+        to explore this; in general this should be left at the default True.
+        (default True)
 
     gen_min_span_tree: bool, optional
         Whether to generate the minimum spanning tree with regard
@@ -516,7 +518,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                  metric='euclidean', alpha=1.0, p=None,
                  algorithm='best', leaf_size=40,
                  memory=Memory(cachedir=None, verbose=0),
-                 approx_min_span_tree=False,
+                 approx_min_span_tree=True,
                  gen_min_span_tree=False):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
