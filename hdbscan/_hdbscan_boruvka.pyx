@@ -672,6 +672,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
             # then propagate the results of that computation
             # up the tree.
             new_bound = min(new_upper_bound, new_lower_bound + 2 * node1_info.radius)
+            #new_bound = new_upper_bound
             if new_bound < self.bounds_ptr[node1]:
                 self.bounds_ptr[node1] = new_bound
 
@@ -685,15 +686,8 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                     left_info = self.node_data[left]
                     right_info = self.node_data[right]
 
-                    bound_max = max(self.bounds_ptr[left],
+                    new_bound = max(self.bounds_ptr[left],
                                     self.bounds_ptr[right])
-                    bound_min = min(self.bounds_ptr[left] + 2 * (parent_info.radius - left_info.radius),
-                                    self.bounds_ptr[right] + 2 * (parent_info.radius - right_info.radius))
-
-                    if bound_min > 0:
-                        new_bound = min(bound_max, bound_min)
-                    else:
-                        new_bound = bound_max
 
                     if new_bound < self.bounds_ptr[parent]:
                         self.bounds_ptr[parent] = new_bound
