@@ -317,7 +317,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             (single_linkage_tree,
              result_min_span_tree) = \
                 memory.cache(_hdbscan_generic)(X, min_samples, alpha, metric,
-                                               p, gen_min_span_tree)
+                                               p, leaf_size, gen_min_span_tree)
         elif algorithm == 'prims_kdtree':
             if metric not in KDTree.valid_metrics:
                 raise ValueError("Cannot use Prim's with KDTree for this metric!")
