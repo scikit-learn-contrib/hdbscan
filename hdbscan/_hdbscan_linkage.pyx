@@ -273,7 +273,7 @@ cdef class UnionFind (object):
         while self.parent[n] != -1:
             n = self.parent[n]
         # label up to the root
-        while self.parent_arr[p] != n:
+        while self.parent[p] != n:
             self.parent[p] = n
             p = self.parent[p]
         return n
