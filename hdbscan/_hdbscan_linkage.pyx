@@ -270,11 +270,12 @@ cdef class UnionFind (object):
     cdef np.intp_t fast_find(self, np.intp_t n):
         cdef np.intp_t p
         p = n
-        while self.parent_arr[n] != -1:
-            n = self.parent_arr[n]
+        while self.parent[n] != -1:
+            n = self.parent[n]
         # label up to the root
         while self.parent_arr[p] != n:
-            p, self.parent_arr[p] = self.parent_arr[p], n
+            self.parent[p] = n
+            p = self.parent[p]
         return n
 
 cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
