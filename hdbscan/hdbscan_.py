@@ -19,6 +19,7 @@ from sklearn.externals.joblib import Memory
 from sklearn.externals import six
 from warnings import warn
 
+#Try and work around older sklearn api
 try:
     from sklearn.utils import check_array
 except ImportError:
@@ -46,7 +47,9 @@ FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics
 
 
 def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10):
-
+    """ Converts a pretrained tree and cluster size into a 
+    set of labels and probabilities.
+    """
     condensed_tree = condense_tree(single_linkage_tree,
                                    min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
@@ -72,6 +75,9 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0,
 
     min_spanning_tree = mst_linkage_core(mutual_reachability_)
 
+    #mst_linkage_core does not generate a full minimal spanning tree
+    #If a tree is required then we must build the edges from the information
+    #returned by mst_linkage_core (i.e. just the order of points to be merged)
     if gen_min_span_tree:
         result_min_span_tree = min_spanning_tree.copy()
         for index, row in enumerate(result_min_span_tree[1:], 1):
