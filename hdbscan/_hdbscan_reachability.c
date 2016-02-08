@@ -1218,6 +1218,7 @@ static char __pyx_k_np[] = "np";
 static char __pyx_k_dim[] = "dim";
 static char __pyx_k_axis[] = "axis";
 static char __pyx_k_main[] = "__main__";
+static char __pyx_k_size[] = "size";
 static char __pyx_k_sort[] = "sort";
 static char __pyx_k_test[] = "__test__";
 static char __pyx_k_tree[] = "tree";
@@ -1297,6 +1298,7 @@ static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_result;
 static PyObject *__pyx_n_s_scipy_spatial_distance;
 static PyObject *__pyx_n_s_shape;
+static PyObject *__pyx_n_s_size;
 static PyObject *__pyx_n_s_sklearn_neighbors;
 static PyObject *__pyx_n_s_sort;
 static PyObject *__pyx_n_s_squareform;
@@ -1417,7 +1419,7 @@ static PyObject *__pyx_pw_7hdbscan_21_hdbscan_reachability_1mutual_reachability(
 }
 
 static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_mutual_reachability(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_distance_matrix, PyObject *__pyx_v_min_points, PyObject *__pyx_v_alpha) {
-  PyObject *__pyx_v_dim = NULL;
+  PyObject *__pyx_v_size = NULL;
   PyObject *__pyx_v_core_distances = NULL;
   PyObject *__pyx_v_stage1 = NULL;
   PyObject *__pyx_v_result = NULL;
@@ -1446,8 +1448,8 @@ static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_mutual_reachability(C
   /* "hdbscan/_hdbscan_reachability.pyx":38
  *     2013
  *     """
- *     dim = distance_matrix.shape[0]             # <<<<<<<<<<<<<<
- *     min_points = min(dim - 1, min_points)
+ *     size = distance_matrix.shape[0]             # <<<<<<<<<<<<<<
+ *     min_points = min(size - 1, min_points)
  *     try:
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_distance_matrix, __pyx_n_s_shape); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 38; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -1455,19 +1457,19 @@ static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_mutual_reachability(C
   __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 38; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_dim = __pyx_t_2;
+  __pyx_v_size = __pyx_t_2;
   __pyx_t_2 = 0;
 
   /* "hdbscan/_hdbscan_reachability.pyx":39
  *     """
- *     dim = distance_matrix.shape[0]
- *     min_points = min(dim - 1, min_points)             # <<<<<<<<<<<<<<
+ *     size = distance_matrix.shape[0]
+ *     min_points = min(size - 1, min_points)             # <<<<<<<<<<<<<<
  *     try:
  *         core_distances = np.partition(distance_matrix,
  */
   __Pyx_INCREF(__pyx_v_min_points);
   __pyx_t_2 = __pyx_v_min_points;
-  __pyx_t_1 = PyNumber_Subtract(__pyx_v_dim, __pyx_int_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyNumber_Subtract(__pyx_v_size, __pyx_int_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_1, Py_LT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_5 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 39; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -1488,8 +1490,8 @@ static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_mutual_reachability(C
   __pyx_t_2 = 0;
 
   /* "hdbscan/_hdbscan_reachability.pyx":40
- *     dim = distance_matrix.shape[0]
- *     min_points = min(dim - 1, min_points)
+ *     size = distance_matrix.shape[0]
+ *     min_points = min(size - 1, min_points)
  *     try:             # <<<<<<<<<<<<<<
  *         core_distances = np.partition(distance_matrix,
  *                                       min_points,
@@ -1502,7 +1504,7 @@ static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_mutual_reachability(C
     /*try:*/ {
 
       /* "hdbscan/_hdbscan_reachability.pyx":41
- *     min_points = min(dim - 1, min_points)
+ *     min_points = min(size - 1, min_points)
  *     try:
  *         core_distances = np.partition(distance_matrix,             # <<<<<<<<<<<<<<
  *                                       min_points,
@@ -1531,7 +1533,7 @@ static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_mutual_reachability(C
       PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_min_points);
 
       /* "hdbscan/_hdbscan_reachability.pyx":41
- *     min_points = min(dim - 1, min_points)
+ *     min_points = min(size - 1, min_points)
  *     try:
  *         core_distances = np.partition(distance_matrix,             # <<<<<<<<<<<<<<
  *                                       min_points,
@@ -1819,7 +1821,7 @@ static PyObject *__pyx_pf_7hdbscan_21_hdbscan_reachability_mutual_reachability(C
   __Pyx_AddTraceback("hdbscan._hdbscan_reachability.mutual_reachability", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_dim);
+  __Pyx_XDECREF(__pyx_v_size);
   __Pyx_XDECREF(__pyx_v_core_distances);
   __Pyx_XDECREF(__pyx_v_stage1);
   __Pyx_XDECREF(__pyx_v_result);
@@ -6061,6 +6063,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_result, __pyx_k_result, sizeof(__pyx_k_result), 0, 0, 1, 1},
   {&__pyx_n_s_scipy_spatial_distance, __pyx_k_scipy_spatial_distance, sizeof(__pyx_k_scipy_spatial_distance), 0, 0, 1, 1},
   {&__pyx_n_s_shape, __pyx_k_shape, sizeof(__pyx_k_shape), 0, 0, 1, 1},
+  {&__pyx_n_s_size, __pyx_k_size, sizeof(__pyx_k_size), 0, 0, 1, 1},
   {&__pyx_n_s_sklearn_neighbors, __pyx_k_sklearn_neighbors, sizeof(__pyx_k_sklearn_neighbors), 0, 0, 1, 1},
   {&__pyx_n_s_sort, __pyx_k_sort, sizeof(__pyx_k_sort), 0, 0, 1, 1},
   {&__pyx_n_s_squareform, __pyx_k_squareform, sizeof(__pyx_k_squareform), 0, 0, 1, 1},
@@ -6214,7 +6217,7 @@ static int __Pyx_InitCachedConstants(void) {
  *     """Compute the weighted adjacency matrix of the mutual reachability
  *     graph of a distance matrix.
  */
-  __pyx_tuple__15 = PyTuple_Pack(7, __pyx_n_s_distance_matrix, __pyx_n_s_min_points, __pyx_n_s_alpha, __pyx_n_s_dim, __pyx_n_s_core_distances, __pyx_n_s_stage1, __pyx_n_s_result); if (unlikely(!__pyx_tuple__15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 13; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__15 = PyTuple_Pack(7, __pyx_n_s_distance_matrix, __pyx_n_s_min_points, __pyx_n_s_alpha, __pyx_n_s_size, __pyx_n_s_core_distances, __pyx_n_s_stage1, __pyx_n_s_result); if (unlikely(!__pyx_tuple__15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 13; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__15);
   __Pyx_GIVEREF(__pyx_tuple__15);
   __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(3, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_leland_PycharmProjects_hd, __pyx_n_s_mutual_reachability, 13, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 13; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
