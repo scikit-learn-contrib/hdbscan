@@ -35,8 +35,8 @@ def mutual_reachability(distance_matrix, min_points=5, alpha=1.0):
     In: Advances in Knowledge Discovery and Data Mining, Springer, pp 160-172.
     2013
     """
-    dim = distance_matrix.shape[0]
-    min_points = min(dim - 1, min_points)
+    size = distance_matrix.shape[0]
+    min_points = min(size - 1, min_points)
     try:
         core_distances = np.partition(distance_matrix, 
                                       min_points, 
