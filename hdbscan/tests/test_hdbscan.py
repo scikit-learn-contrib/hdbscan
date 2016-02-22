@@ -134,19 +134,29 @@ def test_hdbscan_boruvka_balltree_matches():
 
     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
-    assert_less(num_mismatches / float(data.shape[0]), 0.01)
+    assert_less(num_mismatches / float(data.shape[0]), 0.05)
 
     labels_prims = HDBSCAN(algorithm='generic').fit_predict(data)
     labels_boruvka = HDBSCAN(algorithm='boruvka_balltree').fit_predict(data)
 
     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
-    assert_less(num_mismatches / float(data.shape[0]), 0.01)
+    assert_less(num_mismatches / float(data.shape[0]), 0.05)
 
 def test_condensed_tree_plot():
     clusterer = HDBSCAN().fit(X)
     if_matplotlib(clusterer.condensed_tree_.plot)()
 
+def test_tree_output_formats():
+
+    clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
+    clusterer.condensed_tree_.to_pandas()
+    clusterer.condensed_tree_.to_networkx()
+    clusterer.single_linkage_tree_.to_pandas()
+    clusterer.single_linkage_tree_.to_networkx()
+    clusterer.single_linkage_tree_.to_numpy()
+    clusterer.minimum_spanning_tree_.to_pandas()
+    clusterer.minimum_spanning_tree_.to_networkx()
 
 def test_hdbscan_badargs():
     assert_raises(ValueError,
