@@ -485,6 +485,17 @@ class SingleLinkageTree(object):
 
         return axis
 
+    def to_numpy(self):
+        """Return a numpy array representation of the single linkage tree.
+
+        This representation conforms to the scipy.cluster.hierarchy notion
+        of a single linkage tree, and can be used with all the associated
+        scipy tools. Please see the scipy documentation for more details
+        on the format.
+        """
+        return self._linkage.copy()
+
+
     def to_pandas(self):
         """Return a pandas dataframe representation of the single linkage tree.
 
@@ -510,15 +521,15 @@ class SingleLinkageTree(object):
         max_node = 2 * self._linkage.shape[0]
         num_points = max_node - (self._linkage.shape[0] - 1)
 
-        parent_array = np.arange(num_points, max_node)
+        parent_array = np.arange(num_points, max_node + 1)
 
         result = DataFrame({
             'parent': parent_array,
-            'left_child': self._linkage[0],
-            'right_child': self._linkage[1],
-            'distance': self._linkage[2],
-            'size': self._linkage[3]
-        })
+            'left_child': self._linkage.T[0],
+            'right_child': self._linkage.T[1],
+            'distance': self._linkage.T[2],
+            'size': self._linkage.T[3]
+        })[['parent', 'left_child', 'right_child', 'distance', 'size']]
 
         return result
 
