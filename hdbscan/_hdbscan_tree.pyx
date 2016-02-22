@@ -62,7 +62,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
 
     node_list = bfs_from_hierarchy(hierarchy, root)
 
-    relabel = np.empty(len(node_list), dtype=np.intp)
+    relabel = np.empty(root + 1, dtype=np.intp)
     relabel[root] = num_points
     result_list = []
     ignore = np.zeros(len(node_list), dtype=np.int)
