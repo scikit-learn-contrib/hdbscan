@@ -29,7 +29,6 @@ except ImportError:
 
 from ._hdbscan_linkage import (single_linkage,
                                mst_linkage_core,
-                               mst_linkage_core_pdist,
                                mst_linkage_core_cdist,
                                label)
 from ._hdbscan_tree import (condense_tree,
