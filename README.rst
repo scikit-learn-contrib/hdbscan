@@ -1,3 +1,10 @@
+.. image:: https://img.shields.io/pypi/v/hdbscan.svg
+    :target: https://pypi.python.org/pypi/hdbscan/
+    :alt: Version
+.. image:: https://img.shields.io/pypi/l/hdbscan.svg
+    :target: https://github.com/nicodv/hdbscan/blob/master/LICENSE
+    :alt: License
+
 =======
 HDBSCAN
 =======
