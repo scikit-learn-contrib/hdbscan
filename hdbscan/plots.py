@@ -345,6 +345,11 @@ class CondensedTree(object):
 
         return axis
 
+    def to_numpy(self):
+        """Return a numpy structured array representation of the condensed tree.
+        """
+        return self._raw_tree.copy()
+
     def to_pandas(self):
         """Return a pandas dataframe representation of the condensed tree.
 
