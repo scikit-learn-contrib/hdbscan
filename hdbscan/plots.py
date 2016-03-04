@@ -689,6 +689,11 @@ class MinimumSpanningTree(object):
 
         return axis
 
+    def to_numpy(self):
+        """Return a numpy array of weighted edges in the minimum spanning tree
+        """
+        return self._mst.copy()
+
     def to_pandas(self):
         """Return a Pandas dataframe of the minimum spanning tree.
 
