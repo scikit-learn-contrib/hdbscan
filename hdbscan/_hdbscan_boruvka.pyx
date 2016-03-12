@@ -246,6 +246,9 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         This is considerably faster but does not return a true
         minimal spanning tree.
 
+    n_jobs : int (default 4)
+        The number of parallel jobs used to compute core distances.
+
     **kwargs :
         Keyword args passed to the metric.
     """
@@ -258,6 +261,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
     cdef np.double_t[:, :, ::1] node_bounds
     cdef np.double_t alpha
     cdef np.int8_t approx_min_span_tree
+    cdef np.intp_t n_jobs
     cdef np.intp_t min_samples
     cdef np.intp_t num_points
     cdef np.intp_t num_nodes
@@ -296,7 +300,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
     cdef np.ndarray candidate_distance_arr
 
     def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20,
-                 alpha=1.0, approx_min_span_tree=False, **kwargs):
+                 alpha=1.0, approx_min_span_tree=False, n_jobs=4, **kwargs):
 
         self.core_dist_tree = tree
         self.tree = KDTree(tree.data, metric=metric, leaf_size=leaf_size)
@@ -306,6 +310,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         self.min_samples = min_samples
         self.alpha = alpha
         self.approx_min_span_tree = approx_min_span_tree
+        self.n_jobs = n_jobs
 
         self.num_points = self.tree.data.shape[0]
         self.num_features = self.tree.data.shape[1]
@@ -363,14 +368,14 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         # A shortcut: if we have a lot of points then we can split the points into
         # four piles and query them in parallel. On multicore systems (most systems)
         # this amounts to a 2x-3x wall clock improvement.
-        if self.tree.data.shape[0] > 16384:
+        if self.tree.data.shape[0] > 16384 and self.n_jobs > 1:
             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
                         ]
 
-            knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+            knn_data = Parallel(n_jobs=self.n_jobs)(delayed(_core_dist_query, check_pickle=False)
                                  (self.core_dist_tree, points, self.min_samples + 1)
                                   for points in datasets)
             knn_dist = np.vstack([x[0] for x in knn_data])
@@ -804,7 +809,10 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         This is considerably faster but does not return a true
         minimal spanning tree.
 
-    **kwargs :
+    n_jobs : int (default 4)
+        The number of parallel jobs used to compute core distances.
+
+   **kwargs :
         Keyword args passed to the metric.
     """
 
@@ -815,6 +823,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef np.double_t[:, ::1] _raw_data
     cdef np.double_t alpha
     cdef np.int8_t approx_min_span_tree
+    cdef np.intp_t n_jobs
     cdef np.intp_t min_samples
     cdef np.intp_t num_points
     cdef np.intp_t num_nodes
@@ -853,7 +862,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef np.ndarray candidate_distance_arr
 
     def __init__(self, tree, min_samples=5, metric='euclidean',
-                 alpha=1.0, leaf_size=20, approx_min_span_tree=False, **kwargs):
+                 alpha=1.0, leaf_size=20, approx_min_span_tree=False, n_jobs=4, **kwargs):
 
         self.core_dist_tree = tree
         self.tree = BallTree(tree.data, metric=metric, leaf_size=leaf_size)
@@ -862,6 +871,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         self.min_samples = min_samples
         self.alpha = alpha
         self.approx_min_span_tree = approx_min_span_tree
+        self.n_jobs = n_jobs
 
         self.num_points = self.tree.data.shape[0]
         self.num_features = self.tree.data.shape[1]
@@ -917,14 +927,14 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.intp_t, ndim=2] knn_indices
 
-        if self.tree.data.shape[0] > 16384:
+        if self.tree.data.shape[0] > 16384 and self.n_jobs > 1:
             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
                         np.asarray(self.tree.data[self.num_points//4:self.num_points//2]),
                         np.asarray(self.tree.data[self.num_points//2:3*(self.num_points//4)]),
                         np.asarray(self.tree.data[3*(self.num_points//4):self.num_points])
                         ]
 
-            knn_data = Parallel(n_jobs=4)(delayed(_core_dist_query, check_pickle=False)
+            knn_data = Parallel(n_jobs=self.n_jobs)(delayed(_core_dist_query, check_pickle=False)
                                  (self.core_dist_tree, points, self.min_samples)
                                   for points in datasets)
             knn_dist = np.vstack([x[0] for x in knn_data])

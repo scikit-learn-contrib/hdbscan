@@ -166,7 +166,8 @@ def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
 def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
                             metric='minkowski', p=2, leaf_size=40,
                             approx_min_span_tree=True,
-                            gen_min_span_tree=False):
+                            gen_min_span_tree=False,
+                            core_dist_n_jobs=4):
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
@@ -181,7 +182,7 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size)
     alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
-                                 approx_min_span_tree=approx_min_span_tree)
+                                 approx_min_span_tree=approx_min_span_tree, n_jobs=core_dist_n_jobs)
     min_spanning_tree = alg.spanning_tree()
     #Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
@@ -197,7 +198,8 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
 def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
                               metric='minkowski', p=2, leaf_size=40,
                               approx_min_span_tree=True,
-                              gen_min_span_tree=False):
+                              gen_min_span_tree=False,
+                              core_dist_n_jobs=4):
     if metric == 'minkowski':
         if p is None:
             raise TypeError('Minkowski metric given but no p value supplied!')
@@ -212,7 +214,7 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size)
     alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
-                                   approx_min_span_tree=approx_min_span_tree)
+                                   approx_min_span_tree=approx_min_span_tree, n_jobs=core_dist_n_jobs)
     min_spanning_tree = alg.spanning_tree()
     #Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
@@ -228,7 +230,8 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
 def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             metric='minkowski', p=2, leaf_size=40,
             algorithm='best', memory=Memory(cachedir=None, verbose=0),
-            approx_min_span_tree=True, gen_min_span_tree=False):
+            approx_min_span_tree=True, gen_min_span_tree=False,
+            core_dist_n_jobs=4):
     """Perform HDBSCAN clustering from a vector array or distance matrix.
     
     Parameters
@@ -298,6 +301,11 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     gen_min_span_tree : bool, optional
         Whether to generate the minimum spanning tree for later analysis.
         (default False)
+
+    core_dist_n_jobs : int, optional
+        Number of parallel jobs to run in core distance computations (if
+        supported by the specific algorithm).
+        (default 4)
 
     Returns
     -------
@@ -372,7 +380,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                 memory.cache(_hdbscan_boruvka_kdtree)(X, min_samples, alpha,
                                                       metric, p, leaf_size,
                                                       approx_min_span_tree,
-                                                      gen_min_span_tree)
+                                                      gen_min_span_tree,
+                                                      core_dist_n_jobs)
         elif algorithm == 'boruvka_balltree':
             if metric not in BallTree.valid_metrics:
                 raise ValueError("Cannot use Boruvka with BallTree for this metric!")
@@ -381,7 +390,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                 memory.cache(_hdbscan_boruvka_balltree)(X, min_samples, alpha,
                                                         metric, p, leaf_size,
                                                         approx_min_span_tree,
-                                                        gen_min_span_tree)
+                                                        gen_min_span_tree,
+                                                        core_dist_n_jobs)
         else:
             raise TypeError('Unknown algorithm type %s specified' % algorithm)
     else:
@@ -406,7 +416,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                     memory.cache(_hdbscan_boruvka_kdtree)(X, min_samples, alpha,
                                                           metric, p, leaf_size,
                                                           approx_min_span_tree,
-                                                          gen_min_span_tree)
+                                                          gen_min_span_tree,
+                                                          core_dist_n_jobs)
         else:  # Metric is a valid BallTree metric
             #TO DO: Need heuristic to decide when to go to boruvka; still debugging for now
             if X.shape[1] > 60:
@@ -421,7 +432,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                     memory.cache(_hdbscan_boruvka_balltree)(X, min_samples, alpha,
                                                             metric, p, leaf_size,
                                                             approx_min_span_tree,
-                                                            gen_min_span_tree)
+                                                            gen_min_span_tree,
+                                                            core_dist_n_jobs)
 
     return _tree_to_labels(X, single_linkage_tree, min_cluster_size) + (result_min_span_tree,)
 
