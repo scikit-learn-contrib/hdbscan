@@ -176,7 +176,10 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
 
     if leaf_size < 3:
         leaf_size = 3
-        
+
+    if core_dist_n_jobs < 1:
+        raise ValueError('Parallel core distance computation requires 1 or more jobs!')
+
     size = X.shape[0]
     min_samples = min(size - 1, min_samples)
 
@@ -208,6 +211,9 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
 
     if leaf_size < 3:
         leaf_size = 3
+
+    if core_dist_n_jobs < 1:
+        raise ValueError('Parallel core distance computation requires 1 or more jobs!')
 
     size = X.shape[0]
     min_samples = min(size - 1, min_samples)
