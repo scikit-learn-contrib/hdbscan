@@ -350,6 +350,12 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     if min_samples <= 0 or min_cluster_size <= 0:
         raise ValueError('Min samples and Min cluster size must be positive integers')
 
+    if alpha <= 0.0 or type(alpha) is int:
+        raise ValueError('Alpha must be a positive value greater than 0!')
+
+    if leaf_size < 1:
+        raise ValueError('Leaf size must be greater than 0!')
+
     #Checks input and converts to an nd-array where possible
     X = check_array(X, accept_sparse='csr')
     #Python 2 and 3 compliant string_type checking
