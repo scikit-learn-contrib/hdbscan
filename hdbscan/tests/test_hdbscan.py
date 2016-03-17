@@ -19,6 +19,8 @@ from hdbscan import hdbscan
 from sklearn.cluster.tests.common import generate_clustered_data
 from scipy.stats import mode
 
+from tempfile import mkdtemp
+
 from sklearn import datasets
 
 n_clusters = 3
@@ -189,8 +191,24 @@ def test_hdbscan_badargs():
     assert_raises(Exception,
                   hdbscan,
                   alpha='fail')
-    
-    
+
+def test_hdbscan_sparse():
+
+    sparse_X = sparse.csr_matrix(X)
+
+    labels = HDBSCAN().fit(sparse_X).labels_
+    n_clusters = len(set(labels)) - int(-1 in labels)
+    assert_equal(n_clusters, 3)
+
+def test_hdbscan_caching():
+
+    cachedir = mkdtemp()
+    labels1 = HDBSCAN(memory=cachedir, min_samples=5).fit(X).labels_
+    labels2 = HDBSCAN(memory=cachedir, min_samples=5, min_cluster_size=6).fit(X).labels_
+    n_clusters1 = len(set(labels1)) - int(-1 in labels1)
+    n_clusters2 = len(set(labels2)) - int(-1 in labels2)
+    assert_equal(n_clusters1, n_clusters2)
+
 ### Probably not applicable now #########################
 #def test_dbscan_sparse():
 #def test_dbscan_balltree():
