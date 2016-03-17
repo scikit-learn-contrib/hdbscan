@@ -183,6 +183,12 @@ def test_hdbscan_badargs():
     assert_raises(ValueError,
                   hdbscan,
                   X, metric='minkowski', p=-1)
+    assert_raises(ValueError,
+                  hdbscan,
+                  X, alpha=-1)
+    assert_raises(Exception,
+                  hdbscan,
+                  alpha='fail')
     
     
 ### Probably not applicable now #########################
