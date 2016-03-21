@@ -365,7 +365,7 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
             ``metric='precomputed'``.
         """
         X = check_array(X, accept_sparse='csr')
-        self.labels_, self._cluster_hierarchy = robust_single_linkage(X, **self.get_params())
+        self.labels_, self._cluster_hierarchy_ = robust_single_linkage(X, **self.get_params())
         return self
 
     def fit_predict(self, X, y=None):
