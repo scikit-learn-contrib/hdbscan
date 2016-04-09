@@ -80,6 +80,21 @@ The clusterer objects also have an attribute providing cluster membership
 strengths, resulting in optional soft clustering (and no further compute 
 expense)
 
+-----------------
+Outlier Detection
+-----------------
+
+The HDBSCAN clusterer objects also support the GLOSH outlier detection algorithm. 
+After fitting the clusterer to data the outlier scores can be accessed via the
+``outlier_scores_`` attribute. The result is a vector of score values, one for
+each data point that was fit. Higher scores represent more outlier like objects.
+Selecting outliers via upper quantiles is often a good approach.
+
+Based on the paper:
+    R.J.G.B. Campello, D. Moulavi, A. Zimek and J. Sander 
+    *Hierarchical Density Estimates for Data Clustering, Visualization, and Outlier Detection*, 
+    ACM Trans. on Knowledge Discovery from Data, Vol 10, 1 (July 2015), 1-51.
+
 ---------------------
 Robust single linkage
 ---------------------
