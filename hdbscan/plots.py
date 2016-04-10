@@ -222,7 +222,8 @@ class CondensedTree(object):
         return [cluster for cluster in is_cluster if is_cluster[cluster]]
 
     def plot(self, leaf_separation=1, cmap='Blues', select_clusters=False,
-             label_clusters=False, axis=None, colorbar=True, log_size=False):
+             label_clusters=False, selection_palette=None,
+             axis=None, colorbar=True, log_size=False):
         """Use matplotlib to plot an 'icicle plot' dendrogram of the condensed tree.
 
         Effectively this is a dendrogram where the width of each cluster bar is
@@ -249,6 +250,13 @@ class CondensedTree(object):
         label_clusters : boolean, optional
                          If select_clusters is True then this determines
                          whether to draw text labels on the clusters.
+
+        selection_palette : list of colors, optional
+                            If not None, and at least as long as
+                            the number of clusters, draw ovals
+                            in colors iterating through this palette.
+                            This can aid in cluster identification
+                            when plotting.
 
         axis : matplotlib axis or None, optional
                The matplotlib axis to render to. If None then a new axis
@@ -318,12 +326,18 @@ class CondensedTree(object):
                     np.mean([c_bounds[CB_TOP], c_bounds[CB_BOTTOM]]),
                 )
 
+                if selection_palette is not None and \
+                        len(selection_palette) > len(chosen_clusters):
+                    oval_color = selection_palette[i]
+                else:
+                    oval_color = 'r'
+
                 box = Ellipse(
                     center,
                     2.0 * width,
                     1.2 * height,
                     facecolor='none',
-                    edgecolor='r',
+                    edgecolor=oval_color,
                     linewidth=2
                 )
 
