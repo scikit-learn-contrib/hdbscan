@@ -22,12 +22,6 @@ CB_BOTTOM = 2
 CB_TOP = 3
 
 
-def _get_leaves(condensed_tree):
-    cluster_tree = condensed_tree[condensed_tree['child_size'] > 1]
-    clusters = cluster_tree['child']
-    return [c for c in clusters if len(cluster_tree[cluster_tree['parent'] == c]) == 0]
-
-
 def _bfs_from_cluster_tree(tree, bfs_root):
     """
     Perform a breadth first search on a tree in condensed tree format
@@ -42,6 +36,17 @@ def _bfs_from_cluster_tree(tree, bfs_root):
 
     return result
 
+def _recurse_leaf_dfs(cluster_tree, current_node):
+    children = cluster_tree[cluster_tree['parent'] == current_node]['child']
+    if len(children) == 0:
+        return [current_node,]
+    else:
+        return sum([_recurse_leaf_dfs(cluster_tree, child) for child in children], [])
+
+def _get_leaves(condensed_tree):
+    cluster_tree = condensed_tree[condensed_tree['child_size'] > 1]
+    root = cluster_tree['parent'].min()
+    return _recurse_leaf_dfs(cluster_tree, root)
 
 def _bfs_from_linkage_tree(hierarchy, bfs_root):
     """
