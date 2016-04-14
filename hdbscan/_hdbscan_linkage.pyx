@@ -53,7 +53,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
     return result
 
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
-                               np.ndarray[np.double_t, ndim=2] raw_data,
+                               np.ndarray[np.double_t, ndim=2, mode='c'] raw_data,
                                np.ndarray[np.double_t, ndim=1] core_distances,
                                DistanceMetric dist_metric,
                                np.double_t alpha=1.0):

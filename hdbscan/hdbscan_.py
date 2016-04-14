@@ -107,6 +107,10 @@ def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
     elif p is None:
         p = 2  # Unused, but needs to be integer; assume euclidean
 
+    # The Cython routines used require contiguous arrays
+    if not X.flags['C_CONTIGUOUS']:
+        X = np.array(X, dtype=np.double, order='C')
+
     size = X.shape[0]
     min_samples = min(size - 1, min_samples)
 
@@ -140,6 +144,10 @@ def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
             raise ValueError('Minkowski metric with negative p value is not defined!')
     elif p is None:
         p = 2  # Unused, but needs to be integer; assume euclidean
+
+    # The Cython routines used require contiguous arrays
+    if not X.flags['C_CONTIGUOUS']:
+        X = np.array(X, dtype=np.double, order='C')
 
     size = X.shape[0]
     min_samples = min(size - 1, min_samples)
