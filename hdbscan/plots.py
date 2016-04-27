@@ -221,7 +221,7 @@ class CondensedTree(object):
 
         return [cluster for cluster in is_cluster if is_cluster[cluster]]
 
-    def plot(self, leaf_separation=1, cmap='Blues', select_clusters=False,
+    def plot(self, leaf_separation=1, cmap='viridis', select_clusters=False,
              label_clusters=False, selection_palette=None,
              axis=None, colorbar=True, log_size=False):
         """Use matplotlib to plot an 'icicle plot' dendrogram of the condensed tree.
@@ -240,7 +240,7 @@ class CondensedTree(object):
 
         cmap : string or matplotlib colormap, optional
                The matplotlib colormap to use to color the cluster bars.
-               (default Blues)
+               (default viridis)
 
         select_clusters : boolean, optional
                           Whether to draw ovals highlighting which cluster
@@ -431,7 +431,8 @@ class SingleLinkageTree(object):
     def __init__(self, linkage):
         self._linkage = linkage
 
-    def plot(self, axis=None, truncate_mode=None, p=0, vary_line_width=True):
+    def plot(self, axis=None, truncate_mode=None, p=0, vary_line_width=True,
+             cmap='none', colorbar=False):
         """Plot a dendrogram of the single linkage tree.
 
         Parameters
@@ -462,6 +463,14 @@ class SingleLinkageTree(object):
             Draw downward branches of the dendrogram with line thickness that 
             varies depending on the size of the cluster.
 
+        cmap : string or matplotlib colormap, optional
+               The matplotlib colormap to use to color the cluster bars.
+               (default 'none')
+
+        colorbar : boolean, optional
+                   Whether to draw a matplotlib colorbar displaying the range
+                   of cluster sizes as per the colormap. (default True)
+
         Returns
         -------
         axis : matplotlib axis
@@ -487,6 +496,12 @@ class SingleLinkageTree(object):
         else:
             linewidths = [(1.0, 1.0)] * len(Y)
 
+        if cmap != 'none':
+            color_array = np.log2(np.array(linewidths).flatten())
+            sm = plt.cm.ScalarMappable(cmap=cmap,
+                                       norm=plt.Normalize(0, color_array.max()))
+            sm.set_array(color_array)
+
         for x, y, lw in zip(X, Y, linewidths):
             left_x = x[:2]
             right_x = x[2:]
@@ -495,12 +510,27 @@ class SingleLinkageTree(object):
             horizontal_x = x[1:3]
             horizontal_y = y[1:3]
 
-            axis.plot(left_x, left_y, color='k', linewidth=np.log2(1 + lw[0]),
-                      solid_joinstyle='miter', solid_capstyle='butt')
-            axis.plot(right_x, right_y, color='k', linewidth=np.log2(1 + lw[1]),
-                      solid_joinstyle='miter', solid_capstyle='butt')
+            if cmap != 'none':
+                axis.plot(left_x, left_y, color=sm.to_rgba(np.log2(lw[0])),
+                          linewidth=np.log2(1 + lw[0]),
+                          solid_joinstyle='miter', solid_capstyle='butt')
+                axis.plot(right_x, right_y, color=sm.to_rgba(np.log2(lw[1])),
+                          linewidth=np.log2(1 + lw[1]),
+                          solid_joinstyle='miter', solid_capstyle='butt')
+            else:
+                axis.plot(left_x, left_y, color='k',
+                          linewidth=np.log2(1 + lw[0]),
+                          solid_joinstyle='miter', solid_capstyle='butt')
+                axis.plot(right_x, right_y, color='k',
+                          linewidth=np.log2(1 + lw[1]),
+                          solid_joinstyle='miter', solid_capstyle='butt')
+
             axis.plot(horizontal_x, horizontal_y, color='k', linewidth=1.0,
                       solid_joinstyle='miter', solid_capstyle='butt')
+
+        if colorbar:
+            cb = plt.colorbar(sm)
+            cb.ax.set_ylabel('log(Number of points)')
 
         axis.set_xticks([])
         for side in ('right', 'top', 'bottom'):
