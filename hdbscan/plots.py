@@ -432,7 +432,7 @@ class SingleLinkageTree(object):
         self._linkage = linkage
 
     def plot(self, axis=None, truncate_mode=None, p=0, vary_line_width=True,
-             cmap='none', colorbar=False):
+             cmap='viridis', colorbar=True):
         """Plot a dendrogram of the single linkage tree.
 
         Parameters
@@ -465,7 +465,8 @@ class SingleLinkageTree(object):
 
         cmap : string or matplotlib colormap, optional
                The matplotlib colormap to use to color the cluster bars.
-               (default 'none')
+               A value of 'none' will result in black bars.
+               (default 'viridis')
 
         colorbar : boolean, optional
                    Whether to draw a matplotlib colorbar displaying the range
@@ -646,8 +647,8 @@ class MinimumSpanningTree(object):
         self._mst = mst
         self._data = data
 
-    def plot(self, axis=None, node_size=10, node_color='k',
-             node_alpha=0.5, edge_alpha=0.25, edge_cmap='Reds_r',
+    def plot(self, axis=None, node_size=40, node_color='k',
+             node_alpha=0.8, edge_alpha=0.5, edge_cmap='viridis_r',
              edge_linewidth=2, vary_linewidth=True, colorbar=True):
         """Plot the minimum spanning tree (as projected into 2D by t-SNE if required).
 
@@ -658,23 +659,23 @@ class MinimumSpanningTree(object):
                The axis to render the plot to
 
         node_size : int, optional
-                The size of nodes in the plot (default 10).
+                The size of nodes in the plot (default 40).
 
         node_color : matplotlib color spec, optional
                 The color to render nodes (default black).
 
         node_alpha : float, optional
                 The alpha value (between 0 and 1) to render nodes with
-                (default 0.5).
+                (default 0.8).
 
         edge_cmap : matplotlib colormap, optional
                 The colormap to color edges by (varying color by edge 
                     weight/distance). Can be a cmap object or a string
-                    recognised by matplotlib. (default `Reds_r`)
+                    recognised by matplotlib. (default `viridis_r`)
 
         edge_alpha : float, optional
                 The alpha value (between 0 and 1) to render edges with
-                (default 0.25).
+                (default 0.5).
 
         edge_linewidth : float, optional
                 The linewidth to use for rendering edges (default 2).
