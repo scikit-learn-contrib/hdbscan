@@ -3,15 +3,10 @@
 # Authors: Leland McInnes, Steve Astels
 # License: 3-clause BSD
 
-cimport cython
-
-import numpy as np
 cimport numpy as np
 
 from libc.float cimport DBL_MAX
 
-from scipy.spatial.distance import cdist, pdist
-from dist_metrics import DistanceMetric
 from dist_metrics cimport DistanceMetric
 
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
@@ -52,7 +47,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
 
     return result
 
-cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_cdist(
+cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
                                np.ndarray[np.double_t, ndim=2, mode='c'] raw_data,
                                np.ndarray[np.double_t, ndim=1, mode='c'] core_distances,
                                DistanceMetric dist_metric,

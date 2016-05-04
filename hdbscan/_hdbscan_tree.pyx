@@ -36,7 +36,7 @@ cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy, np.intp_
     return result
 
 cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
-                          np.intp_t min_cluster_size=10):
+                               np.intp_t min_cluster_size=10):
 
     cdef np.intp_t root
     cdef np.intp_t num_points

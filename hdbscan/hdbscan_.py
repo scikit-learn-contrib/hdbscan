@@ -29,7 +29,7 @@ except ImportError:
 
 from ._hdbscan_linkage import (single_linkage,
                                mst_linkage_core,
-                               mst_linkage_core_cdist,
+                               mst_linkage_core_vector,
                                label)
 from ._hdbscan_tree import (condense_tree,
                             compute_stability,
@@ -123,8 +123,8 @@ def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
     core_distances = tree.query(X, k=min_samples,
                                 dualtree=True,
                                 breadth_first=True)[0][:, -1].copy(order='C')
-    #Mutual reachability distance is implicite in mst_linkage_core_cdist
-    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric, alpha)
+    #Mutual reachability distance is implicite in mst_linkage_core_vector
+    min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric, alpha)
 
     #Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
@@ -161,8 +161,8 @@ def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
                                 dualtree=True,
                                 breadth_first=True)[0][:, -1].copy(order='C')
 
-    #Mutual reachability distance is implicite in mst_linkage_core_cdist
-    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric, alpha)
+    #Mutual reachability distance is implicite in mst_linkage_core_vector
+    min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric, alpha)
     #Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
     #Convert edge list into standard hierarchical clustering format
