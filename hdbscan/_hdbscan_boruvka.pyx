@@ -52,6 +52,7 @@
 # we can perform more specific optimizations here for what
 # is a simpler version of the structure.
 
+import numpy as np
 cimport numpy as np
 
 from libc.float cimport DBL_MAX
@@ -59,6 +60,7 @@ from libc.math cimport fabs, pow
 
 from sklearn.neighbors import KDTree, BallTree
 
+import dist_metrics as dist_metrics
 cimport dist_metrics as dist_metrics
 
 from sklearn.externals.joblib import Parallel, delayed

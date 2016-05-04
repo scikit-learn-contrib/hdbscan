@@ -22,7 +22,7 @@ except ImportError:
 
     check_array = check_arrays
 
-from ._hdbscan_linkage import mst_linkage_core, mst_linkage_core_cdist, label
+from ._hdbscan_linkage import mst_linkage_core, mst_linkage_core_vector, label
 from ._hdbscan_boruvka import KDTreeBoruvkaAlgorithm, BallTreeBoruvkaAlgorithm
 from .dist_metrics import DistanceMetric
 from ._hdbscan_reachability import mutual_reachability
@@ -73,7 +73,7 @@ def _rsl_prims_kdtree(X, k=5, alpha=1.4142135623730951, metric='minkowski', p=2)
     dist_metric = DistanceMetric.get_metric(metric)
 
     core_distances = tree.query(X, k=k)[0][:, -1]
-    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric, alpha)
+    min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric, alpha)
 
     single_linkage_tree = label(min_spanning_tree)
     single_linkage_tree = SingleLinkageTree(single_linkage_tree)
@@ -98,7 +98,7 @@ def _rsl_prims_balltree(X, k=5, alpha=1.4142135623730951, metric='minkowski', p=
     dist_metric = DistanceMetric.get_metric(metric)
 
     core_distances = tree.query(X, k=k)[0][:, -1]
-    min_spanning_tree = mst_linkage_core_cdist(X, core_distances, dist_metric, alpha)
+    min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric, alpha)
 
     single_linkage_tree = label(min_spanning_tree)
     single_linkage_tree = SingleLinkageTree(single_linkage_tree)

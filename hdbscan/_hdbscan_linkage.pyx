@@ -3,6 +3,7 @@
 # Authors: Leland McInnes, Steve Astels
 # License: 3-clause BSD
 
+import numpy as np
 cimport numpy as np
 
 from libc.float cimport DBL_MAX
