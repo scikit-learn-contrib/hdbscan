@@ -33,10 +33,14 @@
 #
 # This code is based on the papers:
 #
+# Fast Euclidean Minimum Spanning Tree: Algorithm, analysis, and applications
+# William B. March, Parikshit Ram, Alexander Gray
+# Conference: Proceedings of the 16th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining
+# 2010
 #
-#
-#
-#
+# Tree-Independent Dual-Tree Algorithms
+# Ryan R. Curtin, William B. March, Parikshit Ram, David V. Anderson, Alexander G. Gray, Charles L. Isbell Jr
+# 2013, arXiv 1304.4327
 #
 # As per the sklearn BallTree and KDTree implementations we make use of
 # the rdist, which is a faster to compute notion of distance (for example
@@ -48,23 +52,16 @@
 # we can perform more specific optimizations here for what
 # is a simpler version of the structure.
 
-cimport cython
-
-import numpy as np
 cimport numpy as np
 
 from libc.float cimport DBL_MAX
-from libc.math cimport fabs, sqrt, exp, cos, pow
+from libc.math cimport fabs, pow
 
-# from scipy.spatial.distance import cdist, pdist, squareform
 from sklearn.neighbors import KDTree, BallTree
 
-import dist_metrics as dist_metrics
 cimport dist_metrics as dist_metrics
 
 from sklearn.externals.joblib import Parallel, delayed
-
-from libc.math cimport fabs, sqrt, exp, cos, pow, log
 
 cdef np.double_t INF = np.inf
 
@@ -812,7 +809,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     n_jobs : int (default 4)
         The number of parallel jobs used to compute core distances.
 
-   **kwargs :
+    **kwargs :
         Keyword args passed to the metric.
     """
 
