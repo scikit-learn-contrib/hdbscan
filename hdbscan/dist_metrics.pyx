@@ -789,7 +789,7 @@ cdef class JaccardDistance(DistanceMetric):
             tf2 = x2[j] != 0
             nnz += (tf1 or tf2)
             n_eq += (tf1 and tf2)
-        if nnz == 0 and n_eq == 0:
+        if nnz == 0:
             return 0.0
         return (nnz - n_eq) * 1.0 / nnz
 
