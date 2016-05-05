@@ -52,9 +52,9 @@ def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10):
     condensed_tree = condense_tree(single_linkage_tree,
                                    min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
-    labels, probabilities = get_clusters(condensed_tree, stability_dict)
+    labels, probabilities, stabilities = get_clusters(condensed_tree, stability_dict)
 
-    return labels, probabilities, condensed_tree, single_linkage_tree
+    return labels, probabilities, stabilities, condensed_tree, single_linkage_tree
 
 
 def _hdbscan_generic(X, min_samples=5, alpha=1.0,
@@ -246,6 +246,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             algorithm='best', memory=Memory(cachedir=None, verbose=0),
             approx_min_span_tree=True, gen_min_span_tree=False,
             core_dist_n_jobs=4):
+
     """Perform HDBSCAN clustering from a vector array or distance matrix.
     
     Parameters
@@ -329,6 +330,13 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     probabilities : array [n_samples]
         Cluster membership strengths for each point. Noisy samples are assigned
         0.
+
+    cluster_persistence : array, shape = [n_clusters]
+        A score of how persistent each cluster is. A score of 1.0 represents
+        a perfectly stable cluster that persists over all distance scales,
+        while a score of 0.0 represents a perfectly ephemeral cluster. These
+        scores can be guage the relative coherence of the clusters output
+        by the algorithm.
 
     condensed_tree : record array
         The condensed cluster hierarchy used to generate clusters.
@@ -545,6 +553,13 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         have values assigned proportional to the degree that they
         persist as part of the cluster.
 
+    cluster_persistence_ : array, shape = [n_clusters]
+        A score of how persistent each cluster is. A score of 1.0 represents
+        a perfectly stable cluster that persists over all distance scales,
+        while a score of 0.0 represents a perfectly ephemeral cluster. These
+        scores can be guage the relative coherence of the clusters output
+        by the algorithm.
+
     condensed_tree_ : CondensedTree object
         The condensed tree produced by HDBSCAN. The object has methods
         for converting to pandas, networkx, and plotting.
@@ -563,6 +578,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         Outlier scores for clustered points; the larger the score the more
         outlier-like the point. Useful as an outlier detection technique.
         Based on the GLOSH algorithm by Campello, Moulavi, Zimek and Sander.
+
     References
     ----------
     R. Campello, D. Moulavi, and J. Sander, "Density-Based Clustering Based on
@@ -615,6 +631,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             self._raw_data = X
         (self.labels_,
          self.probabilities_,
+         self.cluster_persistence_,
          self._condensed_tree,
          self._single_linkage_tree,
          self._min_spanning_tree) = hdbscan(X, **self.get_params())

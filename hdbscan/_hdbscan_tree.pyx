@@ -466,6 +466,14 @@ cpdef np.ndarray[np.double_t, ndim=1] outlier_scores(np.ndarray tree):
 
     return result
 
+cpdef np.ndarray get_stability_scores(np.ndarray labels, set clusters, dict stability, np.double_t max_lambda):
+
+    result = np.empty(len(clusters), dtype=np.double)
+    for n, c in enumerate(clusters):
+        result[n] = stability[c] / (np.sum(labels == n) * max_lambda)
+
+    return result
+
 cpdef tuple get_clusters(np.ndarray tree, dict stability):
     """
     The tree is assumed to have numeric node ids such that a reverse numeric
@@ -481,6 +489,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability):
     cdef np.intp_t cluster
     cdef np.intp_t num_points
     cdef np.ndarray labels
+    cdef np.double_t max_lambda
 
     # Assume clusters are ordered by numeric id equivalent to
     # a topological sort of the tree; This is valid given the
@@ -490,6 +499,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability):
     cluster_tree = tree[tree['child_size'] > 1]
     is_cluster = {cluster:True for cluster in node_list}
     num_points = np.max(tree[tree['child_size'] == 1]['child']) + 1
+    max_lambda = np.max(tree['lambda_val'])
 
     for node in node_list:
         child_selection = (cluster_tree['parent'] == node)
@@ -509,8 +519,9 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability):
 
     labels = do_labelling(tree, clusters, cluster_map)
     probs = get_probabilities(tree, reverse_cluster_map, labels)
+    stabilities = get_stability_scores(labels, clusters, stability, max_lambda)
 
-    return (labels, probs)
+    return (labels, probs, stabilities)
     
     
     
