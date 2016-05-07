@@ -78,7 +78,9 @@ to Pandas or NetworkX for further analysis. See the notebook on
 
 The clusterer objects also have an attribute providing cluster membership
 strengths, resulting in optional soft clustering (and no further compute 
-expense)
+expense). Finally each cluster also receives a persistence score giving
+the stability of the cluster over the range of distance scales present
+in the data. This provides a measure of the relative strength of clusters.
 
 -----------------
 Outlier Detection
