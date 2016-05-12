@@ -302,7 +302,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                  alpha=1.0, approx_min_span_tree=False, n_jobs=4, **kwargs):
 
         self.core_dist_tree = tree
-        self.tree = KDTree(tree.data, metric=metric, leaf_size=leaf_size)
+        self.tree = KDTree(tree.data, metric=metric, leaf_size=leaf_size, **kwargs)
         self._data = np.array(self.tree.data)
         self._raw_data = self.tree.data
         self.node_bounds = self.tree.node_bounds
@@ -864,7 +864,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                  alpha=1.0, leaf_size=20, approx_min_span_tree=False, n_jobs=4, **kwargs):
 
         self.core_dist_tree = tree
-        self.tree = BallTree(tree.data, metric=metric, leaf_size=leaf_size)
+        self.tree = BallTree(tree.data, metric=metric, leaf_size=leaf_size, **kwargs)
         self._data = np.array(self.tree.data)
         self._raw_data = self.tree.data
         self.min_samples = min_samples

@@ -66,7 +66,7 @@ def test_hdbscan_distance_matrix():
     D = distance.squareform(distance.pdist(X))
     D /= np.max(D)
     
-    labels, p, ctree, ltree, mtree = hdbscan(D, metric='precomputed')
+    labels, p, persist, ctree, ltree, mtree = hdbscan(D, metric='precomputed')
     # number of clusters, ignoring noise if present
     n_clusters_1 = len(set(labels)) - int(-1 in labels) # ignore noise
     assert_equal(n_clusters_1, n_clusters)
@@ -76,7 +76,7 @@ def test_hdbscan_distance_matrix():
     assert_equal(n_clusters_2, n_clusters)
     
 def test_hdbscan_feature_vector():    
-    labels, p, ctree, ltree, mtree = hdbscan(X)
+    labels, p, persist, ctree, ltree, mtree = hdbscan(X)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_1, n_clusters)
 
@@ -85,7 +85,7 @@ def test_hdbscan_feature_vector():
     assert_equal(n_clusters_2, n_clusters)
 
 def test_hdbscan_no_clusters():
-    labels, p, ctree, ltree, mtree = hdbscan(X, min_cluster_size=len(X)+1)
+    labels, p, persist, ctree, ltree, mtree = hdbscan(X, min_cluster_size=len(X)+1)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_1, 0)
     
@@ -97,7 +97,7 @@ def test_hdbscan_callable_metric():
     # metric is the function reference, not the string key.
     metric = distance.euclidean
 
-    labels, p, ctree, ltree, mtree = hdbscan(X, metric=metric)
+    labels, p, persist, ctree, ltree, mtree = hdbscan(X, metric=metric)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_1, n_clusters)
 
@@ -113,8 +113,8 @@ def test_hdbscan_boruvka_kdtree_matches():
 
     data = generate_noisy_data()
 
-    labels_prims, p, ctree, ltree, mtree = hdbscan(data, algorithm='generic')
-    labels_boruvka, p, ctree, ltree, mtree = hdbscan(data, algorithm='boruvka_kdtree')
+    labels_prims, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm='generic')
+    labels_boruvka, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm='boruvka_kdtree')
 
     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
@@ -131,8 +131,8 @@ def test_hdbscan_boruvka_balltree_matches():
 
     data = generate_noisy_data()
 
-    labels_prims, p, ctree, ltree, mtree = hdbscan(data, algorithm='generic')
-    labels_boruvka, p, ctree, ltree, mtree = hdbscan(data, algorithm='boruvka_balltree')
+    labels_prims, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm='generic')
+    labels_boruvka, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm='boruvka_balltree')
 
     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
