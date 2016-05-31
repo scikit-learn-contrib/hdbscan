@@ -488,8 +488,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     min_samples : int, optional
         The number of samples in a neighbourhood for a point to be
         considered a core point. (defaults to min_cluster_size)
-        
-    
+
     metric : string, or callable
         The metric to use when calculating distance between instances in a
         feature array. If metric is a string or callable, it must be one of
