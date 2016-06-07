@@ -20,7 +20,7 @@ data analysis (EDA) it is not so easy to choose a specialized algorithm.
 So, what algorithm is good for exploratory data analysis?
 
 Some rules for EDA clustering
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------
 
 To start, lets' lay down some ground rules of what we need a good EDA
 clustering algorithm to do, then we can set about seeing how the
