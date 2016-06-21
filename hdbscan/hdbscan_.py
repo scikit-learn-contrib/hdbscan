@@ -116,20 +116,20 @@ def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
 
-    #TO DO: Deal with p for minkowski appropriately
+    # TO DO: Deal with p for minkowski appropriately
     dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
-    #Get distance to kth nearest neighbour
+    # Get distance to kth nearest neighbour
     core_distances = tree.query(X, k=min_samples,
                                 dualtree=True,
                                 breadth_first=True)[0][:, -1].copy(order='C')
-    #Mutual reachability distance is implicite in mst_linkage_core_vector
+    # Mutual reachability distance is implicit in mst_linkage_core_vector
     min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric, alpha)
 
-    #Sort edges of the min_spanning_tree by weight
+    # Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
 
-    #Convert edge list into standard hierarchical clustering format
+    # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
 
     return single_linkage_tree, None
@@ -156,16 +156,16 @@ def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
 
     dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
-    #Get distance to kth nearest neighbour
+    # Get distance to kth nearest neighbour
     core_distances = tree.query(X, k=min_samples,
                                 dualtree=True,
                                 breadth_first=True)[0][:, -1].copy(order='C')
 
-    #Mutual reachability distance is implicite in mst_linkage_core_vector
+    # Mutual reachability distance is implicit in mst_linkage_core_vector
     min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric, alpha)
-    #Sort edges of the min_spanning_tree by weight
+    # Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
-    #Convert edge list into standard hierarchical clustering format
+    # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
 
     return single_linkage_tree, None
@@ -195,9 +195,9 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
     alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
                                  approx_min_span_tree=approx_min_span_tree, n_jobs=core_dist_n_jobs, **kwargs)
     min_spanning_tree = alg.spanning_tree()
-    #Sort edges of the min_spanning_tree by weight
+    # Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
-    #Convert edge list into standard hierarchical clustering format
+    # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
 
     if gen_min_span_tree:
@@ -230,9 +230,9 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
     alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
                                    approx_min_span_tree=approx_min_span_tree, n_jobs=core_dist_n_jobs, **kwargs)
     min_spanning_tree = alg.spanning_tree()
-    #Sort edges of the min_spanning_tree by weight
+    # Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
-    #Convert edge list into standard hierarchical clustering format
+    # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
 
     if gen_min_span_tree:
@@ -375,9 +375,9 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     if leaf_size < 1:
         raise ValueError('Leaf size must be greater than 0!')
 
-    #Checks input and converts to an nd-array where possible
+    # Checks input and converts to an nd-array where possible
     X = check_array(X, accept_sparse='csr')
-    #Python 2 and 3 compliant string_type checking
+    # Python 2 and 3 compliant string_type checking
     if isinstance(memory, six.string_types):
         memory = Memory(cachedir=memory, verbose=0)
 
@@ -450,7 +450,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                                                           gen_min_span_tree,
                                                           core_dist_n_jobs, **kwargs)
         else:  # Metric is a valid BallTree metric
-            #TO DO: Need heuristic to decide when to go to boruvka; still debugging for now
+            # TO DO: Need heuristic to decide when to go to boruvka; still debugging for now
             if X.shape[1] > 60:
                 (single_linkage_tree,
                  result_min_span_tree) = \
@@ -468,8 +468,9 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
 
     return _tree_to_labels(X, single_linkage_tree, min_cluster_size) + (result_min_span_tree,)
 
-#Inherits from sklearn
-class HDBSCAN(BaseEstimator, ClusterMixin):
+
+# Inherits from sklearn
+class HDBSCAN (BaseEstimator, ClusterMixin):
     """Perform HDBSCAN clustering from vector array or distance matrix.
     
     HDBSCAN - Hierarchical Density-Based Spatial Clustering of Applications
