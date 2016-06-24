@@ -27,6 +27,8 @@ except ImportError:
 
     check_array = check_arrays
 
+from scipy.sparse.csgraph import minimum_spanning_tree as cs_graph_min_spanning_tree
+
 from ._hdbscan_linkage import (single_linkage,
                                mst_linkage_core,
                                mst_linkage_core_vector,
@@ -35,7 +37,7 @@ from ._hdbscan_tree import (condense_tree,
                             compute_stability,
                             get_clusters,
                             outlier_scores)
-from ._hdbscan_reachability import mutual_reachability
+from ._hdbscan_reachability import mutual_reachability, sparse_mutual_reachability
 
 from ._hdbscan_boruvka import KDTreeBoruvkaAlgorithm, BallTreeBoruvkaAlgorithm
 from .dist_metrics import DistanceMetric
@@ -69,6 +71,9 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0,
     else:
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
 
+    if issparse(distance_matrix):
+        raise TypeError('Sparse distance matrices not yet supported')
+
     mutual_reachability_ = mutual_reachability(distance_matrix,
                                                min_samples, alpha)
 
@@ -95,6 +100,42 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0,
     single_linkage_tree = label(min_spanning_tree)
 
     return single_linkage_tree, result_min_span_tree
+
+def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
+                                    metric='minkowski', p=2, leaf_size=40,
+                                    gen_min_span_tree=False, **kwargs):
+
+    if metric == 'minkowski':
+        if p is None:
+            raise TypeError('Minkowski metric given but no p value supplied!')
+        if p < 0:
+            raise ValueError('Minkowski metric with negative p value is not defined!')
+
+    assert(issparse(X))
+
+    lil_matrix = X.tolil()
+
+    # Compute sparse mutual reachability graph
+    mutual_reachability_ = sparse_mutual_reachability(lil_matrix, min_points=min_samples)
+
+    # Compute the minimum spanning tree for the sparse graph
+    sparse_min_spanning_tree = cs_graph_min_spanning_tree(mutual_reachability_)
+
+    # Convert the graph to scipy cluster array format
+    nonzeros = sparse_min_spanning_tree.nonzero()
+    nonzero_vals = sparse_min_spanning_tree[nonzeros]
+    min_spanning_tree = np.vstack(nonzeros + (nonzero_vals,)).T
+
+    # Sort edges of the min_spanning_tree by weight
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
+
+    # Convert edge list into standard hierarchical clustering format
+    single_linkage_tree = label(min_spanning_tree)
+
+    if gen_min_span_tree:
+        return single_linkage_tree, min_spanning_tree
+    else:
+        return single_linkage_tree, None
 
 
 def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
