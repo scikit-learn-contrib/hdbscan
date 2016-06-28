@@ -27,7 +27,7 @@ except ImportError:
 
     check_array = check_arrays
 
-from scipy.sparse.csgraph import minimum_spanning_tree as cs_graph_min_spanning_tree
+from scipy.sparse import csgraph
 
 from ._hdbscan_linkage import (single_linkage,
                                mst_linkage_core,
@@ -72,7 +72,9 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0,
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
 
     if issparse(distance_matrix):
-        raise TypeError('Sparse distance matrices not yet supported')
+        # raise TypeError('Sparse distance matrices not yet supported')
+        return _hdbscan_sparse_distance_matrix(distance_matrix, min_samples, alpha, metric, p,
+                                               leaf_size, gen_min_span_tree, **kwargs)
 
     mutual_reachability_ = mutual_reachability(distance_matrix,
                                                min_samples, alpha)
@@ -118,8 +120,11 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
     # Compute sparse mutual reachability graph
     mutual_reachability_ = sparse_mutual_reachability(lil_matrix, min_points=min_samples)
 
+    if csgraph.connected_components(mutual_reachability_, directed=False, return_labels=False) > 1:
+        raise ValueError('Sparse distance matrix has multiple connected components!\nRun hdbscan on each component.')
+
     # Compute the minimum spanning tree for the sparse graph
-    sparse_min_spanning_tree = cs_graph_min_spanning_tree(mutual_reachability_)
+    sparse_min_spanning_tree = csgraph.minimum_spanning_tree(mutual_reachability_)
 
     # Convert the graph to scipy cluster array format
     nonzeros = sparse_min_spanning_tree.nonzero()
@@ -127,7 +132,7 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
     min_spanning_tree = np.vstack(nonzeros + (nonzero_vals,)).T
 
     # Sort edges of the min_spanning_tree by weight
-    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :][0]
 
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)

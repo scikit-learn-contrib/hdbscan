@@ -7,7 +7,7 @@ import numpy as np
 cimport numpy as np
 
 from scipy.spatial.distance import pdist, squareform
-from scipy.sparse import coo_matrix
+from scipy.sparse import lil_matrix as sparse_matrix
 from sklearn.neighbors import KDTree, BallTree
 import gc
 
@@ -64,19 +64,19 @@ cpdef sparse_mutual_reachability(lil_matrix, min_points=5, alpha=1.0):
     cdef list sorted_row_data
     cdef np.ndarray[dtype=np.double_t, ndim=1] core_distance
     cdef np.ndarray[dtype=np.int32_t, ndim=1] nz_row_data
-    cdef np.ndarray[dtype=np.int32_t, ndim=1] nz_row_data
+    cdef np.ndarray[dtype=np.int32_t, ndim=1] nz_col_data
 
-    result = coo_matrix(lil_matrix.shape)
-    core_distance = np.empty(lil_matrix.shape[0], dtype=np.double_t)
+    result = sparse_matrix(lil_matrix.shape)
+    core_distance = np.empty(lil_matrix.shape[0], dtype=np.double)
 
     for i in range(lil_matrix.shape[0]):
         sorted_row_data = sorted(lil_matrix.data[i])
-        if min_points < len(sorted_row_data)
+        if min_points < len(sorted_row_data):
             core_distance[i] = sorted_row_data[min_points]
         else:
             core_distance[i] = np.infty
 
-    nz_row_data, nz_col_data = lil_matrix.nonzeros()
+    nz_row_data, nz_col_data = lil_matrix.nonzero()
 
     for n in range(nz_row_data.shape[0]):
         i = nz_row_data[n]
