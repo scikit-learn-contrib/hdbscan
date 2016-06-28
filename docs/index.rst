@@ -6,12 +6,19 @@
 The hdbscan Clustering Library
 ==============================
 
+The hdbscan library is a suite of tools to use unsupervised learning to find clusters, or
+dense regions, of a dataset. The primary algorithm is HDBSCAN* as proposed by Campello,
+Moulavi, and Sander. The library provides a high performance implementation of this algorithm,
+along with tools for analysing the resulting clustering.
+
 
 User Guide / Tutorial
 ---------------------
 
 .. toctree::
    :maxdepth: 2
+
+   basic_hdbscan
 
 Background on Clustering with HDBSCAN
 -------------------------------------

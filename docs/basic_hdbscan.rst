@@ -26,8 +26,6 @@ put it in a dataframe for a nice clean table view of it.
     pd.DataFrame(blobs).head()
 
 
-
-
 .. raw:: html
 
     <div>
@@ -140,8 +138,6 @@ want do some method chaining.
     clusterer.fit(blobs)
 
 
-
-
 .. parsed-literal::
 
     HDBSCAN(algorithm='best', alpha=1.0, approx_min_span_tree=True,
@@ -157,8 +153,6 @@ and stores the result in an attribute ``labels_``.
 .. code:: python
 
     clusterer.labels_
-
-
 
 
 .. parsed-literal::
@@ -178,13 +172,9 @@ what the largest cluster label is.
     clusterer.labels_.max()
 
 
-
-
 .. parsed-literal::
 
     2
-
-
 
 So we have a total of three clusters, with labels 0, 1, and 2.
 Importantly HDBSCAN is noise aware -- it has a notion of data samples
@@ -200,8 +190,6 @@ You can access these scores via the ``probabilities_`` attribute.
 .. code:: python
 
     clusterer.probabilities_
-
-
 
 
 .. parsed-literal::
