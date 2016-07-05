@@ -19,6 +19,7 @@ User Guide / Tutorial
    :maxdepth: 2
 
    basic_hdbscan
+   advanced_hdbscan
 
 Background on Clustering with HDBSCAN
 -------------------------------------
