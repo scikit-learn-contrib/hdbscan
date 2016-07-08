@@ -184,6 +184,9 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
             current_child = child
             min_lambda = lambda_
 
+    births[current_child] = min_lambda
+    births[smallest_cluster] = 0.0
+
     result_arr = np.zeros(num_clusters, dtype=np.double)
 
     for i in range(condensed_tree.shape[0]):
@@ -372,7 +375,7 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(np.ndarray tree, set clusters, d
 
     for n in range(root_cluster):
         cluster = union_find.find(n)
-        if cluster <= root_cluster:
+        if cluster < root_cluster:
             result[n] = -1
         else:
             result[n] = cluster_label_map[cluster]
