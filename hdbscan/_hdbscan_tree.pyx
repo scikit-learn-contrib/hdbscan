@@ -377,6 +377,11 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(np.ndarray tree, set clusters, d
         cluster = union_find.find(n)
         if cluster < root_cluster:
             result[n] = -1
+        elif cluster == root_cluster:
+            if tree['lambda_val'][tree['child'] == n] >= tree['lambda_val'][tree['parent'] == cluster].max():
+                result[n] = cluster_label_map[cluster]
+            else:
+                result[n] = -1
         else:
             result[n] = cluster_label_map[cluster]
 
