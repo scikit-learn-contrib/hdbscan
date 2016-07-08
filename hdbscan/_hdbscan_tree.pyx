@@ -344,7 +344,10 @@ cpdef np.ndarray[np.intp_t, ndim=1] labelling_at_cut(np.ndarray linkage,
 
     return result_arr
 
-cdef np.ndarray[np.intp_t, ndim=1] do_labelling(np.ndarray tree, set clusters, dict cluster_label_map):
+cdef np.ndarray[np.intp_t, ndim=1] do_labelling(np.ndarray tree,
+                                                set clusters,
+                                                dict cluster_label_map,
+                                                np.intp_t allow_single_cluster):
 
     cdef np.intp_t root_cluster
     cdef np.ndarray[np.intp_t, ndim=1] result_arr
@@ -378,7 +381,9 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(np.ndarray tree, set clusters, d
         if cluster < root_cluster:
             result[n] = -1
         elif cluster == root_cluster:
-            if tree['lambda_val'][tree['child'] == n] >= tree['lambda_val'][tree['parent'] == cluster].max():
+            if allow_single_cluster and \
+                tree['lambda_val'][tree['child'] == n] >= \
+                    tree['lambda_val'][tree['parent'] == cluster].max():
                 result[n] = cluster_label_map[cluster]
             else:
                 result[n] = -1
@@ -529,7 +534,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability, allow_single_cluster=F
     cluster_map = {c:n for n, c in enumerate(clusters)}
     reverse_cluster_map = {n:c for n, c in enumerate(clusters)}
 
-    labels = do_labelling(tree, clusters, cluster_map)
+    labels = do_labelling(tree, clusters, cluster_map, allow_single_cluster)
     probs = get_probabilities(tree, reverse_cluster_map, labels)
     stabilities = get_stability_scores(labels, clusters, stability, max_lambda)
 
