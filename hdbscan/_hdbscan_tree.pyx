@@ -474,7 +474,7 @@ cpdef np.ndarray get_stability_scores(np.ndarray labels, set clusters, dict stab
 
     return result
 
-cpdef tuple get_clusters(np.ndarray tree, dict stability):
+cpdef tuple get_clusters(np.ndarray tree, dict stability, allow_single_cluster=False):
     """
     The tree is assumed to have numeric node ids such that a reverse numeric
     sort is equivalent to a topological sort.
@@ -495,7 +495,11 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability):
     # a topological sort of the tree; This is valid given the
     # current implementation above, so don't change that ... or
     # if you do, change this accordingly!
-    node_list = sorted(stability.keys(), reverse=True)[:-1] # (exclude root)
+    if allow_single_cluster:
+        node_list = sorted(stability.keys(), reverse=True)
+    else:
+        node_list = sorted(stability.keys(), reverse=True)[:-1] # (exclude root)
+
     cluster_tree = tree[tree['child_size'] > 1]
     is_cluster = {cluster:True for cluster in node_list}
     num_points = np.max(tree[tree['child_size'] == 1]['child']) + 1

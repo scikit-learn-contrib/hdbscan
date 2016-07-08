@@ -47,14 +47,14 @@ from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics
 
 
-def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10):
+def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10, allow_single_cluster=False):
     """ Converts a pretrained tree and cluster size into a 
     set of labels and probabilities.
     """
     condensed_tree = condense_tree(single_linkage_tree,
                                    min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
-    labels, probabilities, stabilities = get_clusters(condensed_tree, stability_dict)
+    labels, probabilities, stabilities = get_clusters(condensed_tree, stability_dict, allow_single_cluster)
 
     return labels, probabilities, stabilities, condensed_tree, single_linkage_tree
 
@@ -291,7 +291,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             metric='minkowski', p=2, leaf_size=40,
             algorithm='best', memory=Memory(cachedir=None, verbose=0),
             approx_min_span_tree=True, gen_min_span_tree=False,
-            core_dist_n_jobs=4, **kwargs):
+            core_dist_n_jobs=4, allow_single_cluster=False, **kwargs):
 
     """Perform HDBSCAN clustering from a vector array or distance matrix.
     
@@ -368,6 +368,14 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         supported by the specific algorithm).
         (default 4)
 
+
+    allow_single_cluster : boolean
+        By default HDBSCAN* will not produce a single cluster, setting this
+        to t=True will override this and allow single cluster results in
+        the case that you feel this is a valid result for your dataset.
+        (default False)
+
+
     **kwargs : optional
         Arguments passed to the distance metric
 
@@ -398,7 +406,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     min_spanning_tree : array [n_samples - 1, 3]
         The minimum spanning as an edgelist. If gen_min_span_tree was False
         this will be None.
-        
+
     References
     ----------
     R. Campello, D. Moulavi, and J. Sander, "Density-Based Clustering Based on
@@ -512,7 +520,10 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                                                             gen_min_span_tree,
                                                             core_dist_n_jobs, **kwargs)
 
-    return _tree_to_labels(X, single_linkage_tree, min_cluster_size) + (result_min_span_tree,)
+    return _tree_to_labels(X,
+                           single_linkage_tree,
+                           min_cluster_size,
+                           allow_single_cluster) + (result_min_span_tree,)
 
 
 # Inherits from sklearn
@@ -591,6 +602,18 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
         to mutual reachability distance for later analysis.
         (default False)
 
+    core_dist_n_jobs : int, optional
+        Number of parallel jobs to run in core distance computations (if
+        supported by the specific algorithm).
+        (default 4)
+
+    allow_single_cluster : boolean
+        By default HDBSCAN* will not produce a single cluster, setting this
+        to t=True will override this and allow single cluster results in
+        the case that you feel this is a valid result for your dataset.
+        (default False)
+
+
     **kwargs : optional
         Arguments passed to the distance metric
 
@@ -650,7 +673,9 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
                  algorithm='best', leaf_size=40,
                  memory=Memory(cachedir=None, verbose=0),
                  approx_min_span_tree=True,
-                 gen_min_span_tree=False, **kwargs):
+                 gen_min_span_tree=False,
+                 core_dist_n_jobs=4,
+                 allow_single_cluster=False, **kwargs):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
         self.alpha = alpha
@@ -662,6 +687,8 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
         self.memory = memory
         self.approx_min_span_tree = approx_min_span_tree
         self.gen_min_span_tree = gen_min_span_tree
+        self.core_dist_n_jobs = core_dist_n_jobs
+        self.allow_single_cluster = allow_single_cluster
 
         self._metric_kwargs = kwargs
 
