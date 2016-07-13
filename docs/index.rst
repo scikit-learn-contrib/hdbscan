@@ -20,6 +20,7 @@ User Guide / Tutorial
 
    basic_hdbscan
    advanced_hdbscan
+   parameter_selection
 
 Background on Clustering with HDBSCAN
 -------------------------------------

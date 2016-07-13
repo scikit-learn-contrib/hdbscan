@@ -1,6 +1,6 @@
 
-Basic Usage of HDBSCAN for Clustering
-=====================================
+Basic Usage of HDBSCAN\* for Clustering
+=======================================
 
 We have some data, and we want to cluster it. How exactly do we do that,
 and what do the results look like? If you are very familiar with sklearn

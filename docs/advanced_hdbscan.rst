@@ -32,13 +32,10 @@ saturation)
     plt.scatter(*data.T, s=50, linewidth=0, c=cluster_member_colors, alpha=0.25)
 
 
-
-
-.. parsed-literal::
-
-
 .. image:: images/advanced_hdbscan_5_1.png
 
+Condensed Trees
+---------------
 
 The question now is what does the cluster hierarchy look like -- which
 clusters are near each other, or could perhaps be merged, and which are
@@ -66,11 +63,6 @@ hierarchy we can call the ``plot`` method:
     clusterer.condensed_tree_.plot()
 
 
-
-
-.. parsed-literal::
-
-
 .. image:: images/advanced_hdbscan_9_1.png
 
 
@@ -86,10 +78,6 @@ labelling.
     clusterer.condensed_tree_.plot(select_clusters=True, 
                                    selection_palette=sns.color_palette('deep', 8))
 
-
-
-
-.. parsed-literal::
 
 .. image:: images/advanced_hdbscan_11_1.png
 
@@ -251,6 +239,9 @@ array:
 
 This is equivalent to the pandas dataframe, but is in pure numpy and
 hence has no pandas dependencies if you do not wish to use pandas.
+
+Single Linkage Trees
+--------------------
 
 We have still more data at our disposal however. As noted in the How
 HDBSCAN Works section, prior to providing a condensed tree the algorithm
