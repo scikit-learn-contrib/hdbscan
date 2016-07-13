@@ -2,7 +2,7 @@
     :target: https://pypi.python.org/pypi/hdbscan/
     :alt: Version
 .. image:: https://img.shields.io/pypi/l/hdbscan.svg
-    :target: https://github.com/nicodv/hdbscan/blob/master/LICENSE
+    :target: https://github.com/lmcinnes/hdbscan/blob/master/LICENSE
     :alt: License
 
 =======
