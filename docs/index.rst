@@ -21,6 +21,7 @@ User Guide / Tutorial
    basic_hdbscan
    advanced_hdbscan
    parameter_selection
+   outlier_detection
 
 Background on Clustering with HDBSCAN
 -------------------------------------
