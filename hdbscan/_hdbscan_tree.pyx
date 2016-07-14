@@ -479,11 +479,15 @@ cpdef np.ndarray[np.double_t, ndim=1] outlier_scores(np.ndarray tree):
 
     return result
 
-cpdef np.ndarray get_stability_scores(np.ndarray labels, set clusters, dict stability, np.double_t max_lambda):
+cpdef np.ndarray get_stability_scores(np.ndarray labels, set clusters,
+                                      dict stability, np.double_t max_lambda):
 
     result = np.empty(len(clusters), dtype=np.double)
     for n, c in enumerate(clusters):
-        result[n] = stability[c] / (np.sum(labels == n) * max_lambda)
+        if np.isinf(max_lambda):
+            result[n] = 1.0
+        else:
+            result[n] = stability[c] / (np.sum(labels == n) * max_lambda)
 
     return result
 
