@@ -1,6 +1,12 @@
 .. image:: https://img.shields.io/pypi/v/hdbscan.svg
     :target: https://pypi.python.org/pypi/hdbscan/
-    :alt: Version
+    :alt: PyPI Version
+.. image:: https://anaconda.org/conda-forge/hdbscan/badges/version.svg
+    :target: https://anaconda.org/conda-forge/hdbscan
+    :alt: Conda-forge Version
+.. image:: https://anaconda.org/conda-forge/hdbscan/badges/downloads.svg
+    :target: https://anaconda.org/conda-forge/hdbscan
+    :alt: Conda Packages
 .. image:: https://img.shields.io/pypi/l/hdbscan.svg
     :target: https://github.com/lmcinnes/hdbscan/blob/master/LICENSE
     :alt: License
@@ -134,7 +140,13 @@ Based on the paper:
 Installing
 ----------
 
-Fast install, presuming you have sklearn and all its requirements installed:
+Easiest install, if you have Anaconda:
+
+.. code:: bash
+
+    conda install -c conda-forge hdbscan
+
+PyPI install, presuming you have sklearn and all its requirements installed:
 
 .. code:: bash
 
@@ -175,8 +187,6 @@ Install the package
 .. code:: bash
 
     python setup.py install
-
-Coming soon: installing via conda.
 
 ---------
 Licensing
