@@ -140,7 +140,7 @@ Based on the paper:
 Installing
 ----------
 
-Easiest install, if you have Anaconda:
+Easiest install, if you have Anaconda (thanks to conda-forge which is awesome!):
 
 .. code:: bash
 
