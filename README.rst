@@ -3,10 +3,7 @@
     :alt: PyPI Version
 .. image:: https://anaconda.org/conda-forge/hdbscan/badges/version.svg
     :target: https://anaconda.org/conda-forge/hdbscan
-    :alt: Conda-forge Version
-.. image:: https://anaconda.org/conda-forge/hdbscan/badges/downloads.svg
-    :target: https://anaconda.org/conda-forge/hdbscan
-    :alt: Conda Packages
+    :alt: Conda-forge Versio
 .. image:: https://img.shields.io/pypi/l/hdbscan.svg
     :target: https://github.com/lmcinnes/hdbscan/blob/master/LICENSE
     :alt: License
