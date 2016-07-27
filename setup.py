@@ -34,11 +34,11 @@ def readme():
 
 configuration = {
     'name' : 'hdbscan',
-    'version' : '0.8',
+    'version' : '0.8.1',
     'description' : 'Clustering based on density with variable density clusters',
     'long_description' : readme(),
     'classifiers' : [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Science/Research',
         'Intended Audience :: Developers',
         'License :: OSI Approved',
@@ -74,6 +74,9 @@ configuration = {
 if not HAVE_CYTHON:
     _hdbscan_tree.sources[0] = '_hdbscan_tree.c'
     _hdbscan_linkage.sources[0] = '_hdbscan_linkage.c'
+    _hdbscan_boruvka.sources[0] = '_hdbscan_boruvka.c'
+    _hdbscan_reachability.sources[0] = '_hdbscan_reachability.c'
+    dist_metrics.sources[0] = 'dist_metric.c'
     configuration['install_requires'] = ['scikit-learn>=0.16']
 
 setup(**configuration)
