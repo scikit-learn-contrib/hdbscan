@@ -1,8 +1,11 @@
 .. image:: https://img.shields.io/pypi/v/hdbscan.svg
     :target: https://pypi.python.org/pypi/hdbscan/
-    :alt: Version
+    :alt: PyPI Version
+.. image:: https://anaconda.org/conda-forge/hdbscan/badges/version.svg
+    :target: https://anaconda.org/conda-forge/hdbscan
+    :alt: Conda-forge Versio
 .. image:: https://img.shields.io/pypi/l/hdbscan.svg
-    :target: https://github.com/nicodv/hdbscan/blob/master/LICENSE
+    :target: https://github.com/lmcinnes/hdbscan/blob/master/LICENSE
     :alt: License
 
 =======
@@ -28,6 +31,8 @@ Based on the paper:
     Hierarchical Density Estimates*
     In: Advances in Knowledge Discovery and Data Mining, Springer, pp 160-172.
     2013
+    
+Documentation, including tutorials, are available on ReadTheDocs at http://hdbscan.readthedocs.io/en/latest/ .  
     
 Notebooks `comparing HDBSCAN to other clustering algorithms <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`_, explaining `how HDBSCAN works <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb>`_ and `comparing performance with other python clustering implementations <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations-v0.7.ipynb>`_ are available.
 
@@ -132,7 +137,13 @@ Based on the paper:
 Installing
 ----------
 
-Fast install, presuming you have sklearn and all its requirements installed:
+Easiest install, if you have Anaconda (thanks to conda-forge which is awesome!):
+
+.. code:: bash
+
+    conda install -c conda-forge hdbscan
+
+PyPI install, presuming you have sklearn and all its requirements installed:
 
 .. code:: bash
 
@@ -173,8 +184,6 @@ Install the package
 .. code:: bash
 
     python setup.py install
-
-Coming soon: installing via conda.
 
 ---------
 Licensing

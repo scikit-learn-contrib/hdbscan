@@ -7,6 +7,7 @@ from nose.tools import assert_less
 import numpy as np
 from scipy.spatial import distance
 from scipy import sparse
+from scipy import stats
 from sklearn.utils.testing import assert_equal
 from sklearn.utils.testing import assert_array_equal
 from sklearn.utils.testing import assert_raises
@@ -74,7 +75,27 @@ def test_hdbscan_distance_matrix():
     labels = HDBSCAN(metric="precomputed").fit(D).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
-    
+
+def test_hdbscan_sparse_distance_matrix():
+    D = distance.squareform(distance.pdist(X))
+    D /= np.max(D)
+
+    threshold = stats.scoreatpercentile(D.flatten(), 50)
+
+    D[D >= threshold] = 0.0
+    D = sparse.csr_matrix(D)
+    D.eliminate_zeros()
+
+    labels, p, persist, ctree, ltree, mtree = hdbscan(D, metric='precomputed')
+    # number of clusters, ignoring noise if present
+    n_clusters_1 = len(set(labels)) - int(-1 in labels)  # ignore noise
+    assert_equal(n_clusters_1, n_clusters)
+
+    labels = HDBSCAN(metric="precomputed").fit(D).labels_
+    n_clusters_2 = len(set(labels)) - int(-1 in labels)
+    assert_equal(n_clusters_2, n_clusters)
+
+
 def test_hdbscan_feature_vector():    
     labels, p, persist, ctree, ltree, mtree = hdbscan(X)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)

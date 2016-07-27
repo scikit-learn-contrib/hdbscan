@@ -184,6 +184,9 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
             current_child = child
             min_lambda = lambda_
 
+    births[current_child] = min_lambda
+    births[smallest_cluster] = 0.0
+
     result_arr = np.zeros(num_clusters, dtype=np.double)
 
     for i in range(condensed_tree.shape[0]):
@@ -341,7 +344,10 @@ cpdef np.ndarray[np.intp_t, ndim=1] labelling_at_cut(np.ndarray linkage,
 
     return result_arr
 
-cdef np.ndarray[np.intp_t, ndim=1] do_labelling(np.ndarray tree, set clusters, dict cluster_label_map):
+cdef np.ndarray[np.intp_t, ndim=1] do_labelling(np.ndarray tree,
+                                                set clusters,
+                                                dict cluster_label_map,
+                                                np.intp_t allow_single_cluster):
 
     cdef np.intp_t root_cluster
     cdef np.ndarray[np.intp_t, ndim=1] result_arr
@@ -372,8 +378,15 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(np.ndarray tree, set clusters, d
 
     for n in range(root_cluster):
         cluster = union_find.find(n)
-        if cluster <= root_cluster:
+        if cluster < root_cluster:
             result[n] = -1
+        elif cluster == root_cluster:
+            if len(clusters) == 1 and \
+                tree['lambda_val'][tree['child'] == n] >= \
+                    tree['lambda_val'][tree['parent'] == cluster].max():
+                result[n] = cluster_label_map[cluster]
+            else:
+                result[n] = -1
         else:
             result[n] = cluster_label_map[cluster]
 
@@ -466,15 +479,19 @@ cpdef np.ndarray[np.double_t, ndim=1] outlier_scores(np.ndarray tree):
 
     return result
 
-cpdef np.ndarray get_stability_scores(np.ndarray labels, set clusters, dict stability, np.double_t max_lambda):
+cpdef np.ndarray get_stability_scores(np.ndarray labels, set clusters,
+                                      dict stability, np.double_t max_lambda):
 
     result = np.empty(len(clusters), dtype=np.double)
     for n, c in enumerate(clusters):
-        result[n] = stability[c] / (np.sum(labels == n) * max_lambda)
+        if np.isinf(max_lambda):
+            result[n] = 1.0
+        else:
+            result[n] = stability[c] / (np.sum(labels == n) * max_lambda)
 
     return result
 
-cpdef tuple get_clusters(np.ndarray tree, dict stability):
+cpdef tuple get_clusters(np.ndarray tree, dict stability, allow_single_cluster=False):
     """
     The tree is assumed to have numeric node ids such that a reverse numeric
     sort is equivalent to a topological sort.
@@ -495,7 +512,11 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability):
     # a topological sort of the tree; This is valid given the
     # current implementation above, so don't change that ... or
     # if you do, change this accordingly!
-    node_list = sorted(stability.keys(), reverse=True)[:-1] # (exclude root)
+    if allow_single_cluster:
+        node_list = sorted(stability.keys(), reverse=True)
+    else:
+        node_list = sorted(stability.keys(), reverse=True)[:-1] # (exclude root)
+
     cluster_tree = tree[tree['child_size'] > 1]
     is_cluster = {cluster:True for cluster in node_list}
     num_points = np.max(tree[tree['child_size'] == 1]['child']) + 1
@@ -517,7 +538,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability):
     cluster_map = {c:n for n, c in enumerate(clusters)}
     reverse_cluster_map = {n:c for n, c in enumerate(clusters)}
 
-    labels = do_labelling(tree, clusters, cluster_map)
+    labels = do_labelling(tree, clusters, cluster_map, allow_single_cluster)
     probs = get_probabilities(tree, reverse_cluster_map, labels)
     stabilities = get_stability_scores(labels, clusters, stability, max_lambda)
 

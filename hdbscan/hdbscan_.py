@@ -27,6 +27,8 @@ except ImportError:
 
     check_array = check_arrays
 
+from scipy.sparse import csgraph
+
 from ._hdbscan_linkage import (single_linkage,
                                mst_linkage_core,
                                mst_linkage_core_vector,
@@ -35,7 +37,7 @@ from ._hdbscan_tree import (condense_tree,
                             compute_stability,
                             get_clusters,
                             outlier_scores)
-from ._hdbscan_reachability import mutual_reachability
+from ._hdbscan_reachability import mutual_reachability, sparse_mutual_reachability
 
 from ._hdbscan_boruvka import KDTreeBoruvkaAlgorithm, BallTreeBoruvkaAlgorithm
 from .dist_metrics import DistanceMetric
@@ -45,14 +47,14 @@ from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics
 
 
-def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10):
+def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10, allow_single_cluster=False):
     """ Converts a pretrained tree and cluster size into a 
     set of labels and probabilities.
     """
     condensed_tree = condense_tree(single_linkage_tree,
                                    min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
-    labels, probabilities, stabilities = get_clusters(condensed_tree, stability_dict)
+    labels, probabilities, stabilities = get_clusters(condensed_tree, stability_dict, allow_single_cluster)
 
     return labels, probabilities, stabilities, condensed_tree, single_linkage_tree
 
@@ -68,6 +70,11 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0,
         distance_matrix = pairwise_distances(X, metric=metric, p=p)
     else:
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
+
+    if issparse(distance_matrix):
+        # raise TypeError('Sparse distance matrices not yet supported')
+        return _hdbscan_sparse_distance_matrix(distance_matrix, min_samples, alpha, metric, p,
+                                               leaf_size, gen_min_span_tree, **kwargs)
 
     mutual_reachability_ = mutual_reachability(distance_matrix,
                                                min_samples, alpha)
@@ -96,6 +103,45 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0,
 
     return single_linkage_tree, result_min_span_tree
 
+def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
+                                    metric='minkowski', p=2, leaf_size=40,
+                                    gen_min_span_tree=False, **kwargs):
+
+    if metric == 'minkowski':
+        if p is None:
+            raise TypeError('Minkowski metric given but no p value supplied!')
+        if p < 0:
+            raise ValueError('Minkowski metric with negative p value is not defined!')
+
+    assert(issparse(X))
+
+    lil_matrix = X.tolil()
+
+    # Compute sparse mutual reachability graph
+    mutual_reachability_ = sparse_mutual_reachability(lil_matrix, min_points=min_samples)
+
+    if csgraph.connected_components(mutual_reachability_, directed=False, return_labels=False) > 1:
+        raise ValueError('Sparse distance matrix has multiple connected components!\nRun hdbscan on each component.')
+
+    # Compute the minimum spanning tree for the sparse graph
+    sparse_min_spanning_tree = csgraph.minimum_spanning_tree(mutual_reachability_)
+
+    # Convert the graph to scipy cluster array format
+    nonzeros = sparse_min_spanning_tree.nonzero()
+    nonzero_vals = sparse_min_spanning_tree[nonzeros]
+    min_spanning_tree = np.vstack(nonzeros + (nonzero_vals,)).T
+
+    # Sort edges of the min_spanning_tree by weight
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :][0]
+
+    # Convert edge list into standard hierarchical clustering format
+    single_linkage_tree = label(min_spanning_tree)
+
+    if gen_min_span_tree:
+        return single_linkage_tree, min_spanning_tree
+    else:
+        return single_linkage_tree, None
+
 
 def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
                           metric='minkowski', p=2, leaf_size=40, gen_min_span_tree=False, **kwargs):
@@ -116,20 +162,20 @@ def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
 
-    #TO DO: Deal with p for minkowski appropriately
+    # TO DO: Deal with p for minkowski appropriately
     dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
-    #Get distance to kth nearest neighbour
+    # Get distance to kth nearest neighbour
     core_distances = tree.query(X, k=min_samples,
                                 dualtree=True,
                                 breadth_first=True)[0][:, -1].copy(order='C')
-    #Mutual reachability distance is implicite in mst_linkage_core_vector
+    # Mutual reachability distance is implicit in mst_linkage_core_vector
     min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric, alpha)
 
-    #Sort edges of the min_spanning_tree by weight
+    # Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
 
-    #Convert edge list into standard hierarchical clustering format
+    # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
 
     return single_linkage_tree, None
@@ -156,16 +202,16 @@ def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
 
     dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
-    #Get distance to kth nearest neighbour
+    # Get distance to kth nearest neighbour
     core_distances = tree.query(X, k=min_samples,
                                 dualtree=True,
                                 breadth_first=True)[0][:, -1].copy(order='C')
 
-    #Mutual reachability distance is implicite in mst_linkage_core_vector
+    # Mutual reachability distance is implicit in mst_linkage_core_vector
     min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric, alpha)
-    #Sort edges of the min_spanning_tree by weight
+    # Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
-    #Convert edge list into standard hierarchical clustering format
+    # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
 
     return single_linkage_tree, None
@@ -195,9 +241,9 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
     alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
                                  approx_min_span_tree=approx_min_span_tree, n_jobs=core_dist_n_jobs, **kwargs)
     min_spanning_tree = alg.spanning_tree()
-    #Sort edges of the min_spanning_tree by weight
+    # Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
-    #Convert edge list into standard hierarchical clustering format
+    # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
 
     if gen_min_span_tree:
@@ -230,9 +276,9 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
     alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
                                    approx_min_span_tree=approx_min_span_tree, n_jobs=core_dist_n_jobs, **kwargs)
     min_spanning_tree = alg.spanning_tree()
-    #Sort edges of the min_spanning_tree by weight
+    # Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
-    #Convert edge list into standard hierarchical clustering format
+    # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
 
     if gen_min_span_tree:
@@ -245,7 +291,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             metric='minkowski', p=2, leaf_size=40,
             algorithm='best', memory=Memory(cachedir=None, verbose=0),
             approx_min_span_tree=True, gen_min_span_tree=False,
-            core_dist_n_jobs=4, **kwargs):
+            core_dist_n_jobs=4, allow_single_cluster=False, **kwargs):
 
     """Perform HDBSCAN clustering from a vector array or distance matrix.
     
@@ -322,6 +368,14 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         supported by the specific algorithm).
         (default 4)
 
+
+    allow_single_cluster : boolean
+        By default HDBSCAN* will not produce a single cluster, setting this
+        to t=True will override this and allow single cluster results in
+        the case that you feel this is a valid result for your dataset.
+        (default False)
+
+
     **kwargs : optional
         Arguments passed to the distance metric
 
@@ -352,7 +406,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     min_spanning_tree : array [n_samples - 1, 3]
         The minimum spanning as an edgelist. If gen_min_span_tree was False
         this will be None.
-        
+
     References
     ----------
     R. Campello, D. Moulavi, and J. Sander, "Density-Based Clustering Based on
@@ -375,9 +429,9 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     if leaf_size < 1:
         raise ValueError('Leaf size must be greater than 0!')
 
-    #Checks input and converts to an nd-array where possible
+    # Checks input and converts to an nd-array where possible
     X = check_array(X, accept_sparse='csr')
-    #Python 2 and 3 compliant string_type checking
+    # Python 2 and 3 compliant string_type checking
     if isinstance(memory, six.string_types):
         memory = Memory(cachedir=memory, verbose=0)
 
@@ -450,7 +504,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                                                           gen_min_span_tree,
                                                           core_dist_n_jobs, **kwargs)
         else:  # Metric is a valid BallTree metric
-            #TO DO: Need heuristic to decide when to go to boruvka; still debugging for now
+            # TO DO: Need heuristic to decide when to go to boruvka; still debugging for now
             if X.shape[1] > 60:
                 (single_linkage_tree,
                  result_min_span_tree) = \
@@ -466,10 +520,14 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                                                             gen_min_span_tree,
                                                             core_dist_n_jobs, **kwargs)
 
-    return _tree_to_labels(X, single_linkage_tree, min_cluster_size) + (result_min_span_tree,)
+    return _tree_to_labels(X,
+                           single_linkage_tree,
+                           min_cluster_size,
+                           allow_single_cluster) + (result_min_span_tree,)
 
-#Inherits from sklearn
-class HDBSCAN(BaseEstimator, ClusterMixin):
+
+# Inherits from sklearn
+class HDBSCAN (BaseEstimator, ClusterMixin):
     """Perform HDBSCAN clustering from vector array or distance matrix.
     
     HDBSCAN - Hierarchical Density-Based Spatial Clustering of Applications
@@ -488,8 +546,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     min_samples : int, optional
         The number of samples in a neighbourhood for a point to be
         considered a core point. (defaults to min_cluster_size)
-        
-    
+
     metric : string, or callable
         The metric to use when calculating distance between instances in a
         feature array. If metric is a string or callable, it must be one of
@@ -543,6 +600,18 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         Whether to generate the minimum spanning tree with regard
         to mutual reachability distance for later analysis.
         (default False)
+
+    core_dist_n_jobs : int, optional
+        Number of parallel jobs to run in core distance computations (if
+        supported by the specific algorithm).
+        (default 4)
+
+    allow_single_cluster : boolean
+        By default HDBSCAN* will not produce a single cluster, setting this
+        to t=True will override this and allow single cluster results in
+        the case that you feel this is a valid result for your dataset.
+        (default False)
+
 
     **kwargs : optional
         Arguments passed to the distance metric
@@ -603,7 +672,9 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                  algorithm='best', leaf_size=40,
                  memory=Memory(cachedir=None, verbose=0),
                  approx_min_span_tree=True,
-                 gen_min_span_tree=False, **kwargs):
+                 gen_min_span_tree=False,
+                 core_dist_n_jobs=4,
+                 allow_single_cluster=False, **kwargs):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
         self.alpha = alpha
@@ -615,6 +686,8 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self.memory = memory
         self.approx_min_span_tree = approx_min_span_tree
         self.gen_min_span_tree = gen_min_span_tree
+        self.core_dist_n_jobs = core_dist_n_jobs
+        self.allow_single_cluster = allow_single_cluster
 
         self._metric_kwargs = kwargs
 
