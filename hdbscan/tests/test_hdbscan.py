@@ -21,11 +21,38 @@ from sklearn.cluster.tests.common import generate_clustered_data
 from scipy.stats import mode
 
 from tempfile import mkdtemp
+from functools import wraps
+from nose import SkipTest
 
 from sklearn import datasets
 
 n_clusters = 3
 X = generate_clustered_data(n_clusters=n_clusters, n_samples_per_cluster=50)
+
+def if_pandas(func):
+    """Test decorator that skips test if pandas not installed."""
+    @wraps(func)
+    def run_test(*args, **kwargs):
+        try:
+            import pandas
+        except ImportError:
+            raise SkipTest('Pandas not available.')
+        else:
+            return func(*args, **kwargs)
+    return run_test
+
+def if_networkx(func):
+    """Test decorator that skips test if networkx not installed."""
+    @wraps(func)
+    def run_test(*args, **kwargs):
+        try:
+            import networkx
+        except ImportError:
+            raise SkipTest('NetworkX not available.')
+        else:
+            return func(*args, **kwargs)
+    return run_test
+
 
 def relabel(labels):
     result = np.zeros(labels.shape[0])
@@ -173,13 +200,13 @@ def test_condensed_tree_plot():
 def test_tree_output_formats():
 
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
-    clusterer.condensed_tree_.to_pandas()
-    clusterer.condensed_tree_.to_networkx()
-    clusterer.single_linkage_tree_.to_pandas()
-    clusterer.single_linkage_tree_.to_networkx()
+    if_pandas(clusterer.condensed_tree_.to_pandas)()
+    if_networkx(clusterer.condensed_tree_.to_networkx)()
+    if_pandas(clusterer.single_linkage_tree_.to_pandas)()
+    if_networkx(clusterer.single_linkage_tree_.to_networkx)()
     clusterer.single_linkage_tree_.to_numpy()
-    clusterer.minimum_spanning_tree_.to_pandas()
-    clusterer.minimum_spanning_tree_.to_networkx()
+    if_pandas(clusterer.minimum_spanning_tree_.to_pandas)()
+    if_networkx(clusterer.minimum_spanning_tree_.to_networkx)()
 
 def test_hdbscan_badargs():
     assert_raises(ValueError,

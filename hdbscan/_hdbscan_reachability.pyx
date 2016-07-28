@@ -55,7 +55,7 @@ def mutual_reachability(distance_matrix, min_points=5, alpha=1.0):
                       core_distances.T, stage1.T).T
     return result
 
-cpdef sparse_mutual_reachability(lil_matrix, min_points=5, alpha=1.0):
+cpdef sparse_mutual_reachability(object lil_matrix, np.intp_t min_points=5, float alpha=1.0):
 
     cdef np.intp_t i
     cdef np.intp_t j
