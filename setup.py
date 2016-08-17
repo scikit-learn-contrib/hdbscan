@@ -33,7 +33,7 @@ def readme():
         return readme_file.read()
 
 configuration = {
-    'name' : 'hdbscan-with-cosine-distance',
+    'name' : 'hdbscan',
     'version' : '0.8.1',
     'description' : 'Clustering based on density with variable density clusters',
     'long_description' : readme(),
