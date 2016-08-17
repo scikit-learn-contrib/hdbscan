@@ -12,7 +12,7 @@ import numpy as np
 cimport numpy as np
 np.import_array()  # required in order to use C-API
 
-from libc.math cimport fabs, sqrt, exp, cos, pow, log
+from libc.math cimport fabs, sqrt, exp, cos, pow, log, acos, M_PI
 
 DTYPE = np.double
 ITYPE = np.intp
@@ -90,6 +90,7 @@ METRIC_MAPPING = {'euclidean': EuclideanDistance,
                   'sokalsneath': SokalSneathDistance,
                   'haversine': HaversineDistance,
                   'cosine': CosineDistance,
+                  'arccos': ArccosDistance,
                   'pyfunc': PyFuncDistance}
 
 
@@ -1051,6 +1052,15 @@ cdef class CosineDistance(DistanceMetric):
             norm2 += x2[j] * x2[j]
         return 1.0 - d / sqrt(norm1 * norm2)
 
+cdef class ArccosDistance(DistanceMetric):
+    cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2, ITYPE_t size) nogil except -1:
+        cdef DTYPE_t d = 0, norm1 = 0, norm2 = 0
+        cdef np.intp_t j
+        for j in range(size):
+            d += x1[j] * x2[j]
+            norm1 += x1[j] * x1[j]
+            norm2 += x2[j] * x2[j]
+        return acos(1.0 - d / sqrt(norm1 * norm2)) / M_PI
 
 
 

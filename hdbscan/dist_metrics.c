@@ -866,6 +866,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_SokalMichenerDistance;
 struct __pyx_obj_7hdbscan_12dist_metrics_SokalSneathDistance;
 struct __pyx_obj_7hdbscan_12dist_metrics_HaversineDistance;
 struct __pyx_obj_7hdbscan_12dist_metrics_CosineDistance;
+struct __pyx_obj_7hdbscan_12dist_metrics_ArccosDistance;
 struct __pyx_obj_7hdbscan_12dist_metrics_PyFuncDistance;
 struct __pyx_array_obj;
 struct __pyx_MemviewEnum_obj;
@@ -949,7 +950,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":409
+/* "hdbscan/dist_metrics.pyx":410
  * # Euclidean Distance
  * #  d = sqrt(sum(x_i^2 - y_i^2))
  * cdef class EuclideanDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -961,7 +962,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_EuclideanDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":442
+/* "hdbscan/dist_metrics.pyx":443
  * # SEuclidean Distance
  * #  d = sqrt(sum((x_i - y_i2)^2 / v_i))
  * cdef class SEuclideanDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -973,7 +974,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_SEuclideanDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":486
+/* "hdbscan/dist_metrics.pyx":487
  * # Manhattan Distance
  * #  d = sum(abs(x_i - y_i))
  * cdef class ManhattanDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -985,7 +986,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_ManhattanDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":507
+/* "hdbscan/dist_metrics.pyx":508
  * # Chebyshev Distance
  * #  d = max_i(abs(x_i), abs(y_i))
  * cdef class ChebyshevDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -997,7 +998,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_ChebyshevDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":528
+/* "hdbscan/dist_metrics.pyx":529
  * # Minkowski Distance
  * #  d = sum(x_i^p - y_i^p) ^ (1/p)
  * cdef class MinkowskiDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1009,7 +1010,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_MinkowskiDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":575
+/* "hdbscan/dist_metrics.pyx":576
  * # W-Minkowski Distance
  * #  d = sum(w_i * (x_i^p - y_i^p)) ^ (1/p)
  * cdef class WMinkowskiDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1021,7 +1022,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_WMinkowskiDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":634
+/* "hdbscan/dist_metrics.pyx":635
  * # Mahalanobis Distance
  * #  d = sqrt( (x - y)^T V^-1 (x - y) )
  * cdef class MahalanobisDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1033,7 +1034,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_MahalanobisDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":704
+/* "hdbscan/dist_metrics.pyx":705
  * # Hamming Distance
  * #  d = N_unequal(x, y) / N_tot
  * cdef class HammingDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1045,7 +1046,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_HammingDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":726
+/* "hdbscan/dist_metrics.pyx":727
  * # Canberra Distance
  * #  D(x, y) = sum[ abs(x_i - y_i) / (abs(x_i) + abs(y_i)) ]
  * cdef class CanberraDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1057,7 +1058,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_CanberraDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":749
+/* "hdbscan/dist_metrics.pyx":750
  * # Bray-Curtis Distance
  * #  D(x, y) = sum[abs(x_i - y_i)] / sum[abs(x_i) + abs(y_i)]
  * cdef class BrayCurtisDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1069,7 +1070,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_BrayCurtisDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":774
+/* "hdbscan/dist_metrics.pyx":775
  * # Jaccard Distance (boolean)
  * #  D(x, y) = N_unequal(x, y) / N_nonzero(x, y)
  * cdef class JaccardDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1081,7 +1082,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_JaccardDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":801
+/* "hdbscan/dist_metrics.pyx":802
  * # Matching Distance (boolean)
  * #  D(x, y) = n_neq / n
  * cdef class MatchingDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1093,7 +1094,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_MatchingDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":825
+/* "hdbscan/dist_metrics.pyx":826
  * # Dice Distance (boolean)
  * #  D(x, y) = n_neq / (2 * ntt + n_neq)
  * cdef class DiceDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1105,7 +1106,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_DiceDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":850
+/* "hdbscan/dist_metrics.pyx":851
  * # Kulsinski Distance (boolean)
  * #  D(x, y) = (ntf + nft - ntt + n) / (n_neq + n)
  * cdef class KulsinskiDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1117,7 +1118,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_KulsinskiDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":875
+/* "hdbscan/dist_metrics.pyx":876
  * # Rogers-Tanimoto Distance (boolean)
  * #  D(x, y) = 2 * n_neq / (n + n_neq)
  * cdef class RogersTanimotoDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1129,7 +1130,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_RogersTanimotoDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":899
+/* "hdbscan/dist_metrics.pyx":900
  * # Russell-Rao Distance (boolean)
  * #  D(x, y) = (n - ntt) / n
  * cdef class RussellRaoDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1141,7 +1142,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_RussellRaoDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":923
+/* "hdbscan/dist_metrics.pyx":924
  * # Sokal-Michener Distance (boolean)
  * #  D(x, y) = 2 * n_neq / (n + n_neq)
  * cdef class SokalMichenerDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1153,7 +1154,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_SokalMichenerDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":947
+/* "hdbscan/dist_metrics.pyx":948
  * # Sokal-Sneath Distance (boolean)
  * #  D(x, y) = n_neq / (0.5 * n_tt + n_neq)
  * cdef class SokalSneathDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1165,7 +1166,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_SokalSneathDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":973
+/* "hdbscan/dist_metrics.pyx":974
  * #  D(x, y) = 2 arcsin{sqrt[sin^2 ((x1 - y1) / 2)
  * #                          + cos(x1) cos(y1) sin^2 ((x2 - y2) / 2)]}
  * cdef class HaversineDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1177,7 +1178,7 @@ struct __pyx_obj_7hdbscan_12dist_metrics_HaversineDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":1044
+/* "hdbscan/dist_metrics.pyx":1045
  * # [This is not a true metric, so we will leave it out.]
  * 
  * cdef class CosineDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1189,7 +1190,19 @@ struct __pyx_obj_7hdbscan_12dist_metrics_CosineDistance {
 };
 
 
-/* "hdbscan/dist_metrics.pyx":1087
+/* "hdbscan/dist_metrics.pyx":1055
+ *         return 1.0 - d / sqrt(norm1 * norm2)
+ * 
+ * cdef class ArccosDistance(DistanceMetric):             # <<<<<<<<<<<<<<
+ *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2, ITYPE_t size) nogil except -1:
+ *         cdef DTYPE_t d = 0, norm1 = 0, norm2 = 0
+ */
+struct __pyx_obj_7hdbscan_12dist_metrics_ArccosDistance {
+  struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric __pyx_base;
+};
+
+
+/* "hdbscan/dist_metrics.pyx":1097
  * # User-defined distance
  * #
  * cdef class PyFuncDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1279,7 +1292,7 @@ struct __pyx_memoryviewslice_obj {
 
 
 
-/* "hdbscan/dist_metrics.pyx":111
+/* "hdbscan/dist_metrics.pyx":112
  * ######################################################################
  * # Distance Metric Classes
  * cdef class DistanceMetric:             # <<<<<<<<<<<<<<
@@ -1298,7 +1311,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
 
 
-/* "hdbscan/dist_metrics.pyx":409
+/* "hdbscan/dist_metrics.pyx":410
  * # Euclidean Distance
  * #  d = sqrt(sum(x_i^2 - y_i^2))
  * cdef class EuclideanDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1312,7 +1325,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_EuclideanDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_EuclideanDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_EuclideanDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":442
+/* "hdbscan/dist_metrics.pyx":443
  * # SEuclidean Distance
  * #  d = sqrt(sum((x_i - y_i2)^2 / v_i))
  * cdef class SEuclideanDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1326,7 +1339,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_SEuclideanDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_SEuclideanDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_SEuclideanDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":486
+/* "hdbscan/dist_metrics.pyx":487
  * # Manhattan Distance
  * #  d = sum(abs(x_i - y_i))
  * cdef class ManhattanDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1340,7 +1353,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_ManhattanDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_ManhattanDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_ManhattanDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":507
+/* "hdbscan/dist_metrics.pyx":508
  * # Chebyshev Distance
  * #  d = max_i(abs(x_i), abs(y_i))
  * cdef class ChebyshevDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1354,7 +1367,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_ChebyshevDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_ChebyshevDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_ChebyshevDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":528
+/* "hdbscan/dist_metrics.pyx":529
  * # Minkowski Distance
  * #  d = sum(x_i^p - y_i^p) ^ (1/p)
  * cdef class MinkowskiDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1368,7 +1381,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_MinkowskiDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_MinkowskiDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_MinkowskiDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":575
+/* "hdbscan/dist_metrics.pyx":576
  * # W-Minkowski Distance
  * #  d = sum(w_i * (x_i^p - y_i^p)) ^ (1/p)
  * cdef class WMinkowskiDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1382,7 +1395,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_WMinkowskiDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_WMinkowskiDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_WMinkowskiDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":634
+/* "hdbscan/dist_metrics.pyx":635
  * # Mahalanobis Distance
  * #  d = sqrt( (x - y)^T V^-1 (x - y) )
  * cdef class MahalanobisDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1396,7 +1409,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_MahalanobisDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_MahalanobisDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_MahalanobisDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":704
+/* "hdbscan/dist_metrics.pyx":705
  * # Hamming Distance
  * #  d = N_unequal(x, y) / N_tot
  * cdef class HammingDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1410,7 +1423,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_HammingDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_HammingDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_HammingDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":726
+/* "hdbscan/dist_metrics.pyx":727
  * # Canberra Distance
  * #  D(x, y) = sum[ abs(x_i - y_i) / (abs(x_i) + abs(y_i)) ]
  * cdef class CanberraDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1424,7 +1437,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_CanberraDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_CanberraDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_CanberraDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":749
+/* "hdbscan/dist_metrics.pyx":750
  * # Bray-Curtis Distance
  * #  D(x, y) = sum[abs(x_i - y_i)] / sum[abs(x_i) + abs(y_i)]
  * cdef class BrayCurtisDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1438,7 +1451,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_BrayCurtisDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_BrayCurtisDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_BrayCurtisDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":774
+/* "hdbscan/dist_metrics.pyx":775
  * # Jaccard Distance (boolean)
  * #  D(x, y) = N_unequal(x, y) / N_nonzero(x, y)
  * cdef class JaccardDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1452,7 +1465,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_JaccardDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_JaccardDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_JaccardDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":801
+/* "hdbscan/dist_metrics.pyx":802
  * # Matching Distance (boolean)
  * #  D(x, y) = n_neq / n
  * cdef class MatchingDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1466,7 +1479,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_MatchingDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_MatchingDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_MatchingDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":825
+/* "hdbscan/dist_metrics.pyx":826
  * # Dice Distance (boolean)
  * #  D(x, y) = n_neq / (2 * ntt + n_neq)
  * cdef class DiceDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1480,7 +1493,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DiceDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DiceDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_DiceDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":850
+/* "hdbscan/dist_metrics.pyx":851
  * # Kulsinski Distance (boolean)
  * #  D(x, y) = (ntf + nft - ntt + n) / (n_neq + n)
  * cdef class KulsinskiDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1494,7 +1507,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_KulsinskiDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_KulsinskiDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_KulsinskiDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":875
+/* "hdbscan/dist_metrics.pyx":876
  * # Rogers-Tanimoto Distance (boolean)
  * #  D(x, y) = 2 * n_neq / (n + n_neq)
  * cdef class RogersTanimotoDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1508,7 +1521,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_RogersTanimotoDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_RogersTanimotoDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_RogersTanimotoDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":899
+/* "hdbscan/dist_metrics.pyx":900
  * # Russell-Rao Distance (boolean)
  * #  D(x, y) = (n - ntt) / n
  * cdef class RussellRaoDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1522,7 +1535,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_RussellRaoDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_RussellRaoDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_RussellRaoDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":923
+/* "hdbscan/dist_metrics.pyx":924
  * # Sokal-Michener Distance (boolean)
  * #  D(x, y) = 2 * n_neq / (n + n_neq)
  * cdef class SokalMichenerDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1536,7 +1549,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_SokalMichenerDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_SokalMichenerDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_SokalMichenerDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":947
+/* "hdbscan/dist_metrics.pyx":948
  * # Sokal-Sneath Distance (boolean)
  * #  D(x, y) = n_neq / (0.5 * n_tt + n_neq)
  * cdef class SokalSneathDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1550,7 +1563,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_SokalSneathDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_SokalSneathDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_SokalSneathDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":973
+/* "hdbscan/dist_metrics.pyx":974
  * #  D(x, y) = 2 arcsin{sqrt[sin^2 ((x1 - y1) / 2)
  * #                          + cos(x1) cos(y1) sin^2 ((x2 - y2) / 2)]}
  * cdef class HaversineDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1564,7 +1577,7 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_HaversineDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_HaversineDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_HaversineDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":1044
+/* "hdbscan/dist_metrics.pyx":1045
  * # [This is not a true metric, so we will leave it out.]
  * 
  * cdef class CosineDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -1578,7 +1591,21 @@ struct __pyx_vtabstruct_7hdbscan_12dist_metrics_CosineDistance {
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_CosineDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_CosineDistance;
 
 
-/* "hdbscan/dist_metrics.pyx":1087
+/* "hdbscan/dist_metrics.pyx":1055
+ *         return 1.0 - d / sqrt(norm1 * norm2)
+ * 
+ * cdef class ArccosDistance(DistanceMetric):             # <<<<<<<<<<<<<<
+ *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2, ITYPE_t size) nogil except -1:
+ *         cdef DTYPE_t d = 0, norm1 = 0, norm2 = 0
+ */
+
+struct __pyx_vtabstruct_7hdbscan_12dist_metrics_ArccosDistance {
+  struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric __pyx_base;
+};
+static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_ArccosDistance *__pyx_vtabptr_7hdbscan_12dist_metrics_ArccosDistance;
+
+
+/* "hdbscan/dist_metrics.pyx":1097
  * # User-defined distance
  * #
  * cdef class PyFuncDistance(DistanceMetric):             # <<<<<<<<<<<<<<
@@ -2361,6 +2388,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
 static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_17HaversineDistance__rdist_to_dist(CYTHON_UNUSED struct __pyx_obj_7hdbscan_12dist_metrics_HaversineDistance *__pyx_v_self, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_rdist); /* proto*/
 static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_17HaversineDistance__dist_to_rdist(CYTHON_UNUSED struct __pyx_obj_7hdbscan_12dist_metrics_HaversineDistance *__pyx_v_self, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_dist); /* proto*/
 static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_14CosineDistance_dist(CYTHON_UNUSED struct __pyx_obj_7hdbscan_12dist_metrics_CosineDistance *__pyx_v_self, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x1, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x2, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_v_size); /* proto*/
+static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_14ArccosDistance_dist(CYTHON_UNUSED struct __pyx_obj_7hdbscan_12dist_metrics_ArccosDistance *__pyx_v_self, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x1, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x2, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_v_size); /* proto*/
 static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_14PyFuncDistance_dist(struct __pyx_obj_7hdbscan_12dist_metrics_PyFuncDistance *__pyx_v_self, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x1, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x2, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_v_size); /* proto*/
 static PyObject *__pyx_array_get_memview(struct __pyx_array_obj *__pyx_v_self); /* proto*/
 static char *__pyx_memoryview_get_item_pointer(struct __pyx_memoryview_obj *__pyx_v_self, PyObject *__pyx_v_index); /* proto*/
@@ -2431,6 +2459,7 @@ static PyTypeObject *__pyx_ptype_7hdbscan_12dist_metrics_SokalMichenerDistance =
 static PyTypeObject *__pyx_ptype_7hdbscan_12dist_metrics_SokalSneathDistance = 0;
 static PyTypeObject *__pyx_ptype_7hdbscan_12dist_metrics_HaversineDistance = 0;
 static PyTypeObject *__pyx_ptype_7hdbscan_12dist_metrics_CosineDistance = 0;
+static PyTypeObject *__pyx_ptype_7hdbscan_12dist_metrics_ArccosDistance = 0;
 static PyTypeObject *__pyx_ptype_7hdbscan_12dist_metrics_PyFuncDistance = 0;
 static PyTypeObject *__pyx_array_type = 0;
 static PyTypeObject *__pyx_MemviewEnum_type = 0;
@@ -2558,6 +2587,7 @@ static const char __pyx_k_range[] = "range";
 static const char __pyx_k_shape[] = "shape";
 static const char __pyx_k_start[] = "start";
 static const char __pyx_k_zeros[] = "zeros";
+static const char __pyx_k_arccos[] = "arccos";
 static const char __pyx_k_arcsin[] = "arcsin";
 static const char __pyx_k_cosine[] = "cosine";
 static const char __pyx_k_double[] = "double";
@@ -2628,7 +2658,7 @@ static const char __pyx_k_p_must_be_greater_than_1[] = "p must be greater than 1
 static const char __pyx_k_Invalid_shape_in_axis_d_d[] = "Invalid shape in axis %d: %d.";
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
-static const char __pyx_k_get_valid_metric_ids_line_96[] = "get_valid_metric_ids (line 96)";
+static const char __pyx_k_get_valid_metric_ids_line_97[] = "get_valid_metric_ids (line 97)";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
 static const char __pyx_k_Mahalanobis_dist_size_of_V_does[] = "Mahalanobis dist: size of V does not match";
@@ -2707,6 +2737,7 @@ static PyObject *__pyx_kp_b__41;
 static PyObject *__pyx_kp_b__42;
 static PyObject *__pyx_kp_u__43;
 static PyObject *__pyx_n_s_allocate_buffer;
+static PyObject *__pyx_n_s_arccos;
 static PyObject *__pyx_n_s_arcsin;
 static PyObject *__pyx_n_s_asarray;
 static PyObject *__pyx_n_s_base;
@@ -2737,7 +2768,7 @@ static PyObject *__pyx_kp_s_func_must_be_a_callable_taking_t;
 static PyObject *__pyx_kp_s_func_must_return_a_float;
 static PyObject *__pyx_n_s_get_metric;
 static PyObject *__pyx_n_s_get_valid_metric_ids;
-static PyObject *__pyx_kp_u_get_valid_metric_ids_line_96;
+static PyObject *__pyx_kp_u_get_valid_metric_ids_line_97;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_kp_s_got_differing_extents_in_dimensi;
 static PyObject *__pyx_n_s_hamming;
@@ -2901,6 +2932,7 @@ static PyObject *__pyx_tp_new_7hdbscan_12dist_metrics_SokalMichenerDistance(PyTy
 static PyObject *__pyx_tp_new_7hdbscan_12dist_metrics_SokalSneathDistance(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_7hdbscan_12dist_metrics_HaversineDistance(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_7hdbscan_12dist_metrics_CosineDistance(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_7hdbscan_12dist_metrics_ArccosDistance(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_7hdbscan_12dist_metrics_PyFuncDistance(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_array(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_Enum(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -3320,7 +3352,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_newObj(CYTHON_UNUSED PyObject 
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":96
+/* "hdbscan/dist_metrics.pyx":97
  * 
  * 
  * def get_valid_metric_ids(L):             # <<<<<<<<<<<<<<
@@ -3362,7 +3394,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
   int __pyx_t_12;
   __Pyx_RefNannySetupContext("get_valid_metric_ids", 0);
 
-  /* "hdbscan/dist_metrics.pyx":105
+  /* "hdbscan/dist_metrics.pyx":106
  *     ['cityblock', 'euclidean', 'l1', 'l2', 'manhattan']
  *     """
  *     return [key for (key, val) in METRIC_MAPPING.items()             # <<<<<<<<<<<<<<
@@ -3370,11 +3402,11 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 105, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_METRIC_MAPPING); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 105, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_METRIC_MAPPING); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_items); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 105, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_items); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -3388,10 +3420,10 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 105, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 106, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 105, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 106, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -3399,9 +3431,9 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
     __pyx_t_4 = __pyx_t_2; __Pyx_INCREF(__pyx_t_4); __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 105, __pyx_L1_error)
+    __pyx_t_5 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 106, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 105, __pyx_L1_error)
+    __pyx_t_6 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 106, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (;;) {
@@ -3409,17 +3441,17 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
       if (likely(PyList_CheckExact(__pyx_t_4))) {
         if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_4)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(1, 105, __pyx_L1_error)
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(1, 106, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 105, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 106, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       } else {
         if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(1, 105, __pyx_L1_error)
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(1, 106, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 105, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 106, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       }
@@ -3429,7 +3461,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(1, 105, __pyx_L1_error)
+          else __PYX_ERR(1, 106, __pyx_L1_error)
         }
         break;
       }
@@ -3445,7 +3477,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(1, 105, __pyx_L1_error)
+        __PYX_ERR(1, 106, __pyx_L1_error)
       }
       #if CYTHON_COMPILING_IN_CPYTHON
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -3458,15 +3490,15 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_7);
       #else
-      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 105, __pyx_L1_error)
+      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 105, __pyx_L1_error)
+      __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       #endif
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_8 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 105, __pyx_L1_error)
+      __pyx_t_8 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_9 = Py_TYPE(__pyx_t_8)->tp_iternext;
@@ -3474,7 +3506,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
       __Pyx_GOTREF(__pyx_t_3);
       index = 1; __pyx_t_7 = __pyx_t_9(__pyx_t_8); if (unlikely(!__pyx_t_7)) goto __pyx_L5_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_7);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 2) < 0) __PYX_ERR(1, 105, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 2) < 0) __PYX_ERR(1, 106, __pyx_L1_error)
       __pyx_t_9 = NULL;
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       goto __pyx_L6_unpacking_done;
@@ -3482,7 +3514,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __pyx_t_9 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(1, 105, __pyx_L1_error)
+      __PYX_ERR(1, 106, __pyx_L1_error)
       __pyx_L6_unpacking_done:;
     }
     __Pyx_XDECREF_SET(__pyx_v_key, __pyx_t_3);
@@ -3490,16 +3522,16 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
     __Pyx_XDECREF_SET(__pyx_v_val, __pyx_t_7);
     __pyx_t_7 = 0;
 
-    /* "hdbscan/dist_metrics.pyx":106
+    /* "hdbscan/dist_metrics.pyx":107
  *     """
  *     return [key for (key, val) in METRIC_MAPPING.items()
  *             if (val.__name__ in L) or (val in L)]             # <<<<<<<<<<<<<<
  * 
  * 
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_val, __pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 106, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_val, __pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_11 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_v_L, Py_EQ)); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(1, 106, __pyx_L1_error)
+    __pyx_t_11 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_v_L, Py_EQ)); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(1, 107, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_12 = (__pyx_t_11 != 0);
     if (!__pyx_t_12) {
@@ -3507,22 +3539,22 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
       __pyx_t_10 = __pyx_t_12;
       goto __pyx_L8_bool_binop_done;
     }
-    __pyx_t_12 = (__Pyx_PySequence_ContainsTF(__pyx_v_val, __pyx_v_L, Py_EQ)); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(1, 106, __pyx_L1_error)
+    __pyx_t_12 = (__Pyx_PySequence_ContainsTF(__pyx_v_val, __pyx_v_L, Py_EQ)); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(1, 107, __pyx_L1_error)
     __pyx_t_11 = (__pyx_t_12 != 0);
     __pyx_t_10 = __pyx_t_11;
     __pyx_L8_bool_binop_done:;
     if (__pyx_t_10) {
 
-      /* "hdbscan/dist_metrics.pyx":105
+      /* "hdbscan/dist_metrics.pyx":106
  *     ['cityblock', 'euclidean', 'l1', 'l2', 'manhattan']
  *     """
  *     return [key for (key, val) in METRIC_MAPPING.items()             # <<<<<<<<<<<<<<
  *             if (val.__name__ in L) or (val in L)]
  * 
  */
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_v_key))) __PYX_ERR(1, 105, __pyx_L1_error)
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_v_key))) __PYX_ERR(1, 106, __pyx_L1_error)
 
-      /* "hdbscan/dist_metrics.pyx":106
+      /* "hdbscan/dist_metrics.pyx":107
  *     """
  *     return [key for (key, val) in METRIC_MAPPING.items()
  *             if (val.__name__ in L) or (val in L)]             # <<<<<<<<<<<<<<
@@ -3531,7 +3563,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
  */
     }
 
-    /* "hdbscan/dist_metrics.pyx":105
+    /* "hdbscan/dist_metrics.pyx":106
  *     ['cityblock', 'euclidean', 'l1', 'l2', 'manhattan']
  *     """
  *     return [key for (key, val) in METRIC_MAPPING.items()             # <<<<<<<<<<<<<<
@@ -3544,7 +3576,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":96
+  /* "hdbscan/dist_metrics.pyx":97
  * 
  * 
  * def get_valid_metric_ids(L):             # <<<<<<<<<<<<<<
@@ -3570,7 +3602,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_2get_valid_metric_ids(CYTHON_U
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":215
+/* "hdbscan/dist_metrics.pyx":216
  *     scaling as other distances.
  *     """
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -3602,7 +3634,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric___cinit__(struct __
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "hdbscan/dist_metrics.pyx":216
+  /* "hdbscan/dist_metrics.pyx":217
  *     """
  *     def __cinit__(self):
  *         self.p = 2             # <<<<<<<<<<<<<<
@@ -3611,67 +3643,67 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric___cinit__(struct __
  */
   __pyx_v_self->p = 2.0;
 
-  /* "hdbscan/dist_metrics.pyx":217
+  /* "hdbscan/dist_metrics.pyx":218
  *     def __cinit__(self):
  *         self.p = 2
  *         self.vec = np.zeros(1, dtype=DTYPE, order='c')             # <<<<<<<<<<<<<<
  *         self.mat = np.zeros((1, 1), dtype=DTYPE, order='c')
  *         self.vec_ptr = get_vec_ptr(self.vec)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 217, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 217, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 217, __pyx_L1_error)
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 217, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(1, 217, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(1, 218, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(1, 217, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple_, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 217, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(1, 218, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple_, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 217, __pyx_L1_error)
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 218, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->vec);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->vec));
   __pyx_v_self->vec = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":218
+  /* "hdbscan/dist_metrics.pyx":219
  *         self.p = 2
  *         self.vec = np.zeros(1, dtype=DTYPE, order='c')
  *         self.mat = np.zeros((1, 1), dtype=DTYPE, order='c')             # <<<<<<<<<<<<<<
  *         self.vec_ptr = get_vec_ptr(self.vec)
  *         self.mat_ptr = get_mat_ptr(self.mat)
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 218, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 218, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 218, __pyx_L1_error)
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 218, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(1, 218, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(1, 219, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(1, 218, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__3, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 218, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(1, 219, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__3, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 218, __pyx_L1_error)
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 219, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_self->mat);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->mat));
   __pyx_v_self->mat = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":219
+  /* "hdbscan/dist_metrics.pyx":220
  *         self.vec = np.zeros(1, dtype=DTYPE, order='c')
  *         self.mat = np.zeros((1, 1), dtype=DTYPE, order='c')
  *         self.vec_ptr = get_vec_ptr(self.vec)             # <<<<<<<<<<<<<<
@@ -3683,7 +3715,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric___cinit__(struct __
   __pyx_v_self->vec_ptr = __pyx_f_7hdbscan_12dist_metrics_get_vec_ptr(((PyArrayObject *)__pyx_t_2));
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":220
+  /* "hdbscan/dist_metrics.pyx":221
  *         self.mat = np.zeros((1, 1), dtype=DTYPE, order='c')
  *         self.vec_ptr = get_vec_ptr(self.vec)
  *         self.mat_ptr = get_mat_ptr(self.mat)             # <<<<<<<<<<<<<<
@@ -3695,7 +3727,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric___cinit__(struct __
   __pyx_v_self->mat_ptr = __pyx_f_7hdbscan_12dist_metrics_get_mat_ptr(((PyArrayObject *)__pyx_t_2));
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":221
+  /* "hdbscan/dist_metrics.pyx":222
  *         self.vec_ptr = get_vec_ptr(self.vec)
  *         self.mat_ptr = get_mat_ptr(self.mat)
  *         self.size = 1             # <<<<<<<<<<<<<<
@@ -3704,7 +3736,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric___cinit__(struct __
  */
   __pyx_v_self->size = 1;
 
-  /* "hdbscan/dist_metrics.pyx":215
+  /* "hdbscan/dist_metrics.pyx":216
  *     scaling as other distances.
  *     """
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -3726,7 +3758,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric___cinit__(struct __
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":223
+/* "hdbscan/dist_metrics.pyx":224
  *         self.size = 1
  * 
  *     def __reduce__(self):             # <<<<<<<<<<<<<<
@@ -3758,7 +3790,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_2__reduce__(s
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("__reduce__", 0);
 
-  /* "hdbscan/dist_metrics.pyx":227
+  /* "hdbscan/dist_metrics.pyx":228
  *         reduce method used for pickling
  *         """
  *         return (newObj, (self.__class__,), self.__getstate__())             # <<<<<<<<<<<<<<
@@ -3766,16 +3798,16 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_2__reduce__(s
  *     def __getstate__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_newObj); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 227, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_newObj); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 227, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 227, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getstate); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 227, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getstate); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_4))) {
@@ -3788,14 +3820,14 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_2__reduce__(s
     }
   }
   if (__pyx_t_5) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 227, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 228, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 227, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 228, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 227, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
@@ -3810,7 +3842,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_2__reduce__(s
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":223
+  /* "hdbscan/dist_metrics.pyx":224
  *         self.size = 1
  * 
  *     def __reduce__(self):             # <<<<<<<<<<<<<<
@@ -3833,7 +3865,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_2__reduce__(s
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":229
+/* "hdbscan/dist_metrics.pyx":230
  *         return (newObj, (self.__class__,), self.__getstate__())
  * 
  *     def __getstate__(self):             # <<<<<<<<<<<<<<
@@ -3863,23 +3895,23 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_4__getstate__
   int __pyx_t_3;
   __Pyx_RefNannySetupContext("__getstate__", 0);
 
-  /* "hdbscan/dist_metrics.pyx":233
+  /* "hdbscan/dist_metrics.pyx":234
  *         get state for pickling
  *         """
  *         if self.__class__.__name__ == "PyFuncDistance":             # <<<<<<<<<<<<<<
  *             return (float(self.p), self.vec, self.mat, self.func, self.kwargs)
  *         return (float(self.p), self.vec, self.mat)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 233, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 233, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_PyFuncDistance, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(1, 233, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_PyFuncDistance, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(1, 234, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_3) {
 
-    /* "hdbscan/dist_metrics.pyx":234
+    /* "hdbscan/dist_metrics.pyx":235
  *         """
  *         if self.__class__.__name__ == "PyFuncDistance":
  *             return (float(self.p), self.vec, self.mat, self.func, self.kwargs)             # <<<<<<<<<<<<<<
@@ -3887,9 +3919,9 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_4__getstate__
  * 
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = PyFloat_FromDouble(((double)__pyx_v_self->p)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 234, __pyx_L1_error)
+    __pyx_t_2 = PyFloat_FromDouble(((double)__pyx_v_self->p)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 235, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = PyTuple_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 234, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 235, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
@@ -3910,7 +3942,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_4__getstate__
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "hdbscan/dist_metrics.pyx":233
+    /* "hdbscan/dist_metrics.pyx":234
  *         get state for pickling
  *         """
  *         if self.__class__.__name__ == "PyFuncDistance":             # <<<<<<<<<<<<<<
@@ -3919,7 +3951,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_4__getstate__
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":235
+  /* "hdbscan/dist_metrics.pyx":236
  *         if self.__class__.__name__ == "PyFuncDistance":
  *             return (float(self.p), self.vec, self.mat, self.func, self.kwargs)
  *         return (float(self.p), self.vec, self.mat)             # <<<<<<<<<<<<<<
@@ -3927,9 +3959,9 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_4__getstate__
  *     def __setstate__(self, state):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(((double)__pyx_v_self->p)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 235, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(((double)__pyx_v_self->p)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 236, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 235, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 236, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
@@ -3944,7 +3976,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_4__getstate__
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":229
+  /* "hdbscan/dist_metrics.pyx":230
  *         return (newObj, (self.__class__,), self.__getstate__())
  * 
  *     def __getstate__(self):             # <<<<<<<<<<<<<<
@@ -3964,7 +3996,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_4__getstate__
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":237
+/* "hdbscan/dist_metrics.pyx":238
  *         return (float(self.p), self.vec, self.mat)
  * 
  *     def __setstate__(self, state):             # <<<<<<<<<<<<<<
@@ -3995,75 +4027,75 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_6__setstate__
   int __pyx_t_4;
   __Pyx_RefNannySetupContext("__setstate__", 0);
 
-  /* "hdbscan/dist_metrics.pyx":241
+  /* "hdbscan/dist_metrics.pyx":242
  *         set state for pickling
  *         """
  *         self.p = state[0]             # <<<<<<<<<<<<<<
  *         self.vec = state[1]
  *         self.mat = state[2]
  */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_state, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 241, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_state, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 242, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_2 == (npy_double)-1) && PyErr_Occurred())) __PYX_ERR(1, 241, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_2 == (npy_double)-1) && PyErr_Occurred())) __PYX_ERR(1, 242, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->p = __pyx_t_2;
 
-  /* "hdbscan/dist_metrics.pyx":242
+  /* "hdbscan/dist_metrics.pyx":243
  *         """
  *         self.p = state[0]
  *         self.vec = state[1]             # <<<<<<<<<<<<<<
  *         self.mat = state[2]
  *         if self.__class__.__name__ == "PyFuncDistance":
  */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_state, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 242, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_state, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 243, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 242, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 243, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->vec);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->vec));
   __pyx_v_self->vec = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":243
+  /* "hdbscan/dist_metrics.pyx":244
  *         self.p = state[0]
  *         self.vec = state[1]
  *         self.mat = state[2]             # <<<<<<<<<<<<<<
  *         if self.__class__.__name__ == "PyFuncDistance":
  *             self.func = state[3]
  */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_state, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 243, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_state, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 244, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 243, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 244, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->mat);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->mat));
   __pyx_v_self->mat = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":244
+  /* "hdbscan/dist_metrics.pyx":245
  *         self.vec = state[1]
  *         self.mat = state[2]
  *         if self.__class__.__name__ == "PyFuncDistance":             # <<<<<<<<<<<<<<
  *             self.func = state[3]
  *             self.kwargs = state[4]
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 244, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 244, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_name); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_4 = (__Pyx_PyString_Equals(__pyx_t_3, __pyx_n_s_PyFuncDistance, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(1, 244, __pyx_L1_error)
+  __pyx_t_4 = (__Pyx_PyString_Equals(__pyx_t_3, __pyx_n_s_PyFuncDistance, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(1, 245, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (__pyx_t_4) {
 
-    /* "hdbscan/dist_metrics.pyx":245
+    /* "hdbscan/dist_metrics.pyx":246
  *         self.mat = state[2]
  *         if self.__class__.__name__ == "PyFuncDistance":
  *             self.func = state[3]             # <<<<<<<<<<<<<<
  *             self.kwargs = state[4]
  *         self.vec_ptr = get_vec_ptr(self.vec)
  */
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_state, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 245, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_state, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 246, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_3);
     __Pyx_GOTREF(__pyx_v_self->func);
@@ -4071,14 +4103,14 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_6__setstate__
     __pyx_v_self->func = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "hdbscan/dist_metrics.pyx":246
+    /* "hdbscan/dist_metrics.pyx":247
  *         if self.__class__.__name__ == "PyFuncDistance":
  *             self.func = state[3]
  *             self.kwargs = state[4]             # <<<<<<<<<<<<<<
  *         self.vec_ptr = get_vec_ptr(self.vec)
  *         self.mat_ptr = get_mat_ptr(self.mat)
  */
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_state, 4, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 246, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_state, 4, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 247, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_3);
     __Pyx_GOTREF(__pyx_v_self->kwargs);
@@ -4086,7 +4118,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_6__setstate__
     __pyx_v_self->kwargs = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "hdbscan/dist_metrics.pyx":244
+    /* "hdbscan/dist_metrics.pyx":245
  *         self.vec = state[1]
  *         self.mat = state[2]
  *         if self.__class__.__name__ == "PyFuncDistance":             # <<<<<<<<<<<<<<
@@ -4095,7 +4127,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_6__setstate__
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":247
+  /* "hdbscan/dist_metrics.pyx":248
  *             self.func = state[3]
  *             self.kwargs = state[4]
  *         self.vec_ptr = get_vec_ptr(self.vec)             # <<<<<<<<<<<<<<
@@ -4107,7 +4139,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_6__setstate__
   __pyx_v_self->vec_ptr = __pyx_f_7hdbscan_12dist_metrics_get_vec_ptr(((PyArrayObject *)__pyx_t_3));
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":248
+  /* "hdbscan/dist_metrics.pyx":249
  *             self.kwargs = state[4]
  *         self.vec_ptr = get_vec_ptr(self.vec)
  *         self.mat_ptr = get_mat_ptr(self.mat)             # <<<<<<<<<<<<<<
@@ -4119,7 +4151,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_6__setstate__
   __pyx_v_self->mat_ptr = __pyx_f_7hdbscan_12dist_metrics_get_mat_ptr(((PyArrayObject *)__pyx_t_3));
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":249
+  /* "hdbscan/dist_metrics.pyx":250
  *         self.vec_ptr = get_vec_ptr(self.vec)
  *         self.mat_ptr = get_mat_ptr(self.mat)
  *         self.size = 1             # <<<<<<<<<<<<<<
@@ -4128,7 +4160,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_6__setstate__
  */
   __pyx_v_self->size = 1;
 
-  /* "hdbscan/dist_metrics.pyx":237
+  /* "hdbscan/dist_metrics.pyx":238
  *         return (float(self.p), self.vec, self.mat)
  * 
  *     def __setstate__(self, state):             # <<<<<<<<<<<<<<
@@ -4150,7 +4182,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_6__setstate__
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":252
+/* "hdbscan/dist_metrics.pyx":253
  * 
  *     @classmethod
  *     def get_metric(cls, metric, **kwargs):             # <<<<<<<<<<<<<<
@@ -4187,7 +4219,7 @@ static PyObject *__pyx_pw_7hdbscan_12dist_metrics_14DistanceMetric_9get_metric(P
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, pos_args, "get_metric") < 0)) __PYX_ERR(1, 252, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, pos_args, "get_metric") < 0)) __PYX_ERR(1, 253, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -4198,7 +4230,7 @@ static PyObject *__pyx_pw_7hdbscan_12dist_metrics_14DistanceMetric_9get_metric(P
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_metric", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 252, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_metric", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 253, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
   __Pyx_AddTraceback("hdbscan.dist_metrics.DistanceMetric.get_metric", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -4231,7 +4263,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
   __Pyx_RefNannySetupContext("get_metric", 0);
   __Pyx_INCREF(__pyx_v_metric);
 
-  /* "hdbscan/dist_metrics.pyx":264
+  /* "hdbscan/dist_metrics.pyx":265
  *             additional arguments will be passed to the requested metric
  *         """
  *         if isinstance(metric, DistanceMetric):             # <<<<<<<<<<<<<<
@@ -4242,7 +4274,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hdbscan/dist_metrics.pyx":265
+    /* "hdbscan/dist_metrics.pyx":266
  *         """
  *         if isinstance(metric, DistanceMetric):
  *             return metric             # <<<<<<<<<<<<<<
@@ -4254,7 +4286,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
     __pyx_r = __pyx_v_metric;
     goto __pyx_L0;
 
-    /* "hdbscan/dist_metrics.pyx":264
+    /* "hdbscan/dist_metrics.pyx":265
  *             additional arguments will be passed to the requested metric
  *         """
  *         if isinstance(metric, DistanceMetric):             # <<<<<<<<<<<<<<
@@ -4263,18 +4295,18 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":267
+  /* "hdbscan/dist_metrics.pyx":268
  *             return metric
  * 
  *         if callable(metric):             # <<<<<<<<<<<<<<
  *             return PyFuncDistance(metric, **kwargs)
  * 
  */
-  __pyx_t_2 = __Pyx_PyCallable_Check(__pyx_v_metric); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(1, 267, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyCallable_Check(__pyx_v_metric); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(1, 268, __pyx_L1_error)
   __pyx_t_1 = (__pyx_t_2 != 0);
   if (__pyx_t_1) {
 
-    /* "hdbscan/dist_metrics.pyx":268
+    /* "hdbscan/dist_metrics.pyx":269
  * 
  *         if callable(metric):
  *             return PyFuncDistance(metric, **kwargs)             # <<<<<<<<<<<<<<
@@ -4282,19 +4314,19 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  *         # Map the metric string ID to the metric class
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 268, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 269, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_v_metric);
     __Pyx_GIVEREF(__pyx_v_metric);
     PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_metric);
-    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_PyFuncDistance), __pyx_t_3, __pyx_v_kwargs); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 268, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_PyFuncDistance), __pyx_t_3, __pyx_v_kwargs); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 269, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "hdbscan/dist_metrics.pyx":267
+    /* "hdbscan/dist_metrics.pyx":268
  *             return metric
  * 
  *         if callable(metric):             # <<<<<<<<<<<<<<
@@ -4303,7 +4335,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":271
+  /* "hdbscan/dist_metrics.pyx":272
  * 
  *         # Map the metric string ID to the metric class
  *         if isinstance(metric, type) and issubclass(metric, DistanceMetric):             # <<<<<<<<<<<<<<
@@ -4317,7 +4349,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
     __pyx_t_1 = __pyx_t_5;
     goto __pyx_L6_bool_binop_done;
   }
-  __pyx_t_5 = PyObject_IsSubclass(__pyx_v_metric, ((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric)); if (unlikely(__pyx_t_5 == -1)) __PYX_ERR(1, 271, __pyx_L1_error)
+  __pyx_t_5 = PyObject_IsSubclass(__pyx_v_metric, ((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric)); if (unlikely(__pyx_t_5 == -1)) __PYX_ERR(1, 272, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_5 != 0);
   __pyx_t_1 = __pyx_t_2;
   __pyx_L6_bool_binop_done:;
@@ -4325,7 +4357,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
     goto __pyx_L5;
   }
 
-  /* "hdbscan/dist_metrics.pyx":274
+  /* "hdbscan/dist_metrics.pyx":275
  *             pass
  *         else:
  *             try:             # <<<<<<<<<<<<<<
@@ -4342,22 +4374,22 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
       __Pyx_XGOTREF(__pyx_t_8);
       /*try:*/ {
 
-        /* "hdbscan/dist_metrics.pyx":275
+        /* "hdbscan/dist_metrics.pyx":276
  *         else:
  *             try:
  *                 metric = METRIC_MAPPING[metric]             # <<<<<<<<<<<<<<
  *             except:
  *                 raise ValueError("Unrecognized metric '%s'" % metric)
  */
-        __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_METRIC_MAPPING); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 275, __pyx_L8_error)
+        __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_METRIC_MAPPING); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 276, __pyx_L8_error)
         __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_3 = PyObject_GetItem(__pyx_t_4, __pyx_v_metric); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 275, __pyx_L8_error)
+        __pyx_t_3 = PyObject_GetItem(__pyx_t_4, __pyx_v_metric); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 276, __pyx_L8_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_DECREF_SET(__pyx_v_metric, __pyx_t_3);
         __pyx_t_3 = 0;
 
-        /* "hdbscan/dist_metrics.pyx":274
+        /* "hdbscan/dist_metrics.pyx":275
  *             pass
  *         else:
  *             try:             # <<<<<<<<<<<<<<
@@ -4374,7 +4406,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "hdbscan/dist_metrics.pyx":276
+      /* "hdbscan/dist_metrics.pyx":277
  *             try:
  *                 metric = METRIC_MAPPING[metric]
  *             except:             # <<<<<<<<<<<<<<
@@ -4383,35 +4415,35 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  */
       /*except:*/ {
         __Pyx_AddTraceback("hdbscan.dist_metrics.DistanceMetric.get_metric", __pyx_clineno, __pyx_lineno, __pyx_filename);
-        if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_4, &__pyx_t_9) < 0) __PYX_ERR(1, 276, __pyx_L10_except_error)
+        if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_4, &__pyx_t_9) < 0) __PYX_ERR(1, 277, __pyx_L10_except_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_GOTREF(__pyx_t_9);
 
-        /* "hdbscan/dist_metrics.pyx":277
+        /* "hdbscan/dist_metrics.pyx":278
  *                 metric = METRIC_MAPPING[metric]
  *             except:
  *                 raise ValueError("Unrecognized metric '%s'" % metric)             # <<<<<<<<<<<<<<
  * 
  *         # In Minkowski special cases, return more efficient methods
  */
-        __pyx_t_10 = __Pyx_PyString_Format(__pyx_kp_s_Unrecognized_metric_s, __pyx_v_metric); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 277, __pyx_L10_except_error)
+        __pyx_t_10 = __Pyx_PyString_Format(__pyx_kp_s_Unrecognized_metric_s, __pyx_v_metric); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 278, __pyx_L10_except_error)
         __Pyx_GOTREF(__pyx_t_10);
-        __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 277, __pyx_L10_except_error)
+        __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 278, __pyx_L10_except_error)
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_GIVEREF(__pyx_t_10);
         PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_10);
         __pyx_t_10 = 0;
-        __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_11, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 277, __pyx_L10_except_error)
+        __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_11, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 278, __pyx_L10_except_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
         __Pyx_Raise(__pyx_t_10, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __PYX_ERR(1, 277, __pyx_L10_except_error)
+        __PYX_ERR(1, 278, __pyx_L10_except_error)
       }
       __pyx_L10_except_error:;
 
-      /* "hdbscan/dist_metrics.pyx":274
+      /* "hdbscan/dist_metrics.pyx":275
  *             pass
  *         else:
  *             try:             # <<<<<<<<<<<<<<
@@ -4429,7 +4461,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
   }
   __pyx_L5:;
 
-  /* "hdbscan/dist_metrics.pyx":280
+  /* "hdbscan/dist_metrics.pyx":281
  * 
  *         # In Minkowski special cases, return more efficient methods
  *         if metric is MinkowskiDistance:             # <<<<<<<<<<<<<<
@@ -4440,35 +4472,35 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hdbscan/dist_metrics.pyx":281
+    /* "hdbscan/dist_metrics.pyx":282
  *         # In Minkowski special cases, return more efficient methods
  *         if metric is MinkowskiDistance:
  *             p = kwargs.pop('p', 2)             # <<<<<<<<<<<<<<
  *             if p == 1:
  *                 return ManhattanDistance(**kwargs)
  */
-    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_kwargs, __pyx_n_s_pop); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 281, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_kwargs, __pyx_n_s_pop); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 282, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 281, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 282, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_v_p = __pyx_t_4;
     __pyx_t_4 = 0;
 
-    /* "hdbscan/dist_metrics.pyx":282
+    /* "hdbscan/dist_metrics.pyx":283
  *         if metric is MinkowskiDistance:
  *             p = kwargs.pop('p', 2)
  *             if p == 1:             # <<<<<<<<<<<<<<
  *                 return ManhattanDistance(**kwargs)
  *             elif p == 2:
  */
-    __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_v_p, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 282, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_v_p, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 283, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 282, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 283, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (__pyx_t_2) {
 
-      /* "hdbscan/dist_metrics.pyx":283
+      /* "hdbscan/dist_metrics.pyx":284
  *             p = kwargs.pop('p', 2)
  *             if p == 1:
  *                 return ManhattanDistance(**kwargs)             # <<<<<<<<<<<<<<
@@ -4476,13 +4508,13 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  *                 return EuclideanDistance(**kwargs)
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_ManhattanDistance), __pyx_empty_tuple, __pyx_v_kwargs); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 283, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_ManhattanDistance), __pyx_empty_tuple, __pyx_v_kwargs); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 284, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_r = __pyx_t_4;
       __pyx_t_4 = 0;
       goto __pyx_L0;
 
-      /* "hdbscan/dist_metrics.pyx":282
+      /* "hdbscan/dist_metrics.pyx":283
  *         if metric is MinkowskiDistance:
  *             p = kwargs.pop('p', 2)
  *             if p == 1:             # <<<<<<<<<<<<<<
@@ -4491,20 +4523,20 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  */
     }
 
-    /* "hdbscan/dist_metrics.pyx":284
+    /* "hdbscan/dist_metrics.pyx":285
  *             if p == 1:
  *                 return ManhattanDistance(**kwargs)
  *             elif p == 2:             # <<<<<<<<<<<<<<
  *                 return EuclideanDistance(**kwargs)
  *             elif np.isinf(p):
  */
-    __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_v_p, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 284, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_v_p, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 285, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 284, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 285, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (__pyx_t_2) {
 
-      /* "hdbscan/dist_metrics.pyx":285
+      /* "hdbscan/dist_metrics.pyx":286
  *                 return ManhattanDistance(**kwargs)
  *             elif p == 2:
  *                 return EuclideanDistance(**kwargs)             # <<<<<<<<<<<<<<
@@ -4512,13 +4544,13 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  *                 return ChebyshevDistance(**kwargs)
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_EuclideanDistance), __pyx_empty_tuple, __pyx_v_kwargs); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 285, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_EuclideanDistance), __pyx_empty_tuple, __pyx_v_kwargs); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 286, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_r = __pyx_t_4;
       __pyx_t_4 = 0;
       goto __pyx_L0;
 
-      /* "hdbscan/dist_metrics.pyx":284
+      /* "hdbscan/dist_metrics.pyx":285
  *             if p == 1:
  *                 return ManhattanDistance(**kwargs)
  *             elif p == 2:             # <<<<<<<<<<<<<<
@@ -4527,16 +4559,16 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  */
     }
 
-    /* "hdbscan/dist_metrics.pyx":286
+    /* "hdbscan/dist_metrics.pyx":287
  *             elif p == 2:
  *                 return EuclideanDistance(**kwargs)
  *             elif np.isinf(p):             # <<<<<<<<<<<<<<
  *                 return ChebyshevDistance(**kwargs)
  *             else:
  */
-    __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 286, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 287, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_isinf); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 286, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_isinf); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 287, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_t_9 = NULL;
@@ -4550,25 +4582,25 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
       }
     }
     if (!__pyx_t_9) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_p); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 286, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_p); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 287, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
     } else {
-      __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 286, __pyx_L1_error)
+      __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 287, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_GIVEREF(__pyx_t_9); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_9); __pyx_t_9 = NULL;
       __Pyx_INCREF(__pyx_v_p);
       __Pyx_GIVEREF(__pyx_v_p);
       PyTuple_SET_ITEM(__pyx_t_10, 0+1, __pyx_v_p);
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_10, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 286, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_10, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 287, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 286, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 287, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (__pyx_t_2) {
 
-      /* "hdbscan/dist_metrics.pyx":287
+      /* "hdbscan/dist_metrics.pyx":288
  *                 return EuclideanDistance(**kwargs)
  *             elif np.isinf(p):
  *                 return ChebyshevDistance(**kwargs)             # <<<<<<<<<<<<<<
@@ -4576,13 +4608,13 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  *                 return MinkowskiDistance(p, **kwargs)
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_ChebyshevDistance), __pyx_empty_tuple, __pyx_v_kwargs); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 287, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_ChebyshevDistance), __pyx_empty_tuple, __pyx_v_kwargs); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 288, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_r = __pyx_t_4;
       __pyx_t_4 = 0;
       goto __pyx_L0;
 
-      /* "hdbscan/dist_metrics.pyx":286
+      /* "hdbscan/dist_metrics.pyx":287
  *             elif p == 2:
  *                 return EuclideanDistance(**kwargs)
  *             elif np.isinf(p):             # <<<<<<<<<<<<<<
@@ -4591,7 +4623,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  */
     }
 
-    /* "hdbscan/dist_metrics.pyx":289
+    /* "hdbscan/dist_metrics.pyx":290
  *                 return ChebyshevDistance(**kwargs)
  *             else:
  *                 return MinkowskiDistance(p, **kwargs)             # <<<<<<<<<<<<<<
@@ -4600,12 +4632,12 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  */
     /*else*/ {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 289, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 290, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_v_p);
       __Pyx_GIVEREF(__pyx_v_p);
       PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_p);
-      __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_MinkowskiDistance), __pyx_t_4, __pyx_v_kwargs); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 289, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_MinkowskiDistance), __pyx_t_4, __pyx_v_kwargs); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 290, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_r = __pyx_t_3;
@@ -4613,7 +4645,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
       goto __pyx_L0;
     }
 
-    /* "hdbscan/dist_metrics.pyx":280
+    /* "hdbscan/dist_metrics.pyx":281
  * 
  *         # In Minkowski special cases, return more efficient methods
  *         if metric is MinkowskiDistance:             # <<<<<<<<<<<<<<
@@ -4622,7 +4654,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":291
+  /* "hdbscan/dist_metrics.pyx":292
  *                 return MinkowskiDistance(p, **kwargs)
  *         else:
  *             return metric(**kwargs)             # <<<<<<<<<<<<<<
@@ -4631,14 +4663,14 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_v_metric, __pyx_empty_tuple, __pyx_v_kwargs); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 291, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_v_metric, __pyx_empty_tuple, __pyx_v_kwargs); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 292, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
   }
 
-  /* "hdbscan/dist_metrics.pyx":252
+  /* "hdbscan/dist_metrics.pyx":253
  * 
  *     @classmethod
  *     def get_metric(cls, metric, **kwargs):             # <<<<<<<<<<<<<<
@@ -4663,7 +4695,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_8get_metric(C
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":293
+/* "hdbscan/dist_metrics.pyx":294
  *             return metric(**kwargs)
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -4695,34 +4727,34 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_10__init__(struct _
   int __pyx_t_3;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hdbscan/dist_metrics.pyx":294
+  /* "hdbscan/dist_metrics.pyx":295
  * 
  *     def __init__(self):
  *         if self.__class__ is DistanceMetric:             # <<<<<<<<<<<<<<
  *             raise NotImplementedError("DistanceMetric is an abstract class")
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 294, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 295, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = (__pyx_t_1 == ((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "hdbscan/dist_metrics.pyx":295
+    /* "hdbscan/dist_metrics.pyx":296
  *     def __init__(self):
  *         if self.__class__ is DistanceMetric:
  *             raise NotImplementedError("DistanceMetric is an abstract class")             # <<<<<<<<<<<<<<
  * 
  *     cdef DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_NotImplementedError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 295, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_NotImplementedError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 296, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(1, 295, __pyx_L1_error)
+    __PYX_ERR(1, 296, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":294
+    /* "hdbscan/dist_metrics.pyx":295
  * 
  *     def __init__(self):
  *         if self.__class__ is DistanceMetric:             # <<<<<<<<<<<<<<
@@ -4731,7 +4763,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_10__init__(struct _
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":293
+  /* "hdbscan/dist_metrics.pyx":294
  *             return metric(**kwargs)
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -4751,7 +4783,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_10__init__(struct _
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":297
+/* "hdbscan/dist_metrics.pyx":298
  *             raise NotImplementedError("DistanceMetric is an abstract class")
  * 
  *     cdef DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -4762,7 +4794,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_10__init__(struct _
 static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_dist(CYTHON_UNUSED struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *__pyx_v_self, CYTHON_UNUSED __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x1, CYTHON_UNUSED __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x2, CYTHON_UNUSED __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_v_size) {
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
 
-  /* "hdbscan/dist_metrics.pyx":303
+  /* "hdbscan/dist_metrics.pyx":304
  *         This should be overridden in a base class.
  *         """
  *         return -999             # <<<<<<<<<<<<<<
@@ -4772,7 +4804,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = -999.0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":297
+  /* "hdbscan/dist_metrics.pyx":298
  *             raise NotImplementedError("DistanceMetric is an abstract class")
  * 
  *     cdef DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -4785,7 +4817,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":305
+/* "hdbscan/dist_metrics.pyx":306
  *         return -999
  * 
  *     cdef DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -4797,18 +4829,18 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_t_1;
 
-  /* "hdbscan/dist_metrics.pyx":316
+  /* "hdbscan/dist_metrics.pyx":317
  *         distance.
  *         """
  *         return self.dist(x1, x2, size)             # <<<<<<<<<<<<<<
  * 
  *     cdef int pdist(self, DTYPE_t[:, ::1] X, DTYPE_t[:, ::1] D) except -1:
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->__pyx_vtab)->dist(__pyx_v_self, __pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 316, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->__pyx_vtab)->dist(__pyx_v_self, __pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 317, __pyx_L1_error)
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":305
+  /* "hdbscan/dist_metrics.pyx":306
  *         return -999
  * 
  *     cdef DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -4832,7 +4864,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":318
+/* "hdbscan/dist_metrics.pyx":319
  *         return self.dist(x1, x2, size)
  * 
  *     cdef int pdist(self, DTYPE_t[:, ::1] X, DTYPE_t[:, ::1] D) except -1:             # <<<<<<<<<<<<<<
@@ -4862,7 +4894,7 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_pdist(struct __pyx_o
   Py_ssize_t __pyx_t_15;
   __Pyx_RefNannySetupContext("pdist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":321
+  /* "hdbscan/dist_metrics.pyx":322
  *         """compute the pairwise distances between points in X"""
  *         cdef ITYPE_t i1, i2
  *         for i1 in range(X.shape[0]):             # <<<<<<<<<<<<<<
@@ -4873,7 +4905,7 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_pdist(struct __pyx_o
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_i1 = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":322
+    /* "hdbscan/dist_metrics.pyx":323
  *         cdef ITYPE_t i1, i2
  *         for i1 in range(X.shape[0]):
  *             for i2 in range(i1, X.shape[0]):             # <<<<<<<<<<<<<<
@@ -4884,7 +4916,7 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_pdist(struct __pyx_o
     for (__pyx_t_4 = __pyx_v_i1; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_i2 = __pyx_t_4;
 
-      /* "hdbscan/dist_metrics.pyx":323
+      /* "hdbscan/dist_metrics.pyx":324
  *         for i1 in range(X.shape[0]):
  *             for i2 in range(i1, X.shape[0]):
  *                 D[i1, i2] = self.dist(&X[i1, 0], &X[i2, 0], X.shape[1])             # <<<<<<<<<<<<<<
@@ -4895,12 +4927,12 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_pdist(struct __pyx_o
       __pyx_t_6 = 0;
       __pyx_t_7 = __pyx_v_i2;
       __pyx_t_8 = 0;
-      __pyx_t_9 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->__pyx_vtab)->dist(__pyx_v_self, (&(*((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=1 */ ((char *) (((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=0 */ (__pyx_v_X.data + __pyx_t_5 * __pyx_v_X.strides[0]) )) + __pyx_t_6)) )))), (&(*((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=1 */ ((char *) (((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=0 */ (__pyx_v_X.data + __pyx_t_7 * __pyx_v_X.strides[0]) )) + __pyx_t_8)) )))), (__pyx_v_X.shape[1])); if (unlikely(__pyx_t_9 == -1.0)) __PYX_ERR(1, 323, __pyx_L1_error)
+      __pyx_t_9 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->__pyx_vtab)->dist(__pyx_v_self, (&(*((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=1 */ ((char *) (((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=0 */ (__pyx_v_X.data + __pyx_t_5 * __pyx_v_X.strides[0]) )) + __pyx_t_6)) )))), (&(*((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=1 */ ((char *) (((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=0 */ (__pyx_v_X.data + __pyx_t_7 * __pyx_v_X.strides[0]) )) + __pyx_t_8)) )))), (__pyx_v_X.shape[1])); if (unlikely(__pyx_t_9 == -1.0)) __PYX_ERR(1, 324, __pyx_L1_error)
       __pyx_t_10 = __pyx_v_i1;
       __pyx_t_11 = __pyx_v_i2;
       *((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=1 */ ((char *) (((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=0 */ (__pyx_v_D.data + __pyx_t_10 * __pyx_v_D.strides[0]) )) + __pyx_t_11)) )) = __pyx_t_9;
 
-      /* "hdbscan/dist_metrics.pyx":324
+      /* "hdbscan/dist_metrics.pyx":325
  *             for i2 in range(i1, X.shape[0]):
  *                 D[i1, i2] = self.dist(&X[i1, 0], &X[i2, 0], X.shape[1])
  *                 D[i2, i1] = D[i1, i2]             # <<<<<<<<<<<<<<
@@ -4915,7 +4947,7 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_pdist(struct __pyx_o
     }
   }
 
-  /* "hdbscan/dist_metrics.pyx":325
+  /* "hdbscan/dist_metrics.pyx":326
  *                 D[i1, i2] = self.dist(&X[i1, 0], &X[i2, 0], X.shape[1])
  *                 D[i2, i1] = D[i1, i2]
  *         return 0             # <<<<<<<<<<<<<<
@@ -4925,7 +4957,7 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_pdist(struct __pyx_o
   __pyx_r = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":318
+  /* "hdbscan/dist_metrics.pyx":319
  *         return self.dist(x1, x2, size)
  * 
  *     cdef int pdist(self, DTYPE_t[:, ::1] X, DTYPE_t[:, ::1] D) except -1:             # <<<<<<<<<<<<<<
@@ -4942,7 +4974,7 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_pdist(struct __pyx_o
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":327
+/* "hdbscan/dist_metrics.pyx":328
  *         return 0
  * 
  *     cdef int cdist(self, DTYPE_t[:, ::1] X, DTYPE_t[:, ::1] Y,             # <<<<<<<<<<<<<<
@@ -4970,7 +5002,7 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_cdist(struct __pyx_o
   Py_ssize_t __pyx_t_13;
   __Pyx_RefNannySetupContext("cdist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":331
+  /* "hdbscan/dist_metrics.pyx":332
  *         """compute the cross-pairwise distances between arrays X and Y"""
  *         cdef ITYPE_t i1, i2
  *         if X.shape[1] != Y.shape[1]:             # <<<<<<<<<<<<<<
@@ -4980,20 +5012,20 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_cdist(struct __pyx_o
   __pyx_t_1 = (((__pyx_v_X.shape[1]) != (__pyx_v_Y.shape[1])) != 0);
   if (__pyx_t_1) {
 
-    /* "hdbscan/dist_metrics.pyx":332
+    /* "hdbscan/dist_metrics.pyx":333
  *         cdef ITYPE_t i1, i2
  *         if X.shape[1] != Y.shape[1]:
  *             raise ValueError('X and Y must have the same second dimension')             # <<<<<<<<<<<<<<
  *         for i1 in range(X.shape[0]):
  *             for i2 in range(Y.shape[0]):
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 332, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 333, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(1, 332, __pyx_L1_error)
+    __PYX_ERR(1, 333, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":331
+    /* "hdbscan/dist_metrics.pyx":332
  *         """compute the cross-pairwise distances between arrays X and Y"""
  *         cdef ITYPE_t i1, i2
  *         if X.shape[1] != Y.shape[1]:             # <<<<<<<<<<<<<<
@@ -5002,7 +5034,7 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_cdist(struct __pyx_o
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":333
+  /* "hdbscan/dist_metrics.pyx":334
  *         if X.shape[1] != Y.shape[1]:
  *             raise ValueError('X and Y must have the same second dimension')
  *         for i1 in range(X.shape[0]):             # <<<<<<<<<<<<<<
@@ -5013,7 +5045,7 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_cdist(struct __pyx_o
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i1 = __pyx_t_4;
 
-    /* "hdbscan/dist_metrics.pyx":334
+    /* "hdbscan/dist_metrics.pyx":335
  *             raise ValueError('X and Y must have the same second dimension')
  *         for i1 in range(X.shape[0]):
  *             for i2 in range(Y.shape[0]):             # <<<<<<<<<<<<<<
@@ -5024,7 +5056,7 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_cdist(struct __pyx_o
     for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
       __pyx_v_i2 = __pyx_t_6;
 
-      /* "hdbscan/dist_metrics.pyx":335
+      /* "hdbscan/dist_metrics.pyx":336
  *         for i1 in range(X.shape[0]):
  *             for i2 in range(Y.shape[0]):
  *                 D[i1, i2] = self.dist(&X[i1, 0], &Y[i2, 0], X.shape[1])             # <<<<<<<<<<<<<<
@@ -5035,14 +5067,14 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_cdist(struct __pyx_o
       __pyx_t_8 = 0;
       __pyx_t_9 = __pyx_v_i2;
       __pyx_t_10 = 0;
-      __pyx_t_11 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->__pyx_vtab)->dist(__pyx_v_self, (&(*((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=1 */ ((char *) (((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=0 */ (__pyx_v_X.data + __pyx_t_7 * __pyx_v_X.strides[0]) )) + __pyx_t_8)) )))), (&(*((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=1 */ ((char *) (((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=0 */ (__pyx_v_Y.data + __pyx_t_9 * __pyx_v_Y.strides[0]) )) + __pyx_t_10)) )))), (__pyx_v_X.shape[1])); if (unlikely(__pyx_t_11 == -1.0)) __PYX_ERR(1, 335, __pyx_L1_error)
+      __pyx_t_11 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->__pyx_vtab)->dist(__pyx_v_self, (&(*((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=1 */ ((char *) (((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=0 */ (__pyx_v_X.data + __pyx_t_7 * __pyx_v_X.strides[0]) )) + __pyx_t_8)) )))), (&(*((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=1 */ ((char *) (((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=0 */ (__pyx_v_Y.data + __pyx_t_9 * __pyx_v_Y.strides[0]) )) + __pyx_t_10)) )))), (__pyx_v_X.shape[1])); if (unlikely(__pyx_t_11 == -1.0)) __PYX_ERR(1, 336, __pyx_L1_error)
       __pyx_t_12 = __pyx_v_i1;
       __pyx_t_13 = __pyx_v_i2;
       *((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=1 */ ((char *) (((__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *) ( /* dim=0 */ (__pyx_v_D.data + __pyx_t_12 * __pyx_v_D.strides[0]) )) + __pyx_t_13)) )) = __pyx_t_11;
     }
   }
 
-  /* "hdbscan/dist_metrics.pyx":336
+  /* "hdbscan/dist_metrics.pyx":337
  *             for i2 in range(Y.shape[0]):
  *                 D[i1, i2] = self.dist(&X[i1, 0], &Y[i2, 0], X.shape[1])
  *         return 0             # <<<<<<<<<<<<<<
@@ -5052,7 +5084,7 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_cdist(struct __pyx_o
   __pyx_r = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":327
+  /* "hdbscan/dist_metrics.pyx":328
  *         return 0
  * 
  *     cdef int cdist(self, DTYPE_t[:, ::1] X, DTYPE_t[:, ::1] Y,             # <<<<<<<<<<<<<<
@@ -5070,7 +5102,7 @@ static int __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_cdist(struct __pyx_o
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":338
+/* "hdbscan/dist_metrics.pyx":339
  *         return 0
  * 
  *     cdef DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -5083,7 +5115,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":340
+  /* "hdbscan/dist_metrics.pyx":341
  *     cdef DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:
  *         """Convert the reduced distance to the distance"""
  *         return rdist             # <<<<<<<<<<<<<<
@@ -5093,7 +5125,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = __pyx_v_rdist;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":338
+  /* "hdbscan/dist_metrics.pyx":339
  *         return 0
  * 
  *     cdef DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -5107,7 +5139,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":342
+/* "hdbscan/dist_metrics.pyx":343
  *         return rdist
  * 
  *     cdef DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -5118,7 +5150,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
 static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_14DistanceMetric__dist_to_rdist(CYTHON_UNUSED struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *__pyx_v_self, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_dist) {
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
 
-  /* "hdbscan/dist_metrics.pyx":344
+  /* "hdbscan/dist_metrics.pyx":345
  *     cdef DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:
  *         """Convert the distance to the reduced distance"""
  *         return dist             # <<<<<<<<<<<<<<
@@ -5128,7 +5160,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = __pyx_v_dist;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":342
+  /* "hdbscan/dist_metrics.pyx":343
  *         return rdist
  * 
  *     cdef DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -5141,7 +5173,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":346
+/* "hdbscan/dist_metrics.pyx":347
  *         return dist
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -5168,7 +5200,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_12rdist_to_di
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":354
+  /* "hdbscan/dist_metrics.pyx":355
  *         is the squared-euclidean distance.
  *         """
  *         return rdist             # <<<<<<<<<<<<<<
@@ -5180,7 +5212,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_12rdist_to_di
   __pyx_r = __pyx_v_rdist;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":346
+  /* "hdbscan/dist_metrics.pyx":347
  *         return dist
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -5195,7 +5227,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_12rdist_to_di
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":356
+/* "hdbscan/dist_metrics.pyx":357
  *         return rdist
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -5222,7 +5254,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_14dist_to_rdi
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("dist_to_rdist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":364
+  /* "hdbscan/dist_metrics.pyx":365
  *         is the squared-euclidean distance.
  *         """
  *         return dist             # <<<<<<<<<<<<<<
@@ -5234,7 +5266,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_14dist_to_rdi
   __pyx_r = __pyx_v_dist;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":356
+  /* "hdbscan/dist_metrics.pyx":357
  *         return rdist
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -5249,7 +5281,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_14dist_to_rdi
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":366
+/* "hdbscan/dist_metrics.pyx":367
  *         return dist
  * 
  *     def pairwise(self, X, Y=None):             # <<<<<<<<<<<<<<
@@ -5291,7 +5323,7 @@ static PyObject *__pyx_pw_7hdbscan_12dist_metrics_14DistanceMetric_17pairwise(Py
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "pairwise") < 0)) __PYX_ERR(1, 366, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "pairwise") < 0)) __PYX_ERR(1, 367, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -5306,7 +5338,7 @@ static PyObject *__pyx_pw_7hdbscan_12dist_metrics_14DistanceMetric_17pairwise(Py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("pairwise", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 366, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("pairwise", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 367, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hdbscan.dist_metrics.DistanceMetric.pairwise", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5361,36 +5393,36 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_16pairwise(st
   __pyx_pybuffernd_Darr.data = NULL;
   __pyx_pybuffernd_Darr.rcbuffer = &__pyx_pybuffer_Darr;
 
-  /* "hdbscan/dist_metrics.pyx":390
+  /* "hdbscan/dist_metrics.pyx":391
  *         cdef np.ndarray[DTYPE_t, ndim=2, mode='c'] Darr
  * 
  *         Xarr = np.asarray(X, dtype=DTYPE, order='C')             # <<<<<<<<<<<<<<
  *         if Y is None:
  *             Darr = np.zeros((Xarr.shape[0], Xarr.shape[0]),
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 390, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 391, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 390, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 391, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 390, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 391, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_X);
   __Pyx_GIVEREF(__pyx_v_X);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_X);
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 390, __pyx_L1_error)
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 391, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 390, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 391, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(1, 390, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(1, 391, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(1, 390, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 390, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(1, 391, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 391, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 390, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 391, __pyx_L1_error)
   __pyx_t_5 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -5406,13 +5438,13 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_16pairwise(st
       }
     }
     __pyx_pybuffernd_Xarr.diminfo[0].strides = __pyx_pybuffernd_Xarr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_Xarr.diminfo[0].shape = __pyx_pybuffernd_Xarr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_Xarr.diminfo[1].strides = __pyx_pybuffernd_Xarr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_Xarr.diminfo[1].shape = __pyx_pybuffernd_Xarr.rcbuffer->pybuffer.shape[1];
-    if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(1, 390, __pyx_L1_error)
+    if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(1, 391, __pyx_L1_error)
   }
   __pyx_t_5 = 0;
   __pyx_v_Xarr = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":391
+  /* "hdbscan/dist_metrics.pyx":392
  * 
  *         Xarr = np.asarray(X, dtype=DTYPE, order='C')
  *         if Y is None:             # <<<<<<<<<<<<<<
@@ -5423,23 +5455,23 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_16pairwise(st
   __pyx_t_11 = (__pyx_t_10 != 0);
   if (__pyx_t_11) {
 
-    /* "hdbscan/dist_metrics.pyx":392
+    /* "hdbscan/dist_metrics.pyx":393
  *         Xarr = np.asarray(X, dtype=DTYPE, order='C')
  *         if Y is None:
  *             Darr = np.zeros((Xarr.shape[0], Xarr.shape[0]),             # <<<<<<<<<<<<<<
  *                          dtype=DTYPE, order='C')
  *             self.pdist(get_memview_DTYPE_2D(Xarr),
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 392, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 393, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 392, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 393, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_Xarr->dimensions[0])); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 392, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_Xarr->dimensions[0])); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 393, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_Xarr->dimensions[0])); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 392, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_Xarr->dimensions[0])); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 393, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 392, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 393, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_4);
@@ -5447,40 +5479,40 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_16pairwise(st
     PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_1);
     __pyx_t_4 = 0;
     __pyx_t_1 = 0;
-    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 392, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 393, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "hdbscan/dist_metrics.pyx":393
+    /* "hdbscan/dist_metrics.pyx":394
  *         if Y is None:
  *             Darr = np.zeros((Xarr.shape[0], Xarr.shape[0]),
  *                          dtype=DTYPE, order='C')             # <<<<<<<<<<<<<<
  *             self.pdist(get_memview_DTYPE_2D(Xarr),
  *                        get_memview_DTYPE_2D(Darr))
  */
-    __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 393, __pyx_L1_error)
+    __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 394, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 393, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 394, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(1, 393, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(1, 394, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(1, 393, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(1, 394, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":392
+    /* "hdbscan/dist_metrics.pyx":393
  *         Xarr = np.asarray(X, dtype=DTYPE, order='C')
  *         if Y is None:
  *             Darr = np.zeros((Xarr.shape[0], Xarr.shape[0]),             # <<<<<<<<<<<<<<
  *                          dtype=DTYPE, order='C')
  *             self.pdist(get_memview_DTYPE_2D(Xarr),
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 392, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 393, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 392, __pyx_L1_error)
+    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 393, __pyx_L1_error)
     __pyx_t_12 = ((PyArrayObject *)__pyx_t_4);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -5496,42 +5528,42 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_16pairwise(st
         }
       }
       __pyx_pybuffernd_Darr.diminfo[0].strides = __pyx_pybuffernd_Darr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_Darr.diminfo[0].shape = __pyx_pybuffernd_Darr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_Darr.diminfo[1].strides = __pyx_pybuffernd_Darr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_Darr.diminfo[1].shape = __pyx_pybuffernd_Darr.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(1, 392, __pyx_L1_error)
+      if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(1, 393, __pyx_L1_error)
     }
     __pyx_t_12 = 0;
     __pyx_v_Darr = ((PyArrayObject *)__pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "hdbscan/dist_metrics.pyx":394
+    /* "hdbscan/dist_metrics.pyx":395
  *             Darr = np.zeros((Xarr.shape[0], Xarr.shape[0]),
  *                          dtype=DTYPE, order='C')
  *             self.pdist(get_memview_DTYPE_2D(Xarr),             # <<<<<<<<<<<<<<
  *                        get_memview_DTYPE_2D(Darr))
  *         else:
  */
-    __pyx_t_13 = __pyx_f_7hdbscan_12dist_metrics_get_memview_DTYPE_2D(((PyArrayObject *)__pyx_v_Xarr)); if (unlikely(!__pyx_t_13.memview)) __PYX_ERR(1, 394, __pyx_L1_error)
+    __pyx_t_13 = __pyx_f_7hdbscan_12dist_metrics_get_memview_DTYPE_2D(((PyArrayObject *)__pyx_v_Xarr)); if (unlikely(!__pyx_t_13.memview)) __PYX_ERR(1, 395, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":395
+    /* "hdbscan/dist_metrics.pyx":396
  *                          dtype=DTYPE, order='C')
  *             self.pdist(get_memview_DTYPE_2D(Xarr),
  *                        get_memview_DTYPE_2D(Darr))             # <<<<<<<<<<<<<<
  *         else:
  *             Yarr = np.asarray(Y, dtype=DTYPE, order='C')
  */
-    __pyx_t_14 = __pyx_f_7hdbscan_12dist_metrics_get_memview_DTYPE_2D(((PyArrayObject *)__pyx_v_Darr)); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(1, 395, __pyx_L1_error)
+    __pyx_t_14 = __pyx_f_7hdbscan_12dist_metrics_get_memview_DTYPE_2D(((PyArrayObject *)__pyx_v_Darr)); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(1, 396, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":394
+    /* "hdbscan/dist_metrics.pyx":395
  *             Darr = np.zeros((Xarr.shape[0], Xarr.shape[0]),
  *                          dtype=DTYPE, order='C')
  *             self.pdist(get_memview_DTYPE_2D(Xarr),             # <<<<<<<<<<<<<<
  *                        get_memview_DTYPE_2D(Darr))
  *         else:
  */
-    __pyx_t_6 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->__pyx_vtab)->pdist(__pyx_v_self, __pyx_t_13, __pyx_t_14); if (unlikely(__pyx_t_6 == -1)) __PYX_ERR(1, 394, __pyx_L1_error)
+    __pyx_t_6 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->__pyx_vtab)->pdist(__pyx_v_self, __pyx_t_13, __pyx_t_14); if (unlikely(__pyx_t_6 == -1)) __PYX_ERR(1, 395, __pyx_L1_error)
     __PYX_XDEC_MEMVIEW(&__pyx_t_13, 1);
     __PYX_XDEC_MEMVIEW(&__pyx_t_14, 1);
 
-    /* "hdbscan/dist_metrics.pyx":391
+    /* "hdbscan/dist_metrics.pyx":392
  * 
  *         Xarr = np.asarray(X, dtype=DTYPE, order='C')
  *         if Y is None:             # <<<<<<<<<<<<<<
@@ -5541,7 +5573,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_16pairwise(st
     goto __pyx_L3;
   }
 
-  /* "hdbscan/dist_metrics.pyx":397
+  /* "hdbscan/dist_metrics.pyx":398
  *                        get_memview_DTYPE_2D(Darr))
  *         else:
  *             Yarr = np.asarray(Y, dtype=DTYPE, order='C')             # <<<<<<<<<<<<<<
@@ -5549,29 +5581,29 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_16pairwise(st
  *                          dtype=DTYPE, order='C')
  */
   /*else*/ {
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 397, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 398, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 397, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 398, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 397, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 398, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_v_Y);
     __Pyx_GIVEREF(__pyx_v_Y);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_Y);
-    __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 397, __pyx_L1_error)
+    __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 398, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 397, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 398, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(1, 397, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(1, 398, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(1, 397, __pyx_L1_error)
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 397, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(1, 398, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 398, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 397, __pyx_L1_error)
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 398, __pyx_L1_error)
     __pyx_t_15 = ((PyArrayObject *)__pyx_t_3);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -5587,29 +5619,29 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_16pairwise(st
         }
       }
       __pyx_pybuffernd_Yarr.diminfo[0].strides = __pyx_pybuffernd_Yarr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_Yarr.diminfo[0].shape = __pyx_pybuffernd_Yarr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_Yarr.diminfo[1].strides = __pyx_pybuffernd_Yarr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_Yarr.diminfo[1].shape = __pyx_pybuffernd_Yarr.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(1, 397, __pyx_L1_error)
+      if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(1, 398, __pyx_L1_error)
     }
     __pyx_t_15 = 0;
     __pyx_v_Yarr = ((PyArrayObject *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hdbscan/dist_metrics.pyx":398
+    /* "hdbscan/dist_metrics.pyx":399
  *         else:
  *             Yarr = np.asarray(Y, dtype=DTYPE, order='C')
  *             Darr = np.zeros((Xarr.shape[0], Yarr.shape[0]),             # <<<<<<<<<<<<<<
  *                          dtype=DTYPE, order='C')
  *             self.cdist(get_memview_DTYPE_2D(Xarr),
  */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 398, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 399, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 398, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 399, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_Xarr->dimensions[0])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 398, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_Xarr->dimensions[0])); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 399, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_Yarr->dimensions[0])); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 398, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t((__pyx_v_Yarr->dimensions[0])); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 399, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 398, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 399, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3);
@@ -5617,40 +5649,40 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_16pairwise(st
     PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_4);
     __pyx_t_3 = 0;
     __pyx_t_4 = 0;
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 398, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 399, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "hdbscan/dist_metrics.pyx":399
+    /* "hdbscan/dist_metrics.pyx":400
  *             Yarr = np.asarray(Y, dtype=DTYPE, order='C')
  *             Darr = np.zeros((Xarr.shape[0], Yarr.shape[0]),
  *                          dtype=DTYPE, order='C')             # <<<<<<<<<<<<<<
  *             self.cdist(get_memview_DTYPE_2D(Xarr),
  *                        get_memview_DTYPE_2D(Yarr),
  */
-    __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 399, __pyx_L1_error)
+    __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 400, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 399, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 400, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(1, 399, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(1, 400, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(1, 399, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(1, 400, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":398
+    /* "hdbscan/dist_metrics.pyx":399
  *         else:
  *             Yarr = np.asarray(Y, dtype=DTYPE, order='C')
  *             Darr = np.zeros((Xarr.shape[0], Yarr.shape[0]),             # <<<<<<<<<<<<<<
  *                          dtype=DTYPE, order='C')
  *             self.cdist(get_memview_DTYPE_2D(Xarr),
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 398, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 399, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 398, __pyx_L1_error)
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 399, __pyx_L1_error)
     __pyx_t_12 = ((PyArrayObject *)__pyx_t_3);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -5666,54 +5698,54 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_16pairwise(st
         }
       }
       __pyx_pybuffernd_Darr.diminfo[0].strides = __pyx_pybuffernd_Darr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_Darr.diminfo[0].shape = __pyx_pybuffernd_Darr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_Darr.diminfo[1].strides = __pyx_pybuffernd_Darr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_Darr.diminfo[1].shape = __pyx_pybuffernd_Darr.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(1, 398, __pyx_L1_error)
+      if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(1, 399, __pyx_L1_error)
     }
     __pyx_t_12 = 0;
     __pyx_v_Darr = ((PyArrayObject *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hdbscan/dist_metrics.pyx":400
+    /* "hdbscan/dist_metrics.pyx":401
  *             Darr = np.zeros((Xarr.shape[0], Yarr.shape[0]),
  *                          dtype=DTYPE, order='C')
  *             self.cdist(get_memview_DTYPE_2D(Xarr),             # <<<<<<<<<<<<<<
  *                        get_memview_DTYPE_2D(Yarr),
  *                        get_memview_DTYPE_2D(Darr))
  */
-    __pyx_t_14 = __pyx_f_7hdbscan_12dist_metrics_get_memview_DTYPE_2D(((PyArrayObject *)__pyx_v_Xarr)); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(1, 400, __pyx_L1_error)
+    __pyx_t_14 = __pyx_f_7hdbscan_12dist_metrics_get_memview_DTYPE_2D(((PyArrayObject *)__pyx_v_Xarr)); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(1, 401, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":401
+    /* "hdbscan/dist_metrics.pyx":402
  *                          dtype=DTYPE, order='C')
  *             self.cdist(get_memview_DTYPE_2D(Xarr),
  *                        get_memview_DTYPE_2D(Yarr),             # <<<<<<<<<<<<<<
  *                        get_memview_DTYPE_2D(Darr))
  *         return Darr
  */
-    __pyx_t_13 = __pyx_f_7hdbscan_12dist_metrics_get_memview_DTYPE_2D(((PyArrayObject *)__pyx_v_Yarr)); if (unlikely(!__pyx_t_13.memview)) __PYX_ERR(1, 401, __pyx_L1_error)
+    __pyx_t_13 = __pyx_f_7hdbscan_12dist_metrics_get_memview_DTYPE_2D(((PyArrayObject *)__pyx_v_Yarr)); if (unlikely(!__pyx_t_13.memview)) __PYX_ERR(1, 402, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":402
+    /* "hdbscan/dist_metrics.pyx":403
  *             self.cdist(get_memview_DTYPE_2D(Xarr),
  *                        get_memview_DTYPE_2D(Yarr),
  *                        get_memview_DTYPE_2D(Darr))             # <<<<<<<<<<<<<<
  *         return Darr
  * 
  */
-    __pyx_t_16 = __pyx_f_7hdbscan_12dist_metrics_get_memview_DTYPE_2D(((PyArrayObject *)__pyx_v_Darr)); if (unlikely(!__pyx_t_16.memview)) __PYX_ERR(1, 402, __pyx_L1_error)
+    __pyx_t_16 = __pyx_f_7hdbscan_12dist_metrics_get_memview_DTYPE_2D(((PyArrayObject *)__pyx_v_Darr)); if (unlikely(!__pyx_t_16.memview)) __PYX_ERR(1, 403, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":400
+    /* "hdbscan/dist_metrics.pyx":401
  *             Darr = np.zeros((Xarr.shape[0], Yarr.shape[0]),
  *                          dtype=DTYPE, order='C')
  *             self.cdist(get_memview_DTYPE_2D(Xarr),             # <<<<<<<<<<<<<<
  *                        get_memview_DTYPE_2D(Yarr),
  *                        get_memview_DTYPE_2D(Darr))
  */
-    __pyx_t_6 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->__pyx_vtab)->cdist(__pyx_v_self, __pyx_t_14, __pyx_t_13, __pyx_t_16); if (unlikely(__pyx_t_6 == -1)) __PYX_ERR(1, 400, __pyx_L1_error)
+    __pyx_t_6 = ((struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self->__pyx_vtab)->cdist(__pyx_v_self, __pyx_t_14, __pyx_t_13, __pyx_t_16); if (unlikely(__pyx_t_6 == -1)) __PYX_ERR(1, 401, __pyx_L1_error)
     __PYX_XDEC_MEMVIEW(&__pyx_t_14, 1);
     __PYX_XDEC_MEMVIEW(&__pyx_t_13, 1);
     __PYX_XDEC_MEMVIEW(&__pyx_t_16, 1);
   }
   __pyx_L3:;
 
-  /* "hdbscan/dist_metrics.pyx":403
+  /* "hdbscan/dist_metrics.pyx":404
  *                        get_memview_DTYPE_2D(Yarr),
  *                        get_memview_DTYPE_2D(Darr))
  *         return Darr             # <<<<<<<<<<<<<<
@@ -5725,7 +5757,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_16pairwise(st
   __pyx_r = ((PyObject *)__pyx_v_Darr);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":366
+  /* "hdbscan/dist_metrics.pyx":367
  *         return dist
  * 
  *     def pairwise(self, X, Y=None):             # <<<<<<<<<<<<<<
@@ -5766,7 +5798,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_14DistanceMetric_16pairwise(st
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":415
+/* "hdbscan/dist_metrics.pyx":416
  *        D(x, y) = \sqrt{ \sum_i (x_i - y_i) ^ 2 }
  *     """
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -5795,7 +5827,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17EuclideanDistance___init__(struct 
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hdbscan/dist_metrics.pyx":416
+  /* "hdbscan/dist_metrics.pyx":417
  *     """
  *     def __init__(self):
  *         self.p = 2             # <<<<<<<<<<<<<<
@@ -5804,7 +5836,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17EuclideanDistance___init__(struct 
  */
   __pyx_v_self->__pyx_base.p = 2.0;
 
-  /* "hdbscan/dist_metrics.pyx":415
+  /* "hdbscan/dist_metrics.pyx":416
  *        D(x, y) = \sqrt{ \sum_i (x_i - y_i) ^ 2 }
  *     """
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -5818,7 +5850,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17EuclideanDistance___init__(struct 
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":418
+/* "hdbscan/dist_metrics.pyx":419
  *         self.p = 2
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -5830,18 +5862,18 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_t_1;
 
-  /* "hdbscan/dist_metrics.pyx":420
+  /* "hdbscan/dist_metrics.pyx":421
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         return euclidean_dist(x1, x2, size)             # <<<<<<<<<<<<<<
  * 
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  */
-  __pyx_t_1 = __pyx_f_7hdbscan_12dist_metrics_euclidean_dist(__pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 420, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7hdbscan_12dist_metrics_euclidean_dist(__pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 421, __pyx_L1_error)
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":418
+  /* "hdbscan/dist_metrics.pyx":419
  *         self.p = 2
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -5865,7 +5897,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":422
+/* "hdbscan/dist_metrics.pyx":423
  *         return euclidean_dist(x1, x2, size)
  * 
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -5877,18 +5909,18 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_t_1;
 
-  /* "hdbscan/dist_metrics.pyx":424
+  /* "hdbscan/dist_metrics.pyx":425
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         return euclidean_rdist(x1, x2, size)             # <<<<<<<<<<<<<<
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:
  */
-  __pyx_t_1 = __pyx_f_7hdbscan_12dist_metrics_euclidean_rdist(__pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 424, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7hdbscan_12dist_metrics_euclidean_rdist(__pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 425, __pyx_L1_error)
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":422
+  /* "hdbscan/dist_metrics.pyx":423
  *         return euclidean_dist(x1, x2, size)
  * 
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -5912,7 +5944,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":426
+/* "hdbscan/dist_metrics.pyx":427
  *         return euclidean_rdist(x1, x2, size)
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -5925,7 +5957,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":427
+  /* "hdbscan/dist_metrics.pyx":428
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:
  *         return sqrt(rdist)             # <<<<<<<<<<<<<<
@@ -5935,7 +5967,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = sqrt(__pyx_v_rdist);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":426
+  /* "hdbscan/dist_metrics.pyx":427
  *         return euclidean_rdist(x1, x2, size)
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -5949,7 +5981,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":429
+/* "hdbscan/dist_metrics.pyx":430
  *         return sqrt(rdist)
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -5960,7 +5992,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
 static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_17EuclideanDistance__dist_to_rdist(CYTHON_UNUSED struct __pyx_obj_7hdbscan_12dist_metrics_EuclideanDistance *__pyx_v_self, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_dist) {
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
 
-  /* "hdbscan/dist_metrics.pyx":430
+  /* "hdbscan/dist_metrics.pyx":431
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:
  *         return dist * dist             # <<<<<<<<<<<<<<
@@ -5970,7 +6002,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = (__pyx_v_dist * __pyx_v_dist);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":429
+  /* "hdbscan/dist_metrics.pyx":430
  *         return sqrt(rdist)
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -5983,7 +6015,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":432
+/* "hdbscan/dist_metrics.pyx":433
  *         return dist * dist
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -6013,7 +6045,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17EuclideanDistance_2rdist_to_
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":433
+  /* "hdbscan/dist_metrics.pyx":434
  * 
  *     def rdist_to_dist(self, rdist):
  *         return np.sqrt(rdist)             # <<<<<<<<<<<<<<
@@ -6021,9 +6053,9 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17EuclideanDistance_2rdist_to_
  *     def dist_to_rdist(self, dist):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 433, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 434, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 433, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 434, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -6037,16 +6069,16 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17EuclideanDistance_2rdist_to_
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_rdist); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 433, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_rdist); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 434, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 433, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 434, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
     __Pyx_INCREF(__pyx_v_rdist);
     __Pyx_GIVEREF(__pyx_v_rdist);
     PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_rdist);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 433, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 434, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
@@ -6055,7 +6087,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17EuclideanDistance_2rdist_to_
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":432
+  /* "hdbscan/dist_metrics.pyx":433
  *         return dist * dist
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -6077,7 +6109,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17EuclideanDistance_2rdist_to_
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":435
+/* "hdbscan/dist_metrics.pyx":436
  *         return np.sqrt(rdist)
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -6104,7 +6136,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17EuclideanDistance_4dist_to_r
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("dist_to_rdist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":436
+  /* "hdbscan/dist_metrics.pyx":437
  * 
  *     def dist_to_rdist(self, dist):
  *         return dist ** 2             # <<<<<<<<<<<<<<
@@ -6112,13 +6144,13 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17EuclideanDistance_4dist_to_r
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Power(__pyx_v_dist, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 436, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Power(__pyx_v_dist, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 437, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":435
+  /* "hdbscan/dist_metrics.pyx":436
  *         return np.sqrt(rdist)
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -6137,7 +6169,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17EuclideanDistance_4dist_to_r
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":448
+/* "hdbscan/dist_metrics.pyx":449
  *        D(x, y) = \sqrt{ \sum_i \frac{ (x_i - y_i) ^ 2}{V_i} }
  *     """
  *     def __init__(self, V):             # <<<<<<<<<<<<<<
@@ -6170,7 +6202,7 @@ static int __pyx_pw_7hdbscan_12dist_metrics_18SEuclideanDistance_1__init__(PyObj
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 448, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 449, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -6181,7 +6213,7 @@ static int __pyx_pw_7hdbscan_12dist_metrics_18SEuclideanDistance_1__init__(PyObj
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 448, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 449, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hdbscan.dist_metrics.SEuclideanDistance.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6203,42 +6235,42 @@ static int __pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance___init__(struct
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hdbscan/dist_metrics.pyx":449
+  /* "hdbscan/dist_metrics.pyx":450
  *     """
  *     def __init__(self, V):
  *         self.vec = np.asarray(V, dtype=DTYPE)             # <<<<<<<<<<<<<<
  *         self.vec_ptr = get_vec_ptr(self.vec)
  *         self.size = self.vec.shape[0]
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 449, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 450, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 449, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 450, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 449, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 450, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_V);
   __Pyx_GIVEREF(__pyx_v_V);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_V);
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 449, __pyx_L1_error)
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 450, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 449, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 450, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(1, 449, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(1, 450, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 449, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 450, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 449, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 450, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_4);
   __Pyx_GOTREF(__pyx_v_self->__pyx_base.vec);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->__pyx_base.vec));
   __pyx_v_self->__pyx_base.vec = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":450
+  /* "hdbscan/dist_metrics.pyx":451
  *     def __init__(self, V):
  *         self.vec = np.asarray(V, dtype=DTYPE)
  *         self.vec_ptr = get_vec_ptr(self.vec)             # <<<<<<<<<<<<<<
@@ -6250,7 +6282,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance___init__(struct
   __pyx_v_self->__pyx_base.vec_ptr = __pyx_f_7hdbscan_12dist_metrics_get_vec_ptr(((PyArrayObject *)__pyx_t_4));
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":451
+  /* "hdbscan/dist_metrics.pyx":452
  *         self.vec = np.asarray(V, dtype=DTYPE)
  *         self.vec_ptr = get_vec_ptr(self.vec)
  *         self.size = self.vec.shape[0]             # <<<<<<<<<<<<<<
@@ -6259,7 +6291,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance___init__(struct
  */
   __pyx_v_self->__pyx_base.size = (__pyx_v_self->__pyx_base.vec->dimensions[0]);
 
-  /* "hdbscan/dist_metrics.pyx":452
+  /* "hdbscan/dist_metrics.pyx":453
  *         self.vec_ptr = get_vec_ptr(self.vec)
  *         self.size = self.vec.shape[0]
  *         self.p = 2             # <<<<<<<<<<<<<<
@@ -6268,7 +6300,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance___init__(struct
  */
   __pyx_v_self->__pyx_base.p = 2.0;
 
-  /* "hdbscan/dist_metrics.pyx":448
+  /* "hdbscan/dist_metrics.pyx":449
  *        D(x, y) = \sqrt{ \sum_i \frac{ (x_i - y_i) ^ 2}{V_i} }
  *     """
  *     def __init__(self, V):             # <<<<<<<<<<<<<<
@@ -6291,7 +6323,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance___init__(struct
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":454
+/* "hdbscan/dist_metrics.pyx":455
  *         self.p = 2
  * 
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -6317,7 +6349,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   PyGILState_Release(__pyx_gilstate_save);
   #endif
 
-  /* "hdbscan/dist_metrics.pyx":456
+  /* "hdbscan/dist_metrics.pyx":457
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:             # <<<<<<<<<<<<<<
@@ -6328,7 +6360,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_t_1 = ((__pyx_v_size != __pyx_v_self->__pyx_base.size) != 0);
     if (__pyx_t_1) {
 
-      /* "hdbscan/dist_metrics.pyx":457
+      /* "hdbscan/dist_metrics.pyx":458
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -6341,21 +6373,21 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
           #endif
           /*try:*/ {
 
-            /* "hdbscan/dist_metrics.pyx":458
+            /* "hdbscan/dist_metrics.pyx":459
  *         if size != self.size:
  *             with gil:
  *                 raise ValueError('SEuclidean dist: size of V does not match')             # <<<<<<<<<<<<<<
  *         cdef DTYPE_t tmp, d=0
  *         cdef np.intp_t j
  */
-            __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 458, __pyx_L8_error)
+            __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 459, __pyx_L8_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_Raise(__pyx_t_2, 0, 0, 0);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __PYX_ERR(1, 458, __pyx_L8_error)
+            __PYX_ERR(1, 459, __pyx_L8_error)
           }
 
-          /* "hdbscan/dist_metrics.pyx":457
+          /* "hdbscan/dist_metrics.pyx":458
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -6372,7 +6404,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
           }
       }
 
-      /* "hdbscan/dist_metrics.pyx":456
+      /* "hdbscan/dist_metrics.pyx":457
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:             # <<<<<<<<<<<<<<
@@ -6381,7 +6413,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     }
 
-    /* "hdbscan/dist_metrics.pyx":459
+    /* "hdbscan/dist_metrics.pyx":460
  *             with gil:
  *                 raise ValueError('SEuclidean dist: size of V does not match')
  *         cdef DTYPE_t tmp, d=0             # <<<<<<<<<<<<<<
@@ -6390,7 +6422,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_d = 0.0;
 
-    /* "hdbscan/dist_metrics.pyx":461
+    /* "hdbscan/dist_metrics.pyx":462
  *         cdef DTYPE_t tmp, d=0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -6401,7 +6433,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_j = __pyx_t_4;
 
-      /* "hdbscan/dist_metrics.pyx":462
+      /* "hdbscan/dist_metrics.pyx":463
  *         cdef np.intp_t j
  *         for j in range(size):
  *             tmp = x1[j] - x2[j]             # <<<<<<<<<<<<<<
@@ -6410,7 +6442,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
       __pyx_v_tmp = ((__pyx_v_x1[__pyx_v_j]) - (__pyx_v_x2[__pyx_v_j]));
 
-      /* "hdbscan/dist_metrics.pyx":463
+      /* "hdbscan/dist_metrics.pyx":464
  *         for j in range(size):
  *             tmp = x1[j] - x2[j]
  *             d += tmp * tmp / self.vec_ptr[j]             # <<<<<<<<<<<<<<
@@ -6420,7 +6452,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
       __pyx_v_d = (__pyx_v_d + ((__pyx_v_tmp * __pyx_v_tmp) / (__pyx_v_self->__pyx_base.vec_ptr[__pyx_v_j])));
     }
 
-    /* "hdbscan/dist_metrics.pyx":464
+    /* "hdbscan/dist_metrics.pyx":465
  *             tmp = x1[j] - x2[j]
  *             d += tmp * tmp / self.vec_ptr[j]
  *         return d             # <<<<<<<<<<<<<<
@@ -6431,7 +6463,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     goto __pyx_L3_return;
   }
 
-  /* "hdbscan/dist_metrics.pyx":456
+  /* "hdbscan/dist_metrics.pyx":457
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:             # <<<<<<<<<<<<<<
@@ -6453,7 +6485,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     }
   }
 
-  /* "hdbscan/dist_metrics.pyx":454
+  /* "hdbscan/dist_metrics.pyx":455
  *         self.p = 2
  * 
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -6475,7 +6507,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":466
+/* "hdbscan/dist_metrics.pyx":467
  *         return d
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -6487,18 +6519,18 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_t_1;
 
-  /* "hdbscan/dist_metrics.pyx":468
+  /* "hdbscan/dist_metrics.pyx":469
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         return sqrt(self.rdist(x1, x2, size))             # <<<<<<<<<<<<<<
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:
  */
-  __pyx_t_1 = __pyx_f_7hdbscan_12dist_metrics_18SEuclideanDistance_rdist(((struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self), __pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 468, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7hdbscan_12dist_metrics_18SEuclideanDistance_rdist(((struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self), __pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 469, __pyx_L1_error)
   __pyx_r = sqrt(__pyx_t_1);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":466
+  /* "hdbscan/dist_metrics.pyx":467
  *         return d
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -6522,7 +6554,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":470
+/* "hdbscan/dist_metrics.pyx":471
  *         return sqrt(self.rdist(x1, x2, size))
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -6535,7 +6567,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":471
+  /* "hdbscan/dist_metrics.pyx":472
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:
  *         return sqrt(rdist)             # <<<<<<<<<<<<<<
@@ -6545,7 +6577,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = sqrt(__pyx_v_rdist);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":470
+  /* "hdbscan/dist_metrics.pyx":471
  *         return sqrt(self.rdist(x1, x2, size))
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -6559,7 +6591,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":473
+/* "hdbscan/dist_metrics.pyx":474
  *         return sqrt(rdist)
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -6570,7 +6602,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
 static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_18SEuclideanDistance__dist_to_rdist(CYTHON_UNUSED struct __pyx_obj_7hdbscan_12dist_metrics_SEuclideanDistance *__pyx_v_self, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_dist) {
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
 
-  /* "hdbscan/dist_metrics.pyx":474
+  /* "hdbscan/dist_metrics.pyx":475
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:
  *         return dist * dist             # <<<<<<<<<<<<<<
@@ -6580,7 +6612,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = (__pyx_v_dist * __pyx_v_dist);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":473
+  /* "hdbscan/dist_metrics.pyx":474
  *         return sqrt(rdist)
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -6593,7 +6625,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":476
+/* "hdbscan/dist_metrics.pyx":477
  *         return dist * dist
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -6623,7 +6655,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance_2rdist_to
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":477
+  /* "hdbscan/dist_metrics.pyx":478
  * 
  *     def rdist_to_dist(self, rdist):
  *         return np.sqrt(rdist)             # <<<<<<<<<<<<<<
@@ -6631,9 +6663,9 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance_2rdist_to
  *     def dist_to_rdist(self, dist):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 477, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 478, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 477, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 478, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -6647,16 +6679,16 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance_2rdist_to
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_rdist); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 477, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_rdist); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 478, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 477, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 478, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
     __Pyx_INCREF(__pyx_v_rdist);
     __Pyx_GIVEREF(__pyx_v_rdist);
     PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_rdist);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 477, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 478, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
@@ -6665,7 +6697,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance_2rdist_to
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":476
+  /* "hdbscan/dist_metrics.pyx":477
  *         return dist * dist
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -6687,7 +6719,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance_2rdist_to
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":479
+/* "hdbscan/dist_metrics.pyx":480
  *         return np.sqrt(rdist)
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -6714,7 +6746,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance_4dist_to_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("dist_to_rdist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":480
+  /* "hdbscan/dist_metrics.pyx":481
  * 
  *     def dist_to_rdist(self, dist):
  *         return dist ** 2             # <<<<<<<<<<<<<<
@@ -6722,13 +6754,13 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance_4dist_to_
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Power(__pyx_v_dist, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 480, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Power(__pyx_v_dist, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 481, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":479
+  /* "hdbscan/dist_metrics.pyx":480
  *         return np.sqrt(rdist)
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -6747,7 +6779,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18SEuclideanDistance_4dist_to_
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":492
+/* "hdbscan/dist_metrics.pyx":493
  *        D(x, y) = \sum_i |x_i - y_i|
  *     """
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -6776,7 +6808,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17ManhattanDistance___init__(struct 
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hdbscan/dist_metrics.pyx":493
+  /* "hdbscan/dist_metrics.pyx":494
  *     """
  *     def __init__(self):
  *         self.p = 1             # <<<<<<<<<<<<<<
@@ -6785,7 +6817,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17ManhattanDistance___init__(struct 
  */
   __pyx_v_self->__pyx_base.p = 1.0;
 
-  /* "hdbscan/dist_metrics.pyx":492
+  /* "hdbscan/dist_metrics.pyx":493
  *        D(x, y) = \sum_i |x_i - y_i|
  *     """
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -6799,7 +6831,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17ManhattanDistance___init__(struct 
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":495
+/* "hdbscan/dist_metrics.pyx":496
  *         self.p = 1
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -6814,7 +6846,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_t_1;
   __pyx_t_5numpy_intp_t __pyx_t_2;
 
-  /* "hdbscan/dist_metrics.pyx":497
+  /* "hdbscan/dist_metrics.pyx":498
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef DTYPE_t d = 0             # <<<<<<<<<<<<<<
@@ -6823,7 +6855,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
   __pyx_v_d = 0.0;
 
-  /* "hdbscan/dist_metrics.pyx":499
+  /* "hdbscan/dist_metrics.pyx":500
  *         cdef DTYPE_t d = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -6834,7 +6866,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":500
+    /* "hdbscan/dist_metrics.pyx":501
  *         cdef np.intp_t j
  *         for j in range(size):
  *             d += fabs(x1[j] - x2[j])             # <<<<<<<<<<<<<<
@@ -6844,7 +6876,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_v_d = (__pyx_v_d + fabs(((__pyx_v_x1[__pyx_v_j]) - (__pyx_v_x2[__pyx_v_j]))));
   }
 
-  /* "hdbscan/dist_metrics.pyx":501
+  /* "hdbscan/dist_metrics.pyx":502
  *         for j in range(size):
  *             d += fabs(x1[j] - x2[j])
  *         return d             # <<<<<<<<<<<<<<
@@ -6854,7 +6886,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = __pyx_v_d;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":495
+  /* "hdbscan/dist_metrics.pyx":496
  *         self.p = 1
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -6867,7 +6899,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":513
+/* "hdbscan/dist_metrics.pyx":514
  *        D(x, y) = max_i (|x_i - y_i|)
  *     """
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -6896,7 +6928,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17ChebyshevDistance___init__(struct 
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hdbscan/dist_metrics.pyx":514
+  /* "hdbscan/dist_metrics.pyx":515
  *     """
  *     def __init__(self):
  *         self.p = INF             # <<<<<<<<<<<<<<
@@ -6905,7 +6937,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17ChebyshevDistance___init__(struct 
  */
   __pyx_v_self->__pyx_base.p = __pyx_v_7hdbscan_12dist_metrics_INF;
 
-  /* "hdbscan/dist_metrics.pyx":513
+  /* "hdbscan/dist_metrics.pyx":514
  *        D(x, y) = max_i (|x_i - y_i|)
  *     """
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -6919,7 +6951,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17ChebyshevDistance___init__(struct 
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":516
+/* "hdbscan/dist_metrics.pyx":517
  *         self.p = INF
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -6934,7 +6966,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_t_1;
   __pyx_t_5numpy_intp_t __pyx_t_2;
 
-  /* "hdbscan/dist_metrics.pyx":518
+  /* "hdbscan/dist_metrics.pyx":519
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef DTYPE_t d = 0             # <<<<<<<<<<<<<<
@@ -6943,7 +6975,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
   __pyx_v_d = 0.0;
 
-  /* "hdbscan/dist_metrics.pyx":520
+  /* "hdbscan/dist_metrics.pyx":521
  *         cdef DTYPE_t d = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -6954,7 +6986,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":521
+    /* "hdbscan/dist_metrics.pyx":522
  *         cdef np.intp_t j
  *         for j in range(size):
  *             d = fmax(d, fabs(x1[j] - x2[j]))             # <<<<<<<<<<<<<<
@@ -6964,7 +6996,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_v_d = __pyx_f_7hdbscan_12dist_metrics_fmax(__pyx_v_d, fabs(((__pyx_v_x1[__pyx_v_j]) - (__pyx_v_x2[__pyx_v_j]))));
   }
 
-  /* "hdbscan/dist_metrics.pyx":522
+  /* "hdbscan/dist_metrics.pyx":523
  *         for j in range(size):
  *             d = fmax(d, fabs(x1[j] - x2[j]))
  *         return d             # <<<<<<<<<<<<<<
@@ -6974,7 +7006,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = __pyx_v_d;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":516
+  /* "hdbscan/dist_metrics.pyx":517
  *         self.p = INF
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -6987,7 +7019,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":539
+/* "hdbscan/dist_metrics.pyx":540
  *     p=2, EuclideanDistance is more efficient.
  *     """
  *     def __init__(self, p):             # <<<<<<<<<<<<<<
@@ -7020,7 +7052,7 @@ static int __pyx_pw_7hdbscan_12dist_metrics_17MinkowskiDistance_1__init__(PyObje
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 539, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 540, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -7031,7 +7063,7 @@ static int __pyx_pw_7hdbscan_12dist_metrics_17MinkowskiDistance_1__init__(PyObje
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 539, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 540, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hdbscan.dist_metrics.MinkowskiDistance.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7055,32 +7087,32 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17MinkowskiDistance___init__(struct 
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_t_6;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hdbscan/dist_metrics.pyx":540
+  /* "hdbscan/dist_metrics.pyx":541
  *     """
  *     def __init__(self, p):
  *         if p < 1:             # <<<<<<<<<<<<<<
  *             raise ValueError("p must be greater than 1")
  *         elif np.isinf(p):
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_p, __pyx_int_1, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 540, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 540, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_p, __pyx_int_1, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 541, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 541, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "hdbscan/dist_metrics.pyx":541
+    /* "hdbscan/dist_metrics.pyx":542
  *     def __init__(self, p):
  *         if p < 1:
  *             raise ValueError("p must be greater than 1")             # <<<<<<<<<<<<<<
  *         elif np.isinf(p):
  *             raise ValueError("MinkowskiDistance requires finite p. "
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 541, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 542, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(1, 541, __pyx_L1_error)
+    __PYX_ERR(1, 542, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":540
+    /* "hdbscan/dist_metrics.pyx":541
  *     """
  *     def __init__(self, p):
  *         if p < 1:             # <<<<<<<<<<<<<<
@@ -7089,16 +7121,16 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17MinkowskiDistance___init__(struct 
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":542
+  /* "hdbscan/dist_metrics.pyx":543
  *         if p < 1:
  *             raise ValueError("p must be greater than 1")
  *         elif np.isinf(p):             # <<<<<<<<<<<<<<
  *             raise ValueError("MinkowskiDistance requires finite p. "
  *                              "For p=inf, use ChebyshevDistance.")
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 542, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 543, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_isinf); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 542, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_isinf); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 543, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -7112,38 +7144,38 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17MinkowskiDistance___init__(struct 
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_p); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 542, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_p); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 543, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 542, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 543, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
     __Pyx_INCREF(__pyx_v_p);
     __Pyx_GIVEREF(__pyx_v_p);
     PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_p);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 542, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 543, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 542, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 543, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "hdbscan/dist_metrics.pyx":543
+    /* "hdbscan/dist_metrics.pyx":544
  *             raise ValueError("p must be greater than 1")
  *         elif np.isinf(p):
  *             raise ValueError("MinkowskiDistance requires finite p. "             # <<<<<<<<<<<<<<
  *                              "For p=inf, use ChebyshevDistance.")
  *         self.p = p
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 543, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 544, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(1, 543, __pyx_L1_error)
+    __PYX_ERR(1, 544, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":542
+    /* "hdbscan/dist_metrics.pyx":543
  *         if p < 1:
  *             raise ValueError("p must be greater than 1")
  *         elif np.isinf(p):             # <<<<<<<<<<<<<<
@@ -7152,17 +7184,17 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17MinkowskiDistance___init__(struct 
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":545
+  /* "hdbscan/dist_metrics.pyx":546
  *             raise ValueError("MinkowskiDistance requires finite p. "
  *                              "For p=inf, use ChebyshevDistance.")
  *         self.p = p             # <<<<<<<<<<<<<<
  * 
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  */
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_v_p); if (unlikely((__pyx_t_6 == (npy_double)-1) && PyErr_Occurred())) __PYX_ERR(1, 545, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_v_p); if (unlikely((__pyx_t_6 == (npy_double)-1) && PyErr_Occurred())) __PYX_ERR(1, 546, __pyx_L1_error)
   __pyx_v_self->__pyx_base.p = __pyx_t_6;
 
-  /* "hdbscan/dist_metrics.pyx":539
+  /* "hdbscan/dist_metrics.pyx":540
  *     p=2, EuclideanDistance is more efficient.
  *     """
  *     def __init__(self, p):             # <<<<<<<<<<<<<<
@@ -7185,7 +7217,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_17MinkowskiDistance___init__(struct 
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":547
+/* "hdbscan/dist_metrics.pyx":548
  *         self.p = p
  * 
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -7200,7 +7232,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_t_1;
   __pyx_t_5numpy_intp_t __pyx_t_2;
 
-  /* "hdbscan/dist_metrics.pyx":549
+  /* "hdbscan/dist_metrics.pyx":550
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         cdef DTYPE_t d=0             # <<<<<<<<<<<<<<
@@ -7209,7 +7241,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
   __pyx_v_d = 0.0;
 
-  /* "hdbscan/dist_metrics.pyx":551
+  /* "hdbscan/dist_metrics.pyx":552
  *         cdef DTYPE_t d=0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -7220,7 +7252,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":552
+    /* "hdbscan/dist_metrics.pyx":553
  *         cdef np.intp_t j
  *         for j in range(size):
  *             d += pow(fabs(x1[j] - x2[j]), self.p)             # <<<<<<<<<<<<<<
@@ -7230,7 +7262,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_v_d = (__pyx_v_d + pow(fabs(((__pyx_v_x1[__pyx_v_j]) - (__pyx_v_x2[__pyx_v_j]))), __pyx_v_self->__pyx_base.p));
   }
 
-  /* "hdbscan/dist_metrics.pyx":553
+  /* "hdbscan/dist_metrics.pyx":554
  *         for j in range(size):
  *             d += pow(fabs(x1[j] - x2[j]), self.p)
  *         return d             # <<<<<<<<<<<<<<
@@ -7240,7 +7272,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = __pyx_v_d;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":547
+  /* "hdbscan/dist_metrics.pyx":548
  *         self.p = p
  * 
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -7253,7 +7285,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":555
+/* "hdbscan/dist_metrics.pyx":556
  *         return d
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -7265,18 +7297,18 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_t_1;
 
-  /* "hdbscan/dist_metrics.pyx":557
+  /* "hdbscan/dist_metrics.pyx":558
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         return pow(self.rdist(x1, x2, size), 1. / self.p)             # <<<<<<<<<<<<<<
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:
  */
-  __pyx_t_1 = __pyx_f_7hdbscan_12dist_metrics_17MinkowskiDistance_rdist(((struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self), __pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 557, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7hdbscan_12dist_metrics_17MinkowskiDistance_rdist(((struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self), __pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 558, __pyx_L1_error)
   __pyx_r = pow(__pyx_t_1, (1. / __pyx_v_self->__pyx_base.p));
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":555
+  /* "hdbscan/dist_metrics.pyx":556
  *         return d
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -7300,7 +7332,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":559
+/* "hdbscan/dist_metrics.pyx":560
  *         return pow(self.rdist(x1, x2, size), 1. / self.p)
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -7313,7 +7345,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":560
+  /* "hdbscan/dist_metrics.pyx":561
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:
  *         return pow(rdist, 1. / self.p)             # <<<<<<<<<<<<<<
@@ -7323,7 +7355,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = pow(__pyx_v_rdist, (1. / __pyx_v_self->__pyx_base.p));
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":559
+  /* "hdbscan/dist_metrics.pyx":560
  *         return pow(self.rdist(x1, x2, size), 1. / self.p)
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -7337,7 +7369,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":562
+/* "hdbscan/dist_metrics.pyx":563
  *         return pow(rdist, 1. / self.p)
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -7348,7 +7380,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
 static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_17MinkowskiDistance__dist_to_rdist(struct __pyx_obj_7hdbscan_12dist_metrics_MinkowskiDistance *__pyx_v_self, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_dist) {
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
 
-  /* "hdbscan/dist_metrics.pyx":563
+  /* "hdbscan/dist_metrics.pyx":564
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:
  *         return pow(dist, self.p)             # <<<<<<<<<<<<<<
@@ -7358,7 +7390,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = pow(__pyx_v_dist, __pyx_v_self->__pyx_base.p);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":562
+  /* "hdbscan/dist_metrics.pyx":563
  *         return pow(rdist, 1. / self.p)
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -7371,7 +7403,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":565
+/* "hdbscan/dist_metrics.pyx":566
  *         return pow(dist, self.p)
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -7399,7 +7431,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17MinkowskiDistance_2rdist_to_
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":566
+  /* "hdbscan/dist_metrics.pyx":567
  * 
  *     def rdist_to_dist(self, rdist):
  *         return rdist ** (1. / self.p)             # <<<<<<<<<<<<<<
@@ -7407,16 +7439,16 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17MinkowskiDistance_2rdist_to_
  *     def dist_to_rdist(self, dist):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble((1. / __pyx_v_self->__pyx_base.p)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 566, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((1. / __pyx_v_self->__pyx_base.p)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 567, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Power(__pyx_v_rdist, __pyx_t_1, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 566, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Power(__pyx_v_rdist, __pyx_t_1, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 567, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":565
+  /* "hdbscan/dist_metrics.pyx":566
  *         return pow(dist, self.p)
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -7436,7 +7468,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17MinkowskiDistance_2rdist_to_
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":568
+/* "hdbscan/dist_metrics.pyx":569
  *         return rdist ** (1. / self.p)
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -7464,7 +7496,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17MinkowskiDistance_4dist_to_r
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("dist_to_rdist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":569
+  /* "hdbscan/dist_metrics.pyx":570
  * 
  *     def dist_to_rdist(self, dist):
  *         return dist ** self.p             # <<<<<<<<<<<<<<
@@ -7472,16 +7504,16 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17MinkowskiDistance_4dist_to_r
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.p); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 569, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.p); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 570, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Power(__pyx_v_dist, __pyx_t_1, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 569, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Power(__pyx_v_dist, __pyx_t_1, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 570, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":568
+  /* "hdbscan/dist_metrics.pyx":569
  *         return rdist ** (1. / self.p)
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -7501,7 +7533,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17MinkowskiDistance_4dist_to_r
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":591
+/* "hdbscan/dist_metrics.pyx":592
  * 
  *     """
  *     def __init__(self, p, w):             # <<<<<<<<<<<<<<
@@ -7537,11 +7569,11 @@ static int __pyx_pw_7hdbscan_12dist_metrics_18WMinkowskiDistance_1__init__(PyObj
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_w)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, 1); __PYX_ERR(1, 591, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, 1); __PYX_ERR(1, 592, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 591, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 592, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -7554,7 +7586,7 @@ static int __pyx_pw_7hdbscan_12dist_metrics_18WMinkowskiDistance_1__init__(PyObj
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 591, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 592, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hdbscan.dist_metrics.WMinkowskiDistance.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7578,32 +7610,32 @@ static int __pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance___init__(struct
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_t_6;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hdbscan/dist_metrics.pyx":592
+  /* "hdbscan/dist_metrics.pyx":593
  *     """
  *     def __init__(self, p, w):
  *         if p < 1:             # <<<<<<<<<<<<<<
  *             raise ValueError("p must be greater than 1")
  *         elif np.isinf(p):
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_p, __pyx_int_1, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 592, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 592, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_p, __pyx_int_1, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 593, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 593, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "hdbscan/dist_metrics.pyx":593
+    /* "hdbscan/dist_metrics.pyx":594
  *     def __init__(self, p, w):
  *         if p < 1:
  *             raise ValueError("p must be greater than 1")             # <<<<<<<<<<<<<<
  *         elif np.isinf(p):
  *             raise ValueError("WMinkowskiDistance requires finite p. "
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 593, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 594, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(1, 593, __pyx_L1_error)
+    __PYX_ERR(1, 594, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":592
+    /* "hdbscan/dist_metrics.pyx":593
  *     """
  *     def __init__(self, p, w):
  *         if p < 1:             # <<<<<<<<<<<<<<
@@ -7612,16 +7644,16 @@ static int __pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance___init__(struct
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":594
+  /* "hdbscan/dist_metrics.pyx":595
  *         if p < 1:
  *             raise ValueError("p must be greater than 1")
  *         elif np.isinf(p):             # <<<<<<<<<<<<<<
  *             raise ValueError("WMinkowskiDistance requires finite p. "
  *                              "For p=inf, use ChebyshevDistance.")
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 594, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 595, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_isinf); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 594, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_isinf); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 595, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -7635,38 +7667,38 @@ static int __pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance___init__(struct
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_p); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 594, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_p); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 595, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 594, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 595, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
     __Pyx_INCREF(__pyx_v_p);
     __Pyx_GIVEREF(__pyx_v_p);
     PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_p);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 594, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 595, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 594, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(1, 595, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "hdbscan/dist_metrics.pyx":595
+    /* "hdbscan/dist_metrics.pyx":596
  *             raise ValueError("p must be greater than 1")
  *         elif np.isinf(p):
  *             raise ValueError("WMinkowskiDistance requires finite p. "             # <<<<<<<<<<<<<<
  *                              "For p=inf, use ChebyshevDistance.")
  *         self.p = p
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 595, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 596, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(1, 595, __pyx_L1_error)
+    __PYX_ERR(1, 596, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":594
+    /* "hdbscan/dist_metrics.pyx":595
  *         if p < 1:
  *             raise ValueError("p must be greater than 1")
  *         elif np.isinf(p):             # <<<<<<<<<<<<<<
@@ -7675,52 +7707,52 @@ static int __pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance___init__(struct
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":597
+  /* "hdbscan/dist_metrics.pyx":598
  *             raise ValueError("WMinkowskiDistance requires finite p. "
  *                              "For p=inf, use ChebyshevDistance.")
  *         self.p = p             # <<<<<<<<<<<<<<
  *         self.vec = np.asarray(w, dtype=DTYPE)
  *         self.vec_ptr = get_vec_ptr(self.vec)
  */
-  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_v_p); if (unlikely((__pyx_t_6 == (npy_double)-1) && PyErr_Occurred())) __PYX_ERR(1, 597, __pyx_L1_error)
+  __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_v_p); if (unlikely((__pyx_t_6 == (npy_double)-1) && PyErr_Occurred())) __PYX_ERR(1, 598, __pyx_L1_error)
   __pyx_v_self->__pyx_base.p = __pyx_t_6;
 
-  /* "hdbscan/dist_metrics.pyx":598
+  /* "hdbscan/dist_metrics.pyx":599
  *                              "For p=inf, use ChebyshevDistance.")
  *         self.p = p
  *         self.vec = np.asarray(w, dtype=DTYPE)             # <<<<<<<<<<<<<<
  *         self.vec_ptr = get_vec_ptr(self.vec)
  *         self.size = self.vec.shape[0]
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 598, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 599, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 598, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 599, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 598, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 599, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_w);
   __Pyx_GIVEREF(__pyx_v_w);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_w);
-  __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 598, __pyx_L1_error)
+  __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 599, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 598, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 599, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(1, 598, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(1, 599, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 598, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 599, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 598, __pyx_L1_error)
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 599, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->__pyx_base.vec);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->__pyx_base.vec));
   __pyx_v_self->__pyx_base.vec = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":599
+  /* "hdbscan/dist_metrics.pyx":600
  *         self.p = p
  *         self.vec = np.asarray(w, dtype=DTYPE)
  *         self.vec_ptr = get_vec_ptr(self.vec)             # <<<<<<<<<<<<<<
@@ -7732,7 +7764,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance___init__(struct
   __pyx_v_self->__pyx_base.vec_ptr = __pyx_f_7hdbscan_12dist_metrics_get_vec_ptr(((PyArrayObject *)__pyx_t_3));
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":600
+  /* "hdbscan/dist_metrics.pyx":601
  *         self.vec = np.asarray(w, dtype=DTYPE)
  *         self.vec_ptr = get_vec_ptr(self.vec)
  *         self.size = self.vec.shape[0]             # <<<<<<<<<<<<<<
@@ -7741,7 +7773,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance___init__(struct
  */
   __pyx_v_self->__pyx_base.size = (__pyx_v_self->__pyx_base.vec->dimensions[0]);
 
-  /* "hdbscan/dist_metrics.pyx":591
+  /* "hdbscan/dist_metrics.pyx":592
  * 
  *     """
  *     def __init__(self, p, w):             # <<<<<<<<<<<<<<
@@ -7764,7 +7796,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance___init__(struct
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":602
+/* "hdbscan/dist_metrics.pyx":603
  *         self.size = self.vec.shape[0]
  * 
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -7789,7 +7821,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   PyGILState_Release(__pyx_gilstate_save);
   #endif
 
-  /* "hdbscan/dist_metrics.pyx":604
+  /* "hdbscan/dist_metrics.pyx":605
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:             # <<<<<<<<<<<<<<
@@ -7800,7 +7832,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_t_1 = ((__pyx_v_size != __pyx_v_self->__pyx_base.size) != 0);
     if (__pyx_t_1) {
 
-      /* "hdbscan/dist_metrics.pyx":605
+      /* "hdbscan/dist_metrics.pyx":606
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -7813,21 +7845,21 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
           #endif
           /*try:*/ {
 
-            /* "hdbscan/dist_metrics.pyx":606
+            /* "hdbscan/dist_metrics.pyx":607
  *         if size != self.size:
  *             with gil:
  *                 raise ValueError('WMinkowskiDistance dist: '             # <<<<<<<<<<<<<<
  *                                  'size of w does not match')
  *         cdef DTYPE_t d=0
  */
-            __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 606, __pyx_L8_error)
+            __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 607, __pyx_L8_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_Raise(__pyx_t_2, 0, 0, 0);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __PYX_ERR(1, 606, __pyx_L8_error)
+            __PYX_ERR(1, 607, __pyx_L8_error)
           }
 
-          /* "hdbscan/dist_metrics.pyx":605
+          /* "hdbscan/dist_metrics.pyx":606
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -7844,7 +7876,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
           }
       }
 
-      /* "hdbscan/dist_metrics.pyx":604
+      /* "hdbscan/dist_metrics.pyx":605
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:             # <<<<<<<<<<<<<<
@@ -7853,7 +7885,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     }
 
-    /* "hdbscan/dist_metrics.pyx":608
+    /* "hdbscan/dist_metrics.pyx":609
  *                 raise ValueError('WMinkowskiDistance dist: '
  *                                  'size of w does not match')
  *         cdef DTYPE_t d=0             # <<<<<<<<<<<<<<
@@ -7862,7 +7894,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_d = 0.0;
 
-    /* "hdbscan/dist_metrics.pyx":610
+    /* "hdbscan/dist_metrics.pyx":611
  *         cdef DTYPE_t d=0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -7873,7 +7905,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_j = __pyx_t_4;
 
-      /* "hdbscan/dist_metrics.pyx":611
+      /* "hdbscan/dist_metrics.pyx":612
  *         cdef np.intp_t j
  *         for j in range(size):
  *             d += pow(self.vec_ptr[j] * fabs(x1[j] - x2[j]), self.p)             # <<<<<<<<<<<<<<
@@ -7883,7 +7915,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
       __pyx_v_d = (__pyx_v_d + pow(((__pyx_v_self->__pyx_base.vec_ptr[__pyx_v_j]) * fabs(((__pyx_v_x1[__pyx_v_j]) - (__pyx_v_x2[__pyx_v_j])))), __pyx_v_self->__pyx_base.p));
     }
 
-    /* "hdbscan/dist_metrics.pyx":612
+    /* "hdbscan/dist_metrics.pyx":613
  *         for j in range(size):
  *             d += pow(self.vec_ptr[j] * fabs(x1[j] - x2[j]), self.p)
  *         return d             # <<<<<<<<<<<<<<
@@ -7894,7 +7926,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     goto __pyx_L3_return;
   }
 
-  /* "hdbscan/dist_metrics.pyx":604
+  /* "hdbscan/dist_metrics.pyx":605
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:             # <<<<<<<<<<<<<<
@@ -7916,7 +7948,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     }
   }
 
-  /* "hdbscan/dist_metrics.pyx":602
+  /* "hdbscan/dist_metrics.pyx":603
  *         self.size = self.vec.shape[0]
  * 
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -7938,7 +7970,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":614
+/* "hdbscan/dist_metrics.pyx":615
  *         return d
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -7950,18 +7982,18 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_t_1;
 
-  /* "hdbscan/dist_metrics.pyx":616
+  /* "hdbscan/dist_metrics.pyx":617
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         return pow(self.rdist(x1, x2, size), 1. / self.p)             # <<<<<<<<<<<<<<
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:
  */
-  __pyx_t_1 = __pyx_f_7hdbscan_12dist_metrics_18WMinkowskiDistance_rdist(((struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self), __pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 616, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7hdbscan_12dist_metrics_18WMinkowskiDistance_rdist(((struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self), __pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 617, __pyx_L1_error)
   __pyx_r = pow(__pyx_t_1, (1. / __pyx_v_self->__pyx_base.p));
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":614
+  /* "hdbscan/dist_metrics.pyx":615
  *         return d
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -7985,7 +8017,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":618
+/* "hdbscan/dist_metrics.pyx":619
  *         return pow(self.rdist(x1, x2, size), 1. / self.p)
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -7998,7 +8030,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":619
+  /* "hdbscan/dist_metrics.pyx":620
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:
  *         return pow(rdist, 1. / self.p)             # <<<<<<<<<<<<<<
@@ -8008,7 +8040,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = pow(__pyx_v_rdist, (1. / __pyx_v_self->__pyx_base.p));
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":618
+  /* "hdbscan/dist_metrics.pyx":619
  *         return pow(self.rdist(x1, x2, size), 1. / self.p)
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -8022,7 +8054,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":621
+/* "hdbscan/dist_metrics.pyx":622
  *         return pow(rdist, 1. / self.p)
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -8033,7 +8065,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
 static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_18WMinkowskiDistance__dist_to_rdist(struct __pyx_obj_7hdbscan_12dist_metrics_WMinkowskiDistance *__pyx_v_self, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_dist) {
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
 
-  /* "hdbscan/dist_metrics.pyx":622
+  /* "hdbscan/dist_metrics.pyx":623
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:
  *         return pow(dist, self.p)             # <<<<<<<<<<<<<<
@@ -8043,7 +8075,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = pow(__pyx_v_dist, __pyx_v_self->__pyx_base.p);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":621
+  /* "hdbscan/dist_metrics.pyx":622
  *         return pow(rdist, 1. / self.p)
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -8056,7 +8088,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":624
+/* "hdbscan/dist_metrics.pyx":625
  *         return pow(dist, self.p)
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -8084,7 +8116,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance_2rdist_to
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":625
+  /* "hdbscan/dist_metrics.pyx":626
  * 
  *     def rdist_to_dist(self, rdist):
  *         return rdist ** (1. / self.p)             # <<<<<<<<<<<<<<
@@ -8092,16 +8124,16 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance_2rdist_to
  *     def dist_to_rdist(self, dist):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble((1. / __pyx_v_self->__pyx_base.p)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 625, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((1. / __pyx_v_self->__pyx_base.p)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 626, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Power(__pyx_v_rdist, __pyx_t_1, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 625, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Power(__pyx_v_rdist, __pyx_t_1, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 626, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":624
+  /* "hdbscan/dist_metrics.pyx":625
  *         return pow(dist, self.p)
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -8121,7 +8153,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance_2rdist_to
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":627
+/* "hdbscan/dist_metrics.pyx":628
  *         return rdist ** (1. / self.p)
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -8149,7 +8181,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance_4dist_to_
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("dist_to_rdist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":628
+  /* "hdbscan/dist_metrics.pyx":629
  * 
  *     def dist_to_rdist(self, dist):
  *         return dist ** self.p             # <<<<<<<<<<<<<<
@@ -8157,16 +8189,16 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance_4dist_to_
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.p); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 628, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->__pyx_base.p); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 629, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Power(__pyx_v_dist, __pyx_t_1, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 628, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Power(__pyx_v_dist, __pyx_t_1, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 629, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":627
+  /* "hdbscan/dist_metrics.pyx":628
  *         return rdist ** (1. / self.p)
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -8186,7 +8218,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_18WMinkowskiDistance_4dist_to_
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":649
+/* "hdbscan/dist_metrics.pyx":650
  *         then V is not referenced.
  *     """
  *     def __init__(self, V=None, VI=None):             # <<<<<<<<<<<<<<
@@ -8230,7 +8262,7 @@ static int __pyx_pw_7hdbscan_12dist_metrics_19MahalanobisDistance_1__init__(PyOb
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 649, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 650, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -8245,7 +8277,7 @@ static int __pyx_pw_7hdbscan_12dist_metrics_19MahalanobisDistance_1__init__(PyOb
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 649, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 650, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("hdbscan.dist_metrics.MahalanobisDistance.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8270,7 +8302,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance___init__(struc
   __Pyx_RefNannySetupContext("__init__", 0);
   __Pyx_INCREF(__pyx_v_VI);
 
-  /* "hdbscan/dist_metrics.pyx":650
+  /* "hdbscan/dist_metrics.pyx":651
  *     """
  *     def __init__(self, V=None, VI=None):
  *         if VI is None:             # <<<<<<<<<<<<<<
@@ -8281,19 +8313,19 @@ static int __pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance___init__(struc
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "hdbscan/dist_metrics.pyx":651
+    /* "hdbscan/dist_metrics.pyx":652
  *     def __init__(self, V=None, VI=None):
  *         if VI is None:
  *             VI = np.linalg.inv(V)             # <<<<<<<<<<<<<<
  *         if VI.ndim != 2 or VI.shape[0] != VI.shape[1]:
  *             raise ValueError("V/VI must be square")
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 651, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 652, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_linalg); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 651, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_linalg); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 652, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_inv); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 651, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_inv); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 652, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_5 = NULL;
@@ -8307,16 +8339,16 @@ static int __pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance___init__(struc
       }
     }
     if (!__pyx_t_5) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_V); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 651, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_V); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 652, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
     } else {
-      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 651, __pyx_L1_error)
+      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 652, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
       __Pyx_INCREF(__pyx_v_V);
       __Pyx_GIVEREF(__pyx_v_V);
       PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_v_V);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 651, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 652, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
@@ -8324,7 +8356,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance___init__(struc
     __Pyx_DECREF_SET(__pyx_v_VI, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "hdbscan/dist_metrics.pyx":650
+    /* "hdbscan/dist_metrics.pyx":651
  *     """
  *     def __init__(self, V=None, VI=None):
  *         if VI is None:             # <<<<<<<<<<<<<<
@@ -8333,57 +8365,57 @@ static int __pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance___init__(struc
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":652
+  /* "hdbscan/dist_metrics.pyx":653
  *         if VI is None:
  *             VI = np.linalg.inv(V)
  *         if VI.ndim != 2 or VI.shape[0] != VI.shape[1]:             # <<<<<<<<<<<<<<
  *             raise ValueError("V/VI must be square")
  * 
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_VI, __pyx_n_s_ndim); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 652, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_VI, __pyx_n_s_ndim); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 653, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyObject_RichCompare(__pyx_t_3, __pyx_int_2, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 652, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_t_3, __pyx_int_2, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 653, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(1, 652, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(1, 653, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (!__pyx_t_1) {
   } else {
     __pyx_t_2 = __pyx_t_1;
     goto __pyx_L5_bool_binop_done;
   }
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_VI, __pyx_n_s_shape); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 652, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_VI, __pyx_n_s_shape); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 653, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 652, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 653, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_VI, __pyx_n_s_shape); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 652, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_VI, __pyx_n_s_shape); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 653, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_4, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 652, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_4, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 653, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyObject_RichCompare(__pyx_t_3, __pyx_t_6, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 652, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_t_3, __pyx_t_6, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 653, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(1, 652, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(1, 653, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_2 = __pyx_t_1;
   __pyx_L5_bool_binop_done:;
   if (__pyx_t_2) {
 
-    /* "hdbscan/dist_metrics.pyx":653
+    /* "hdbscan/dist_metrics.pyx":654
  *             VI = np.linalg.inv(V)
  *         if VI.ndim != 2 or VI.shape[0] != VI.shape[1]:
  *             raise ValueError("V/VI must be square")             # <<<<<<<<<<<<<<
  * 
  *         self.mat = np.asarray(VI, dtype=float, order='C')
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 653, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 654, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(1, 653, __pyx_L1_error)
+    __PYX_ERR(1, 654, __pyx_L1_error)
 
-    /* "hdbscan/dist_metrics.pyx":652
+    /* "hdbscan/dist_metrics.pyx":653
  *         if VI is None:
  *             VI = np.linalg.inv(V)
  *         if VI.ndim != 2 or VI.shape[0] != VI.shape[1]:             # <<<<<<<<<<<<<<
@@ -8392,40 +8424,40 @@ static int __pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance___init__(struc
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":655
+  /* "hdbscan/dist_metrics.pyx":656
  *             raise ValueError("V/VI must be square")
  * 
  *         self.mat = np.asarray(VI, dtype=float, order='C')             # <<<<<<<<<<<<<<
  *         self.mat_ptr = get_mat_ptr(self.mat)
  * 
  */
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 655, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 656, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 655, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 656, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 655, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 656, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_v_VI);
   __Pyx_GIVEREF(__pyx_v_VI);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_VI);
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 655, __pyx_L1_error)
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 656, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(1, 655, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(1, 655, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 655, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(1, 656, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(1, 656, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 656, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 655, __pyx_L1_error)
+  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 656, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_5);
   __Pyx_GOTREF(__pyx_v_self->__pyx_base.mat);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->__pyx_base.mat));
   __pyx_v_self->__pyx_base.mat = ((PyArrayObject *)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":656
+  /* "hdbscan/dist_metrics.pyx":657
  * 
  *         self.mat = np.asarray(VI, dtype=float, order='C')
  *         self.mat_ptr = get_mat_ptr(self.mat)             # <<<<<<<<<<<<<<
@@ -8437,7 +8469,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance___init__(struc
   __pyx_v_self->__pyx_base.mat_ptr = __pyx_f_7hdbscan_12dist_metrics_get_mat_ptr(((PyArrayObject *)__pyx_t_5));
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":658
+  /* "hdbscan/dist_metrics.pyx":659
  *         self.mat_ptr = get_mat_ptr(self.mat)
  * 
  *         self.size = self.mat.shape[0]             # <<<<<<<<<<<<<<
@@ -8446,44 +8478,44 @@ static int __pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance___init__(struc
  */
   __pyx_v_self->__pyx_base.size = (__pyx_v_self->__pyx_base.mat->dimensions[0]);
 
-  /* "hdbscan/dist_metrics.pyx":661
+  /* "hdbscan/dist_metrics.pyx":662
  * 
  *         # we need vec as a work buffer
  *         self.vec = np.zeros(self.size, dtype=DTYPE)             # <<<<<<<<<<<<<<
  *         self.vec_ptr = get_vec_ptr(self.vec)
  * 
  */
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 661, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 662, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 661, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 662, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->__pyx_base.size); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 661, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->__pyx_base.size); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 662, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 661, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 662, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_5);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
   __pyx_t_5 = 0;
-  __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 661, __pyx_L1_error)
+  __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 662, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 661, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 662, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_6) < 0) __PYX_ERR(1, 661, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_6) < 0) __PYX_ERR(1, 662, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 661, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 662, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 661, __pyx_L1_error)
+  if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 662, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_6);
   __Pyx_GOTREF(__pyx_v_self->__pyx_base.vec);
   __Pyx_DECREF(((PyObject *)__pyx_v_self->__pyx_base.vec));
   __pyx_v_self->__pyx_base.vec = ((PyArrayObject *)__pyx_t_6);
   __pyx_t_6 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":662
+  /* "hdbscan/dist_metrics.pyx":663
  *         # we need vec as a work buffer
  *         self.vec = np.zeros(self.size, dtype=DTYPE)
  *         self.vec_ptr = get_vec_ptr(self.vec)             # <<<<<<<<<<<<<<
@@ -8495,7 +8527,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance___init__(struc
   __pyx_v_self->__pyx_base.vec_ptr = __pyx_f_7hdbscan_12dist_metrics_get_vec_ptr(((PyArrayObject *)__pyx_t_6));
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":649
+  /* "hdbscan/dist_metrics.pyx":650
  *         then V is not referenced.
  *     """
  *     def __init__(self, V=None, VI=None):             # <<<<<<<<<<<<<<
@@ -8519,7 +8551,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance___init__(struc
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":664
+/* "hdbscan/dist_metrics.pyx":665
  *         self.vec_ptr = get_vec_ptr(self.vec)
  * 
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -8548,7 +8580,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   PyGILState_Release(__pyx_gilstate_save);
   #endif
 
-  /* "hdbscan/dist_metrics.pyx":666
+  /* "hdbscan/dist_metrics.pyx":667
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:             # <<<<<<<<<<<<<<
@@ -8559,7 +8591,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_t_1 = ((__pyx_v_size != __pyx_v_self->__pyx_base.size) != 0);
     if (__pyx_t_1) {
 
-      /* "hdbscan/dist_metrics.pyx":667
+      /* "hdbscan/dist_metrics.pyx":668
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -8572,21 +8604,21 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
           #endif
           /*try:*/ {
 
-            /* "hdbscan/dist_metrics.pyx":668
+            /* "hdbscan/dist_metrics.pyx":669
  *         if size != self.size:
  *             with gil:
  *                 raise ValueError('Mahalanobis dist: size of V does not match')             # <<<<<<<<<<<<<<
  * 
  *         cdef DTYPE_t tmp, d = 0
  */
-            __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 668, __pyx_L8_error)
+            __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 669, __pyx_L8_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_Raise(__pyx_t_2, 0, 0, 0);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __PYX_ERR(1, 668, __pyx_L8_error)
+            __PYX_ERR(1, 669, __pyx_L8_error)
           }
 
-          /* "hdbscan/dist_metrics.pyx":667
+          /* "hdbscan/dist_metrics.pyx":668
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -8603,7 +8635,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
           }
       }
 
-      /* "hdbscan/dist_metrics.pyx":666
+      /* "hdbscan/dist_metrics.pyx":667
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:             # <<<<<<<<<<<<<<
@@ -8612,7 +8644,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     }
 
-    /* "hdbscan/dist_metrics.pyx":670
+    /* "hdbscan/dist_metrics.pyx":671
  *                 raise ValueError('Mahalanobis dist: size of V does not match')
  * 
  *         cdef DTYPE_t tmp, d = 0             # <<<<<<<<<<<<<<
@@ -8621,7 +8653,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_d = 0.0;
 
-    /* "hdbscan/dist_metrics.pyx":674
+    /* "hdbscan/dist_metrics.pyx":675
  * 
  *         # compute (x1 - x2).T * VI * (x1 - x2)
  *         for i in range(size):             # <<<<<<<<<<<<<<
@@ -8632,7 +8664,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_i = __pyx_t_4;
 
-      /* "hdbscan/dist_metrics.pyx":675
+      /* "hdbscan/dist_metrics.pyx":676
  *         # compute (x1 - x2).T * VI * (x1 - x2)
  *         for i in range(size):
  *             self.vec_ptr[i] = x1[i] - x2[i]             # <<<<<<<<<<<<<<
@@ -8642,7 +8674,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
       (__pyx_v_self->__pyx_base.vec_ptr[__pyx_v_i]) = ((__pyx_v_x1[__pyx_v_i]) - (__pyx_v_x2[__pyx_v_i]));
     }
 
-    /* "hdbscan/dist_metrics.pyx":677
+    /* "hdbscan/dist_metrics.pyx":678
  *             self.vec_ptr[i] = x1[i] - x2[i]
  * 
  *         for i in range(size):             # <<<<<<<<<<<<<<
@@ -8653,7 +8685,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_i = __pyx_t_4;
 
-      /* "hdbscan/dist_metrics.pyx":678
+      /* "hdbscan/dist_metrics.pyx":679
  * 
  *         for i in range(size):
  *             tmp = 0             # <<<<<<<<<<<<<<
@@ -8662,7 +8694,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
       __pyx_v_tmp = 0.0;
 
-      /* "hdbscan/dist_metrics.pyx":679
+      /* "hdbscan/dist_metrics.pyx":680
  *         for i in range(size):
  *             tmp = 0
  *             for j in range(size):             # <<<<<<<<<<<<<<
@@ -8673,7 +8705,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
       for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
         __pyx_v_j = __pyx_t_6;
 
-        /* "hdbscan/dist_metrics.pyx":680
+        /* "hdbscan/dist_metrics.pyx":681
  *             tmp = 0
  *             for j in range(size):
  *                 tmp += self.mat_ptr[i * size + j] * self.vec_ptr[j]             # <<<<<<<<<<<<<<
@@ -8683,7 +8715,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
         __pyx_v_tmp = (__pyx_v_tmp + ((__pyx_v_self->__pyx_base.mat_ptr[((__pyx_v_i * __pyx_v_size) + __pyx_v_j)]) * (__pyx_v_self->__pyx_base.vec_ptr[__pyx_v_j])));
       }
 
-      /* "hdbscan/dist_metrics.pyx":681
+      /* "hdbscan/dist_metrics.pyx":682
  *             for j in range(size):
  *                 tmp += self.mat_ptr[i * size + j] * self.vec_ptr[j]
  *             d += tmp * self.vec_ptr[i]             # <<<<<<<<<<<<<<
@@ -8693,7 +8725,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
       __pyx_v_d = (__pyx_v_d + (__pyx_v_tmp * (__pyx_v_self->__pyx_base.vec_ptr[__pyx_v_i])));
     }
 
-    /* "hdbscan/dist_metrics.pyx":682
+    /* "hdbscan/dist_metrics.pyx":683
  *                 tmp += self.mat_ptr[i * size + j] * self.vec_ptr[j]
  *             d += tmp * self.vec_ptr[i]
  *         return d             # <<<<<<<<<<<<<<
@@ -8704,7 +8736,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     goto __pyx_L3_return;
   }
 
-  /* "hdbscan/dist_metrics.pyx":666
+  /* "hdbscan/dist_metrics.pyx":667
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != self.size:             # <<<<<<<<<<<<<<
@@ -8726,7 +8758,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     }
   }
 
-  /* "hdbscan/dist_metrics.pyx":664
+  /* "hdbscan/dist_metrics.pyx":665
  *         self.vec_ptr = get_vec_ptr(self.vec)
  * 
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -8748,7 +8780,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":684
+/* "hdbscan/dist_metrics.pyx":685
  *         return d
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -8760,18 +8792,18 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_t_1;
 
-  /* "hdbscan/dist_metrics.pyx":686
+  /* "hdbscan/dist_metrics.pyx":687
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         return sqrt(self.rdist(x1, x2, size))             # <<<<<<<<<<<<<<
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:
  */
-  __pyx_t_1 = __pyx_f_7hdbscan_12dist_metrics_19MahalanobisDistance_rdist(((struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self), __pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 686, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7hdbscan_12dist_metrics_19MahalanobisDistance_rdist(((struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *)__pyx_v_self), __pyx_v_x1, __pyx_v_x2, __pyx_v_size); if (unlikely(__pyx_t_1 == -1.0)) __PYX_ERR(1, 687, __pyx_L1_error)
   __pyx_r = sqrt(__pyx_t_1);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":684
+  /* "hdbscan/dist_metrics.pyx":685
  *         return d
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -8795,7 +8827,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":688
+/* "hdbscan/dist_metrics.pyx":689
  *         return sqrt(self.rdist(x1, x2, size))
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -8808,7 +8840,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":689
+  /* "hdbscan/dist_metrics.pyx":690
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:
  *         return sqrt(rdist)             # <<<<<<<<<<<<<<
@@ -8818,7 +8850,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = sqrt(__pyx_v_rdist);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":688
+  /* "hdbscan/dist_metrics.pyx":689
  *         return sqrt(self.rdist(x1, x2, size))
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -8832,7 +8864,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":691
+/* "hdbscan/dist_metrics.pyx":692
  *         return sqrt(rdist)
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -8843,7 +8875,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
 static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_19MahalanobisDistance__dist_to_rdist(CYTHON_UNUSED struct __pyx_obj_7hdbscan_12dist_metrics_MahalanobisDistance *__pyx_v_self, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_dist) {
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
 
-  /* "hdbscan/dist_metrics.pyx":692
+  /* "hdbscan/dist_metrics.pyx":693
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:
  *         return dist * dist             # <<<<<<<<<<<<<<
@@ -8853,7 +8885,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = (__pyx_v_dist * __pyx_v_dist);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":691
+  /* "hdbscan/dist_metrics.pyx":692
  *         return sqrt(rdist)
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -8866,7 +8898,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":694
+/* "hdbscan/dist_metrics.pyx":695
  *         return dist * dist
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -8896,7 +8928,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance_2rdist_t
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":695
+  /* "hdbscan/dist_metrics.pyx":696
  * 
  *     def rdist_to_dist(self, rdist):
  *         return np.sqrt(rdist)             # <<<<<<<<<<<<<<
@@ -8904,9 +8936,9 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance_2rdist_t
  *     def dist_to_rdist(self, dist):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 695, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 696, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 695, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 696, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -8920,16 +8952,16 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance_2rdist_t
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_rdist); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 695, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_rdist); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 696, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 695, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 696, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
     __Pyx_INCREF(__pyx_v_rdist);
     __Pyx_GIVEREF(__pyx_v_rdist);
     PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_rdist);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 695, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 696, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
@@ -8938,7 +8970,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance_2rdist_t
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":694
+  /* "hdbscan/dist_metrics.pyx":695
  *         return dist * dist
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -8960,7 +8992,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance_2rdist_t
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":697
+/* "hdbscan/dist_metrics.pyx":698
  *         return np.sqrt(rdist)
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -8987,7 +9019,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance_4dist_to
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("dist_to_rdist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":698
+  /* "hdbscan/dist_metrics.pyx":699
  * 
  *     def dist_to_rdist(self, dist):
  *         return dist ** 2             # <<<<<<<<<<<<<<
@@ -8995,13 +9027,13 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance_4dist_to
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Power(__pyx_v_dist, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 698, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Power(__pyx_v_dist, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 699, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":697
+  /* "hdbscan/dist_metrics.pyx":698
  *         return np.sqrt(rdist)
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -9020,7 +9052,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_19MahalanobisDistance_4dist_to
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":713
+/* "hdbscan/dist_metrics.pyx":714
  *        D(x, y) = \frac{1}{N} \sum_i \delta_{x_i, y_i}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9036,7 +9068,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_5numpy_intp_t __pyx_t_2;
   int __pyx_t_3;
 
-  /* "hdbscan/dist_metrics.pyx":715
+  /* "hdbscan/dist_metrics.pyx":716
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef int n_unequal = 0             # <<<<<<<<<<<<<<
@@ -9045,7 +9077,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
   __pyx_v_n_unequal = 0;
 
-  /* "hdbscan/dist_metrics.pyx":717
+  /* "hdbscan/dist_metrics.pyx":718
  *         cdef int n_unequal = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -9056,7 +9088,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":718
+    /* "hdbscan/dist_metrics.pyx":719
  *         cdef np.intp_t j
  *         for j in range(size):
  *             if x1[j] != x2[j]:             # <<<<<<<<<<<<<<
@@ -9066,7 +9098,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_t_3 = (((__pyx_v_x1[__pyx_v_j]) != (__pyx_v_x2[__pyx_v_j])) != 0);
     if (__pyx_t_3) {
 
-      /* "hdbscan/dist_metrics.pyx":719
+      /* "hdbscan/dist_metrics.pyx":720
  *         for j in range(size):
  *             if x1[j] != x2[j]:
  *                 n_unequal += 1             # <<<<<<<<<<<<<<
@@ -9075,7 +9107,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
       __pyx_v_n_unequal = (__pyx_v_n_unequal + 1);
 
-      /* "hdbscan/dist_metrics.pyx":718
+      /* "hdbscan/dist_metrics.pyx":719
  *         cdef np.intp_t j
  *         for j in range(size):
  *             if x1[j] != x2[j]:             # <<<<<<<<<<<<<<
@@ -9085,7 +9117,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     }
   }
 
-  /* "hdbscan/dist_metrics.pyx":720
+  /* "hdbscan/dist_metrics.pyx":721
  *             if x1[j] != x2[j]:
  *                 n_unequal += 1
  *         return float(n_unequal) / size             # <<<<<<<<<<<<<<
@@ -9095,7 +9127,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = (((double)__pyx_v_n_unequal) / __pyx_v_size);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":713
+  /* "hdbscan/dist_metrics.pyx":714
  *        D(x, y) = \frac{1}{N} \sum_i \delta_{x_i, y_i}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9108,7 +9140,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":735
+/* "hdbscan/dist_metrics.pyx":736
  *        D(x, y) = \sum_i \frac{|x_i - y_i|}{|x_i| + |y_i|}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9125,7 +9157,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_5numpy_intp_t __pyx_t_2;
   int __pyx_t_3;
 
-  /* "hdbscan/dist_metrics.pyx":737
+  /* "hdbscan/dist_metrics.pyx":738
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef DTYPE_t denom, d = 0             # <<<<<<<<<<<<<<
@@ -9134,7 +9166,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
   __pyx_v_d = 0.0;
 
-  /* "hdbscan/dist_metrics.pyx":739
+  /* "hdbscan/dist_metrics.pyx":740
  *         cdef DTYPE_t denom, d = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -9145,7 +9177,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":740
+    /* "hdbscan/dist_metrics.pyx":741
  *         cdef np.intp_t j
  *         for j in range(size):
  *             denom = fabs(x1[j]) + fabs(x2[j])             # <<<<<<<<<<<<<<
@@ -9154,7 +9186,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_denom = (fabs((__pyx_v_x1[__pyx_v_j])) + fabs((__pyx_v_x2[__pyx_v_j])));
 
-    /* "hdbscan/dist_metrics.pyx":741
+    /* "hdbscan/dist_metrics.pyx":742
  *         for j in range(size):
  *             denom = fabs(x1[j]) + fabs(x2[j])
  *             if denom > 0:             # <<<<<<<<<<<<<<
@@ -9164,7 +9196,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_t_3 = ((__pyx_v_denom > 0.0) != 0);
     if (__pyx_t_3) {
 
-      /* "hdbscan/dist_metrics.pyx":742
+      /* "hdbscan/dist_metrics.pyx":743
  *             denom = fabs(x1[j]) + fabs(x2[j])
  *             if denom > 0:
  *                 d += fabs(x1[j] - x2[j]) / denom             # <<<<<<<<<<<<<<
@@ -9173,7 +9205,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
       __pyx_v_d = (__pyx_v_d + (fabs(((__pyx_v_x1[__pyx_v_j]) - (__pyx_v_x2[__pyx_v_j]))) / __pyx_v_denom));
 
-      /* "hdbscan/dist_metrics.pyx":741
+      /* "hdbscan/dist_metrics.pyx":742
  *         for j in range(size):
  *             denom = fabs(x1[j]) + fabs(x2[j])
  *             if denom > 0:             # <<<<<<<<<<<<<<
@@ -9183,7 +9215,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     }
   }
 
-  /* "hdbscan/dist_metrics.pyx":743
+  /* "hdbscan/dist_metrics.pyx":744
  *             if denom > 0:
  *                 d += fabs(x1[j] - x2[j]) / denom
  *         return d             # <<<<<<<<<<<<<<
@@ -9193,7 +9225,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = __pyx_v_d;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":735
+  /* "hdbscan/dist_metrics.pyx":736
  *        D(x, y) = \sum_i \frac{|x_i - y_i|}{|x_i| + |y_i|}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9206,7 +9238,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":758
+/* "hdbscan/dist_metrics.pyx":759
  *        D(x, y) = \frac{\sum_i |x_i - y_i|}{\sum_i(|x_i| + |y_i|)}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9223,7 +9255,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_5numpy_intp_t __pyx_t_2;
   int __pyx_t_3;
 
-  /* "hdbscan/dist_metrics.pyx":760
+  /* "hdbscan/dist_metrics.pyx":761
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef DTYPE_t num = 0, denom = 0             # <<<<<<<<<<<<<<
@@ -9233,7 +9265,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_v_num = 0.0;
   __pyx_v_denom = 0.0;
 
-  /* "hdbscan/dist_metrics.pyx":762
+  /* "hdbscan/dist_metrics.pyx":763
  *         cdef DTYPE_t num = 0, denom = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -9244,7 +9276,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":763
+    /* "hdbscan/dist_metrics.pyx":764
  *         cdef np.intp_t j
  *         for j in range(size):
  *             num += fabs(x1[j] - x2[j])             # <<<<<<<<<<<<<<
@@ -9253,7 +9285,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_num = (__pyx_v_num + fabs(((__pyx_v_x1[__pyx_v_j]) - (__pyx_v_x2[__pyx_v_j]))));
 
-    /* "hdbscan/dist_metrics.pyx":764
+    /* "hdbscan/dist_metrics.pyx":765
  *         for j in range(size):
  *             num += fabs(x1[j] - x2[j])
  *             denom += fabs(x1[j]) + fabs(x2[j])             # <<<<<<<<<<<<<<
@@ -9263,7 +9295,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_v_denom = (__pyx_v_denom + (fabs((__pyx_v_x1[__pyx_v_j])) + fabs((__pyx_v_x2[__pyx_v_j]))));
   }
 
-  /* "hdbscan/dist_metrics.pyx":765
+  /* "hdbscan/dist_metrics.pyx":766
  *             num += fabs(x1[j] - x2[j])
  *             denom += fabs(x1[j]) + fabs(x2[j])
  *         if denom > 0:             # <<<<<<<<<<<<<<
@@ -9273,7 +9305,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_3 = ((__pyx_v_denom > 0.0) != 0);
   if (__pyx_t_3) {
 
-    /* "hdbscan/dist_metrics.pyx":766
+    /* "hdbscan/dist_metrics.pyx":767
  *             denom += fabs(x1[j]) + fabs(x2[j])
  *         if denom > 0:
  *             return num / denom             # <<<<<<<<<<<<<<
@@ -9283,7 +9315,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_r = (__pyx_v_num / __pyx_v_denom);
     goto __pyx_L0;
 
-    /* "hdbscan/dist_metrics.pyx":765
+    /* "hdbscan/dist_metrics.pyx":766
  *             num += fabs(x1[j] - x2[j])
  *             denom += fabs(x1[j]) + fabs(x2[j])
  *         if denom > 0:             # <<<<<<<<<<<<<<
@@ -9292,7 +9324,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":768
+  /* "hdbscan/dist_metrics.pyx":769
  *             return num / denom
  *         else:
  *             return 0.0             # <<<<<<<<<<<<<<
@@ -9304,7 +9336,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     goto __pyx_L0;
   }
 
-  /* "hdbscan/dist_metrics.pyx":758
+  /* "hdbscan/dist_metrics.pyx":759
  *        D(x, y) = \frac{\sum_i |x_i - y_i|}{\sum_i(|x_i| + |y_i|)}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9317,7 +9349,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":784
+/* "hdbscan/dist_metrics.pyx":785
  *        D(x, y) = \frac{N_{TF} + N_{FT}}{N_{TT} + N_{TF} + N_{FT}}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9337,7 +9369,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   int __pyx_t_3;
   int __pyx_t_4;
 
-  /* "hdbscan/dist_metrics.pyx":786
+  /* "hdbscan/dist_metrics.pyx":787
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef int tf1, tf2, n_eq = 0, nnz = 0             # <<<<<<<<<<<<<<
@@ -9347,7 +9379,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_v_n_eq = 0;
   __pyx_v_nnz = 0;
 
-  /* "hdbscan/dist_metrics.pyx":788
+  /* "hdbscan/dist_metrics.pyx":789
  *         cdef int tf1, tf2, n_eq = 0, nnz = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -9358,7 +9390,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":789
+    /* "hdbscan/dist_metrics.pyx":790
  *         cdef np.intp_t j
  *         for j in range(size):
  *             tf1 = x1[j] != 0             # <<<<<<<<<<<<<<
@@ -9367,7 +9399,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_tf1 = ((__pyx_v_x1[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":790
+    /* "hdbscan/dist_metrics.pyx":791
  *         for j in range(size):
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0             # <<<<<<<<<<<<<<
@@ -9376,7 +9408,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_tf2 = ((__pyx_v_x2[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":791
+    /* "hdbscan/dist_metrics.pyx":792
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0
  *             nnz += (tf1 or tf2)             # <<<<<<<<<<<<<<
@@ -9392,7 +9424,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_L5_bool_binop_done:;
     __pyx_v_nnz = (__pyx_v_nnz + __pyx_t_3);
 
-    /* "hdbscan/dist_metrics.pyx":792
+    /* "hdbscan/dist_metrics.pyx":793
  *             tf2 = x2[j] != 0
  *             nnz += (tf1 or tf2)
  *             n_eq += (tf1 and tf2)             # <<<<<<<<<<<<<<
@@ -9409,7 +9441,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_v_n_eq = (__pyx_v_n_eq + __pyx_t_3);
   }
 
-  /* "hdbscan/dist_metrics.pyx":793
+  /* "hdbscan/dist_metrics.pyx":794
  *             nnz += (tf1 or tf2)
  *             n_eq += (tf1 and tf2)
  *         if nnz == 0:             # <<<<<<<<<<<<<<
@@ -9419,7 +9451,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_4 = ((__pyx_v_nnz == 0) != 0);
   if (__pyx_t_4) {
 
-    /* "hdbscan/dist_metrics.pyx":794
+    /* "hdbscan/dist_metrics.pyx":795
  *             n_eq += (tf1 and tf2)
  *         if nnz == 0:
  *             return 0.0             # <<<<<<<<<<<<<<
@@ -9429,7 +9461,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_r = 0.0;
     goto __pyx_L0;
 
-    /* "hdbscan/dist_metrics.pyx":793
+    /* "hdbscan/dist_metrics.pyx":794
  *             nnz += (tf1 or tf2)
  *             n_eq += (tf1 and tf2)
  *         if nnz == 0:             # <<<<<<<<<<<<<<
@@ -9438,7 +9470,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
   }
 
-  /* "hdbscan/dist_metrics.pyx":795
+  /* "hdbscan/dist_metrics.pyx":796
  *         if nnz == 0:
  *             return 0.0
  *         return (nnz - n_eq) * 1.0 / nnz             # <<<<<<<<<<<<<<
@@ -9448,7 +9480,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = (((__pyx_v_nnz - __pyx_v_n_eq) * 1.0) / __pyx_v_nnz);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":784
+  /* "hdbscan/dist_metrics.pyx":785
  *        D(x, y) = \frac{N_{TF} + N_{FT}}{N_{TT} + N_{TF} + N_{FT}}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9461,7 +9493,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":811
+/* "hdbscan/dist_metrics.pyx":812
  *        D(x, y) = \frac{N_{TF} + N_{FT}}{N}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9478,7 +9510,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_t_1;
   __pyx_t_5numpy_intp_t __pyx_t_2;
 
-  /* "hdbscan/dist_metrics.pyx":813
+  /* "hdbscan/dist_metrics.pyx":814
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef int tf1, tf2, n_neq = 0             # <<<<<<<<<<<<<<
@@ -9487,7 +9519,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
   __pyx_v_n_neq = 0;
 
-  /* "hdbscan/dist_metrics.pyx":815
+  /* "hdbscan/dist_metrics.pyx":816
  *         cdef int tf1, tf2, n_neq = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -9498,7 +9530,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":816
+    /* "hdbscan/dist_metrics.pyx":817
  *         cdef np.intp_t j
  *         for j in range(size):
  *             tf1 = x1[j] != 0             # <<<<<<<<<<<<<<
@@ -9507,7 +9539,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_tf1 = ((__pyx_v_x1[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":817
+    /* "hdbscan/dist_metrics.pyx":818
  *         for j in range(size):
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0             # <<<<<<<<<<<<<<
@@ -9516,7 +9548,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_tf2 = ((__pyx_v_x2[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":818
+    /* "hdbscan/dist_metrics.pyx":819
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0
  *             n_neq += (tf1 != tf2)             # <<<<<<<<<<<<<<
@@ -9526,7 +9558,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_v_n_neq = (__pyx_v_n_neq + (__pyx_v_tf1 != __pyx_v_tf2));
   }
 
-  /* "hdbscan/dist_metrics.pyx":819
+  /* "hdbscan/dist_metrics.pyx":820
  *             tf2 = x2[j] != 0
  *             n_neq += (tf1 != tf2)
  *         return n_neq * 1. / size             # <<<<<<<<<<<<<<
@@ -9536,7 +9568,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = ((__pyx_v_n_neq * 1.) / __pyx_v_size);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":811
+  /* "hdbscan/dist_metrics.pyx":812
  *        D(x, y) = \frac{N_{TF} + N_{FT}}{N}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9549,7 +9581,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":835
+/* "hdbscan/dist_metrics.pyx":836
  *        D(x, y) = \frac{N_{TF} + N_{FT}}{2 * N_{TT} + N_{TF} + N_{FT}}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9568,7 +9600,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_5numpy_intp_t __pyx_t_2;
   int __pyx_t_3;
 
-  /* "hdbscan/dist_metrics.pyx":837
+  /* "hdbscan/dist_metrics.pyx":838
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef int tf1, tf2, n_neq = 0, ntt = 0             # <<<<<<<<<<<<<<
@@ -9578,7 +9610,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_v_n_neq = 0;
   __pyx_v_ntt = 0;
 
-  /* "hdbscan/dist_metrics.pyx":839
+  /* "hdbscan/dist_metrics.pyx":840
  *         cdef int tf1, tf2, n_neq = 0, ntt = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -9589,7 +9621,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":840
+    /* "hdbscan/dist_metrics.pyx":841
  *         cdef np.intp_t j
  *         for j in range(size):
  *             tf1 = x1[j] != 0             # <<<<<<<<<<<<<<
@@ -9598,7 +9630,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_tf1 = ((__pyx_v_x1[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":841
+    /* "hdbscan/dist_metrics.pyx":842
  *         for j in range(size):
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0             # <<<<<<<<<<<<<<
@@ -9607,7 +9639,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_tf2 = ((__pyx_v_x2[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":842
+    /* "hdbscan/dist_metrics.pyx":843
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0
  *             ntt += (tf1 and tf2)             # <<<<<<<<<<<<<<
@@ -9623,7 +9655,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_L5_bool_binop_done:;
     __pyx_v_ntt = (__pyx_v_ntt + __pyx_t_3);
 
-    /* "hdbscan/dist_metrics.pyx":843
+    /* "hdbscan/dist_metrics.pyx":844
  *             tf2 = x2[j] != 0
  *             ntt += (tf1 and tf2)
  *             n_neq += (tf1 != tf2)             # <<<<<<<<<<<<<<
@@ -9633,7 +9665,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_v_n_neq = (__pyx_v_n_neq + (__pyx_v_tf1 != __pyx_v_tf2));
   }
 
-  /* "hdbscan/dist_metrics.pyx":844
+  /* "hdbscan/dist_metrics.pyx":845
  *             ntt += (tf1 and tf2)
  *             n_neq += (tf1 != tf2)
  *         return n_neq / (2.0 * ntt + n_neq)             # <<<<<<<<<<<<<<
@@ -9643,7 +9675,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = (__pyx_v_n_neq / ((2.0 * __pyx_v_ntt) + __pyx_v_n_neq));
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":835
+  /* "hdbscan/dist_metrics.pyx":836
  *        D(x, y) = \frac{N_{TF} + N_{FT}}{2 * N_{TT} + N_{TF} + N_{FT}}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9656,7 +9688,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":860
+/* "hdbscan/dist_metrics.pyx":861
  *        D(x, y) = 1 - \frac{N_{TT}}{N + N_{TF} + N_{FT}}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9675,7 +9707,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_5numpy_intp_t __pyx_t_2;
   int __pyx_t_3;
 
-  /* "hdbscan/dist_metrics.pyx":862
+  /* "hdbscan/dist_metrics.pyx":863
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef int tf1, tf2, ntt = 0, n_neq = 0             # <<<<<<<<<<<<<<
@@ -9685,7 +9717,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_v_ntt = 0;
   __pyx_v_n_neq = 0;
 
-  /* "hdbscan/dist_metrics.pyx":864
+  /* "hdbscan/dist_metrics.pyx":865
  *         cdef int tf1, tf2, ntt = 0, n_neq = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -9696,7 +9728,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":865
+    /* "hdbscan/dist_metrics.pyx":866
  *         cdef np.intp_t j
  *         for j in range(size):
  *             tf1 = x1[j] != 0             # <<<<<<<<<<<<<<
@@ -9705,7 +9737,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_tf1 = ((__pyx_v_x1[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":866
+    /* "hdbscan/dist_metrics.pyx":867
  *         for j in range(size):
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0             # <<<<<<<<<<<<<<
@@ -9714,7 +9746,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_tf2 = ((__pyx_v_x2[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":867
+    /* "hdbscan/dist_metrics.pyx":868
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0
  *             n_neq += (tf1 != tf2)             # <<<<<<<<<<<<<<
@@ -9723,7 +9755,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_n_neq = (__pyx_v_n_neq + (__pyx_v_tf1 != __pyx_v_tf2));
 
-    /* "hdbscan/dist_metrics.pyx":868
+    /* "hdbscan/dist_metrics.pyx":869
  *             tf2 = x2[j] != 0
  *             n_neq += (tf1 != tf2)
  *             ntt += (tf1 and tf2)             # <<<<<<<<<<<<<<
@@ -9740,7 +9772,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_v_ntt = (__pyx_v_ntt + __pyx_t_3);
   }
 
-  /* "hdbscan/dist_metrics.pyx":869
+  /* "hdbscan/dist_metrics.pyx":870
  *             n_neq += (tf1 != tf2)
  *             ntt += (tf1 and tf2)
  *         return (n_neq - ntt + size) * 1.0 / (n_neq + size)             # <<<<<<<<<<<<<<
@@ -9750,7 +9782,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = ((((__pyx_v_n_neq - __pyx_v_ntt) + __pyx_v_size) * 1.0) / (__pyx_v_n_neq + __pyx_v_size));
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":860
+  /* "hdbscan/dist_metrics.pyx":861
  *        D(x, y) = 1 - \frac{N_{TT}}{N + N_{TF} + N_{FT}}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9763,7 +9795,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":885
+/* "hdbscan/dist_metrics.pyx":886
  *        D(x, y) = \frac{2 (N_{TF} + N_{FT})}{N + N_{TF} + N_{FT}}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9780,7 +9812,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
   __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_t_1;
   __pyx_t_5numpy_intp_t __pyx_t_2;
 
-  /* "hdbscan/dist_metrics.pyx":887
+  /* "hdbscan/dist_metrics.pyx":888
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef int tf1, tf2, n_neq = 0             # <<<<<<<<<<<<<<
@@ -9789,7 +9821,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
  */
   __pyx_v_n_neq = 0;
 
-  /* "hdbscan/dist_metrics.pyx":889
+  /* "hdbscan/dist_metrics.pyx":890
  *         cdef int tf1, tf2, n_neq = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -9800,7 +9832,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":890
+    /* "hdbscan/dist_metrics.pyx":891
  *         cdef np.intp_t j
  *         for j in range(size):
  *             tf1 = x1[j] != 0             # <<<<<<<<<<<<<<
@@ -9809,7 +9841,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
  */
     __pyx_v_tf1 = ((__pyx_v_x1[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":891
+    /* "hdbscan/dist_metrics.pyx":892
  *         for j in range(size):
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0             # <<<<<<<<<<<<<<
@@ -9818,7 +9850,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
  */
     __pyx_v_tf2 = ((__pyx_v_x2[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":892
+    /* "hdbscan/dist_metrics.pyx":893
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0
  *             n_neq += (tf1 != tf2)             # <<<<<<<<<<<<<<
@@ -9828,7 +9860,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
     __pyx_v_n_neq = (__pyx_v_n_neq + (__pyx_v_tf1 != __pyx_v_tf2));
   }
 
-  /* "hdbscan/dist_metrics.pyx":893
+  /* "hdbscan/dist_metrics.pyx":894
  *             tf2 = x2[j] != 0
  *             n_neq += (tf1 != tf2)
  *         return (2.0 * n_neq) / (size + n_neq)             # <<<<<<<<<<<<<<
@@ -9838,7 +9870,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
   __pyx_r = ((2.0 * __pyx_v_n_neq) / (__pyx_v_size + __pyx_v_n_neq));
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":885
+  /* "hdbscan/dist_metrics.pyx":886
  *        D(x, y) = \frac{2 (N_{TF} + N_{FT})}{N + N_{TF} + N_{FT}}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9851,7 +9883,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":909
+/* "hdbscan/dist_metrics.pyx":910
  *        D(x, y) = \frac{N - N_{TT}}{N}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9869,7 +9901,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_5numpy_intp_t __pyx_t_2;
   int __pyx_t_3;
 
-  /* "hdbscan/dist_metrics.pyx":911
+  /* "hdbscan/dist_metrics.pyx":912
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef int tf1, tf2, ntt = 0             # <<<<<<<<<<<<<<
@@ -9878,7 +9910,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
   __pyx_v_ntt = 0;
 
-  /* "hdbscan/dist_metrics.pyx":913
+  /* "hdbscan/dist_metrics.pyx":914
  *         cdef int tf1, tf2, ntt = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -9889,7 +9921,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":914
+    /* "hdbscan/dist_metrics.pyx":915
  *         cdef np.intp_t j
  *         for j in range(size):
  *             tf1 = x1[j] != 0             # <<<<<<<<<<<<<<
@@ -9898,7 +9930,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_tf1 = ((__pyx_v_x1[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":915
+    /* "hdbscan/dist_metrics.pyx":916
  *         for j in range(size):
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0             # <<<<<<<<<<<<<<
@@ -9907,7 +9939,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_tf2 = ((__pyx_v_x2[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":916
+    /* "hdbscan/dist_metrics.pyx":917
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0
  *             ntt += (tf1 and tf2)             # <<<<<<<<<<<<<<
@@ -9924,7 +9956,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_v_ntt = (__pyx_v_ntt + __pyx_t_3);
   }
 
-  /* "hdbscan/dist_metrics.pyx":917
+  /* "hdbscan/dist_metrics.pyx":918
  *             tf2 = x2[j] != 0
  *             ntt += (tf1 and tf2)
  *         return (size - ntt) * 1. / size             # <<<<<<<<<<<<<<
@@ -9934,7 +9966,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = (((__pyx_v_size - __pyx_v_ntt) * 1.) / __pyx_v_size);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":909
+  /* "hdbscan/dist_metrics.pyx":910
  *        D(x, y) = \frac{N - N_{TT}}{N}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9947,7 +9979,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":933
+/* "hdbscan/dist_metrics.pyx":934
  *        D(x, y) = \frac{2 (N_{TF} + N_{FT})}{N + N_{TF} + N_{FT}}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -9964,7 +9996,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
   __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_t_1;
   __pyx_t_5numpy_intp_t __pyx_t_2;
 
-  /* "hdbscan/dist_metrics.pyx":935
+  /* "hdbscan/dist_metrics.pyx":936
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef int tf1, tf2, n_neq = 0             # <<<<<<<<<<<<<<
@@ -9973,7 +10005,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
  */
   __pyx_v_n_neq = 0;
 
-  /* "hdbscan/dist_metrics.pyx":937
+  /* "hdbscan/dist_metrics.pyx":938
  *         cdef int tf1, tf2, n_neq = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -9984,7 +10016,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":938
+    /* "hdbscan/dist_metrics.pyx":939
  *         cdef np.intp_t j
  *         for j in range(size):
  *             tf1 = x1[j] != 0             # <<<<<<<<<<<<<<
@@ -9993,7 +10025,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
  */
     __pyx_v_tf1 = ((__pyx_v_x1[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":939
+    /* "hdbscan/dist_metrics.pyx":940
  *         for j in range(size):
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0             # <<<<<<<<<<<<<<
@@ -10002,7 +10034,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
  */
     __pyx_v_tf2 = ((__pyx_v_x2[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":940
+    /* "hdbscan/dist_metrics.pyx":941
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0
  *             n_neq += (tf1 != tf2)             # <<<<<<<<<<<<<<
@@ -10012,7 +10044,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
     __pyx_v_n_neq = (__pyx_v_n_neq + (__pyx_v_tf1 != __pyx_v_tf2));
   }
 
-  /* "hdbscan/dist_metrics.pyx":941
+  /* "hdbscan/dist_metrics.pyx":942
  *             tf2 = x2[j] != 0
  *             n_neq += (tf1 != tf2)
  *         return (2.0 * n_neq) / (size + n_neq)             # <<<<<<<<<<<<<<
@@ -10022,7 +10054,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
   __pyx_r = ((2.0 * __pyx_v_n_neq) / (__pyx_v_size + __pyx_v_n_neq));
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":933
+  /* "hdbscan/dist_metrics.pyx":934
  *        D(x, y) = \frac{2 (N_{TF} + N_{FT})}{N + N_{TF} + N_{FT}}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -10035,7 +10067,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_2
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":957
+/* "hdbscan/dist_metrics.pyx":958
  *        D(x, y) = \frac{N_{TF} + N_{FT}}{N_{TT} / 2 + N_{TF} + N_{FT}}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -10054,7 +10086,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_5numpy_intp_t __pyx_t_2;
   int __pyx_t_3;
 
-  /* "hdbscan/dist_metrics.pyx":959
+  /* "hdbscan/dist_metrics.pyx":960
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) nogil except -1:
  *         cdef int tf1, tf2, ntt = 0, n_neq = 0             # <<<<<<<<<<<<<<
@@ -10064,7 +10096,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_v_ntt = 0;
   __pyx_v_n_neq = 0;
 
-  /* "hdbscan/dist_metrics.pyx":961
+  /* "hdbscan/dist_metrics.pyx":962
  *         cdef int tf1, tf2, ntt = 0, n_neq = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -10075,7 +10107,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":962
+    /* "hdbscan/dist_metrics.pyx":963
  *         cdef np.intp_t j
  *         for j in range(size):
  *             tf1 = x1[j] != 0             # <<<<<<<<<<<<<<
@@ -10084,7 +10116,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_tf1 = ((__pyx_v_x1[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":963
+    /* "hdbscan/dist_metrics.pyx":964
  *         for j in range(size):
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0             # <<<<<<<<<<<<<<
@@ -10093,7 +10125,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_tf2 = ((__pyx_v_x2[__pyx_v_j]) != 0.0);
 
-    /* "hdbscan/dist_metrics.pyx":964
+    /* "hdbscan/dist_metrics.pyx":965
  *             tf1 = x1[j] != 0
  *             tf2 = x2[j] != 0
  *             n_neq += (tf1 != tf2)             # <<<<<<<<<<<<<<
@@ -10102,7 +10134,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_n_neq = (__pyx_v_n_neq + (__pyx_v_tf1 != __pyx_v_tf2));
 
-    /* "hdbscan/dist_metrics.pyx":965
+    /* "hdbscan/dist_metrics.pyx":966
  *             tf2 = x2[j] != 0
  *             n_neq += (tf1 != tf2)
  *             ntt += (tf1 and tf2)             # <<<<<<<<<<<<<<
@@ -10119,7 +10151,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_v_ntt = (__pyx_v_ntt + __pyx_t_3);
   }
 
-  /* "hdbscan/dist_metrics.pyx":966
+  /* "hdbscan/dist_metrics.pyx":967
  *             n_neq += (tf1 != tf2)
  *             ntt += (tf1 and tf2)
  *         return n_neq / (0.5 * ntt + n_neq)             # <<<<<<<<<<<<<<
@@ -10129,7 +10161,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = (__pyx_v_n_neq / ((0.5 * __pyx_v_ntt) + __pyx_v_n_neq));
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":957
+  /* "hdbscan/dist_metrics.pyx":958
  *        D(x, y) = \frac{N_{TF} + N_{FT}}{N_{TT} / 2 + N_{TF} + N_{FT}}
  *     """
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -10142,7 +10174,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":985
+/* "hdbscan/dist_metrics.pyx":986
  *                                 + cos(x1)cos(y1)sin^2((x2 - y2) / 2)}]
  *     """
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -10165,7 +10197,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   PyGILState_Release(__pyx_gilstate_save);
   #endif
 
-  /* "hdbscan/dist_metrics.pyx":987
+  /* "hdbscan/dist_metrics.pyx":988
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != 2:             # <<<<<<<<<<<<<<
@@ -10176,7 +10208,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_t_1 = ((__pyx_v_size != 2) != 0);
     if (__pyx_t_1) {
 
-      /* "hdbscan/dist_metrics.pyx":988
+      /* "hdbscan/dist_metrics.pyx":989
  *                               ITYPE_t size) nogil except -1:
  *         if size != 2:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -10189,21 +10221,21 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
           #endif
           /*try:*/ {
 
-            /* "hdbscan/dist_metrics.pyx":989
+            /* "hdbscan/dist_metrics.pyx":990
  *         if size != 2:
  *             with gil:
  *                 raise ValueError("Haversine distance only valid "             # <<<<<<<<<<<<<<
  *                                  "in 2 dimensions")
  *         cdef DTYPE_t sin_0 = sin(0.5 * (x1[0] - x2[0]))
  */
-            __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__15, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 989, __pyx_L8_error)
+            __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__15, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 990, __pyx_L8_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_Raise(__pyx_t_2, 0, 0, 0);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __PYX_ERR(1, 989, __pyx_L8_error)
+            __PYX_ERR(1, 990, __pyx_L8_error)
           }
 
-          /* "hdbscan/dist_metrics.pyx":988
+          /* "hdbscan/dist_metrics.pyx":989
  *                               ITYPE_t size) nogil except -1:
  *         if size != 2:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -10220,7 +10252,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
           }
       }
 
-      /* "hdbscan/dist_metrics.pyx":987
+      /* "hdbscan/dist_metrics.pyx":988
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != 2:             # <<<<<<<<<<<<<<
@@ -10229,7 +10261,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     }
 
-    /* "hdbscan/dist_metrics.pyx":991
+    /* "hdbscan/dist_metrics.pyx":992
  *                 raise ValueError("Haversine distance only valid "
  *                                  "in 2 dimensions")
  *         cdef DTYPE_t sin_0 = sin(0.5 * (x1[0] - x2[0]))             # <<<<<<<<<<<<<<
@@ -10238,7 +10270,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_sin_0 = sin((0.5 * ((__pyx_v_x1[0]) - (__pyx_v_x2[0]))));
 
-    /* "hdbscan/dist_metrics.pyx":992
+    /* "hdbscan/dist_metrics.pyx":993
  *                                  "in 2 dimensions")
  *         cdef DTYPE_t sin_0 = sin(0.5 * (x1[0] - x2[0]))
  *         cdef DTYPE_t sin_1 = sin(0.5 * (x1[1] - x2[1]))             # <<<<<<<<<<<<<<
@@ -10247,7 +10279,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_sin_1 = sin((0.5 * ((__pyx_v_x1[1]) - (__pyx_v_x2[1]))));
 
-    /* "hdbscan/dist_metrics.pyx":993
+    /* "hdbscan/dist_metrics.pyx":994
  *         cdef DTYPE_t sin_0 = sin(0.5 * (x1[0] - x2[0]))
  *         cdef DTYPE_t sin_1 = sin(0.5 * (x1[1] - x2[1]))
  *         return (sin_0 * sin_0 + cos(x1[0]) * cos(x2[0]) * sin_1 * sin_1)             # <<<<<<<<<<<<<<
@@ -10258,7 +10290,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     goto __pyx_L3_return;
   }
 
-  /* "hdbscan/dist_metrics.pyx":987
+  /* "hdbscan/dist_metrics.pyx":988
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != 2:             # <<<<<<<<<<<<<<
@@ -10280,7 +10312,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     }
   }
 
-  /* "hdbscan/dist_metrics.pyx":985
+  /* "hdbscan/dist_metrics.pyx":986
  *                                 + cos(x1)cos(y1)sin^2((x2 - y2) / 2)}]
  *     """
  *     cdef inline DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -10302,7 +10334,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":995
+/* "hdbscan/dist_metrics.pyx":996
  *         return (sin_0 * sin_0 + cos(x1[0]) * cos(x2[0]) * sin_1 * sin_1)
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -10325,7 +10357,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   PyGILState_Release(__pyx_gilstate_save);
   #endif
 
-  /* "hdbscan/dist_metrics.pyx":997
+  /* "hdbscan/dist_metrics.pyx":998
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != 2:             # <<<<<<<<<<<<<<
@@ -10336,7 +10368,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_t_1 = ((__pyx_v_size != 2) != 0);
     if (__pyx_t_1) {
 
-      /* "hdbscan/dist_metrics.pyx":998
+      /* "hdbscan/dist_metrics.pyx":999
  *                               ITYPE_t size) nogil except -1:
  *         if size != 2:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -10349,21 +10381,21 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
           #endif
           /*try:*/ {
 
-            /* "hdbscan/dist_metrics.pyx":999
+            /* "hdbscan/dist_metrics.pyx":1000
  *         if size != 2:
  *             with gil:
  *                 raise ValueError("Haversine distance only valid in 2 dimensions")             # <<<<<<<<<<<<<<
  *         cdef DTYPE_t sin_0 = sin(0.5 * (x1[0] - x2[0]))
  *         cdef DTYPE_t sin_1 = sin(0.5 * (x1[1] - x2[1]))
  */
-            __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 999, __pyx_L8_error)
+            __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1000, __pyx_L8_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_Raise(__pyx_t_2, 0, 0, 0);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __PYX_ERR(1, 999, __pyx_L8_error)
+            __PYX_ERR(1, 1000, __pyx_L8_error)
           }
 
-          /* "hdbscan/dist_metrics.pyx":998
+          /* "hdbscan/dist_metrics.pyx":999
  *                               ITYPE_t size) nogil except -1:
  *         if size != 2:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -10380,7 +10412,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
           }
       }
 
-      /* "hdbscan/dist_metrics.pyx":997
+      /* "hdbscan/dist_metrics.pyx":998
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != 2:             # <<<<<<<<<<<<<<
@@ -10389,7 +10421,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     }
 
-    /* "hdbscan/dist_metrics.pyx":1000
+    /* "hdbscan/dist_metrics.pyx":1001
  *             with gil:
  *                 raise ValueError("Haversine distance only valid in 2 dimensions")
  *         cdef DTYPE_t sin_0 = sin(0.5 * (x1[0] - x2[0]))             # <<<<<<<<<<<<<<
@@ -10398,7 +10430,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_sin_0 = sin((0.5 * ((__pyx_v_x1[0]) - (__pyx_v_x2[0]))));
 
-    /* "hdbscan/dist_metrics.pyx":1001
+    /* "hdbscan/dist_metrics.pyx":1002
  *                 raise ValueError("Haversine distance only valid in 2 dimensions")
  *         cdef DTYPE_t sin_0 = sin(0.5 * (x1[0] - x2[0]))
  *         cdef DTYPE_t sin_1 = sin(0.5 * (x1[1] - x2[1]))             # <<<<<<<<<<<<<<
@@ -10407,7 +10439,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_sin_1 = sin((0.5 * ((__pyx_v_x1[1]) - (__pyx_v_x2[1]))));
 
-    /* "hdbscan/dist_metrics.pyx":1002
+    /* "hdbscan/dist_metrics.pyx":1003
  *         cdef DTYPE_t sin_0 = sin(0.5 * (x1[0] - x2[0]))
  *         cdef DTYPE_t sin_1 = sin(0.5 * (x1[1] - x2[1]))
  *         return 2 * asin(sqrt(sin_0 * sin_0             # <<<<<<<<<<<<<<
@@ -10418,7 +10450,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     goto __pyx_L3_return;
   }
 
-  /* "hdbscan/dist_metrics.pyx":997
+  /* "hdbscan/dist_metrics.pyx":998
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                               ITYPE_t size) nogil except -1:
  *         if size != 2:             # <<<<<<<<<<<<<<
@@ -10440,7 +10472,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     }
   }
 
-  /* "hdbscan/dist_metrics.pyx":995
+  /* "hdbscan/dist_metrics.pyx":996
  *         return (sin_0 * sin_0 + cos(x1[0]) * cos(x2[0]) * sin_1 * sin_1)
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -10462,7 +10494,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":1005
+/* "hdbscan/dist_metrics.pyx":1006
  *                              + cos(x1[0]) * cos(x2[0]) * sin_1 * sin_1))
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -10475,7 +10507,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":1006
+  /* "hdbscan/dist_metrics.pyx":1007
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:
  *         return 2 * asin(sqrt(rdist))             # <<<<<<<<<<<<<<
@@ -10485,7 +10517,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = (2.0 * asin(sqrt(__pyx_v_rdist)));
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":1005
+  /* "hdbscan/dist_metrics.pyx":1006
  *                              + cos(x1[0]) * cos(x2[0]) * sin_1 * sin_1))
  * 
  *     cdef inline DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1:             # <<<<<<<<<<<<<<
@@ -10499,7 +10531,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":1008
+/* "hdbscan/dist_metrics.pyx":1009
  *         return 2 * asin(sqrt(rdist))
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -10511,7 +10543,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_tmp;
   __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
 
-  /* "hdbscan/dist_metrics.pyx":1009
+  /* "hdbscan/dist_metrics.pyx":1010
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:
  *         cdef DTYPE_t tmp = sin(0.5 * dist)             # <<<<<<<<<<<<<<
@@ -10520,7 +10552,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
   __pyx_v_tmp = sin((0.5 * __pyx_v_dist));
 
-  /* "hdbscan/dist_metrics.pyx":1010
+  /* "hdbscan/dist_metrics.pyx":1011
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:
  *         cdef DTYPE_t tmp = sin(0.5 * dist)
  *         return tmp * tmp             # <<<<<<<<<<<<<<
@@ -10530,7 +10562,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_r = (__pyx_v_tmp * __pyx_v_tmp);
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":1008
+  /* "hdbscan/dist_metrics.pyx":1009
  *         return 2 * asin(sqrt(rdist))
  * 
  *     cdef inline DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
@@ -10543,7 +10575,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":1012
+/* "hdbscan/dist_metrics.pyx":1013
  *         return tmp * tmp
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -10575,7 +10607,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17HaversineDistance_rdist_to_d
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("rdist_to_dist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":1013
+  /* "hdbscan/dist_metrics.pyx":1014
  * 
  *     def rdist_to_dist(self, rdist):
  *         return 2 * np.arcsin(np.sqrt(rdist))             # <<<<<<<<<<<<<<
@@ -10583,14 +10615,14 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17HaversineDistance_rdist_to_d
  *     def dist_to_rdist(self, dist):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1013, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1014, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_arcsin); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1013, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_arcsin); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1014, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1013, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1014, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1013, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1014, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -10604,16 +10636,16 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17HaversineDistance_rdist_to_d
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_rdist); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1013, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_rdist); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1014, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 1013, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 1014, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
     __Pyx_INCREF(__pyx_v_rdist);
     __Pyx_GIVEREF(__pyx_v_rdist);
     PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_v_rdist);
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1013, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1014, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
@@ -10629,29 +10661,29 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17HaversineDistance_rdist_to_d
     }
   }
   if (!__pyx_t_5) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1013, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1014, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 1013, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 1014, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1013, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1014, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Multiply(__pyx_int_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1013, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Multiply(__pyx_int_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1014, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":1012
+  /* "hdbscan/dist_metrics.pyx":1013
  *         return tmp * tmp
  * 
  *     def rdist_to_dist(self, rdist):             # <<<<<<<<<<<<<<
@@ -10675,7 +10707,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17HaversineDistance_rdist_to_d
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":1015
+/* "hdbscan/dist_metrics.pyx":1016
  *         return 2 * np.arcsin(np.sqrt(rdist))
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -10707,19 +10739,19 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17HaversineDistance_2dist_to_r
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("dist_to_rdist", 0);
 
-  /* "hdbscan/dist_metrics.pyx":1016
+  /* "hdbscan/dist_metrics.pyx":1017
  * 
  *     def dist_to_rdist(self, dist):
  *         tmp = np.sin(0.5 * dist)             # <<<<<<<<<<<<<<
  *         return tmp * tmp
  * 
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1016, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1017, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sin); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1016, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sin); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1017, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Multiply(__pyx_float_0_5, __pyx_v_dist); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1016, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Multiply(__pyx_float_0_5, __pyx_v_dist); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1017, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -10732,17 +10764,17 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17HaversineDistance_2dist_to_r
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1016, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1017, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1016, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1017, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1016, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1017, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
@@ -10750,7 +10782,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17HaversineDistance_2dist_to_r
   __pyx_v_tmp = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":1017
+  /* "hdbscan/dist_metrics.pyx":1018
  *     def dist_to_rdist(self, dist):
  *         tmp = np.sin(0.5 * dist)
  *         return tmp * tmp             # <<<<<<<<<<<<<<
@@ -10758,13 +10790,13 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17HaversineDistance_2dist_to_r
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Multiply(__pyx_v_tmp, __pyx_v_tmp); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1017, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Multiply(__pyx_v_tmp, __pyx_v_tmp); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1018, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":1015
+  /* "hdbscan/dist_metrics.pyx":1016
  *         return 2 * np.arcsin(np.sqrt(rdist))
  * 
  *     def dist_to_rdist(self, dist):             # <<<<<<<<<<<<<<
@@ -10788,7 +10820,7 @@ static PyObject *__pyx_pf_7hdbscan_12dist_metrics_17HaversineDistance_2dist_to_r
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":1045
+/* "hdbscan/dist_metrics.pyx":1046
  * 
  * cdef class CosineDistance(DistanceMetric):
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2, ITYPE_t size) nogil except -1:             # <<<<<<<<<<<<<<
@@ -10805,7 +10837,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_t_1;
   __pyx_t_5numpy_intp_t __pyx_t_2;
 
-  /* "hdbscan/dist_metrics.pyx":1046
+  /* "hdbscan/dist_metrics.pyx":1047
  * cdef class CosineDistance(DistanceMetric):
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2, ITYPE_t size) nogil except -1:
  *         cdef DTYPE_t d = 0, norm1 = 0, norm2 = 0             # <<<<<<<<<<<<<<
@@ -10816,7 +10848,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   __pyx_v_norm1 = 0.0;
   __pyx_v_norm2 = 0.0;
 
-  /* "hdbscan/dist_metrics.pyx":1048
+  /* "hdbscan/dist_metrics.pyx":1049
  *         cdef DTYPE_t d = 0, norm1 = 0, norm2 = 0
  *         cdef np.intp_t j
  *         for j in range(size):             # <<<<<<<<<<<<<<
@@ -10827,7 +10859,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_j = __pyx_t_2;
 
-    /* "hdbscan/dist_metrics.pyx":1049
+    /* "hdbscan/dist_metrics.pyx":1050
  *         cdef np.intp_t j
  *         for j in range(size):
  *             d += x1[j] * x2[j]             # <<<<<<<<<<<<<<
@@ -10836,7 +10868,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_d = (__pyx_v_d + ((__pyx_v_x1[__pyx_v_j]) * (__pyx_v_x2[__pyx_v_j])));
 
-    /* "hdbscan/dist_metrics.pyx":1050
+    /* "hdbscan/dist_metrics.pyx":1051
  *         for j in range(size):
  *             d += x1[j] * x2[j]
  *             norm1 += x1[j] * x1[j]             # <<<<<<<<<<<<<<
@@ -10845,7 +10877,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
     __pyx_v_norm1 = (__pyx_v_norm1 + ((__pyx_v_x1[__pyx_v_j]) * (__pyx_v_x1[__pyx_v_j])));
 
-    /* "hdbscan/dist_metrics.pyx":1051
+    /* "hdbscan/dist_metrics.pyx":1052
  *             d += x1[j] * x2[j]
  *             norm1 += x1[j] * x1[j]
  *             norm2 += x2[j] * x2[j]             # <<<<<<<<<<<<<<
@@ -10855,17 +10887,17 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     __pyx_v_norm2 = (__pyx_v_norm2 + ((__pyx_v_x2[__pyx_v_j]) * (__pyx_v_x2[__pyx_v_j])));
   }
 
-  /* "hdbscan/dist_metrics.pyx":1052
+  /* "hdbscan/dist_metrics.pyx":1053
  *             norm1 += x1[j] * x1[j]
  *             norm2 += x2[j] * x2[j]
  *         return 1.0 - d / sqrt(norm1 * norm2)             # <<<<<<<<<<<<<<
  * 
- * 
+ * cdef class ArccosDistance(DistanceMetric):
  */
   __pyx_r = (1.0 - (__pyx_v_d / sqrt((__pyx_v_norm1 * __pyx_v_norm2))));
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":1045
+  /* "hdbscan/dist_metrics.pyx":1046
  * 
  * cdef class CosineDistance(DistanceMetric):
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2, ITYPE_t size) nogil except -1:             # <<<<<<<<<<<<<<
@@ -10878,7 +10910,97 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":1097
+/* "hdbscan/dist_metrics.pyx":1056
+ * 
+ * cdef class ArccosDistance(DistanceMetric):
+ *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2, ITYPE_t size) nogil except -1:             # <<<<<<<<<<<<<<
+ *         cdef DTYPE_t d = 0, norm1 = 0, norm2 = 0
+ *         cdef np.intp_t j
+ */
+
+static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_14ArccosDistance_dist(CYTHON_UNUSED struct __pyx_obj_7hdbscan_12dist_metrics_ArccosDistance *__pyx_v_self, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x1, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x2, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_v_size) {
+  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_d;
+  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_norm1;
+  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_norm2;
+  __pyx_t_5numpy_intp_t __pyx_v_j;
+  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
+  __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_t_1;
+  __pyx_t_5numpy_intp_t __pyx_t_2;
+
+  /* "hdbscan/dist_metrics.pyx":1057
+ * cdef class ArccosDistance(DistanceMetric):
+ *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2, ITYPE_t size) nogil except -1:
+ *         cdef DTYPE_t d = 0, norm1 = 0, norm2 = 0             # <<<<<<<<<<<<<<
+ *         cdef np.intp_t j
+ *         for j in range(size):
+ */
+  __pyx_v_d = 0.0;
+  __pyx_v_norm1 = 0.0;
+  __pyx_v_norm2 = 0.0;
+
+  /* "hdbscan/dist_metrics.pyx":1059
+ *         cdef DTYPE_t d = 0, norm1 = 0, norm2 = 0
+ *         cdef np.intp_t j
+ *         for j in range(size):             # <<<<<<<<<<<<<<
+ *             d += x1[j] * x2[j]
+ *             norm1 += x1[j] * x1[j]
+ */
+  __pyx_t_1 = __pyx_v_size;
+  for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
+    __pyx_v_j = __pyx_t_2;
+
+    /* "hdbscan/dist_metrics.pyx":1060
+ *         cdef np.intp_t j
+ *         for j in range(size):
+ *             d += x1[j] * x2[j]             # <<<<<<<<<<<<<<
+ *             norm1 += x1[j] * x1[j]
+ *             norm2 += x2[j] * x2[j]
+ */
+    __pyx_v_d = (__pyx_v_d + ((__pyx_v_x1[__pyx_v_j]) * (__pyx_v_x2[__pyx_v_j])));
+
+    /* "hdbscan/dist_metrics.pyx":1061
+ *         for j in range(size):
+ *             d += x1[j] * x2[j]
+ *             norm1 += x1[j] * x1[j]             # <<<<<<<<<<<<<<
+ *             norm2 += x2[j] * x2[j]
+ *         return acos(1.0 - d / sqrt(norm1 * norm2)) / M_PI
+ */
+    __pyx_v_norm1 = (__pyx_v_norm1 + ((__pyx_v_x1[__pyx_v_j]) * (__pyx_v_x1[__pyx_v_j])));
+
+    /* "hdbscan/dist_metrics.pyx":1062
+ *             d += x1[j] * x2[j]
+ *             norm1 += x1[j] * x1[j]
+ *             norm2 += x2[j] * x2[j]             # <<<<<<<<<<<<<<
+ *         return acos(1.0 - d / sqrt(norm1 * norm2)) / M_PI
+ * 
+ */
+    __pyx_v_norm2 = (__pyx_v_norm2 + ((__pyx_v_x2[__pyx_v_j]) * (__pyx_v_x2[__pyx_v_j])));
+  }
+
+  /* "hdbscan/dist_metrics.pyx":1063
+ *             norm1 += x1[j] * x1[j]
+ *             norm2 += x2[j] * x2[j]
+ *         return acos(1.0 - d / sqrt(norm1 * norm2)) / M_PI             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = (acos((1.0 - (__pyx_v_d / sqrt((__pyx_v_norm1 * __pyx_v_norm2))))) / M_PI);
+  goto __pyx_L0;
+
+  /* "hdbscan/dist_metrics.pyx":1056
+ * 
+ * cdef class ArccosDistance(DistanceMetric):
+ *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2, ITYPE_t size) nogil except -1:             # <<<<<<<<<<<<<<
+ *         cdef DTYPE_t d = 0, norm1 = 0, norm2 = 0
+ *         cdef np.intp_t j
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "hdbscan/dist_metrics.pyx":1107
  *         func should take two numpy arrays as input, and return a distance.
  *     """
  *     def __init__(self, func, **kwargs):             # <<<<<<<<<<<<<<
@@ -10914,7 +11036,7 @@ static int __pyx_pw_7hdbscan_12dist_metrics_14PyFuncDistance_1__init__(PyObject 
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 1097, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 1107, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -10925,7 +11047,7 @@ static int __pyx_pw_7hdbscan_12dist_metrics_14PyFuncDistance_1__init__(PyObject 
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1097, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1107, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
   __Pyx_AddTraceback("hdbscan.dist_metrics.PyFuncDistance.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -10955,7 +11077,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
   PyObject *__pyx_t_8 = NULL;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "hdbscan/dist_metrics.pyx":1098
+  /* "hdbscan/dist_metrics.pyx":1108
  *     """
  *     def __init__(self, func, **kwargs):
  *         self.func = func             # <<<<<<<<<<<<<<
@@ -10968,28 +11090,28 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
   __Pyx_DECREF(__pyx_v_self->__pyx_base.func);
   __pyx_v_self->__pyx_base.func = __pyx_v_func;
 
-  /* "hdbscan/dist_metrics.pyx":1099
+  /* "hdbscan/dist_metrics.pyx":1109
  *     def __init__(self, func, **kwargs):
  *         self.func = func
  *         x = np.random.random(10)             # <<<<<<<<<<<<<<
  *         try:
  *             d = self.func(x, x, **kwargs)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1099, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_random); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1099, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_random); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_random); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1099, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_random); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__17, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1099, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__17, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_x = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":1100
+  /* "hdbscan/dist_metrics.pyx":1110
  *         self.func = func
  *         x = np.random.random(10)
  *         try:             # <<<<<<<<<<<<<<
@@ -11005,14 +11127,14 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
     __Pyx_XGOTREF(__pyx_t_5);
     /*try:*/ {
 
-      /* "hdbscan/dist_metrics.pyx":1101
+      /* "hdbscan/dist_metrics.pyx":1111
  *         x = np.random.random(10)
  *         try:
  *             d = self.func(x, x, **kwargs)             # <<<<<<<<<<<<<<
  *         except TypeError:
  *             raise ValueError("func must be a callable taking two arrays")
  */
-      __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1101, __pyx_L3_error)
+      __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1111, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_INCREF(__pyx_v_x);
       __Pyx_GIVEREF(__pyx_v_x);
@@ -11020,13 +11142,13 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
       __Pyx_INCREF(__pyx_v_x);
       __Pyx_GIVEREF(__pyx_v_x);
       PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_x);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_v_self->__pyx_base.func, __pyx_t_2, __pyx_v_kwargs); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1101, __pyx_L3_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_v_self->__pyx_base.func, __pyx_t_2, __pyx_v_kwargs); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1111, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_v_d = __pyx_t_1;
       __pyx_t_1 = 0;
 
-      /* "hdbscan/dist_metrics.pyx":1100
+      /* "hdbscan/dist_metrics.pyx":1110
  *         self.func = func
  *         x = np.random.random(10)
  *         try:             # <<<<<<<<<<<<<<
@@ -11043,7 +11165,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "hdbscan/dist_metrics.pyx":1102
+    /* "hdbscan/dist_metrics.pyx":1112
  *         try:
  *             d = self.func(x, x, **kwargs)
  *         except TypeError:             # <<<<<<<<<<<<<<
@@ -11053,28 +11175,28 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
     __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_TypeError);
     if (__pyx_t_6) {
       __Pyx_AddTraceback("hdbscan.dist_metrics.PyFuncDistance.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_2, &__pyx_t_7) < 0) __PYX_ERR(1, 1102, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_2, &__pyx_t_7) < 0) __PYX_ERR(1, 1112, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "hdbscan/dist_metrics.pyx":1103
+      /* "hdbscan/dist_metrics.pyx":1113
  *             d = self.func(x, x, **kwargs)
  *         except TypeError:
  *             raise ValueError("func must be a callable taking two arrays")             # <<<<<<<<<<<<<<
  * 
  *         try:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__18, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1103, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__18, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1113, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __PYX_ERR(1, 1103, __pyx_L5_except_error)
+      __PYX_ERR(1, 1113, __pyx_L5_except_error)
     }
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "hdbscan/dist_metrics.pyx":1100
+    /* "hdbscan/dist_metrics.pyx":1110
  *         self.func = func
  *         x = np.random.random(10)
  *         try:             # <<<<<<<<<<<<<<
@@ -11090,7 +11212,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
     __pyx_L10_try_end:;
   }
 
-  /* "hdbscan/dist_metrics.pyx":1105
+  /* "hdbscan/dist_metrics.pyx":1115
  *             raise ValueError("func must be a callable taking two arrays")
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -11106,19 +11228,19 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "hdbscan/dist_metrics.pyx":1106
+      /* "hdbscan/dist_metrics.pyx":1116
  * 
  *         try:
  *             d = float(d)             # <<<<<<<<<<<<<<
  *         except TypeError:
  *             raise ValueError("func must return a float")
  */
-      __pyx_t_7 = __Pyx_PyNumber_Float(__pyx_v_d); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 1106, __pyx_L13_error)
+      __pyx_t_7 = __Pyx_PyNumber_Float(__pyx_v_d); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 1116, __pyx_L13_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF_SET(__pyx_v_d, __pyx_t_7);
       __pyx_t_7 = 0;
 
-      /* "hdbscan/dist_metrics.pyx":1105
+      /* "hdbscan/dist_metrics.pyx":1115
  *             raise ValueError("func must be a callable taking two arrays")
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -11137,7 +11259,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "hdbscan/dist_metrics.pyx":1107
+    /* "hdbscan/dist_metrics.pyx":1117
  *         try:
  *             d = float(d)
  *         except TypeError:             # <<<<<<<<<<<<<<
@@ -11147,28 +11269,28 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
     __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_TypeError);
     if (__pyx_t_6) {
       __Pyx_AddTraceback("hdbscan.dist_metrics.PyFuncDistance.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_7, &__pyx_t_2, &__pyx_t_1) < 0) __PYX_ERR(1, 1107, __pyx_L15_except_error)
+      if (__Pyx_GetException(&__pyx_t_7, &__pyx_t_2, &__pyx_t_1) < 0) __PYX_ERR(1, 1117, __pyx_L15_except_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_GOTREF(__pyx_t_1);
 
-      /* "hdbscan/dist_metrics.pyx":1108
+      /* "hdbscan/dist_metrics.pyx":1118
  *             d = float(d)
  *         except TypeError:
  *             raise ValueError("func must return a float")             # <<<<<<<<<<<<<<
  * 
  *         self.kwargs = kwargs
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1108, __pyx_L15_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1118, __pyx_L15_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __PYX_ERR(1, 1108, __pyx_L15_except_error)
+      __PYX_ERR(1, 1118, __pyx_L15_except_error)
     }
     goto __pyx_L15_except_error;
     __pyx_L15_except_error:;
 
-    /* "hdbscan/dist_metrics.pyx":1105
+    /* "hdbscan/dist_metrics.pyx":1115
  *             raise ValueError("func must be a callable taking two arrays")
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -11184,7 +11306,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
     __pyx_L20_try_end:;
   }
 
-  /* "hdbscan/dist_metrics.pyx":1110
+  /* "hdbscan/dist_metrics.pyx":1120
  *             raise ValueError("func must return a float")
  * 
  *         self.kwargs = kwargs             # <<<<<<<<<<<<<<
@@ -11197,7 +11319,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
   __Pyx_DECREF(__pyx_v_self->__pyx_base.kwargs);
   __pyx_v_self->__pyx_base.kwargs = __pyx_v_kwargs;
 
-  /* "hdbscan/dist_metrics.pyx":1097
+  /* "hdbscan/dist_metrics.pyx":1107
  *         func should take two numpy arrays as input, and return a distance.
  *     """
  *     def __init__(self, func, **kwargs):             # <<<<<<<<<<<<<<
@@ -11222,7 +11344,7 @@ static int __pyx_pf_7hdbscan_12dist_metrics_14PyFuncDistance___init__(struct __p
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":1112
+/* "hdbscan/dist_metrics.pyx":1122
  *         self.kwargs = kwargs
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -11248,7 +11370,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   PyGILState_Release(__pyx_gilstate_save);
   #endif
 
-  /* "hdbscan/dist_metrics.pyx":1114
+  /* "hdbscan/dist_metrics.pyx":1124
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) except -1 with gil:
  *         cdef np.ndarray x1arr             # <<<<<<<<<<<<<<
@@ -11257,7 +11379,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
  */
   /*try:*/ {
 
-    /* "hdbscan/dist_metrics.pyx":1116
+    /* "hdbscan/dist_metrics.pyx":1126
  *         cdef np.ndarray x1arr
  *         cdef np.ndarray x2arr
  *         with gil:             # <<<<<<<<<<<<<<
@@ -11270,38 +11392,38 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
         #endif
         /*try:*/ {
 
-          /* "hdbscan/dist_metrics.pyx":1117
+          /* "hdbscan/dist_metrics.pyx":1127
  *         cdef np.ndarray x2arr
  *         with gil:
  *             x1arr = _buffer_to_ndarray(x1, size)             # <<<<<<<<<<<<<<
  *             x2arr = _buffer_to_ndarray(x2, size)
  *             return self.func(x1arr, x2arr, **self.kwargs)
  */
-          __pyx_t_1 = ((PyObject *)__pyx_f_7hdbscan_12dist_metrics__buffer_to_ndarray(__pyx_v_x1, __pyx_v_size)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1117, __pyx_L7_error)
+          __pyx_t_1 = ((PyObject *)__pyx_f_7hdbscan_12dist_metrics__buffer_to_ndarray(__pyx_v_x1, __pyx_v_size)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1127, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_1);
           __pyx_v_x1arr = ((PyArrayObject *)__pyx_t_1);
           __pyx_t_1 = 0;
 
-          /* "hdbscan/dist_metrics.pyx":1118
+          /* "hdbscan/dist_metrics.pyx":1128
  *         with gil:
  *             x1arr = _buffer_to_ndarray(x1, size)
  *             x2arr = _buffer_to_ndarray(x2, size)             # <<<<<<<<<<<<<<
  *             return self.func(x1arr, x2arr, **self.kwargs)
  * 
  */
-          __pyx_t_1 = ((PyObject *)__pyx_f_7hdbscan_12dist_metrics__buffer_to_ndarray(__pyx_v_x2, __pyx_v_size)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1118, __pyx_L7_error)
+          __pyx_t_1 = ((PyObject *)__pyx_f_7hdbscan_12dist_metrics__buffer_to_ndarray(__pyx_v_x2, __pyx_v_size)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1128, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_1);
           __pyx_v_x2arr = ((PyArrayObject *)__pyx_t_1);
           __pyx_t_1 = 0;
 
-          /* "hdbscan/dist_metrics.pyx":1119
+          /* "hdbscan/dist_metrics.pyx":1129
  *             x1arr = _buffer_to_ndarray(x1, size)
  *             x2arr = _buffer_to_ndarray(x2, size)
  *             return self.func(x1arr, x2arr, **self.kwargs)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-          __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1119, __pyx_L7_error)
+          __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1129, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_INCREF(((PyObject *)__pyx_v_x1arr));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_x1arr));
@@ -11311,26 +11433,26 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
           PyTuple_SET_ITEM(__pyx_t_1, 1, ((PyObject *)__pyx_v_x2arr));
           if (unlikely(__pyx_v_self->__pyx_base.kwargs == Py_None)) {
             PyErr_SetString(PyExc_TypeError, "argument after ** must be a mapping, not NoneType");
-            __PYX_ERR(1, 1119, __pyx_L7_error)
+            __PYX_ERR(1, 1129, __pyx_L7_error)
           }
           if (likely(PyDict_CheckExact(__pyx_v_self->__pyx_base.kwargs))) {
-            __pyx_t_2 = PyDict_Copy(__pyx_v_self->__pyx_base.kwargs); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1119, __pyx_L7_error)
+            __pyx_t_2 = PyDict_Copy(__pyx_v_self->__pyx_base.kwargs); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1129, __pyx_L7_error)
             __Pyx_GOTREF(__pyx_t_2);
           } else {
-            __pyx_t_2 = PyObject_CallFunctionObjArgs((PyObject*)&PyDict_Type, __pyx_v_self->__pyx_base.kwargs, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1119, __pyx_L7_error)
+            __pyx_t_2 = PyObject_CallFunctionObjArgs((PyObject*)&PyDict_Type, __pyx_v_self->__pyx_base.kwargs, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1129, __pyx_L7_error)
             __Pyx_GOTREF(__pyx_t_2);
           }
-          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_v_self->__pyx_base.func, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1119, __pyx_L7_error)
+          __pyx_t_3 = __Pyx_PyObject_Call(__pyx_v_self->__pyx_base.func, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 1129, __pyx_L7_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-          __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_4 == (npy_double)-1) && PyErr_Occurred())) __PYX_ERR(1, 1119, __pyx_L7_error)
+          __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_4 == (npy_double)-1) && PyErr_Occurred())) __PYX_ERR(1, 1129, __pyx_L7_error)
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __pyx_r = __pyx_t_4;
           goto __pyx_L6_return;
         }
 
-        /* "hdbscan/dist_metrics.pyx":1116
+        /* "hdbscan/dist_metrics.pyx":1126
  *         cdef np.ndarray x1arr
  *         cdef np.ndarray x2arr
  *         with gil:             # <<<<<<<<<<<<<<
@@ -11354,7 +11476,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     }
   }
 
-  /* "hdbscan/dist_metrics.pyx":1114
+  /* "hdbscan/dist_metrics.pyx":1124
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  *                              ITYPE_t size) except -1 with gil:
  *         cdef np.ndarray x1arr             # <<<<<<<<<<<<<<
@@ -11376,7 +11498,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
     }
   }
 
-  /* "hdbscan/dist_metrics.pyx":1112
+  /* "hdbscan/dist_metrics.pyx":1122
  *         self.kwargs = kwargs
  * 
  *     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
@@ -11403,7 +11525,7 @@ static __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_1
   return __pyx_r;
 }
 
-/* "hdbscan/dist_metrics.pyx":1122
+/* "hdbscan/dist_metrics.pyx":1132
  * 
  * 
  * cdef inline double fmax(double a, double b) nogil:             # <<<<<<<<<<<<<<
@@ -11416,7 +11538,7 @@ static CYTHON_INLINE double __pyx_f_7hdbscan_12dist_metrics_fmax(double __pyx_v_
   double __pyx_t_2;
   double __pyx_t_3;
 
-  /* "hdbscan/dist_metrics.pyx":1123
+  /* "hdbscan/dist_metrics.pyx":1133
  * 
  * cdef inline double fmax(double a, double b) nogil:
  *     return max(a, b)             # <<<<<<<<<<<<<<
@@ -11431,7 +11553,7 @@ static CYTHON_INLINE double __pyx_f_7hdbscan_12dist_metrics_fmax(double __pyx_v_
   __pyx_r = __pyx_t_3;
   goto __pyx_L0;
 
-  /* "hdbscan/dist_metrics.pyx":1122
+  /* "hdbscan/dist_metrics.pyx":1132
  * 
  * 
  * cdef inline double fmax(double a, double b) nogil:             # <<<<<<<<<<<<<<
@@ -27314,6 +27436,78 @@ static PyTypeObject __pyx_type_7hdbscan_12dist_metrics_CosineDistance = {
   0, /*tp_finalize*/
   #endif
 };
+static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_ArccosDistance __pyx_vtable_7hdbscan_12dist_metrics_ArccosDistance;
+
+static PyObject *__pyx_tp_new_7hdbscan_12dist_metrics_ArccosDistance(PyTypeObject *t, PyObject *a, PyObject *k) {
+  struct __pyx_obj_7hdbscan_12dist_metrics_ArccosDistance *p;
+  PyObject *o = __pyx_tp_new_7hdbscan_12dist_metrics_DistanceMetric(t, a, k);
+  if (unlikely(!o)) return 0;
+  p = ((struct __pyx_obj_7hdbscan_12dist_metrics_ArccosDistance *)o);
+  p->__pyx_base.__pyx_vtab = (struct __pyx_vtabstruct_7hdbscan_12dist_metrics_DistanceMetric*)__pyx_vtabptr_7hdbscan_12dist_metrics_ArccosDistance;
+  return o;
+}
+
+static PyTypeObject __pyx_type_7hdbscan_12dist_metrics_ArccosDistance = {
+  PyVarObject_HEAD_INIT(0, 0)
+  "hdbscan.dist_metrics.ArccosDistance", /*tp_name*/
+  sizeof(struct __pyx_obj_7hdbscan_12dist_metrics_ArccosDistance), /*tp_basicsize*/
+  0, /*tp_itemsize*/
+  __pyx_tp_dealloc_7hdbscan_12dist_metrics_DistanceMetric, /*tp_dealloc*/
+  0, /*tp_print*/
+  0, /*tp_getattr*/
+  0, /*tp_setattr*/
+  #if PY_MAJOR_VERSION < 3
+  0, /*tp_compare*/
+  #endif
+  #if PY_MAJOR_VERSION >= 3
+  0, /*tp_as_async*/
+  #endif
+  0, /*tp_repr*/
+  0, /*tp_as_number*/
+  0, /*tp_as_sequence*/
+  0, /*tp_as_mapping*/
+  0, /*tp_hash*/
+  0, /*tp_call*/
+  0, /*tp_str*/
+  0, /*tp_getattro*/
+  0, /*tp_setattro*/
+  0, /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
+  0, /*tp_doc*/
+  __pyx_tp_traverse_7hdbscan_12dist_metrics_DistanceMetric, /*tp_traverse*/
+  __pyx_tp_clear_7hdbscan_12dist_metrics_DistanceMetric, /*tp_clear*/
+  0, /*tp_richcompare*/
+  0, /*tp_weaklistoffset*/
+  0, /*tp_iter*/
+  0, /*tp_iternext*/
+  0, /*tp_methods*/
+  0, /*tp_members*/
+  0, /*tp_getset*/
+  0, /*tp_base*/
+  0, /*tp_dict*/
+  0, /*tp_descr_get*/
+  0, /*tp_descr_set*/
+  0, /*tp_dictoffset*/
+  #if CYTHON_COMPILING_IN_PYPY
+  __pyx_pw_7hdbscan_12dist_metrics_14DistanceMetric_11__init__, /*tp_init*/
+  #else
+  0, /*tp_init*/
+  #endif
+  0, /*tp_alloc*/
+  __pyx_tp_new_7hdbscan_12dist_metrics_ArccosDistance, /*tp_new*/
+  0, /*tp_free*/
+  0, /*tp_is_gc*/
+  0, /*tp_bases*/
+  0, /*tp_mro*/
+  0, /*tp_cache*/
+  0, /*tp_subclasses*/
+  0, /*tp_weaklist*/
+  0, /*tp_del*/
+  0, /*tp_version_tag*/
+  #if PY_VERSION_HEX >= 0x030400a1
+  0, /*tp_finalize*/
+  #endif
+};
 static struct __pyx_vtabstruct_7hdbscan_12dist_metrics_PyFuncDistance __pyx_vtable_7hdbscan_12dist_metrics_PyFuncDistance;
 
 static PyObject *__pyx_tp_new_7hdbscan_12dist_metrics_PyFuncDistance(PyTypeObject *t, PyObject *a, PyObject *k) {
@@ -28122,6 +28316,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_b__42, __pyx_k__42, sizeof(__pyx_k__42), 0, 0, 0, 0},
   {&__pyx_kp_u__43, __pyx_k__43, sizeof(__pyx_k__43), 0, 1, 0, 0},
   {&__pyx_n_s_allocate_buffer, __pyx_k_allocate_buffer, sizeof(__pyx_k_allocate_buffer), 0, 0, 1, 1},
+  {&__pyx_n_s_arccos, __pyx_k_arccos, sizeof(__pyx_k_arccos), 0, 0, 1, 1},
   {&__pyx_n_s_arcsin, __pyx_k_arcsin, sizeof(__pyx_k_arcsin), 0, 0, 1, 1},
   {&__pyx_n_s_asarray, __pyx_k_asarray, sizeof(__pyx_k_asarray), 0, 0, 1, 1},
   {&__pyx_n_s_base, __pyx_k_base, sizeof(__pyx_k_base), 0, 0, 1, 1},
@@ -28152,7 +28347,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_func_must_return_a_float, __pyx_k_func_must_return_a_float, sizeof(__pyx_k_func_must_return_a_float), 0, 0, 1, 0},
   {&__pyx_n_s_get_metric, __pyx_k_get_metric, sizeof(__pyx_k_get_metric), 0, 0, 1, 1},
   {&__pyx_n_s_get_valid_metric_ids, __pyx_k_get_valid_metric_ids, sizeof(__pyx_k_get_valid_metric_ids), 0, 0, 1, 1},
-  {&__pyx_kp_u_get_valid_metric_ids_line_96, __pyx_k_get_valid_metric_ids_line_96, sizeof(__pyx_k_get_valid_metric_ids_line_96), 0, 1, 0, 0},
+  {&__pyx_kp_u_get_valid_metric_ids_line_97, __pyx_k_get_valid_metric_ids_line_97, sizeof(__pyx_k_get_valid_metric_ids_line_97), 0, 1, 0, 0},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_kp_s_got_differing_extents_in_dimensi, __pyx_k_got_differing_extents_in_dimensi, sizeof(__pyx_k_got_differing_extents_in_dimensi), 0, 0, 1, 0},
   {&__pyx_n_s_hamming, __pyx_k_hamming, sizeof(__pyx_k_hamming), 0, 0, 1, 1},
@@ -28234,9 +28429,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 35, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 277, __pyx_L1_error)
-  __pyx_builtin_NotImplementedError = __Pyx_GetBuiltinName(__pyx_n_s_NotImplementedError); if (!__pyx_builtin_NotImplementedError) __PYX_ERR(1, 295, __pyx_L1_error)
-  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 1102, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 278, __pyx_L1_error)
+  __pyx_builtin_NotImplementedError = __Pyx_GetBuiltinName(__pyx_n_s_NotImplementedError); if (!__pyx_builtin_NotImplementedError) __PYX_ERR(1, 296, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 1112, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(2, 799, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(3, 146, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(3, 149, __pyx_L1_error)
@@ -28252,204 +28447,204 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "hdbscan/dist_metrics.pyx":217
+  /* "hdbscan/dist_metrics.pyx":218
  *     def __cinit__(self):
  *         self.p = 2
  *         self.vec = np.zeros(1, dtype=DTYPE, order='c')             # <<<<<<<<<<<<<<
  *         self.mat = np.zeros((1, 1), dtype=DTYPE, order='c')
  *         self.vec_ptr = get_vec_ptr(self.vec)
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_1); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 217, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_1); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "hdbscan/dist_metrics.pyx":218
+  /* "hdbscan/dist_metrics.pyx":219
  *         self.p = 2
  *         self.vec = np.zeros(1, dtype=DTYPE, order='c')
  *         self.mat = np.zeros((1, 1), dtype=DTYPE, order='c')             # <<<<<<<<<<<<<<
  *         self.vec_ptr = get_vec_ptr(self.vec)
  *         self.mat_ptr = get_mat_ptr(self.mat)
  */
-  __pyx_tuple__2 = PyTuple_Pack(2, __pyx_int_1, __pyx_int_1); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(1, 218, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(2, __pyx_int_1, __pyx_int_1); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(1, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_tuple__2); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(1, 218, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_tuple__2); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(1, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "hdbscan/dist_metrics.pyx":281
+  /* "hdbscan/dist_metrics.pyx":282
  *         # In Minkowski special cases, return more efficient methods
  *         if metric is MinkowskiDistance:
  *             p = kwargs.pop('p', 2)             # <<<<<<<<<<<<<<
  *             if p == 1:
  *                 return ManhattanDistance(**kwargs)
  */
-  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_n_s_p, __pyx_int_2); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 281, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_n_s_p, __pyx_int_2); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 282, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "hdbscan/dist_metrics.pyx":295
+  /* "hdbscan/dist_metrics.pyx":296
  *     def __init__(self):
  *         if self.__class__ is DistanceMetric:
  *             raise NotImplementedError("DistanceMetric is an abstract class")             # <<<<<<<<<<<<<<
  * 
  *     cdef DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_DistanceMetric_is_an_abstract_cl); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(1, 295, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_DistanceMetric_is_an_abstract_cl); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(1, 296, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "hdbscan/dist_metrics.pyx":332
+  /* "hdbscan/dist_metrics.pyx":333
  *         cdef ITYPE_t i1, i2
  *         if X.shape[1] != Y.shape[1]:
  *             raise ValueError('X and Y must have the same second dimension')             # <<<<<<<<<<<<<<
  *         for i1 in range(X.shape[0]):
  *             for i2 in range(Y.shape[0]):
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_X_and_Y_must_have_the_same_secon); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 332, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_X_and_Y_must_have_the_same_secon); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 333, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "hdbscan/dist_metrics.pyx":458
+  /* "hdbscan/dist_metrics.pyx":459
  *         if size != self.size:
  *             with gil:
  *                 raise ValueError('SEuclidean dist: size of V does not match')             # <<<<<<<<<<<<<<
  *         cdef DTYPE_t tmp, d=0
  *         cdef np.intp_t j
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_s_SEuclidean_dist_size_of_V_does_n); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 458, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_s_SEuclidean_dist_size_of_V_does_n); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 459, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "hdbscan/dist_metrics.pyx":541
+  /* "hdbscan/dist_metrics.pyx":542
  *     def __init__(self, p):
  *         if p < 1:
  *             raise ValueError("p must be greater than 1")             # <<<<<<<<<<<<<<
  *         elif np.isinf(p):
  *             raise ValueError("MinkowskiDistance requires finite p. "
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_p_must_be_greater_than_1); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 541, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_p_must_be_greater_than_1); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 542, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "hdbscan/dist_metrics.pyx":543
+  /* "hdbscan/dist_metrics.pyx":544
  *             raise ValueError("p must be greater than 1")
  *         elif np.isinf(p):
  *             raise ValueError("MinkowskiDistance requires finite p. "             # <<<<<<<<<<<<<<
  *                              "For p=inf, use ChebyshevDistance.")
  *         self.p = p
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_s_MinkowskiDistance_requires_finit); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 543, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_s_MinkowskiDistance_requires_finit); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 544, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "hdbscan/dist_metrics.pyx":593
+  /* "hdbscan/dist_metrics.pyx":594
  *     def __init__(self, p, w):
  *         if p < 1:
  *             raise ValueError("p must be greater than 1")             # <<<<<<<<<<<<<<
  *         elif np.isinf(p):
  *             raise ValueError("WMinkowskiDistance requires finite p. "
  */
-  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_s_p_must_be_greater_than_1); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(1, 593, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_s_p_must_be_greater_than_1); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(1, 594, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
 
-  /* "hdbscan/dist_metrics.pyx":595
+  /* "hdbscan/dist_metrics.pyx":596
  *             raise ValueError("p must be greater than 1")
  *         elif np.isinf(p):
  *             raise ValueError("WMinkowskiDistance requires finite p. "             # <<<<<<<<<<<<<<
  *                              "For p=inf, use ChebyshevDistance.")
  *         self.p = p
  */
-  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_s_WMinkowskiDistance_requires_fini); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(1, 595, __pyx_L1_error)
+  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_s_WMinkowskiDistance_requires_fini); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(1, 596, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
 
-  /* "hdbscan/dist_metrics.pyx":606
+  /* "hdbscan/dist_metrics.pyx":607
  *         if size != self.size:
  *             with gil:
  *                 raise ValueError('WMinkowskiDistance dist: '             # <<<<<<<<<<<<<<
  *                                  'size of w does not match')
  *         cdef DTYPE_t d=0
  */
-  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_WMinkowskiDistance_dist_size_of); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(1, 606, __pyx_L1_error)
+  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_WMinkowskiDistance_dist_size_of); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(1, 607, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
 
-  /* "hdbscan/dist_metrics.pyx":653
+  /* "hdbscan/dist_metrics.pyx":654
  *             VI = np.linalg.inv(V)
  *         if VI.ndim != 2 or VI.shape[0] != VI.shape[1]:
  *             raise ValueError("V/VI must be square")             # <<<<<<<<<<<<<<
  * 
  *         self.mat = np.asarray(VI, dtype=float, order='C')
  */
-  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_s_V_VI_must_be_square); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(1, 653, __pyx_L1_error)
+  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_s_V_VI_must_be_square); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(1, 654, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
 
-  /* "hdbscan/dist_metrics.pyx":668
+  /* "hdbscan/dist_metrics.pyx":669
  *         if size != self.size:
  *             with gil:
  *                 raise ValueError('Mahalanobis dist: size of V does not match')             # <<<<<<<<<<<<<<
  * 
  *         cdef DTYPE_t tmp, d = 0
  */
-  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_s_Mahalanobis_dist_size_of_V_does); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(1, 668, __pyx_L1_error)
+  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_s_Mahalanobis_dist_size_of_V_does); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(1, 669, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__14);
   __Pyx_GIVEREF(__pyx_tuple__14);
 
-  /* "hdbscan/dist_metrics.pyx":989
+  /* "hdbscan/dist_metrics.pyx":990
  *         if size != 2:
  *             with gil:
  *                 raise ValueError("Haversine distance only valid "             # <<<<<<<<<<<<<<
  *                                  "in 2 dimensions")
  *         cdef DTYPE_t sin_0 = sin(0.5 * (x1[0] - x2[0]))
  */
-  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_kp_s_Haversine_distance_only_valid_in); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(1, 989, __pyx_L1_error)
+  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_kp_s_Haversine_distance_only_valid_in); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(1, 990, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__15);
   __Pyx_GIVEREF(__pyx_tuple__15);
 
-  /* "hdbscan/dist_metrics.pyx":999
+  /* "hdbscan/dist_metrics.pyx":1000
  *         if size != 2:
  *             with gil:
  *                 raise ValueError("Haversine distance only valid in 2 dimensions")             # <<<<<<<<<<<<<<
  *         cdef DTYPE_t sin_0 = sin(0.5 * (x1[0] - x2[0]))
  *         cdef DTYPE_t sin_1 = sin(0.5 * (x1[1] - x2[1]))
  */
-  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_s_Haversine_distance_only_valid_in); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(1, 999, __pyx_L1_error)
+  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_s_Haversine_distance_only_valid_in); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(1, 1000, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__16);
   __Pyx_GIVEREF(__pyx_tuple__16);
 
-  /* "hdbscan/dist_metrics.pyx":1099
+  /* "hdbscan/dist_metrics.pyx":1109
  *     def __init__(self, func, **kwargs):
  *         self.func = func
  *         x = np.random.random(10)             # <<<<<<<<<<<<<<
  *         try:
  *             d = self.func(x, x, **kwargs)
  */
-  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_int_10); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(1, 1099, __pyx_L1_error)
+  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_int_10); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(1, 1109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__17);
   __Pyx_GIVEREF(__pyx_tuple__17);
 
-  /* "hdbscan/dist_metrics.pyx":1103
+  /* "hdbscan/dist_metrics.pyx":1113
  *             d = self.func(x, x, **kwargs)
  *         except TypeError:
  *             raise ValueError("func must be a callable taking two arrays")             # <<<<<<<<<<<<<<
  * 
  *         try:
  */
-  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_kp_s_func_must_be_a_callable_taking_t); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(1, 1103, __pyx_L1_error)
+  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_kp_s_func_must_be_a_callable_taking_t); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(1, 1113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__18);
   __Pyx_GIVEREF(__pyx_tuple__18);
 
-  /* "hdbscan/dist_metrics.pyx":1108
+  /* "hdbscan/dist_metrics.pyx":1118
  *             d = float(d)
  *         except TypeError:
  *             raise ValueError("func must return a float")             # <<<<<<<<<<<<<<
  * 
  *         self.kwargs = kwargs
  */
-  __pyx_tuple__19 = PyTuple_Pack(1, __pyx_kp_s_func_must_return_a_float); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(1, 1108, __pyx_L1_error)
+  __pyx_tuple__19 = PyTuple_Pack(1, __pyx_kp_s_func_must_return_a_float); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(1, 1118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__19);
   __Pyx_GIVEREF(__pyx_tuple__19);
 
@@ -28677,17 +28872,17 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__44);
   __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_brunoalano_projects_openso, __pyx_n_s_newObj, 61, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(1, 61, __pyx_L1_error)
 
-  /* "hdbscan/dist_metrics.pyx":96
+  /* "hdbscan/dist_metrics.pyx":97
  * 
  * 
  * def get_valid_metric_ids(L):             # <<<<<<<<<<<<<<
  *     """Given an iterable of metric class names or class identifiers,
  *     return a list of metric IDs which map to those classes.
  */
-  __pyx_tuple__46 = PyTuple_Pack(3, __pyx_n_s_L, __pyx_n_s_key, __pyx_n_s_val); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(1, 96, __pyx_L1_error)
+  __pyx_tuple__46 = PyTuple_Pack(3, __pyx_n_s_L, __pyx_n_s_key, __pyx_n_s_val); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(1, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__46);
   __Pyx_GIVEREF(__pyx_tuple__46);
-  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__46, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_brunoalano_projects_openso, __pyx_n_s_get_valid_metric_ids, 96, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(1, 96, __pyx_L1_error)
+  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__46, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_brunoalano_projects_openso, __pyx_n_s_get_valid_metric_ids, 97, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(1, 97, __pyx_L1_error)
 
   /* "View.MemoryView":282
  *         return self.name
@@ -28862,10 +29057,10 @@ PyMODINIT_FUNC PyInit_dist_metrics(void)
   __pyx_vtable_7hdbscan_12dist_metrics_DistanceMetric.cdist = (int (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice))__pyx_f_7hdbscan_12dist_metrics_14DistanceMetric_cdist;
   __pyx_vtable_7hdbscan_12dist_metrics_DistanceMetric._rdist_to_dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_14DistanceMetric__rdist_to_dist;
   __pyx_vtable_7hdbscan_12dist_metrics_DistanceMetric._dist_to_rdist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_14DistanceMetric__dist_to_rdist;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_DistanceMetric) < 0) __PYX_ERR(1, 111, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_DistanceMetric) < 0) __PYX_ERR(1, 112, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_DistanceMetric.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_DistanceMetric.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric) < 0) __PYX_ERR(1, 111, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "DistanceMetric", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_DistanceMetric) < 0) __PYX_ERR(1, 111, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_DistanceMetric.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric) < 0) __PYX_ERR(1, 112, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "DistanceMetric", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_DistanceMetric) < 0) __PYX_ERR(1, 112, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric = &__pyx_type_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtabptr_7hdbscan_12dist_metrics_EuclideanDistance = &__pyx_vtable_7hdbscan_12dist_metrics_EuclideanDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_EuclideanDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
@@ -28874,10 +29069,10 @@ PyMODINIT_FUNC PyInit_dist_metrics(void)
   __pyx_vtable_7hdbscan_12dist_metrics_EuclideanDistance.__pyx_base._rdist_to_dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_17EuclideanDistance__rdist_to_dist;
   __pyx_vtable_7hdbscan_12dist_metrics_EuclideanDistance.__pyx_base._dist_to_rdist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_17EuclideanDistance__dist_to_rdist;
   __pyx_type_7hdbscan_12dist_metrics_EuclideanDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_EuclideanDistance) < 0) __PYX_ERR(1, 409, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_EuclideanDistance) < 0) __PYX_ERR(1, 410, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_EuclideanDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_EuclideanDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_EuclideanDistance) < 0) __PYX_ERR(1, 409, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "EuclideanDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_EuclideanDistance) < 0) __PYX_ERR(1, 409, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_EuclideanDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_EuclideanDistance) < 0) __PYX_ERR(1, 410, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "EuclideanDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_EuclideanDistance) < 0) __PYX_ERR(1, 410, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_EuclideanDistance = &__pyx_type_7hdbscan_12dist_metrics_EuclideanDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_SEuclideanDistance = &__pyx_vtable_7hdbscan_12dist_metrics_SEuclideanDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_SEuclideanDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
@@ -28886,28 +29081,28 @@ PyMODINIT_FUNC PyInit_dist_metrics(void)
   __pyx_vtable_7hdbscan_12dist_metrics_SEuclideanDistance.__pyx_base._rdist_to_dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_18SEuclideanDistance__rdist_to_dist;
   __pyx_vtable_7hdbscan_12dist_metrics_SEuclideanDistance.__pyx_base._dist_to_rdist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_18SEuclideanDistance__dist_to_rdist;
   __pyx_type_7hdbscan_12dist_metrics_SEuclideanDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_SEuclideanDistance) < 0) __PYX_ERR(1, 442, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_SEuclideanDistance) < 0) __PYX_ERR(1, 443, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_SEuclideanDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_SEuclideanDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_SEuclideanDistance) < 0) __PYX_ERR(1, 442, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "SEuclideanDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_SEuclideanDistance) < 0) __PYX_ERR(1, 442, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_SEuclideanDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_SEuclideanDistance) < 0) __PYX_ERR(1, 443, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "SEuclideanDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_SEuclideanDistance) < 0) __PYX_ERR(1, 443, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_SEuclideanDistance = &__pyx_type_7hdbscan_12dist_metrics_SEuclideanDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_ManhattanDistance = &__pyx_vtable_7hdbscan_12dist_metrics_ManhattanDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_ManhattanDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_ManhattanDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_17ManhattanDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_ManhattanDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_ManhattanDistance) < 0) __PYX_ERR(1, 486, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_ManhattanDistance) < 0) __PYX_ERR(1, 487, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_ManhattanDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_ManhattanDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_ManhattanDistance) < 0) __PYX_ERR(1, 486, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "ManhattanDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_ManhattanDistance) < 0) __PYX_ERR(1, 486, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_ManhattanDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_ManhattanDistance) < 0) __PYX_ERR(1, 487, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "ManhattanDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_ManhattanDistance) < 0) __PYX_ERR(1, 487, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_ManhattanDistance = &__pyx_type_7hdbscan_12dist_metrics_ManhattanDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_ChebyshevDistance = &__pyx_vtable_7hdbscan_12dist_metrics_ChebyshevDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_ChebyshevDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_ChebyshevDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_17ChebyshevDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_ChebyshevDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_ChebyshevDistance) < 0) __PYX_ERR(1, 507, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_ChebyshevDistance) < 0) __PYX_ERR(1, 508, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_ChebyshevDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_ChebyshevDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_ChebyshevDistance) < 0) __PYX_ERR(1, 507, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "ChebyshevDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_ChebyshevDistance) < 0) __PYX_ERR(1, 507, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_ChebyshevDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_ChebyshevDistance) < 0) __PYX_ERR(1, 508, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "ChebyshevDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_ChebyshevDistance) < 0) __PYX_ERR(1, 508, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_ChebyshevDistance = &__pyx_type_7hdbscan_12dist_metrics_ChebyshevDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_MinkowskiDistance = &__pyx_vtable_7hdbscan_12dist_metrics_MinkowskiDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_MinkowskiDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
@@ -28916,10 +29111,10 @@ PyMODINIT_FUNC PyInit_dist_metrics(void)
   __pyx_vtable_7hdbscan_12dist_metrics_MinkowskiDistance.__pyx_base._rdist_to_dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_17MinkowskiDistance__rdist_to_dist;
   __pyx_vtable_7hdbscan_12dist_metrics_MinkowskiDistance.__pyx_base._dist_to_rdist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_17MinkowskiDistance__dist_to_rdist;
   __pyx_type_7hdbscan_12dist_metrics_MinkowskiDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_MinkowskiDistance) < 0) __PYX_ERR(1, 528, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_MinkowskiDistance) < 0) __PYX_ERR(1, 529, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_MinkowskiDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_MinkowskiDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_MinkowskiDistance) < 0) __PYX_ERR(1, 528, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "MinkowskiDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_MinkowskiDistance) < 0) __PYX_ERR(1, 528, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_MinkowskiDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_MinkowskiDistance) < 0) __PYX_ERR(1, 529, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "MinkowskiDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_MinkowskiDistance) < 0) __PYX_ERR(1, 529, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_MinkowskiDistance = &__pyx_type_7hdbscan_12dist_metrics_MinkowskiDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_WMinkowskiDistance = &__pyx_vtable_7hdbscan_12dist_metrics_WMinkowskiDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_WMinkowskiDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
@@ -28928,10 +29123,10 @@ PyMODINIT_FUNC PyInit_dist_metrics(void)
   __pyx_vtable_7hdbscan_12dist_metrics_WMinkowskiDistance.__pyx_base._rdist_to_dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_18WMinkowskiDistance__rdist_to_dist;
   __pyx_vtable_7hdbscan_12dist_metrics_WMinkowskiDistance.__pyx_base._dist_to_rdist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_18WMinkowskiDistance__dist_to_rdist;
   __pyx_type_7hdbscan_12dist_metrics_WMinkowskiDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_WMinkowskiDistance) < 0) __PYX_ERR(1, 575, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_WMinkowskiDistance) < 0) __PYX_ERR(1, 576, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_WMinkowskiDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_WMinkowskiDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_WMinkowskiDistance) < 0) __PYX_ERR(1, 575, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "WMinkowskiDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_WMinkowskiDistance) < 0) __PYX_ERR(1, 575, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_WMinkowskiDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_WMinkowskiDistance) < 0) __PYX_ERR(1, 576, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "WMinkowskiDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_WMinkowskiDistance) < 0) __PYX_ERR(1, 576, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_WMinkowskiDistance = &__pyx_type_7hdbscan_12dist_metrics_WMinkowskiDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_MahalanobisDistance = &__pyx_vtable_7hdbscan_12dist_metrics_MahalanobisDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_MahalanobisDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
@@ -28940,109 +29135,109 @@ PyMODINIT_FUNC PyInit_dist_metrics(void)
   __pyx_vtable_7hdbscan_12dist_metrics_MahalanobisDistance.__pyx_base._rdist_to_dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_19MahalanobisDistance__rdist_to_dist;
   __pyx_vtable_7hdbscan_12dist_metrics_MahalanobisDistance.__pyx_base._dist_to_rdist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_19MahalanobisDistance__dist_to_rdist;
   __pyx_type_7hdbscan_12dist_metrics_MahalanobisDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_MahalanobisDistance) < 0) __PYX_ERR(1, 634, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_MahalanobisDistance) < 0) __PYX_ERR(1, 635, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_MahalanobisDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_MahalanobisDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_MahalanobisDistance) < 0) __PYX_ERR(1, 634, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "MahalanobisDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_MahalanobisDistance) < 0) __PYX_ERR(1, 634, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_MahalanobisDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_MahalanobisDistance) < 0) __PYX_ERR(1, 635, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "MahalanobisDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_MahalanobisDistance) < 0) __PYX_ERR(1, 635, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_MahalanobisDistance = &__pyx_type_7hdbscan_12dist_metrics_MahalanobisDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_HammingDistance = &__pyx_vtable_7hdbscan_12dist_metrics_HammingDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_HammingDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_HammingDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_15HammingDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_HammingDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_HammingDistance) < 0) __PYX_ERR(1, 704, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_HammingDistance) < 0) __PYX_ERR(1, 705, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_HammingDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_HammingDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_HammingDistance) < 0) __PYX_ERR(1, 704, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "HammingDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_HammingDistance) < 0) __PYX_ERR(1, 704, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_HammingDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_HammingDistance) < 0) __PYX_ERR(1, 705, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "HammingDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_HammingDistance) < 0) __PYX_ERR(1, 705, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_HammingDistance = &__pyx_type_7hdbscan_12dist_metrics_HammingDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_CanberraDistance = &__pyx_vtable_7hdbscan_12dist_metrics_CanberraDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_CanberraDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_CanberraDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_16CanberraDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_CanberraDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_CanberraDistance) < 0) __PYX_ERR(1, 726, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_CanberraDistance) < 0) __PYX_ERR(1, 727, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_CanberraDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_CanberraDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_CanberraDistance) < 0) __PYX_ERR(1, 726, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "CanberraDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_CanberraDistance) < 0) __PYX_ERR(1, 726, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_CanberraDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_CanberraDistance) < 0) __PYX_ERR(1, 727, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "CanberraDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_CanberraDistance) < 0) __PYX_ERR(1, 727, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_CanberraDistance = &__pyx_type_7hdbscan_12dist_metrics_CanberraDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_BrayCurtisDistance = &__pyx_vtable_7hdbscan_12dist_metrics_BrayCurtisDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_BrayCurtisDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_BrayCurtisDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_18BrayCurtisDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_BrayCurtisDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_BrayCurtisDistance) < 0) __PYX_ERR(1, 749, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_BrayCurtisDistance) < 0) __PYX_ERR(1, 750, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_BrayCurtisDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_BrayCurtisDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_BrayCurtisDistance) < 0) __PYX_ERR(1, 749, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "BrayCurtisDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_BrayCurtisDistance) < 0) __PYX_ERR(1, 749, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_BrayCurtisDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_BrayCurtisDistance) < 0) __PYX_ERR(1, 750, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "BrayCurtisDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_BrayCurtisDistance) < 0) __PYX_ERR(1, 750, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_BrayCurtisDistance = &__pyx_type_7hdbscan_12dist_metrics_BrayCurtisDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_JaccardDistance = &__pyx_vtable_7hdbscan_12dist_metrics_JaccardDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_JaccardDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_JaccardDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_15JaccardDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_JaccardDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_JaccardDistance) < 0) __PYX_ERR(1, 774, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_JaccardDistance) < 0) __PYX_ERR(1, 775, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_JaccardDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_JaccardDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_JaccardDistance) < 0) __PYX_ERR(1, 774, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "JaccardDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_JaccardDistance) < 0) __PYX_ERR(1, 774, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_JaccardDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_JaccardDistance) < 0) __PYX_ERR(1, 775, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "JaccardDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_JaccardDistance) < 0) __PYX_ERR(1, 775, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_JaccardDistance = &__pyx_type_7hdbscan_12dist_metrics_JaccardDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_MatchingDistance = &__pyx_vtable_7hdbscan_12dist_metrics_MatchingDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_MatchingDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_MatchingDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_16MatchingDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_MatchingDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_MatchingDistance) < 0) __PYX_ERR(1, 801, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_MatchingDistance) < 0) __PYX_ERR(1, 802, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_MatchingDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_MatchingDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_MatchingDistance) < 0) __PYX_ERR(1, 801, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "MatchingDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_MatchingDistance) < 0) __PYX_ERR(1, 801, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_MatchingDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_MatchingDistance) < 0) __PYX_ERR(1, 802, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "MatchingDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_MatchingDistance) < 0) __PYX_ERR(1, 802, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_MatchingDistance = &__pyx_type_7hdbscan_12dist_metrics_MatchingDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_DiceDistance = &__pyx_vtable_7hdbscan_12dist_metrics_DiceDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_DiceDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_DiceDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_12DiceDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_DiceDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_DiceDistance) < 0) __PYX_ERR(1, 825, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_DiceDistance) < 0) __PYX_ERR(1, 826, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_DiceDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_DiceDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_DiceDistance) < 0) __PYX_ERR(1, 825, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "DiceDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_DiceDistance) < 0) __PYX_ERR(1, 825, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_DiceDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_DiceDistance) < 0) __PYX_ERR(1, 826, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "DiceDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_DiceDistance) < 0) __PYX_ERR(1, 826, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_DiceDistance = &__pyx_type_7hdbscan_12dist_metrics_DiceDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_KulsinskiDistance = &__pyx_vtable_7hdbscan_12dist_metrics_KulsinskiDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_KulsinskiDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_KulsinskiDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_17KulsinskiDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_KulsinskiDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_KulsinskiDistance) < 0) __PYX_ERR(1, 850, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_KulsinskiDistance) < 0) __PYX_ERR(1, 851, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_KulsinskiDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_KulsinskiDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_KulsinskiDistance) < 0) __PYX_ERR(1, 850, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "KulsinskiDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_KulsinskiDistance) < 0) __PYX_ERR(1, 850, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_KulsinskiDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_KulsinskiDistance) < 0) __PYX_ERR(1, 851, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "KulsinskiDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_KulsinskiDistance) < 0) __PYX_ERR(1, 851, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_KulsinskiDistance = &__pyx_type_7hdbscan_12dist_metrics_KulsinskiDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_RogersTanimotoDistance = &__pyx_vtable_7hdbscan_12dist_metrics_RogersTanimotoDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_RogersTanimotoDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_RogersTanimotoDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_22RogersTanimotoDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_RogersTanimotoDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_RogersTanimotoDistance) < 0) __PYX_ERR(1, 875, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_RogersTanimotoDistance) < 0) __PYX_ERR(1, 876, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_RogersTanimotoDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_RogersTanimotoDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_RogersTanimotoDistance) < 0) __PYX_ERR(1, 875, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "RogersTanimotoDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_RogersTanimotoDistance) < 0) __PYX_ERR(1, 875, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_RogersTanimotoDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_RogersTanimotoDistance) < 0) __PYX_ERR(1, 876, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "RogersTanimotoDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_RogersTanimotoDistance) < 0) __PYX_ERR(1, 876, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_RogersTanimotoDistance = &__pyx_type_7hdbscan_12dist_metrics_RogersTanimotoDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_RussellRaoDistance = &__pyx_vtable_7hdbscan_12dist_metrics_RussellRaoDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_RussellRaoDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_RussellRaoDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_18RussellRaoDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_RussellRaoDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_RussellRaoDistance) < 0) __PYX_ERR(1, 899, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_RussellRaoDistance) < 0) __PYX_ERR(1, 900, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_RussellRaoDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_RussellRaoDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_RussellRaoDistance) < 0) __PYX_ERR(1, 899, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "RussellRaoDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_RussellRaoDistance) < 0) __PYX_ERR(1, 899, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_RussellRaoDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_RussellRaoDistance) < 0) __PYX_ERR(1, 900, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "RussellRaoDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_RussellRaoDistance) < 0) __PYX_ERR(1, 900, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_RussellRaoDistance = &__pyx_type_7hdbscan_12dist_metrics_RussellRaoDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_SokalMichenerDistance = &__pyx_vtable_7hdbscan_12dist_metrics_SokalMichenerDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_SokalMichenerDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_SokalMichenerDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_21SokalMichenerDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_SokalMichenerDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_SokalMichenerDistance) < 0) __PYX_ERR(1, 923, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_SokalMichenerDistance) < 0) __PYX_ERR(1, 924, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_SokalMichenerDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_SokalMichenerDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_SokalMichenerDistance) < 0) __PYX_ERR(1, 923, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "SokalMichenerDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_SokalMichenerDistance) < 0) __PYX_ERR(1, 923, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_SokalMichenerDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_SokalMichenerDistance) < 0) __PYX_ERR(1, 924, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "SokalMichenerDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_SokalMichenerDistance) < 0) __PYX_ERR(1, 924, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_SokalMichenerDistance = &__pyx_type_7hdbscan_12dist_metrics_SokalMichenerDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_SokalSneathDistance = &__pyx_vtable_7hdbscan_12dist_metrics_SokalSneathDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_SokalSneathDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_SokalSneathDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_19SokalSneathDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_SokalSneathDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_SokalSneathDistance) < 0) __PYX_ERR(1, 947, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_SokalSneathDistance) < 0) __PYX_ERR(1, 948, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_SokalSneathDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_SokalSneathDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_SokalSneathDistance) < 0) __PYX_ERR(1, 947, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "SokalSneathDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_SokalSneathDistance) < 0) __PYX_ERR(1, 947, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_SokalSneathDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_SokalSneathDistance) < 0) __PYX_ERR(1, 948, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "SokalSneathDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_SokalSneathDistance) < 0) __PYX_ERR(1, 948, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_SokalSneathDistance = &__pyx_type_7hdbscan_12dist_metrics_SokalSneathDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_HaversineDistance = &__pyx_vtable_7hdbscan_12dist_metrics_HaversineDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_HaversineDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
@@ -29051,28 +29246,37 @@ PyMODINIT_FUNC PyInit_dist_metrics(void)
   __pyx_vtable_7hdbscan_12dist_metrics_HaversineDistance.__pyx_base._rdist_to_dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_17HaversineDistance__rdist_to_dist;
   __pyx_vtable_7hdbscan_12dist_metrics_HaversineDistance.__pyx_base._dist_to_rdist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t))__pyx_f_7hdbscan_12dist_metrics_17HaversineDistance__dist_to_rdist;
   __pyx_type_7hdbscan_12dist_metrics_HaversineDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_HaversineDistance) < 0) __PYX_ERR(1, 973, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_HaversineDistance) < 0) __PYX_ERR(1, 974, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_HaversineDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_HaversineDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_HaversineDistance) < 0) __PYX_ERR(1, 973, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "HaversineDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_HaversineDistance) < 0) __PYX_ERR(1, 973, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_HaversineDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_HaversineDistance) < 0) __PYX_ERR(1, 974, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "HaversineDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_HaversineDistance) < 0) __PYX_ERR(1, 974, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_HaversineDistance = &__pyx_type_7hdbscan_12dist_metrics_HaversineDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_CosineDistance = &__pyx_vtable_7hdbscan_12dist_metrics_CosineDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_CosineDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_CosineDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_14CosineDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_CosineDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_CosineDistance) < 0) __PYX_ERR(1, 1044, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_CosineDistance) < 0) __PYX_ERR(1, 1045, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_CosineDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_CosineDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_CosineDistance) < 0) __PYX_ERR(1, 1044, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "CosineDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_CosineDistance) < 0) __PYX_ERR(1, 1044, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_CosineDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_CosineDistance) < 0) __PYX_ERR(1, 1045, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "CosineDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_CosineDistance) < 0) __PYX_ERR(1, 1045, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_CosineDistance = &__pyx_type_7hdbscan_12dist_metrics_CosineDistance;
+  __pyx_vtabptr_7hdbscan_12dist_metrics_ArccosDistance = &__pyx_vtable_7hdbscan_12dist_metrics_ArccosDistance;
+  __pyx_vtable_7hdbscan_12dist_metrics_ArccosDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
+  __pyx_vtable_7hdbscan_12dist_metrics_ArccosDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_14ArccosDistance_dist;
+  __pyx_type_7hdbscan_12dist_metrics_ArccosDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_ArccosDistance) < 0) __PYX_ERR(1, 1055, __pyx_L1_error)
+  __pyx_type_7hdbscan_12dist_metrics_ArccosDistance.tp_print = 0;
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_ArccosDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_ArccosDistance) < 0) __PYX_ERR(1, 1055, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "ArccosDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_ArccosDistance) < 0) __PYX_ERR(1, 1055, __pyx_L1_error)
+  __pyx_ptype_7hdbscan_12dist_metrics_ArccosDistance = &__pyx_type_7hdbscan_12dist_metrics_ArccosDistance;
   __pyx_vtabptr_7hdbscan_12dist_metrics_PyFuncDistance = &__pyx_vtable_7hdbscan_12dist_metrics_PyFuncDistance;
   __pyx_vtable_7hdbscan_12dist_metrics_PyFuncDistance.__pyx_base = *__pyx_vtabptr_7hdbscan_12dist_metrics_DistanceMetric;
   __pyx_vtable_7hdbscan_12dist_metrics_PyFuncDistance.__pyx_base.dist = (__pyx_t_7hdbscan_12dist_metrics_DTYPE_t (*)(struct __pyx_obj_7hdbscan_12dist_metrics_DistanceMetric *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t))__pyx_f_7hdbscan_12dist_metrics_14PyFuncDistance_dist;
   __pyx_type_7hdbscan_12dist_metrics_PyFuncDistance.tp_base = __pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric;
-  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_PyFuncDistance) < 0) __PYX_ERR(1, 1087, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7hdbscan_12dist_metrics_PyFuncDistance) < 0) __PYX_ERR(1, 1097, __pyx_L1_error)
   __pyx_type_7hdbscan_12dist_metrics_PyFuncDistance.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_PyFuncDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_PyFuncDistance) < 0) __PYX_ERR(1, 1087, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "PyFuncDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_PyFuncDistance) < 0) __PYX_ERR(1, 1087, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_7hdbscan_12dist_metrics_PyFuncDistance.tp_dict, __pyx_vtabptr_7hdbscan_12dist_metrics_PyFuncDistance) < 0) __PYX_ERR(1, 1097, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "PyFuncDistance", (PyObject *)&__pyx_type_7hdbscan_12dist_metrics_PyFuncDistance) < 0) __PYX_ERR(1, 1097, __pyx_L1_error)
   __pyx_ptype_7hdbscan_12dist_metrics_PyFuncDistance = &__pyx_type_7hdbscan_12dist_metrics_PyFuncDistance;
   __pyx_vtabptr_array = &__pyx_vtable_array;
   __pyx_vtable_array.get_memview = (PyObject *(*)(struct __pyx_array_obj *))__pyx_array_get_memview;
@@ -29141,12 +29345,12 @@ PyMODINIT_FUNC PyInit_dist_metrics(void)
  * cimport numpy as np
  * np.import_array()  # required in order to use C-API             # <<<<<<<<<<<<<<
  * 
- * from libc.math cimport fabs, sqrt, exp, cos, pow, log
+ * from libc.math cimport fabs, sqrt, exp, cos, pow, log, acos, M_PI
  */
   import_array();
 
   /* "hdbscan/dist_metrics.pyx":17
- * from libc.math cimport fabs, sqrt, exp, cos, pow, log
+ * from libc.math cimport fabs, sqrt, exp, cos, pow, log, acos, M_PI
  * 
  * DTYPE = np.double             # <<<<<<<<<<<<<<
  * ITYPE = np.intp
@@ -29417,7 +29621,7 @@ PyMODINIT_FUNC PyInit_dist_metrics(void)
  *                   'sokalsneath': SokalSneathDistance,
  *                   'haversine': HaversineDistance,             # <<<<<<<<<<<<<<
  *                   'cosine': CosineDistance,
- *                   'pyfunc': PyFuncDistance}
+ *                   'arccos': ArccosDistance,
  */
   if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_haversine, ((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_HaversineDistance)) < 0) __PYX_ERR(1, 68, __pyx_L1_error)
 
@@ -29425,14 +29629,23 @@ PyMODINIT_FUNC PyInit_dist_metrics(void)
  *                   'sokalsneath': SokalSneathDistance,
  *                   'haversine': HaversineDistance,
  *                   'cosine': CosineDistance,             # <<<<<<<<<<<<<<
+ *                   'arccos': ArccosDistance,
  *                   'pyfunc': PyFuncDistance}
- * 
  */
   if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_cosine, ((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_CosineDistance)) < 0) __PYX_ERR(1, 68, __pyx_L1_error)
 
   /* "hdbscan/dist_metrics.pyx":93
  *                   'haversine': HaversineDistance,
  *                   'cosine': CosineDistance,
+ *                   'arccos': ArccosDistance,             # <<<<<<<<<<<<<<
+ *                   'pyfunc': PyFuncDistance}
+ * 
+ */
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_arccos, ((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_ArccosDistance)) < 0) __PYX_ERR(1, 68, __pyx_L1_error)
+
+  /* "hdbscan/dist_metrics.pyx":94
+ *                   'cosine': CosineDistance,
+ *                   'arccos': ArccosDistance,
  *                   'pyfunc': PyFuncDistance}             # <<<<<<<<<<<<<<
  * 
  * 
@@ -29441,39 +29654,39 @@ PyMODINIT_FUNC PyInit_dist_metrics(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_METRIC_MAPPING, __pyx_t_2) < 0) __PYX_ERR(1, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":96
+  /* "hdbscan/dist_metrics.pyx":97
  * 
  * 
  * def get_valid_metric_ids(L):             # <<<<<<<<<<<<<<
  *     """Given an iterable of metric class names or class identifiers,
  *     return a list of metric IDs which map to those classes.
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7hdbscan_12dist_metrics_3get_valid_metric_ids, NULL, __pyx_n_s_hdbscan_dist_metrics); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 96, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7hdbscan_12dist_metrics_3get_valid_metric_ids, NULL, __pyx_n_s_hdbscan_dist_metrics); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_valid_metric_ids, __pyx_t_2) < 0) __PYX_ERR(1, 96, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_valid_metric_ids, __pyx_t_2) < 0) __PYX_ERR(1, 97, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hdbscan/dist_metrics.pyx":252
+  /* "hdbscan/dist_metrics.pyx":253
  * 
  *     @classmethod
  *     def get_metric(cls, metric, **kwargs):             # <<<<<<<<<<<<<<
  *         """Get the given distance metric from the string identifier.
  * 
  */
-  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric, __pyx_n_s_get_metric); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 252, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric, __pyx_n_s_get_metric); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "hdbscan/dist_metrics.pyx":251
+  /* "hdbscan/dist_metrics.pyx":252
  *         self.size = 1
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def get_metric(cls, metric, **kwargs):
  *         """Get the given distance metric from the string identifier.
  */
-  __pyx_t_1 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 251, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric->tp_dict, __pyx_n_s_get_metric, __pyx_t_1) < 0) __PYX_ERR(1, 252, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric->tp_dict, __pyx_n_s_get_metric, __pyx_t_1) < 0) __PYX_ERR(1, 253, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7hdbscan_12dist_metrics_DistanceMetric);
 
@@ -29484,7 +29697,7 @@ PyMODINIT_FUNC PyInit_dist_metrics(void)
  */
   __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_u_get_valid_metric_ids_line_96, __pyx_kp_u_Given_an_iterable_of_metric_clas) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_kp_u_get_valid_metric_ids_line_97, __pyx_kp_u_Given_an_iterable_of_metric_clas) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
