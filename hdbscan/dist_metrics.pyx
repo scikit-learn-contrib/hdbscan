@@ -89,6 +89,7 @@ METRIC_MAPPING = {'euclidean': EuclideanDistance,
                   'sokalmichener': SokalMichenerDistance,
                   'sokalsneath': SokalSneathDistance,
                   'haversine': HaversineDistance,
+                  'cosine': CosineDistance,
                   'pyfunc': PyFuncDistance}
 
 
@@ -1039,16 +1040,18 @@ cdef class HaversineDistance(DistanceMetric):
 # Cosine Distance
 #  D(x, y) = dot(x, y) / (|x| * |y|)
 # [This is not a true metric, so we will leave it out.]
-#
-#cdef class CosineDistance(DistanceMetric):
-#    cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2, ITYPE_t size):
-#        cdef DTYPE_t d = 0, norm1 = 0, norm2 = 0
-#        cdef np.intp_t j
-#        for j in range(size):
-#            d += x1[j] * x2[j]
-#            norm1 += x1[j] * x1[j]
-#            norm2 += x2[j] * x2[j]
-#        return 1.0 - d / sqrt(norm1 * norm2)
+
+cdef class CosineDistance(DistanceMetric):
+    cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2, ITYPE_t size) nogil except -1:
+        cdef DTYPE_t d = 0, norm1 = 0, norm2 = 0
+        cdef np.intp_t j
+        for j in range(size):
+            d += x1[j] * x2[j]
+            norm1 += x1[j] * x1[j]
+            norm2 += x2[j] * x2[j]
+        return 1.0 - d / sqrt(norm1 * norm2)
+
+
 
 
 #------------------------------------------------------------
