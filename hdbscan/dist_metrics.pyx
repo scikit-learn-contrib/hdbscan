@@ -1052,6 +1052,10 @@ cdef class CosineDistance(DistanceMetric):
             norm2 += x2[j] * x2[j]
         return 1.0 - d / sqrt(norm1 * norm2)
 
+#------------------------------------------------------------
+# Cosine Distance
+#  D(x, y) = arccos(dot(x, y) / (|x| * |y|)) / PI
+
 cdef class ArccosDistance(DistanceMetric):
     cdef inline DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2, ITYPE_t size) nogil except -1:
         cdef DTYPE_t d = 0, norm1 = 0, norm2 = 0
