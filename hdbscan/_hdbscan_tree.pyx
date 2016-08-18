@@ -427,7 +427,7 @@ cdef get_probabilities(np.ndarray tree, dict cluster_map, np.ndarray labels):
 
         cluster = cluster_map[cluster_num]
         max_lambda = deaths[cluster]
-        if max_lambda == 0.0:
+        if max_lambda == 0.0 or not np.isfinite(lambda_array[n]):
             result[point] = 1.0
         else:
             lambda_ = min(lambda_array[n], max_lambda)
