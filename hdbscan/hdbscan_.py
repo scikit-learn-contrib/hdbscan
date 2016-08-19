@@ -242,7 +242,12 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
                                  approx_min_span_tree=approx_min_span_tree, n_jobs=core_dist_n_jobs, **kwargs)
     min_spanning_tree = alg.spanning_tree()
     # Sort edges of the min_spanning_tree by weight
-    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
+    if min_spanning_tree.shape[1] < 3:
+        print(min_spanning_tree)
+    row_order = np.argsort(min_spanning_tree.T[2])
+    if row_order.shape[0] <= 1:
+        print(row_order)
+    min_spanning_tree = min_spanning_tree[row_order, :]
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
 
