@@ -18,7 +18,10 @@ from sklearn.utils.testing import assert_no_warnings
 from sklearn.utils.testing import if_matplotlib
 from hdbscan import HDBSCAN
 from hdbscan import hdbscan
-from sklearn.cluster.tests.common import generate_clustered_data
+# from sklearn.cluster.tests.common import generate_clustered_data
+from sklearn.datasets import make_blobs
+from sklearn.utils import shuffle
+from sklearn.preprocessing import StandardScaler
 from scipy.stats import mode
 
 from tempfile import mkdtemp
@@ -28,7 +31,10 @@ from nose import SkipTest
 from sklearn import datasets
 
 n_clusters = 3
-X = generate_clustered_data(n_clusters=n_clusters, n_samples_per_cluster=50)
+# X = generate_clustered_data(n_clusters=n_clusters, n_samples_per_cluster=50)
+X, y = make_blobs(n_samples=50, random_state=0)
+X, y = shuffle(X, y, random_state=7)
+X = StandardScaler().fit_transform(X)
 
 def if_pandas(func):
     """Test decorator that skips test if pandas not installed."""
