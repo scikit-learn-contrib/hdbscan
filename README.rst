@@ -3,10 +3,14 @@
     :alt: PyPI Version
 .. image:: https://anaconda.org/conda-forge/hdbscan/badges/version.svg
     :target: https://anaconda.org/conda-forge/hdbscan
-    :alt: Conda-forge Versio
+    :alt: Conda-forge Version
 .. image:: https://img.shields.io/pypi/l/hdbscan.svg
     :target: https://github.com/lmcinnes/hdbscan/blob/master/LICENSE
     :alt: License
+.. image:: https://travis-ci.org/lmcinnes/hdbscan.svg
+    :target: https://travis-ci.org/lmcinnes/hdbscan
+    :alt: Travis Build Status
+
 
 =======
 HDBSCAN
