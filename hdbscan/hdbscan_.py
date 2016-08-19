@@ -236,6 +236,8 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
 
     size = X.shape[0]
     min_samples = min(size - 1, min_samples)
+    if min_samples == 0:
+        min_samples = 1
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
     alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
@@ -246,7 +248,7 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
     try:
         min_spanning_tree = min_spanning_tree[row_order, :]
     except IndexError:
-        raise Exception("{}".format(row_order))
+        raise Exception("{} {}, {}, {}".format(row_order, min_spanning_tree, X, size))
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
 
