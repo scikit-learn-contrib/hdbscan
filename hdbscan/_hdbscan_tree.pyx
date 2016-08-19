@@ -156,11 +156,14 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
     cdef np.intp_t smallest_cluster = condensed_tree['parent'].min()
     cdef np.intp_t num_clusters = condensed_tree['parent'].max() - smallest_cluster + 1
 
+    if largest_child < smallest_cluster:
+        largest_child = smallest_cluster
+
     sorted_child_data = np.sort(condensed_tree[['child', 'lambda_val']], axis=0)
     births_arr = np.nan * np.ones(largest_child + 1, dtype=np.double)
     births = (<np.double_t *> births_arr.data)
-    sorted_children = sorted_child_data['child']
-    sorted_lambdas = sorted_child_data['lambda_val']
+    sorted_children = sorted_child_data['child'].copy()
+    sorted_lambdas = sorted_child_data['lambda_val'].copy()
 
     parents = condensed_tree['parent']
     sizes = condensed_tree['child_size']
@@ -184,7 +187,8 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
             current_child = child
             min_lambda = lambda_
 
-    births[current_child] = min_lambda
+    if current_child != -1:
+        births[current_child] = min_lambda
     births[smallest_cluster] = 0.0
 
     result_arr = np.zeros(num_clusters, dtype=np.double)
@@ -197,7 +201,9 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
 
         result_arr[result_index] += (lambda_ - births[parent]) * child_size
 
-    return dict(np.vstack((np.arange(smallest_cluster, condensed_tree['parent'].max() + 1), result_arr)).T)
+    result_pre_dict = np.vstack((np.arange(smallest_cluster, condensed_tree['parent'].max() + 1), result_arr)).T
+
+    return dict(result_pre_dict)
 
 cdef list bfs_from_cluster_tree(np.ndarray tree, np.intp_t bfs_root):
 
@@ -322,7 +328,7 @@ cpdef np.ndarray[np.intp_t, ndim=1] labelling_at_cut(np.ndarray linkage,
         cluster += 1
 
 
-    cluster_size = np.zeros(num_points, dtype=np.intp)
+    cluster_size = np.zeros(cluster, dtype=np.intp)
     for n in range(num_points):
         cluster = union_find.find(n)
         cluster_size[cluster] += 1

@@ -264,9 +264,9 @@ def test_hdbscan_caching():
     n_clusters2 = len(set(labels2)) - int(-1 in labels2)
     assert_equal(n_clusters1, n_clusters2)
 
-# def test_hdbscan_is_sklearn_estimator():
-#
-#     check_estimator(HDBSCAN)
+def test_hdbscan_is_sklearn_estimator():
+
+    check_estimator(HDBSCAN)
 
 ### Probably not applicable now #########################
 #def test_dbscan_sparse():

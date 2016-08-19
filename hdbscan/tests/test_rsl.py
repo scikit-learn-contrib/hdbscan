@@ -61,6 +61,6 @@ def test_rsl_input_lists():
     X = [[1., 2.], [3., 4.]]
     RobustSingleLinkage().fit(X)  # must not raise exception
 
-# def test_rsl_is_sklearn_estimator():
-#
-#     check_estimator(RobustSingleLinkage)
+def test_rsl_is_sklearn_estimator():
+
+    check_estimator(RobustSingleLinkage)
