@@ -10,6 +10,10 @@
 .. image:: https://travis-ci.org/lmcinnes/hdbscan.svg
     :target: https://travis-ci.org/lmcinnes/hdbscan
     :alt: Travis Build Status
+.. image:: https://readthedocs.org/projects/hdbscan/badge/?version=latest
+    :target: https://hdbscan.readthedocs.org
+    :alt: Docs
+
 
 
 =======
