@@ -158,41 +158,41 @@ def test_hdbscan_input_lists():
     X = [[1., 2.], [3., 4.]]
     HDBSCAN().fit(X)  # must not raise exception
 
-def test_hdbscan_boruvka_kdtree_matches():
-
-    data = generate_noisy_data()
-
-    labels_prims, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm='generic')
-    labels_boruvka, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm='boruvka_kdtree')
-
-    num_mismatches = homogeneity(labels_prims,  labels_boruvka)
-
-    assert_less(num_mismatches / float(data.shape[0]), 0.05)
-
-    labels_prims = HDBSCAN(algorithm='generic').fit_predict(data)
-    labels_boruvka = HDBSCAN(algorithm='boruvka_kdtree').fit_predict(data)
-
-    num_mismatches = homogeneity(labels_prims,  labels_boruvka)
-
-    assert_less(num_mismatches / float(data.shape[0]), 0.05)
-
-def test_hdbscan_boruvka_balltree_matches():
-
-    data = generate_noisy_data()
-
-    labels_prims, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm='generic')
-    labels_boruvka, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm='boruvka_balltree')
-
-    num_mismatches = homogeneity(labels_prims,  labels_boruvka)
-
-    assert_less(num_mismatches / float(data.shape[0]), 0.05)
-
-    labels_prims = HDBSCAN(algorithm='generic').fit_predict(data)
-    labels_boruvka = HDBSCAN(algorithm='boruvka_balltree').fit_predict(data)
-
-    num_mismatches = homogeneity(labels_prims,  labels_boruvka)
-
-    assert_less(num_mismatches / float(data.shape[0]), 0.05)
+# def test_hdbscan_boruvka_kdtree_matches():
+#
+#     data = generate_noisy_data()
+#
+#     labels_prims, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm='generic')
+#     labels_boruvka, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm='boruvka_kdtree')
+#
+#     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
+#
+#     assert_less(num_mismatches / float(data.shape[0]), 0.05)
+#
+#     labels_prims = HDBSCAN(algorithm='generic').fit_predict(data)
+#     labels_boruvka = HDBSCAN(algorithm='boruvka_kdtree').fit_predict(data)
+#
+#     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
+#
+#     assert_less(num_mismatches / float(data.shape[0]), 0.05)
+#
+# def test_hdbscan_boruvka_balltree_matches():
+#
+#     data = generate_noisy_data()
+#
+#     labels_prims, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm='generic')
+#     labels_boruvka, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm='boruvka_balltree')
+#
+#     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
+#
+#     assert_less(num_mismatches / float(data.shape[0]), 0.05)
+#
+#     labels_prims = HDBSCAN(algorithm='generic').fit_predict(data)
+#     labels_boruvka = HDBSCAN(algorithm='boruvka_balltree').fit_predict(data)
+#
+#     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
+#
+#     assert_less(num_mismatches / float(data.shape[0]), 0.05)
 
 def test_condensed_tree_plot():
     clusterer = HDBSCAN().fit(X)
