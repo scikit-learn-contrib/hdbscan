@@ -71,6 +71,11 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0,
     else:
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
 
+    size = X.shape[0]
+    min_samples = min(size - 1, min_samples)
+    if min_samples == 0:
+        min_samples = 1
+
     if issparse(distance_matrix):
         # raise TypeError('Sparse distance matrices not yet supported')
         return _hdbscan_sparse_distance_matrix(distance_matrix, min_samples, alpha, metric, p,
@@ -117,6 +122,11 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
 
     lil_matrix = X.tolil()
 
+    size = X.shape[0]
+    min_samples = min(size - 1, min_samples)
+    if min_samples == 0:
+        min_samples = 1
+
     # Compute sparse mutual reachability graph
     mutual_reachability_ = sparse_mutual_reachability(lil_matrix, min_points=min_samples)
 
@@ -159,6 +169,8 @@ def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
 
     size = X.shape[0]
     min_samples = min(size - 1, min_samples)
+    if min_samples == 0:
+        min_samples = 1
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
 
@@ -197,6 +209,8 @@ def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
 
     size = X.shape[0]
     min_samples = min(size - 1, min_samples)
+    if min_samples == 0:
+        min_samples = 1
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
 
@@ -245,10 +259,7 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
     min_spanning_tree = alg.spanning_tree()
     # Sort edges of the min_spanning_tree by weight
     row_order = np.argsort(min_spanning_tree.T[2])
-    try:
-        min_spanning_tree = min_spanning_tree[row_order, :]
-    except IndexError:
-        raise Exception("{} {}, {}, {}".format(row_order, min_spanning_tree, X, size))
+    min_spanning_tree = min_spanning_tree[row_order, :]
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
 
@@ -277,6 +288,8 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
 
     size = X.shape[0]
     min_samples = min(size - 1, min_samples)
+    if min_samples == 0:
+        min_samples = 1
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
     alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
