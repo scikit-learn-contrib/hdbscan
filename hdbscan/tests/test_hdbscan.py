@@ -8,6 +8,7 @@ import numpy as np
 from scipy.spatial import distance
 from scipy import sparse
 from scipy import stats
+from sklearn.utils.estimator_checks import check_estimator
 from sklearn.utils.testing import assert_equal
 from sklearn.utils.testing import assert_array_equal
 from sklearn.utils.testing import assert_raises
@@ -166,14 +167,14 @@ def test_hdbscan_boruvka_kdtree_matches():
 
     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
-    assert_less(num_mismatches / float(data.shape[0]), 0.01)
+    assert_less(num_mismatches / float(data.shape[0]), 0.05)
 
     labels_prims = HDBSCAN(algorithm='generic').fit_predict(data)
     labels_boruvka = HDBSCAN(algorithm='boruvka_kdtree').fit_predict(data)
 
     num_mismatches = homogeneity(labels_prims,  labels_boruvka)
 
-    assert_less(num_mismatches / float(data.shape[0]), 0.01)
+    assert_less(num_mismatches / float(data.shape[0]), 0.05)
 
 def test_hdbscan_boruvka_balltree_matches():
 
@@ -256,6 +257,10 @@ def test_hdbscan_caching():
     n_clusters1 = len(set(labels1)) - int(-1 in labels1)
     n_clusters2 = len(set(labels2)) - int(-1 in labels2)
     assert_equal(n_clusters1, n_clusters2)
+
+def test_hdbscan_is_sklearn_estimator():
+
+    check_estimator(HDBSCAN)
 
 ### Probably not applicable now #########################
 #def test_dbscan_sparse():

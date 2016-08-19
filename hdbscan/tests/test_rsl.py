@@ -6,6 +6,7 @@ from nose.tools import assert_less
 import numpy as np
 from scipy.spatial import distance
 from scipy import sparse
+from sklearn.utils.estimator_checks import check_estimator
 from sklearn.utils.testing import assert_equal
 from sklearn.utils.testing import assert_array_equal
 from sklearn.utils.testing import assert_raises
@@ -59,3 +60,7 @@ def test_rsl_callable_metric():
 def test_rsl_input_lists():
     X = [[1., 2.], [3., 4.]]
     RobustSingleLinkage().fit(X)  # must not raise exception
+
+def test_rsl_is_sklearn_estimator():
+
+    check_estimator(RobustSingleLinkage)
