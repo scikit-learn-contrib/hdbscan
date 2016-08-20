@@ -72,12 +72,12 @@ def homogeneity(labels1, labels2):
     num_missed = 0.0
     for label in set(labels1):
         matches = labels2[labels1 == label]
-        match_mode = mode(matches).mode[0]
+        match_mode = mode(matches)[0][0]
         num_missed += np.sum(matches != match_mode)
 
     for label in set(labels2):
         matches = labels1[labels2 == label]
-        match_mode = mode(matches).mode[0]
+        match_mode = mode(matches)[0][0]
         num_missed += np.sum(matches != match_mode)
 
     return num_missed / 2.0
