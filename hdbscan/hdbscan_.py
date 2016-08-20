@@ -39,6 +39,54 @@ from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 
 FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics
 
+# Supporting numpy prior to version 1.7 is a little painful ...
+if hasattr(np, 'isclose'):
+    from numpy import isclose
+else:
+    def isclose(a, b, rtol=1.e-5, atol=1.e-8, equal_nan=False):
+
+        def within_tol(x, y, atol, rtol):
+            with errstate(invalid='ignore'):
+                result = less_equal(abs(x-y), atol + rtol * abs(y))
+            if isscalar(a) and isscalar(b):
+                result = bool(result)
+            return result
+
+        x = array(a, copy=False, subok=True, ndmin=1)
+        y = array(b, copy=False, subok=True, ndmin=1)
+
+        # Make sure y is an inexact type to avoid bad behavior on abs(MIN_INT).
+        # This will cause casting of x later. Also, make sure to allow subclasses
+        # (e.g., for numpy.ma).
+        dt = multiarray.result_type(y, 1.)
+        y = array(y, dtype=dt, copy=False, subok=True)
+
+        xfin = isfinite(x)
+        yfin = isfinite(y)
+        if all(xfin) and all(yfin):
+            return within_tol(x, y, atol, rtol)
+        else:
+            finite = xfin & yfin
+            cond = zeros_like(finite, subok=True)
+            # Because we're using boolean indexing, x & y must be the same shape.
+            # Ideally, we'd just do x, y = broadcast_arrays(x, y). It's in
+            # lib.stride_tricks, though, so we can't import it here.
+            x = x * ones_like(cond)
+            y = y * ones_like(cond)
+            # Avoid subtraction with infinite/nan values...
+            cond[finite] = within_tol(x[finite], y[finite], atol, rtol)
+            # Check for equality of infinite values...
+            cond[~finite] = (x[~finite] == y[~finite])
+            if equal_nan:
+                # Make NaN == NaN
+                both_nan = isnan(x) & isnan(y)
+                cond[both_nan] = both_nan[both_nan]
+
+            if isscalar(a) and isscalar(b):
+                return bool(cond)
+            else:
+                return cond
+
 
 def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10, allow_single_cluster=False):
     """ Converts a pretrained tree and cluster size into a 
