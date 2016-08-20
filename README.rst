@@ -10,6 +10,9 @@
 .. image:: https://travis-ci.org/lmcinnes/hdbscan.svg
     :target: https://travis-ci.org/lmcinnes/hdbscan
     :alt: Travis Build Status
+.. image:: https://coveralls.io/repos/github/lmcinnes/hdbscan/badge.svg?branch=master
+    :target: https://coveralls.io/github/lmcinnes/hdbscan?branch=master
+    :alt: Test Coverage
 .. image:: https://readthedocs.org/projects/hdbscan/badge/?version=latest
     :target: https://hdbscan.readthedocs.org
     :alt: Docs
