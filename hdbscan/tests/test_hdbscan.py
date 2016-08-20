@@ -237,25 +237,25 @@ def test_hdbscan_badargs():
     assert_raises(ValueError,
                   hdbscan,
                   X, metric='minkowski', p=-1)
-     assert_raises(ValueError,
+    assert_raises(ValueError,
                   hdbscan,
                   X, metric='minkowski', p=-1, algorithm='prims_kdtree')
-     assert_raises(ValueError,
+    assert_raises(ValueError,
                   hdbscan,
                   X, metric='minkowski', p=-1, algorithm='prims_balltree')
-     assert_raises(ValueError,
+    assert_raises(ValueError,
                   hdbscan,
                   X, metric='minkowski', p=-1, algorithm='boruvka_balltree')
- assert_raises(ValueError,
+    assert_raises(ValueError,
                   hdbscan,
                   X, alpha=-1)
-    assert_raises(Exception,
+    assert_raises(ValueError,
                   hdbscan,
                   X, alpha='fail')
     assert_raises(Exception,
                   hdbscan,
                   X, algorithm='something_else')
-    assert_raises(ValueError,
+    assert_raises(TypeError,
                   hdbscan,
                   X, metric='minkowski', p=None)
 
