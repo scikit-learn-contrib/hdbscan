@@ -271,9 +271,37 @@ def test_hdbscan_boruvka_balltree_matches():
     assert_less(num_mismatches / float(data.shape[0]), 0.15)
 
 def test_condensed_tree_plot():
-    clusterer = HDBSCAN().fit(X)
-    clusterer.condensed_tree_.get_plot_data()
-    if_matplotlib(clusterer.condensed_tree_.plot)(select_clusters=True, selection_palette=('r','g','b'))
+    clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
+    if_matplotlib(clusterer.condensed_tree_.plot)(select_clusters=True,
+                                                  selection_palette=('r','g','b'),
+                                                  cmap='Reds')
+    if_matplotlib(clusterer.condensed_tree_.plot)(label_clusters=True,
+                                                  colorbar=False,
+                                                  cmap='none')
+
+def test_single_linkage_tree_plot():
+    clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
+    if_matplotlib(clusterer.single_linkage_tree_.plot)()
+    if_matplotlib(clusterer.single_linkage_tree_.plot)(vary_line_width=False,
+                                                       truncate_mode='lastp',
+                                                       p=10,
+                                                       colorbar=False)
+
+def test_min_span_tree_plot():
+    clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
+    if_matplotlib(clusterer.minimum_spanning_tree_.plot)()
+
+    H, y = make_blobs(n_samples=50, random_state=0, n_features=10)
+    H = StandardScaler().fit_transform(H)
+
+    clusterer = HDBSCAN(gen_min_span_tree=True).fit(H)
+    if_matplotlib(clusterer.minimum_spanning_tree_.plot)(vary_line_width=False, colorbar=False)
+
+    H, y = make_blobs(n_samples=50, random_state=0, n_features=40)
+    H = StandardScaler().fit_transform(H)
+
+    clusterer = HDBSCAN(gen_min_span_tree=True).fit(H)
+    if_matplotlib(clusterer.minimum_spanning_tree_.plot)(vary_line_width=False, colorbar=False)
 
 def test_tree_numpy_output_formats():
 

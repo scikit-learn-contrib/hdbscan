@@ -649,7 +649,7 @@ class MinimumSpanningTree(object):
 
     def plot(self, axis=None, node_size=40, node_color='k',
              node_alpha=0.8, edge_alpha=0.5, edge_cmap='viridis_r',
-             edge_linewidth=2, vary_linewidth=True, colorbar=True):
+             edge_linewidth=2, vary_line_width=True, colorbar=True):
         """Plot the minimum spanning tree (as projected into 2D by t-SNE if required).
 
         Parameters
@@ -680,7 +680,7 @@ class MinimumSpanningTree(object):
         edge_linewidth : float, optional
                 The linewidth to use for rendering edges (default 2).
 
-        vary_linewidth : bool, optional
+        vary_line_width : bool, optional
                 Edge width is proportional to (log of) the inverse of the
                 mutual reachability distance. (default True)
 
@@ -718,7 +718,7 @@ class MinimumSpanningTree(object):
         else:
             projection = self._data.copy()
 
-        if vary_linewidth:
+        if vary_line_width:
             line_width = edge_linewidth * (np.log(self._mst.T[2].max() / self._mst.T[2]) + 1.0)
         else:
             line_width = edge_linewidth
