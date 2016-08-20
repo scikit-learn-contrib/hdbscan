@@ -55,19 +55,9 @@ def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10, allow_single_cl
 def _hdbscan_generic(X, min_samples=5, alpha=1.0,
                      metric='minkowski', p=2, leaf_size=None, gen_min_span_tree=False, **kwargs):
     if metric == 'minkowski':
-        if p is None:
-            raise TypeError('Minkowski metric given but no p value supplied!')
-        if p < 0:
-            raise ValueError('Minkowski metric with negative p value is not defined!')
-
         distance_matrix = pairwise_distances(X, metric=metric, p=p)
     else:
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
-
-    size = X.shape[0]
-    min_samples = min(size - 1, min_samples)
-    if min_samples == 0:
-        min_samples = 1
 
     if issparse(distance_matrix):
         # raise TypeError('Sparse distance matrices not yet supported')
@@ -105,20 +95,9 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
                                     metric='minkowski', p=2, leaf_size=40,
                                     gen_min_span_tree=False, **kwargs):
 
-    if metric == 'minkowski':
-        if p is None:
-            raise TypeError('Minkowski metric given but no p value supplied!')
-        if p < 0:
-            raise ValueError('Minkowski metric with negative p value is not defined!')
-
     assert(issparse(X))
 
     lil_matrix = X.tolil()
-
-    size = X.shape[0]
-    min_samples = min(size - 1, min_samples)
-    if min_samples == 0:
-        min_samples = 1
 
     # Compute sparse mutual reachability graph
     mutual_reachability_ = sparse_mutual_reachability(lil_matrix, min_points=min_samples)
@@ -148,22 +127,10 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
 
 def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
                           metric='minkowski', p=2, leaf_size=40, gen_min_span_tree=False, **kwargs):
-    if metric == 'minkowski':
-        if p is None:
-            raise TypeError('Minkowski metric given but no p value supplied!')
-        if p < 0:
-            raise ValueError('Minkowski metric with negative p value is not defined!')
-    elif p is None:
-        p = 2  # Unused, but needs to be integer; assume euclidean
 
     # The Cython routines used require contiguous arrays
     if not X.flags['C_CONTIGUOUS']:
         X = np.array(X, dtype=np.double, order='C')
-
-    size = X.shape[0]
-    min_samples = min(size - 1, min_samples)
-    if min_samples == 0:
-        min_samples = 1
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
 
@@ -188,22 +155,10 @@ def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
 
 def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
                             metric='minkowski', p=2, leaf_size=40, gen_min_span_tree=False, **kwargs):
-    if metric == 'minkowski':
-        if p is None:
-            raise TypeError('Minkowski metric given but no p value supplied!')
-        if p < 0:
-            raise ValueError('Minkowski metric with negative p value is not defined!')
-    elif p is None:
-        p = 2  # Unused, but needs to be integer; assume euclidean
 
     # The Cython routines used require contiguous arrays
     if not X.flags['C_CONTIGUOUS']:
         X = np.array(X, dtype=np.double, order='C')
-
-    size = X.shape[0]
-    min_samples = min(size - 1, min_samples)
-    if min_samples == 0:
-        min_samples = 1
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
 
@@ -229,22 +184,12 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
                             approx_min_span_tree=True,
                             gen_min_span_tree=False,
                             core_dist_n_jobs=4, **kwargs):
-    if metric == 'minkowski':
-        if p is None:
-            raise TypeError('Minkowski metric given but no p value supplied!')
-        if p < 0:
-            raise ValueError('Minkowski metric with negative p value is not defined!')
 
     if leaf_size < 3:
         leaf_size = 3
 
     if core_dist_n_jobs < 1:
         raise ValueError('Parallel core distance computation requires 1 or more jobs!')
-
-    size = X.shape[0]
-    min_samples = min(size - 1, min_samples)
-    if min_samples == 0:
-        min_samples = 1
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
     alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
@@ -267,22 +212,12 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
                               approx_min_span_tree=True,
                               gen_min_span_tree=False,
                               core_dist_n_jobs=4, **kwargs):
-    if metric == 'minkowski':
-        if p is None:
-            raise TypeError('Minkowski metric given but no p value supplied!')
-        if p < 0:
-            raise ValueError('Minkowski metric with negative p value is not defined!')
 
     if leaf_size < 3:
         leaf_size = 3
 
     if core_dist_n_jobs < 1:
         raise ValueError('Parallel core distance computation requires 1 or more jobs!')
-
-    size = X.shape[0]
-    min_samples = min(size - 1, min_samples)
-    if min_samples == 0:
-        min_samples = 1
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
     alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
@@ -441,11 +376,22 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     if leaf_size < 1:
         raise ValueError('Leaf size must be greater than 0!')
 
+    if metric == 'minkowski':
+        if p is None:
+            raise TypeError('Minkowski metric given but no p value supplied!')
+        if p < 0:
+            raise ValueError('Minkowski metric with negative p value is not defined!')
+
     # Checks input and converts to an nd-array where possible
     X = check_array(X, accept_sparse='csr')
     # Python 2 and 3 compliant string_type checking
     if isinstance(memory, six.string_types):
         memory = Memory(cachedir=memory, verbose=0)
+
+    size = X.shape[0]
+    min_samples = min(size - 1, min_samples)
+    if min_samples == 0:
+        min_samples = 1
 
     if algorithm != 'best':
         if algorithm == 'generic':

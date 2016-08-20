@@ -16,7 +16,7 @@ from sklearn.utils.testing import assert_no_warnings
 from sklearn.utils.testing import if_matplotlib
 from hdbscan import RobustSingleLinkage
 from hdbscan import robust_single_linkage
-from sklearn.cluster.tests.common import generate_clustered_data
+# from sklearn.cluster.tests.common import generate_clustered_data
 
 from sklearn import datasets
 
@@ -78,23 +78,23 @@ def test_rsl_boruvka_balltree():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
 
-# def test_rsl_prims_balltree():
-#     labels, tree = robust_single_linkage(X, 0.4, algorithm='prims_balltree')
-#     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-#     assert_equal(n_clusters_1, n_clusters)
-#
-#     labels = RobustSingleLinkage(algorithm='prims_balltree').fit(X).labels_
-#     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-#     assert_equal(n_clusters_2, n_clusters)
-#
-# def test_rsl_prims_kdtree():
-#     labels, tree = robust_single_linkage(X, 0.4, algorithm='prims_kdtree')
-#     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-#     assert_equal(n_clusters_1, n_clusters)
-#
-#     labels = RobustSingleLinkage(algorithm='prims_kdtree').fit(X).labels_
-#     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-#     assert_equal(n_clusters_2, n_clusters)
+def test_rsl_prims_balltree():
+    labels, tree = robust_single_linkage(X, 0.4, algorithm='prims_balltree')
+    n_clusters_1 = len(set(labels)) - int(-1 in labels)
+    assert_equal(n_clusters_1, n_clusters)
+
+    labels = RobustSingleLinkage(algorithm='prims_balltree').fit(X).labels_
+    n_clusters_2 = len(set(labels)) - int(-1 in labels)
+    assert_equal(n_clusters_2, n_clusters)
+
+def test_rsl_prims_kdtree():
+    labels, tree = robust_single_linkage(X, 0.4, algorithm='prims_kdtree')
+    n_clusters_1 = len(set(labels)) - int(-1 in labels)
+    assert_equal(n_clusters_1, n_clusters)
+
+    labels = RobustSingleLinkage(algorithm='prims_kdtree').fit(X).labels_
+    n_clusters_2 = len(set(labels)) - int(-1 in labels)
+    assert_equal(n_clusters_2, n_clusters)
 
 def test_rsl_badargs():
     assert_raises(ValueError,

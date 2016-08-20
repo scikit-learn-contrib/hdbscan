@@ -273,7 +273,7 @@ def test_hdbscan_boruvka_balltree_matches():
 def test_condensed_tree_plot():
     clusterer = HDBSCAN().fit(X)
     clusterer.condensed_tree_.get_plot_data()
-    if_matplotlib(clusterer.condensed_tree_.plot)()
+    if_matplotlib(clusterer.condensed_tree_.plot)(select_clusters=True, selection_palette=('r','g','b'))
 
 def test_tree_numpy_output_formats():
 
