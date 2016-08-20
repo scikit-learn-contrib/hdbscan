@@ -281,27 +281,27 @@ def test_condensed_tree_plot():
 
 def test_single_linkage_tree_plot():
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
-    if_matplotlib(clusterer.single_linkage_tree_.plot)()
+    if_matplotlib(clusterer.single_linkage_tree_.plot)(cmap='Reds')
     if_matplotlib(clusterer.single_linkage_tree_.plot)(vary_line_width=False,
                                                        truncate_mode='lastp',
-                                                       p=10,
+                                                       p=10, cmap='Reds'
                                                        colorbar=False)
 
 def test_min_span_tree_plot():
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
-    if_matplotlib(clusterer.minimum_spanning_tree_.plot)()
+    if_matplotlib(clusterer.minimum_spanning_tree_.plot)(cmap='Reds')
 
     H, y = make_blobs(n_samples=50, random_state=0, n_features=10)
     H = StandardScaler().fit_transform(H)
 
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(H)
-    if_matplotlib(clusterer.minimum_spanning_tree_.plot)(vary_line_width=False, colorbar=False)
+    if_matplotlib(clusterer.minimum_spanning_tree_.plot)(cmap='Reds', vary_line_width=False, colorbar=False)
 
     H, y = make_blobs(n_samples=50, random_state=0, n_features=40)
     H = StandardScaler().fit_transform(H)
 
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(H)
-    if_matplotlib(clusterer.minimum_spanning_tree_.plot)(vary_line_width=False, colorbar=False)
+    if_matplotlib(clusterer.minimum_spanning_tree_.plot)(cmap='Reds', vary_line_width=False, colorbar=False)
 
 def test_tree_numpy_output_formats():
 
