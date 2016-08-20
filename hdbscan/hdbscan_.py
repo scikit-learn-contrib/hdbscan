@@ -40,49 +40,52 @@ from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics
 
 # Supporting numpy prior to version 1.7 is a little painful ...
-def isclose(a, b, rtol=1.e-5, atol=1.e-8, equal_nan=False):
+if hasattr(np, 'isclose'):
+    from numpy import isclose
+else:
+    def isclose(a, b, rtol=1.e-5, atol=1.e-8, equal_nan=False):
 
-    def within_tol(x, y, atol, rtol):
-        with np.errstate(invalid='ignore'):
-            result = np.less_equal(abs(x-y), atol + rtol * abs(y))
-        if np.isscalar(a) and np.isscalar(b):
-            result = bool(result)
-        return result
+        def within_tol(x, y, atol, rtol):
+            with np.errstate(invalid='ignore'):
+                result = np.less_equal(abs(x-y), atol + rtol * abs(y))
+            if np.isscalar(a) and np.isscalar(b):
+                result = bool(result)
+            return result
 
-    x = np.array(a, copy=False, subok=True, ndmin=1)
-    y = np.array(b, copy=False, subok=True, ndmin=1)
+        x = np.array(a, copy=False, subok=True, ndmin=1)
+        y = np.array(b, copy=False, subok=True, ndmin=1)
 
-    # Make sure y is an inexact type to avoid bad behavior on abs(MIN_INT).
-    # This will cause casting of x later. Also, make sure to allow subclasses
-    # (e.g., for numpy.ma).
-    dt = np.core.multiarray.result_type(y, 1.)
-    y = np.array(y, dtype=dt, copy=False, subok=True)
+        # Make sure y is an inexact type to avoid bad behavior on abs(MIN_INT).
+        # This will cause casting of x later. Also, make sure to allow subclasses
+        # (e.g., for numpy.ma).
+        dt = np.core.multiarray.result_type(y, 1.)
+        y = np.array(y, dtype=dt, copy=False, subok=True)
 
-    xfin = np.isfinite(x)
-    yfin = np.isfinite(y)
-    if np.all(xfin) and np.all(yfin):
-        return within_tol(x, y, atol, rtol)
-    else:
-        finite = xfin & yfin
-        cond = np.zeros_like(finite, subok=True)
-        # Because we're using boolean indexing, x & y must be the same shape.
-        # Ideally, we'd just do x, y = broadcast_arrays(x, y). It's in
-        # lib.stride_tricks, though, so we can't import it here.
-        x = x * np.ones_like(cond)
-        y = y * np.ones_like(cond)
-        # Avoid subtraction with infinite/nan values...
-        cond[finite] = within_tol(x[finite], y[finite], atol, rtol)
-        # Check for equality of infinite values...
-        cond[~finite] = (x[~finite] == y[~finite])
-        if equal_nan:
-            # Make NaN == NaN
-            both_nan = np.isnan(x) & np.isnan(y)
-            cond[both_nan] = both_nan[both_nan]
-
-        if np.isscalar(a) and np.isscalar(b):
-            return bool(cond)
+        xfin = np.isfinite(x)
+        yfin = np.isfinite(y)
+        if np.all(xfin) and np.all(yfin):
+            return within_tol(x, y, atol, rtol)
         else:
-            return cond
+            finite = xfin & yfin
+            cond = np.zeros_like(finite, subok=True)
+            # Because we're using boolean indexing, x & y must be the same shape.
+            # Ideally, we'd just do x, y = broadcast_arrays(x, y). It's in
+            # lib.stride_tricks, though, so we can't import it here.
+            x = x * np.ones_like(cond)
+            y = y * np.ones_like(cond)
+            # Avoid subtraction with infinite/nan values...
+            cond[finite] = within_tol(x[finite], y[finite], atol, rtol)
+            # Check for equality of infinite values...
+            cond[~finite] = (x[~finite] == y[~finite])
+            if equal_nan:
+                # Make NaN == NaN
+                both_nan = np.isnan(x) & np.isnan(y)
+                cond[both_nan] = both_nan[both_nan]
+
+            if np.isscalar(a) and np.isscalar(b):
+                return bool(cond)
+            else:
+                return cond
 
 
 def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10, allow_single_cluster=False):
