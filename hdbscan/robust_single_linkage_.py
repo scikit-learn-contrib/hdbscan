@@ -65,6 +65,10 @@ def _rsl_prims_kdtree(X, k=5, alpha=1.4142135623730951, metric='minkowski', p=2)
     elif p is None:
         p = 2  # Unused, but needs to be integer; assume euclidean
 
+    # The Cython routines used require contiguous arrays
+    if not X.flags['C_CONTIGUOUS']:
+        X = np.array(X, dtype=np.double, order='C')
+
     dim = X.shape[0]
     k = min(dim - 1, k)
 
@@ -89,6 +93,10 @@ def _rsl_prims_balltree(X, k=5, alpha=1.4142135623730951, metric='minkowski', p=
             raise ValueError('Minkowski metric with negative p value is not defined!')
     elif p is None:
         p = 2  # Unused, but needs to be integer; assume euclidean
+
+    # The Cython routines used require contiguous arrays
+    if not X.flags['C_CONTIGUOUS']:
+        X = np.array(X, dtype=np.double, order='C')
 
     dim = X.shape[0]
     k = min(dim - 1, k)
@@ -343,13 +351,15 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
 
     """
 
-    def __init__(self, cut=0.4, k=5, alpha=1.4142135623730951, gamma=5, metric='euclidean', p=None):
+    def __init__(self, cut=0.4, k=5, alpha=1.4142135623730951, gamma=5, metric='euclidean',
+                 algorithm='best', p=None):
 
         self.cut = cut
         self.k = k
         self.alpha = alpha
         self.gamma = gamma
         self.metric = metric
+        self.algorithm = algorithm
         self.p = p
 
         self._cluster_hierarchy_ = None
