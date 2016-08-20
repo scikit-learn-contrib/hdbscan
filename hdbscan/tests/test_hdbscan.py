@@ -273,9 +273,10 @@ def test_hdbscan_boruvka_balltree_matches():
 def test_condensed_tree_plot():
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
     if_matplotlib(clusterer.condensed_tree_.plot)(select_clusters=True,
+                                                  label_clusters=True,
                                                   selection_palette=('r','g','b'),
                                                   cmap='Reds')
-    if_matplotlib(clusterer.condensed_tree_.plot)(label_clusters=True,
+    if_matplotlib(clusterer.condensed_tree_.plot)(log_size=True,
                                                   colorbar=False,
                                                   cmap='none')
 
@@ -284,7 +285,7 @@ def test_single_linkage_tree_plot():
     if_matplotlib(clusterer.single_linkage_tree_.plot)(cmap='Reds')
     if_matplotlib(clusterer.single_linkage_tree_.plot)(vary_line_width=False,
                                                        truncate_mode='lastp',
-                                                       p=10, cmap='Reds',
+                                                       p=10, cmap='none',
                                                        colorbar=False)
 
 def test_min_span_tree_plot():

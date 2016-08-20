@@ -48,28 +48,6 @@ def _get_leaves(condensed_tree):
     root = cluster_tree['parent'].min()
     return _recurse_leaf_dfs(cluster_tree, root)
 
-def _bfs_from_linkage_tree(hierarchy, bfs_root):
-    """
-    Perform a breadth first search on a tree in scipy hclust format.
-    """
-
-    dim = hierarchy.shape[0]
-    max_node = 2 * dim
-    num_points = max_node - dim + 1
-
-    to_process = [bfs_root]
-    result = []
-
-    while to_process:
-        result.extend(to_process)
-        to_process = [x - num_points for x in
-                      to_process if x >= num_points]
-        if to_process:
-            to_process = hierarchy[to_process, :2].flatten().astype(np.int64).tolist()
-
-    return result
-
-
 class CondensedTree(object):
     def __init__(self, condensed_tree_array):
         self._raw_tree = condensed_tree_array
@@ -165,7 +143,12 @@ class CondensedTree(object):
                     bar_bottoms.append(current_lambda)
                     bar_widths.append(current_size)
                 if log_size:
-                    current_size = np.log(np.exp(current_size) - row['child_size'])
+                    exp_size = np.exp(current_size) - row['child_size']
+                    # Ensure we don't try to take log of zero
+                    if exp_size > 0.01:
+                        current_size = np.log(np.exp(current_size) - row['child_size'])
+                    else:
+                        current_size = 0.0
                 else:
                     current_size -= row['child_size']
                 current_lambda = row['lambda_val']
@@ -327,7 +310,7 @@ class CondensedTree(object):
                 )
 
                 if selection_palette is not None and \
-                        len(selection_palette) > len(chosen_clusters):
+                        len(selection_palette) >= len(chosen_clusters):
                     oval_color = selection_palette[i]
                 else:
                     oval_color = 'r'
