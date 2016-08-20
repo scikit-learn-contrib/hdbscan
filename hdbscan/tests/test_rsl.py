@@ -114,12 +114,10 @@ def test_rsl_high_dimensional():
     H = StandardScaler().fit_transform(H)
     labels, tree = robust_single_linkage(H, 5.5)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    print(n_clusters_1)
     assert_equal(n_clusters_1, n_clusters)
 
     labels = RobustSingleLinkage(cut=5.5, algorithm='best', metric='seuclidean', V=np.ones(H.shape[1])).fit(H).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    print n_clusters_2
     assert_equal(n_clusters_2, n_clusters)
 
 def test_rsl_badargs():
