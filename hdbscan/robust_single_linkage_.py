@@ -28,11 +28,8 @@ from warnings import warn
 FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics
 
 
-def _rsl_generic(X, k=5, alpha=1.4142135623730951, metric='minkowski', p=2):
-    if metric == 'minkowski':
-        distance_matrix = pairwise_distances(X, metric=metric, p=p)
-    else:
-        distance_matrix = pairwise_distances(X, metric=metric)
+def _rsl_generic(X, k=5, alpha=1.4142135623730951, metric='euclidean', **kwargs):
+    distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
 
     mutual_reachability_ = mutual_reachability(distance_matrix, k)
 
@@ -45,7 +42,7 @@ def _rsl_generic(X, k=5, alpha=1.4142135623730951, metric='minkowski', p=2):
     return single_linkage_tree
 
 
-def _rsl_prims_kdtree(X, k=5, alpha=1.4142135623730951, metric='minkowski', **kwargs):
+def _rsl_prims_kdtree(X, k=5, alpha=1.4142135623730951, metric='euclidean', **kwargs):
 
     # The Cython routines used require contiguous arrays
     if not X.flags['C_CONTIGUOUS']:
@@ -67,7 +64,7 @@ def _rsl_prims_kdtree(X, k=5, alpha=1.4142135623730951, metric='minkowski', **kw
     return single_linkage_tree
 
 
-def _rsl_prims_balltree(X, k=5, alpha=1.4142135623730951, metric='minkowski', **kwargs):
+def _rsl_prims_balltree(X, k=5, alpha=1.4142135623730951, metric='euclidean', **kwargs):
 
     # The Cython routines used require contiguous arrays
     if not X.flags['C_CONTIGUOUS']:
@@ -90,7 +87,7 @@ def _rsl_prims_balltree(X, k=5, alpha=1.4142135623730951, metric='minkowski', **
 
 
 def _rsl_boruvka_kdtree(X, k=5, alpha=1.0,
-                        metric='minkowski', leaf_size=40, **kwargs):
+                        metric='euclidean', leaf_size=40, **kwargs):
 
     dim = X.shape[0]
     min_samples = min(dim - 1, k)
@@ -107,7 +104,7 @@ def _rsl_boruvka_kdtree(X, k=5, alpha=1.0,
 
 
 def _rsl_boruvka_balltree(X, k=5, alpha=1.0,
-                          metric='minkowski', leaf_size=40, **kwargs):
+                          metric='euclidean', leaf_size=40, **kwargs):
 
     dim = X.shape[0]
     min_samples = min(dim - 1, k)
@@ -342,7 +339,7 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
     """
 
     def __init__(self, cut=0.4, k=5, alpha=1.4142135623730951, gamma=5, metric='euclidean',
-                 algorithm='best'):
+                 algorithm='best', **kwargs):
 
         self.cut = cut
         self.k = k
@@ -350,6 +347,8 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
         self.gamma = gamma
         self.metric = metric
         self.algorithm = algorithm
+
+        self._metric_kwargs = kwargs
 
         self._cluster_hierarchy_ = None
 
@@ -364,7 +363,11 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
             ``metric='precomputed'``.
         """
         X = check_array(X, accept_sparse='csr')
-        self.labels_, self._cluster_hierarchy_ = robust_single_linkage(X, **self.get_params())
+
+        kwargs = self.get_params()
+        kwargs.update(self._metric_kwargs)
+
+        self.labels_, self._cluster_hierarchy_ = robust_single_linkage(X, **kwargs)
         return self
 
     def fit_predict(self, X, y=None):

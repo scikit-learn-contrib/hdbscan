@@ -19,6 +19,7 @@ from hdbscan import robust_single_linkage
 # from sklearn.cluster.tests.common import generate_clustered_data
 
 from sklearn import datasets
+import warnings
 
 from sklearn.datasets import make_blobs
 from sklearn.utils import shuffle
@@ -96,6 +97,31 @@ def test_rsl_prims_kdtree():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
 
+def test_rsl_unavailable_hierarchy():
+    clusterer = RobustSingleLinkage()
+    with warnings.catch_warnings(record=True) as w:
+        tree = clusterer.cluster_hierarchy_
+        assert(len(w) > 0)
+        assert(tree is None)
+
+def test_rsl_hierarchy():
+    clusterer = RobustSingleLinkage().fit(X)
+    assert(clusterer.cluster_hierarchy_ is not None)
+
+def test_rsl_high_dimensional():
+    H, y = make_blobs(n_samples=50, random_state=0, n_features=64)
+    # H, y = shuffle(X, y, random_state=7)
+    H = StandardScaler().fit_transform(H)
+    labels, tree = robust_single_linkage(H, 5.5)
+    n_clusters_1 = len(set(labels)) - int(-1 in labels)
+    print(n_clusters_1)
+    assert_equal(n_clusters_1, n_clusters)
+
+    labels = RobustSingleLinkage(cut=5.5, algorithm='best', metric='seuclidean', V=np.ones(H.shape[1])).fit(H).labels_
+    n_clusters_2 = len(set(labels)) - int(-1 in labels)
+    print n_clusters_2
+    assert_equal(n_clusters_2, n_clusters)
+
 def test_rsl_badargs():
     assert_raises(ValueError,
                   robust_single_linkage,
@@ -154,6 +180,9 @@ def test_rsl_badargs():
     assert_raises(ValueError,
                   robust_single_linkage,
                   X, 0.4, leaf_size=0)
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, gamma=0)
 
 def test_rsl_is_sklearn_estimator():
 
