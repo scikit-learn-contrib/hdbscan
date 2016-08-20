@@ -14,13 +14,7 @@ from scipy.sparse import issparse
 
 from sklearn.externals.joblib import Memory
 from sklearn.externals import six
-
-try:
-    from sklearn.utils import check_array
-except ImportError:
-    from sklearn.utils import check_arrays
-
-    check_array = check_arrays
+from sklearn.utils import check_array
 
 from ._hdbscan_linkage import mst_linkage_core, mst_linkage_core_vector, label
 from ._hdbscan_boruvka import KDTreeBoruvkaAlgorithm, BallTreeBoruvkaAlgorithm
@@ -116,6 +110,12 @@ def _rsl_prims_balltree(X, k=5, alpha=1.4142135623730951, metric='minkowski', p=
 
 def _rsl_boruvka_kdtree(X, k=5, alpha=1.0,
                         metric='minkowski', p=2, leaf_size=40):
+    if metric == 'minkowski':
+        if p is None:
+            raise TypeError('Minkowski metric given but no p value supplied!')
+        if p < 0:
+            raise ValueError('Minkowski metric with negative p value is not defined!')
+
     dim = X.shape[0]
     min_samples = min(dim - 1, k)
 
@@ -132,6 +132,12 @@ def _rsl_boruvka_kdtree(X, k=5, alpha=1.0,
 
 def _rsl_boruvka_balltree(X, k=5, alpha=1.0,
                           metric='minkowski', p=2, leaf_size=40):
+    if metric == 'minkowski':
+        if p is None:
+            raise TypeError('Minkowski metric given but no p value supplied!')
+        if p < 0:
+            raise ValueError('Minkowski metric with negative p value is not defined!')
+
     dim = X.shape[0]
     min_samples = min(dim - 1, k)
 
@@ -148,7 +154,7 @@ def _rsl_boruvka_balltree(X, k=5, alpha=1.0,
 
 def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
                           gamma=5, metric='minkowski', p=2, algorithm='best',
-                          memory=Memory(cachedir=None, verbose=0)):
+                          memory=Memory(cachedir=None, verbose=0), leaf_size=40):
     """Perform robust single linkage clustering from a vector array
     or distance matrix.
 
@@ -202,6 +208,10 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
         By default, no caching is done. If a string is given, it is the
         path to the caching directory.
 
+    leaf_size : int, optional
+        Leaf size for trees responsible for fast nearest
+        neighbour queries. (default 40)
+
     Returns
     -------
     labels : array [n_samples]
@@ -229,6 +239,9 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
     if type(gamma) is not int or gamma < 1:
         raise ValueError('gamma must be an integer greater than zero!')
 
+    if type(leaf_size) is not int or leaf_size < 1:
+        raise ValueError('Leaf size must be at least one!')
+
     X = check_array(X, accept_sparse='csr')
     if isinstance(memory, six.string_types):
         memory = Memory(cachedir=memory, verbose=0)
@@ -245,10 +258,10 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
                 memory.cache(_rsl_prims_balltree)(X, k, alpha, metric, p)
         elif algorithm == 'boruvka_kdtree':
             single_linkage_tree = \
-                memory.cache(_rsl_boruvka_kdtree)(X, k, alpha, metric, p)
+                memory.cache(_rsl_boruvka_kdtree)(X, k, alpha, metric, p, leaf_size)
         elif algorithm == 'boruvka_balltree':
             single_linkage_tree = \
-                memory.cache(_rsl_boruvka_balltree)(X, k, alpha, metric, p)
+                memory.cache(_rsl_boruvka_balltree)(X, k, alpha, metric, p, leaf_size)
         else:
             raise TypeError('Unknown algorithm type %s specified' % algorithm)
     else:

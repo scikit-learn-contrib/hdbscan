@@ -18,14 +18,7 @@ from sklearn.neighbors import KDTree, BallTree
 from sklearn.externals.joblib import Memory
 from sklearn.externals import six
 from warnings import warn
-
-#Try and work around older sklearn api
-try:
-    from sklearn.utils import check_array
-except ImportError:
-    from sklearn.utils import check_arrays
-
-    check_array = check_arrays
+from sklearn.utils import check_array
 
 from scipy.sparse import csgraph
 
@@ -527,7 +520,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             if X.shape[1] > 60:
                 (single_linkage_tree,
                  result_min_span_tree) = \
-                    memory.cache(_hdbscan_prims_kdtree)(X, min_samples, alpha,
+                    memory.cache(_hdbscan_prims_balltree)(X, min_samples, alpha,
                                                         metric, p, leaf_size,
                                                         gen_min_span_tree, **kwargs)
             else:
@@ -764,8 +757,12 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
         if self._outlier_scores is not None:
             return self._outlier_scores
         else:
-            self._outlier_scores = outlier_scores(self._condensed_tree)
-            return self._outlier_scores
+            if self._condensed_tree is not None:
+                self._outlier_scores = outlier_scores(self._condensed_tree)
+                return self._outlier_scores
+            else:
+                warn('No condensed tree was generated; try running fit first.')
+                return None
 
     @property
     def condensed_tree_(self):
@@ -794,7 +791,7 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
                     'No minimum spanning tree will be provided without raw data.')
                 return None
         else:
-            warn('No minimum spanning tree was generated. \n'
-                 'This may be due to optimized algorithm variations that skip\n'
-                 'explicit generation of the spanning tree.')
+            warn('No minimum spanning tree was generated.'
+                'This may be due to optimized algorithm variations that skip'
+                'explicit generation of the spanning tree.')
             return None

@@ -96,6 +96,65 @@ def test_rsl_boruvka_balltree():
 #     n_clusters_2 = len(set(labels)) - int(-1 in labels)
 #     assert_equal(n_clusters_2, n_clusters)
 
+def test_rsl_badargs():
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  'fail', 0.4)
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  None, 0.4)
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, k='fail')
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, k=-1)
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, metric='imperial')
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, metric=None)
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, metric='minkowski', p=-1)
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, metric='minkowski', p=-1, algorithm='prims_kdtree')
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, metric='minkowski', p=-1, algorithm='prims_balltree')
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, metric='minkowski', p=-1, algorithm='boruvka_balltree')
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, metric='precomputed', algorithm='boruvka_kdtree')
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, metric='precomputed', algorithm='prims_kdtree')
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, metric='precomputed', algorithm='prims_balltree')
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, metric='precomputed',algorithm='boruvka_balltree')
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, alpha=-1)
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, alpha='fail')
+    assert_raises(Exception,
+                  robust_single_linkage,
+                  X, 0.4, algorithm='something_else')
+    assert_raises(TypeError,
+                  robust_single_linkage,
+                  X, 0.4, metric='minkowski', p=None)
+    assert_raises(ValueError,
+                  robust_single_linkage,
+                  X, 0.4, leaf_size=0)
+
 def test_rsl_is_sklearn_estimator():
 
     check_estimator(RobustSingleLinkage)
