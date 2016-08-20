@@ -157,7 +157,7 @@ def test_hdbscan_prims_balltree():
                   metric='cosine')
 
 def test_hdbscan_boruvka_kdtree():
-    labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm='boruvka_kdtree')
+    labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm='boruvka_kdtree', leaf_size=5)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_1, n_clusters)
 
@@ -172,7 +172,7 @@ def test_hdbscan_boruvka_kdtree():
                   metric='russelrao')
 
 def test_hdbscan_boruvka_balltree():
-    labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm='boruvka_balltree')
+    labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm='boruvka_balltree', leaf_size=5)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_1, n_clusters)
 
@@ -185,6 +185,15 @@ def test_hdbscan_boruvka_balltree():
                   X,
                   algorithm='boruvka_balltree',
                   metric='cosine')
+
+def test_hdbscan_generic():
+    labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm='generic')
+    n_clusters_1 = len(set(labels)) - int(-1 in labels)
+    assert_equal(n_clusters_1, n_clusters)
+
+    labels = HDBSCAN(algorithm='generic', gen_min_span_tree=True).fit(X).labels_
+    n_clusters_2 = len(set(labels)) - int(-1 in labels)
+    assert_equal(n_clusters_2, n_clusters)
 
 
 def test_hdbscan_high_dimensional():
