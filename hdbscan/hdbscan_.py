@@ -104,6 +104,8 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0,
                      metric='minkowski', p=2, leaf_size=None, gen_min_span_tree=False, **kwargs):
     if metric == 'minkowski':
         distance_matrix = pairwise_distances(X, metric=metric, p=p)
+    elif metric == 'arccos':
+        distance_matrix = pairwise_distances(X, metric='cosine', **kwargs)
     else:
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
 
