@@ -37,7 +37,7 @@ from .dist_metrics import DistanceMetric
 
 from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 
-FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics
+FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics + ['cosine', 'arccos']
 
 # Supporting numpy prior to version 1.7 is a little painful ...
 if hasattr(np, 'isclose'):
