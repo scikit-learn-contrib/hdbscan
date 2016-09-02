@@ -2,7 +2,7 @@ machine:
   environment:
     # The github organization or username of the repository which hosts the
     # project and documentation.
-    USERNAME: "lmcinnes"
+    USERNAME: "scikit-learn-contrib"
 
     # The repository where the documentation will be hosted
     DOC_REPO: "hdbscan"

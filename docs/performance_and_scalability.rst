@@ -39,7 +39,7 @@ The implementations being test are:
    provides very fast agglomerative clustering in C++)
 -  `DeBaCl <https://github.com/CoAxLab/DeBaCl>`__ (Density Based
    Clustering; similar to a mix of DBSCAN and Agglomerative)
--  `HDBSCAN <https://github.com/lmcinnes/hdbscan>`__ (A robust
+-  `HDBSCAN <https://github.com/scikit-learn-contrib/hdbscan>`__ (A robust
    hierarchical version of DBSCAN)
 
 Obviously a major factor in performance will be the algorithm itself.
@@ -510,7 +510,7 @@ to be very constrained in what algorithms you can apply: if you get
 enough datapoints only K-Means, DBSCAN, and HDBSCAN will be left. This
 is somewhat disappointing, paritcularly as `K-Means is not a
 particularly good clustering
-algorithm <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`__,
+algorithm <http://nbviewer.jupyter.org/github/scikit-learn-contrib/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`__,
 paricularly for exploratory data analysis.
 
 With this in mind it is worth looking at how these last several
@@ -781,7 +781,7 @@ hierarchical density based clustering than DeBaCl, and sklearn has by
 far the best K-Means implementation). For anything beyond toy datasets,
 however, your algorithm options are greatly constrained. In my
 (obviously biased) opinion `HDBSCAN is the best algorithm for
-clustering <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`__.
+clustering <http://nbviewer.jupyter.org/github/scikit-learn-contrib/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`__.
 If you need to cluster data beyond the scope that HDBSCAN can reasonably
 handle then the only algorithm options on the table are DBSCAN and
 K-Means; DBSCAN is the slower of the two, especially for very large

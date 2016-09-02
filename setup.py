@@ -54,7 +54,7 @@ configuration = {
         'Programming Language :: Python :: 3.4',
     ],
     'keywords' : 'cluster clustering density hierarchical',
-    'url' : 'http://github.com/lmcinnes/hdbscan',
+    'url' : 'http://github.com/scikit-learn-contrib/hdbscan',
     'maintainer' : 'Leland McInnes',
     'maintainer_email' : 'leland.mcinnes@gmail.com',
     'license' : 'BSD',

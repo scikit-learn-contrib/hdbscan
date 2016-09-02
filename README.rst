@@ -5,13 +5,13 @@
     :target: https://anaconda.org/conda-forge/hdbscan
     :alt: Conda-forge Version
 .. image:: https://img.shields.io/pypi/l/hdbscan.svg
-    :target: https://github.com/lmcinnes/hdbscan/blob/master/LICENSE
+    :target: https://github.com/scikit-learn-contrib/hdbscan/blob/master/LICENSE
     :alt: License
-.. image:: https://travis-ci.org/lmcinnes/hdbscan.svg
-    :target: https://travis-ci.org/lmcinnes/hdbscan
+.. image:: https://travis-ci.org/scikit-learn-contrib/hdbscan.svg
+    :target: https://travis-ci.org/scikit-learn-contrib/hdbscan
     :alt: Travis Build Status
-.. image:: https://coveralls.io/repos/github/lmcinnes/hdbscan/badge.svg?branch=master
-    :target: https://coveralls.io/github/lmcinnes/hdbscan?branch=master
+.. image:: https://coveralls.io/repos/github/scikit-learn-contrib/hdbscan/badge.svg?branch=master
+    :target: https://coveralls.io/github/scikit-learn-contrib/hdbscan?branch=master
     :alt: Test Coverage
 .. image:: https://readthedocs.org/projects/hdbscan/badge/?version=latest
     :target: https://hdbscan.readthedocs.org
@@ -45,7 +45,7 @@ Based on the paper:
     
 Documentation, including tutorials, are available on ReadTheDocs at http://hdbscan.readthedocs.io/en/latest/ .  
     
-Notebooks `comparing HDBSCAN to other clustering algorithms <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`_, explaining `how HDBSCAN works <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb>`_ and `comparing performance with other python clustering implementations <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations-v0.7.ipynb>`_ are available.
+Notebooks `comparing HDBSCAN to other clustering algorithms <http://nbviewer.jupyter.org/github/scikit-learn-contrib/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`_, explaining `how HDBSCAN works <http://nbviewer.jupyter.org/github/scikit-learn-contrib/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb>`_ and `comparing performance with other python clustering implementations <http://nbviewer.jupyter.org/github/scikit-learn-contrib/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations-v0.7.ipynb>`_ are available.
 
 ------------------
 How to use HDBSCAN
@@ -69,10 +69,10 @@ Performance
 -----------
 
 Significant effort has been put into making the hdbscan implementation as fast as 
-possible. It is `orders of magnitude faster than the reference implementation <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Python%20vs%20Java.ipynb>`_ in Java,
+possible. It is `orders of magnitude faster than the reference implementation <http://nbviewer.jupyter.org/github/scikit-learn-contrib/hdbscan/blob/master/notebooks/Python%20vs%20Java.ipynb>`_ in Java,
 and is currently faster than highly optimized single linkage implementations in C and C++.
-`version 0.7 performance can be seen in this notebook <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations-v0.7.ipynb>`_ .
-In particular `performance on low dimensional data is better than sklearn's DBSCAN <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations%202D%20v0.7.ipynb>`_ ,
+`version 0.7 performance can be seen in this notebook <http://nbviewer.jupyter.org/github/scikit-learn-contrib/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations-v0.7.ipynb>`_ .
+In particular `performance on low dimensional data is better than sklearn's DBSCAN <http://nbviewer.jupyter.org/github/scikit-learn-contrib/hdbscan/blob/master/notebooks/Benchmarking%20scalability%20of%20clustering%20implementations%202D%20v0.7.ipynb>`_ ,
 and via support for caching with joblib, re-clustering with different parameters
 can be almost free.
 
@@ -90,7 +90,7 @@ object has attributes for:
 
 All of which come equipped with methods for plotting and converting
 to Pandas or NetworkX for further analysis. See the notebook on
-`how HDBSCAN works <http://nbviewer.jupyter.org/github/lmcinnes/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb>`_ for examples and further details.
+`how HDBSCAN works <http://nbviewer.jupyter.org/github/scikit-learn-contrib/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb>`_ for examples and further details.
 
 The clusterer objects also have an attribute providing cluster membership
 strengths, resulting in optional soft clustering (and no further compute 
@@ -173,7 +173,7 @@ For a manual install get this package:
 
 .. code:: bash
 
-    wget https://github.com/lmcinnes/hdbscan/archive/master.zip
+    wget https://github.com/scikit-learn-contrib/hdbscan/archive/master.zip
     unzip master.zip
     rm master.zip
     cd hdbscan-master

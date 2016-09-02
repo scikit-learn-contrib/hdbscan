@@ -54,7 +54,7 @@ one hundred data points.
 Now, the best way to explain HDBSCAN is actually just use it and then go
 through the steps that occurred along the way teasing out what is
 happening at each step. So let's load up the `hdbscan
-library <https://github.com/lmcinnes/hdbscan>`__ and get to work.
+library <https://github.com/scikit-learn-contrib/hdbscan>`__ and get to work.
 
 .. code:: python
 
@@ -396,7 +396,7 @@ are a fair number of moving parts to the algorithm -- but ultimately
 each part is actually very straightforward and can be optimized well.
 Hopefully with a better understanding both of the intuitions and some of
 the implementation details of HDBSCAN you will feel motivated to `try it
-out <https://github.com/lmcinnes/hdbscan>`__. The library continues to
+out <https://github.com/scikit-learn-contrib/hdbscan>`__. The library continues to
 develop, and will provide a base for new ideas including a near
 parameterless Persistent Density Clustering algorithm, and a new
 semi-supervised clustering algorithm.

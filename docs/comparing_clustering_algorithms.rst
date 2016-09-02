@@ -585,7 +585,7 @@ So, in summary:
 
 How does HDBSCAN perform on our test dataset? Unfortunately HDBSCAN is
 not part of ``sklearn``. Fortunately we can just import the `hdbscan
-library <https://github.com/lmcinnes/hdbscan>`__ and use it as if it
+library <https://github.com/scikit-learn-contrib/hdbscan>`__ and use it as if it
 were part of ``sklearn``.
 
 .. code:: python
