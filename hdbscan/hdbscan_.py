@@ -19,6 +19,7 @@ from sklearn.externals.joblib import Memory
 from sklearn.externals import six
 from warnings import warn
 from sklearn.utils import check_array
+from sklearn.externals.joblib.parallel import cpu_count
 
 from scipy.sparse import csgraph
 
@@ -239,7 +240,7 @@ def _hdbscan_boruvka_kdtree(X, min_samples=5, alpha=1.0,
         leaf_size = 3
 
     if core_dist_n_jobs < 1:
-        raise ValueError('Parallel core distance computation requires 1 or more jobs!')
+       core_dist_n_jobs = max(cpu_count() + 1 + core_dist_n_jobs, 1)
 
     tree = KDTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
     alg = KDTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
@@ -267,7 +268,7 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
         leaf_size = 3
 
     if core_dist_n_jobs < 1:
-        raise ValueError('Parallel core distance computation requires 1 or more jobs!')
+        core_dist_n_jobs = max(cpu_count() + 1 + core_dist_n_jobs, 1)
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
     alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric, leaf_size=leaf_size // 3,
@@ -362,7 +363,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
 
     core_dist_n_jobs : int, optional
         Number of parallel jobs to run in core distance computations (if
-        supported by the specific algorithm).
+        supported by the specific algorithm). For ``core_dist_n_jobs``
+        below -1, (n_cpus + 1 + core_dist_n_jobs) are used.
         (default 4)
 
 
