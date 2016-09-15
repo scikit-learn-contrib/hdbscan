@@ -34,7 +34,7 @@ def readme():
 
 configuration = {
     'name' : 'hdbscan',
-    'version' : '0.8.1',
+    'version' : '0.8.2',
     'description' : 'Clustering based on density with variable density clusters',
     'long_description' : readme(),
     'classifiers' : [
