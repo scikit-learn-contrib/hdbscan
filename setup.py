@@ -5,7 +5,7 @@ try:
     from setuptools import setup, Extension
     HAVE_CYTHON = True
 except ImportError as e:
-    warnings.warn(e.message)
+    warnings.warn(e.args[0])
     from setuptools import setup, Extension
     from setuptools.command.build_ext import build_ext
     HAVE_CYTHON = False
