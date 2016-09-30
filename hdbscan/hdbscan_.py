@@ -37,6 +37,7 @@ from ._hdbscan_boruvka import KDTreeBoruvkaAlgorithm, BallTreeBoruvkaAlgorithm
 from .dist_metrics import DistanceMetric
 
 from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
+from .prediction import PredictionData
 
 FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics + ['cosine', 'arccos']
 
@@ -616,12 +617,18 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
         supported by the specific algorithm).
         (default 4)
 
-    allow_single_cluster : boolean
+    allow_single_cluster : boolean, optional
         By default HDBSCAN* will not produce a single cluster, setting this
         to t=True will override this and allow single cluster results in
         the case that you feel this is a valid result for your dataset.
         (default False)
 
+    prediction_data : boolean, optional
+        Whether to generate extra cached data for predicting labels or
+        membership vectors few new unseen points later. If you wish to
+        persist the clustering object for later re-use you probably want
+        to set this to True.
+        (default False)
 
     **kwargs : optional
         Arguments passed to the distance metric
@@ -664,6 +671,11 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
         outlier-like the point. Useful as an outlier detection technique.
         Based on the GLOSH algorithm by Campello, Moulavi, Zimek and Sander.
 
+    prediction_data_ : PredictionData object
+        Cached data used for predicting the cluster labels of new or
+        unseen points. Necessary only if you are using functions from
+        ``hdbscan.prediction``.
+
     References
     ----------
     R. Campello, D. Moulavi, and J. Sander, "Density-Based Clustering Based on
@@ -684,7 +696,8 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
                  approx_min_span_tree=True,
                  gen_min_span_tree=False,
                  core_dist_n_jobs=4,
-                 allow_single_cluster=False, **kwargs):
+                 allow_single_cluster=False,
+                 prediction_data=False, **kwargs):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
         self.alpha = alpha
@@ -698,6 +711,7 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
         self.gen_min_span_tree = gen_min_span_tree
         self.core_dist_n_jobs = core_dist_n_jobs
         self.allow_single_cluster = allow_single_cluster
+        self.prediction_data = prediction_data
 
         self._metric_kwargs = kwargs
 
@@ -706,6 +720,7 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
         self._min_spanning_tree = None
         self._raw_data = None
         self._outlier_scores = None
+        self._prediction_data = None
 
     def fit(self, X, y=None):
         """Perform HDBSCAN clustering from features or distance matrix.
@@ -730,6 +745,10 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
          self._condensed_tree,
          self._single_linkage_tree,
          self._min_spanning_tree) = hdbscan(X, **kwargs)
+
+        if self.prediction_data:
+            self.generate_prediction_data()
+
         return self
 
     def fit_predict(self, X, y=None):
@@ -749,6 +768,33 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
         """
         self.fit(X)
         return self.labels_
+
+    def generate_prediction_data(self):
+        """
+        Create data that caches intermediate results used for predicting
+        the label of new/unseen points. This data is only useful if
+        you are intending to use functions from ``hdbscan.prediction``.
+        """
+
+        if self.metric != 'precomputed':
+            min_samples = self.min_samples or self.min_cluster_size
+            self._prediction_data = PredictionData(
+                self._raw_data, self._condensed_tree, min_samples,
+                tree_type='kdtree', metric=self.metric,
+                **self._metric_kwargs
+            )
+        else:
+            warn('Cannot generate prediction data for non-vector'
+                 'space inputs -- access to the source data rather'
+                 'than mere distances is required!')
+
+    @property
+    def prediction_data_(self):
+        if self._prediction_data is None:
+            warn('No prediction data was generated')
+            return None
+        else:
+            return self._prediction_data
 
     @property
     def outlier_scores_(self):

@@ -224,9 +224,6 @@ def _find_cluster_and_probability(tree, cluster_tree, neighbor_indices, neighbor
     core_distances : array (n_samples, )
         An array of core distances for all points
 
-    min_samples : int
-        The min_samples value used to generate core distances.
-
     cluster_map : dict
         A dictionary mapping cluster numbers in the condensed tree to labels
         in the final selected clustering.
@@ -235,6 +232,8 @@ def _find_cluster_and_probability(tree, cluster_tree, neighbor_indices, neighbor
         A dictionary mapping cluster numbers in the condensed tree to the
         maximum lambda value seen in that cluster.
 
+    min_samples : int
+        The min_samples value used to generate core distances.
     """
     raw_tree = tree._raw_tree
     tree_root = cluster_tree['parent'].min()
@@ -272,20 +271,81 @@ def _find_cluster_and_probability(tree, cluster_tree, neighbor_indices, neighbor
 
     return cluster_label, prob
 
-def predict_approx_reclustering(clusterer, points):
+
+def approximate_predict(clusterer, points_to_predict):
+    """Predict the cluster label of new points. The returned labels
+    will be those of the original clustering found by ``clustererer``,
+    and therefore are not (necessarily) the cluster labels that would
+    be found by clustering the original data combined with
+    ``points_to_predict``, hence the 'approximate' label.
+
+    If you simply wish to assign new points to an existing clustering
+    in the 'best' way possible, this is the function to use. If you
+    want to predict how ``points_to_predict`` would cluster with
+    the original data under HDBSCAN, you want ``reclustering_predict``.
+
+    Parameters
+    ----------
+    clusterer : HDBSCAN
+        A clustering object that has been fit to the data and
+        either had ``prediction_data=True`` set, or called the
+        ``generate_prediction_data`` method after the fact.
+
+    points_to_predict : array, or array-like (n_samples, n_features)
+        The new data points to predict cluster labels for. They should
+        have the same dimensionality as the original dataset over which
+        clusterer was fit.
+
+    Returns
+    -------
+    labels : array (n_samples,)
+        The predicted labels of the ``points_to_predict``
+
+    probabilities : array (n_samples,)
+        The soft cluster scores for each of the ``points_to_predict``
+
+    See Also
+    --------
+    ``reclustering_predict``
+    ``membership_vector``
+
+    """
+    if clusterer.prediction_data_ is None:
+        raise ValueError('Clusterer does not have prediction data!'
+                         ' Try fitting with prediction_data=True set,'
+                         ' or run generate_preiction_data on the clusterer')
+
+    points_to_predict = np.asarray(points_to_predict)
+
+    if points_to_predict.shape[1] != \
+            clusterer.prediction_data_.raw_data.shape[1]:
+        raise ValueError('New points dimension does not match fit data!')
+
+    labels = np.empty(points_to_predict.shape[0], dtype=np.int)
+    probabilities = np.empty(points_to_predict.shape[0], dtype=np.float64)
+
+    min_samples = clusterer.min_samples or clusterer.min_cluster_size
+    neighbor_distances, neighbor_indices = \
+        clusterer.prediction_data_.tree.query(points_to_predict, k=2 * min_samples)
+
+    for i in range(points_to_predict.shape[0]):
+        label, prob = _find_cluster_and_probability(
+            clusterer.condensed_tree_,
+            clusterer.prediction_data_.cluster_tree,
+            neighbor_indices[i],
+            neighbor_distances[i],
+            clusterer.prediction_data_.core_distances,
+            clusterer.prediction_data_.cluster_map,
+            clusterer.prediction_data_.max_lambdas,
+            min_samples
+        )
+        labels[i] = label
+        probabilities[i] = prob
+
+    return labels, probabilities
+
+def reclustering_predict(clusterer, points_to_predict):
     pass
 
-def predict_exact_reclustering(clusterer, points):
-    pass
-
-def predict_approx_current_clusters(clusterer, points):
-    pass
-
-def predict_exact_current_clusters(clusterer, points):
-    pass
-
-def predict_approx_membership_vector(clusterer, points):
-    pass
-
-def predict_exact_membership_vector(clusterer, points):
+def membership_vector(clusterer, points_to_predict):
     pass
