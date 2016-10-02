@@ -38,7 +38,7 @@ cdef np.float64_t min_dist_to_exemplar(
 
     for i in range(cluster_exemplars.shape[0]):
         distance = dist_metric.dist(point_ptr,
-                                    &cluster_exemplars_ptr[num_features * i],
+                                    &exemplars_ptr[num_features * i],
                                     num_features)
         if distance < result:
             result = distance
@@ -47,7 +47,8 @@ cdef np.float64_t min_dist_to_exemplar(
 
 cdef np.ndarray[np.float64_t, ndim=1] dist_vector(
                     np.ndarray[np.float64_t, ndim=1] point,
-                    list exemplars_list):
+                    list exemplars_list,
+                    DistanceMetric dist_metric):
 
     cdef np.intp_t i
     cdef np.ndarray[np.float64_t, ndim=2] exemplars
@@ -56,13 +57,14 @@ cdef np.ndarray[np.float64_t, ndim=1] dist_vector(
 
     for i in range(len(exemplars_list)):
         exemplars = exemplars_list[i]
-        result[i] = min_dist_to_exemplar(point, exemplars)
+        result[i] = min_dist_to_exemplar(point, exemplars, dist_metric)
 
     return result
 
 cpdef np.ndarray[np.float64_t, ndim=1] dist_membership_vector(
                     np.ndarray[np.float64_t, ndim=1] point,
                     list exemplars_list,
+                    DistanceMetric dist_metric,
                     softmax=False):
 
     cdef np.intp_t i
@@ -70,7 +72,7 @@ cpdef np.ndarray[np.float64_t, ndim=1] dist_membership_vector(
     cdef np.ndarray[np.float64_t, ndim=1] vector
     cdef np.float64_t sum
 
-    vector = dist_vector(point, exemplars_list)
+    vector = dist_vector(point, exemplars_list, dist_metric)
 
     if softmax:
         for i in range(vector.shape[0]):
