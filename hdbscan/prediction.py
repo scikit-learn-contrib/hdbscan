@@ -6,6 +6,7 @@
 import numpy as np
 
 from sklearn.neighbors import KDTree, BallTree
+from ._prediction_utils import get_tree_row_with_child
 
 
 class PredictionData(object):
@@ -182,7 +183,7 @@ def _extend_condensed_tree(tree, neighbor_indices, neighbor_distances,
                                                           min_samples
                                                           )
 
-    neighbor_tree_row = get_tree_row_with_child(raw_tree, nearest_neighbor)
+    neighbor_tree_row = get_tree_row_with_child(tree, nearest_neighbor)
     potential_cluster = neighbor_tree_row['parent']
 
     if neighbor_tree_row['lambda_val'] <= lambda_:
