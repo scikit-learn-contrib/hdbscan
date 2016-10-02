@@ -12,7 +12,7 @@ from libc.float cimport DBL_MAX
 
 cpdef get_tree_row_with_child(np.ndarray tree, np.intp_t child):
 
-    cdef int i
+    cdef np.intp_t i
     cdef np.ndarray[np.intp_t, ndim = 1] child_array = tree['child']
 
     for i in range(tree.shape[0]):
