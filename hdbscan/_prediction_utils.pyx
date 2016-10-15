@@ -70,7 +70,7 @@ cpdef np.ndarray[np.float64_t, ndim=1] dist_membership_vector(
     cdef np.intp_t i
     cdef np.ndarray[np.float64_t, ndim=1] result = np.empty(len(exemplars_list))
     cdef np.ndarray[np.float64_t, ndim=1] vector
-    cdef np.float64_t sum
+    cdef np.float64_t sum = 0.0
 
     vector = dist_vector(point, exemplars_list, dist_metric)
 

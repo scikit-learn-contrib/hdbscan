@@ -737,6 +737,9 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
             self._raw_data = X
 
         kwargs = self.get_params()
+        # prediction data only applies to the persistent model, so remove
+        # it from the keyword args we pass on the the function
+        kwargs.pop('prediction_data', None)
         kwargs.update(self._metric_kwargs)
 
         (self.labels_,

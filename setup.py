@@ -68,6 +68,7 @@ configuration = {
                      _hdbscan_linkage,
                      _hdbscan_boruvka,
                      _hdbscan_reachability,
+                     _prediction_utils,
                      dist_metrics],
     'cmdclass' : {'build_ext' : build_ext},
     'test_suite' : 'nose.collector',
