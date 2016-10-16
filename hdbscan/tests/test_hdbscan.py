@@ -4,6 +4,7 @@ Shamelessly based on (i.e. ripped off from) the DBSCAN test code
 """
 #import pickle
 from nose.tools import assert_less
+from nose.tools import assert_greater_equal
 import numpy as np
 from scipy.spatial import distance
 from scipy import sparse
@@ -217,7 +218,6 @@ def test_hdbscan_best_balltree_metric():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
 
-
 def test_hdbscan_no_clusters():
     labels, p, persist, ctree, ltree, mtree = hdbscan(X, min_cluster_size=len(X)+1)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
@@ -226,7 +226,19 @@ def test_hdbscan_no_clusters():
     labels = HDBSCAN(min_cluster_size=len(X)+1).fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, 0)
-    
+
+def test_hdbscan_min_cluster_size():
+    for min_cluster_size in range(2, len(X)+1, 1):
+        labels, p, persist, ctree, ltree, mtree = hdbscan(X, min_cluster_size=min_cluster_size)
+        true_labels = [label for label in labels if label != -1]
+        if len(true_labels) != 0:
+            assert_greater_equal(np.min(np.bincount(true_labels)), min_cluster_size)
+
+        labels = HDBSCAN(min_cluster_size=min_cluster_size).fit(X).labels_
+        true_labels = [label for label in labels if label != -1]
+        if len(true_labels) != 0:
+            assert_greater_equal(np.min(np.bincount(true_labels)), min_cluster_size)
+
 def test_hdbscan_callable_metric():
     # metric is the function reference, not the string key.
     metric = distance.euclidean
