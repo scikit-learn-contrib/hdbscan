@@ -220,7 +220,7 @@ cdef class BoruvkaUnionFind (object):
             self.is_component[x] = False
         return self._data[x, 0]
 
-    cdef np.ndarray[np.intp_t, ndim = 1] components(self):
+    cdef np.ndarray[np.intp_t, ndim=1] components(self):
         """Return an array of all component roots/identifiers"""
         return self.is_component.nonzero()[0]
 
