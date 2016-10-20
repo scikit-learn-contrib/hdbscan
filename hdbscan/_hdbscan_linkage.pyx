@@ -1,4 +1,5 @@
-#cython: boundscheck=False, nonecheck=False
+# cython: boundscheck=False
+# cython: nonecheck=False
 # Minimum spanning tree single linkage implementation for hdbscan
 # Authors: Leland McInnes, Steve Astels
 # License: 3-clause BSD
@@ -10,8 +11,10 @@ from libc.float cimport DBL_MAX
 
 from dist_metrics cimport DistanceMetric
 
+
 cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
-                               np.ndarray[np.double_t, ndim=2] distance_matrix):
+                               np.ndarray[np.double_t,
+                                          ndim=2] distance_matrix):
 
     cdef np.ndarray[np.intp_t, ndim=1] node_labels
     cdef np.ndarray[np.intp_t, ndim=1] current_labels
@@ -32,7 +35,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
     current_node = 0
     current_distances = np.infty * np.ones(distance_matrix.shape[0])
     current_labels = node_labels
-    for i in range(1,node_labels.shape[0]):
+    for i in range(1, node_labels.shape[0]):
         label_filter = current_labels != current_node
         current_labels = current_labels[label_filter]
         left = current_distances[label_filter]
@@ -48,12 +51,14 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
 
     return result
 
-cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
-                               np.ndarray[np.double_t, ndim=2, mode='c'] raw_data,
-                               np.ndarray[np.double_t, ndim=1, mode='c'] core_distances,
-                               DistanceMetric dist_metric,
-                               np.double_t alpha=1.0):
 
+cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
+        np.ndarray[np.double_t, ndim=2, mode='c'] raw_data,
+        np.ndarray[np.double_t, ndim=1, mode='c'] core_distances,
+        DistanceMetric dist_metric,
+        np.double_t alpha=1.0):
+
+    # Add a comment
     cdef np.ndarray[np.double_t, ndim=1] current_distances_arr
     cdef np.ndarray[np.int8_t, ndim=1] in_tree_arr
     cdef np.ndarray[np.double_t, ndim=2] result_arr
@@ -83,7 +88,8 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
     dim = raw_data.shape[0]
     num_features = raw_data.shape[1]
 
-    raw_data_view = (<np.double_t [:raw_data.shape[0], :raw_data.shape[1]:1]> (<np.double_t *> raw_data.data))
+    raw_data_view = (<np.double_t[:raw_data.shape[0], :raw_data.shape[1]:1]> (
+        <np.double_t *> raw_data.data))
     raw_data_ptr = (<np.double_t *> &raw_data_view[0, 0])
 
     result_arr = np.zeros((dim - 1, 3))
@@ -91,7 +97,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
     current_node = 0
     current_distances_arr = np.infty * np.ones(dim)
 
-    result = (<np.double_t [:dim - 1, :3:1]> (<np.double_t *> result_arr.data))
+    result = (<np.double_t[:dim - 1, :3:1]> (<np.double_t *> result_arr.data))
     in_tree = (<np.int8_t *> in_tree_arr.data)
     current_distances = (<np.double_t *> current_distances_arr.data)
     current_core_distances = (<np.double_t *> core_distances.data)
@@ -110,7 +116,8 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
                 continue
 
             right_value = current_distances[j]
-            left_value = dist_metric.dist(&raw_data_ptr[num_features * current_node],
+            left_value = dist_metric.dist(&raw_data_ptr[num_features *
+                                                        current_node],
                                           &raw_data_ptr[num_features * j],
                                           num_features)
 
@@ -118,7 +125,9 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
                 left_value /= alpha
 
             core_value = core_distances[j]
-            if current_node_core_distance > right_value or core_value > right_value or left_value > right_value:
+            if (current_node_core_distance > right_value or
+                    core_value > right_value or
+                    left_value > right_value):
                 if right_value < new_distance:
                     new_distance = right_value
                     new_node = j
@@ -147,6 +156,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
         current_node = new_node
 
     return result_arr
+
 
 cdef class UnionFind (object):
 
@@ -183,6 +193,7 @@ cdef class UnionFind (object):
             p, self.parent_arr[p] = self.parent_arr[p], n
         return n
 
+
 cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
 
     cdef np.ndarray[np.double_t, ndim=2] result_arr
@@ -192,7 +203,8 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
     cdef np.double_t delta
 
     result_arr = np.zeros((L.shape[0], L.shape[1] + 1))
-    result = (<np.double_t[:L.shape[0], :4:1]> (<np.double_t *> result_arr.data))
+    result = (<np.double_t[:L.shape[0], :4:1]> (
+        <np.double_t *> result_arr.data))
     N = L.shape[0] + 1
     U = UnionFind(N)
 
@@ -208,18 +220,18 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
         result[index][1] = bb
         result[index][2] = delta
         result[index][3] = U.size[aa] + U.size[bb]
-        
+
         U.union(aa, bb)
-       
+
     return result_arr
 
+
 cpdef np.ndarray[np.double_t, ndim=2] single_linkage(distance_matrix):
-    
+
     cdef np.ndarray[np.double_t, ndim=2] hierarchy
     cdef np.ndarray[np.double_t, ndim=2] for_labelling
-    
+
     hierarchy = mst_linkage_core(distance_matrix)
     for_labelling = hierarchy[np.argsort(hierarchy.T[2]), :]
-    return label(for_labelling)
 
-    
+    return label(for_labelling)

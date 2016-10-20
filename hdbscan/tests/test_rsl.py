@@ -1,21 +1,20 @@
 """
 Tests for Robust Single Linkage clustering algorithm
 """
-#import pickle
+# import pickle
 from nose.tools import assert_less
 import numpy as np
 from scipy.spatial import distance
 from scipy import sparse
 from sklearn.utils.estimator_checks import check_estimator
-from sklearn.utils.testing import assert_equal
-from sklearn.utils.testing import assert_array_equal
-from sklearn.utils.testing import assert_raises
-from sklearn.utils.testing import assert_in
-from sklearn.utils.testing import assert_not_in
-from sklearn.utils.testing import assert_no_warnings
-from sklearn.utils.testing import if_matplotlib
-from hdbscan import RobustSingleLinkage
-from hdbscan import robust_single_linkage
+from sklearn.utils.testing import (assert_equal,
+                                   assert_array_equal,
+                                   assert_raises,
+                                   assert_in,
+                                   assert_not_in,
+                                   assert_no_warnings,
+                                   if_matplotlib)
+from hdbscan import RobustSingleLinkage, robust_single_linkage
 # from sklearn.cluster.tests.common import generate_clustered_data
 
 from sklearn import datasets
@@ -32,18 +31,20 @@ X, y = shuffle(X, y, random_state=7)
 X = StandardScaler().fit_transform(X)
 # X = generate_clustered_data(n_clusters=n_clusters, n_samples_per_cluster=50)
 
+
 def test_rsl_distance_matrix():
     D = distance.squareform(distance.pdist(X))
     D /= np.max(D)
 
     labels, tree = robust_single_linkage(D, 0.4, metric='precomputed')
     # number of clusters, ignoring noise if present
-    n_clusters_1 = len(set(labels)) - int(-1 in labels) # ignore noise
+    n_clusters_1 = len(set(labels)) - int(-1 in labels)  # ignore noise
     assert_equal(n_clusters_1, 2)
 
     labels = RobustSingleLinkage(metric="precomputed").fit(D).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, 2)
+
 
 def test_rsl_feature_vector():
     labels, tree = robust_single_linkage(X, 0.4)
@@ -53,6 +54,7 @@ def test_rsl_feature_vector():
     labels = RobustSingleLinkage().fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
+
 
 def test_rsl_callable_metric():
     # metric is the function reference, not the string key.
@@ -66,18 +68,22 @@ def test_rsl_callable_metric():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
 
+
 def test_rsl_input_lists():
     X = [[1., 2.], [3., 4.]]
     RobustSingleLinkage().fit(X)  # must not raise exception
+
 
 def test_rsl_boruvka_balltree():
     labels, tree = robust_single_linkage(X, 0.45, algorithm='boruvka_balltree')
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_1, n_clusters)
 
-    labels = RobustSingleLinkage(cut=0.45, algorithm='boruvka_balltree').fit(X).labels_
+    labels = RobustSingleLinkage(cut=0.45,
+                                 algorithm='boruvka_balltree').fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
+
 
 def test_rsl_prims_balltree():
     labels, tree = robust_single_linkage(X, 0.4, algorithm='prims_balltree')
@@ -88,6 +94,7 @@ def test_rsl_prims_balltree():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
 
+
 def test_rsl_prims_kdtree():
     labels, tree = robust_single_linkage(X, 0.4, algorithm='prims_kdtree')
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
@@ -97,16 +104,19 @@ def test_rsl_prims_kdtree():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
 
+
 def test_rsl_unavailable_hierarchy():
     clusterer = RobustSingleLinkage()
     with warnings.catch_warnings(record=True) as w:
         tree = clusterer.cluster_hierarchy_
-        assert(len(w) > 0)
-        assert(tree is None)
+        assert len(w) > 0
+        assert tree is None
+
 
 def test_rsl_hierarchy():
     clusterer = RobustSingleLinkage().fit(X)
-    assert(clusterer.cluster_hierarchy_ is not None)
+    assert clusterer.cluster_hierarchy_ is not None
+
 
 def test_rsl_high_dimensional():
     H, y = make_blobs(n_samples=50, random_state=0, n_features=64)
@@ -116,9 +126,12 @@ def test_rsl_high_dimensional():
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_1, n_clusters)
 
-    labels = RobustSingleLinkage(cut=5.5, algorithm='best', metric='seuclidean', V=np.ones(H.shape[1])).fit(H).labels_
+    labels = RobustSingleLinkage(cut=5.5, algorithm='best',
+                                 metric='seuclidean',
+                                 V=np.ones(H.shape[1])).fit(H).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
+
 
 def test_rsl_badargs():
     assert_raises(ValueError,
@@ -150,7 +163,8 @@ def test_rsl_badargs():
                   X, 0.4, metric='minkowski', p=-1, algorithm='prims_balltree')
     assert_raises(ValueError,
                   robust_single_linkage,
-                  X, 0.4, metric='minkowski', p=-1, algorithm='boruvka_balltree')
+                  X, 0.4, metric='minkowski', p=-1,
+                  algorithm='boruvka_balltree')
     assert_raises(ValueError,
                   robust_single_linkage,
                   X, 0.4, metric='precomputed', algorithm='boruvka_kdtree')
@@ -162,7 +176,7 @@ def test_rsl_badargs():
                   X, 0.4, metric='precomputed', algorithm='prims_balltree')
     assert_raises(ValueError,
                   robust_single_linkage,
-                  X, 0.4, metric='precomputed',algorithm='boruvka_balltree')
+                  X, 0.4, metric='precomputed', algorithm='boruvka_balltree')
     assert_raises(ValueError,
                   robust_single_linkage,
                   X, 0.4, alpha=-1)
@@ -181,6 +195,7 @@ def test_rsl_badargs():
     assert_raises(ValueError,
                   robust_single_linkage,
                   X, 0.4, gamma=0)
+
 
 def test_rsl_is_sklearn_estimator():
 
