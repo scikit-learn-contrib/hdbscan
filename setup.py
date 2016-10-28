@@ -73,6 +73,7 @@ configuration = {
     'cmdclass' : {'build_ext' : build_ext},
     'test_suite' : 'nose.collector',
     'tests_require' : ['nose'],
+    'data_files' : ('hdbscan/dist_metrics.pxd',)
     }
 
 if not HAVE_CYTHON:

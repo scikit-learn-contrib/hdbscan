@@ -348,5 +348,6 @@ def approximate_predict(clusterer, points_to_predict):
 def reclustering_predict(clusterer, points_to_predict):
     pass
 
+
 def membership_vector(clusterer, points_to_predict):
     pass
