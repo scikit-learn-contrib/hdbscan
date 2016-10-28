@@ -176,6 +176,8 @@ cpdef np.ndarray[np.float64_t, ndim=1] per_cluster_scores(
 
     cdef np.intp_t i
 
+    cdef np.ndarray[np.float64_t, ndim=1] result
+
     point_row = get_tree_row_with_child(tree, point)
     point_cluster = point_row['parent']
     point_lambda = point_row['lambda_val']
