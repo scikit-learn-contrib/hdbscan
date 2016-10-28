@@ -165,7 +165,7 @@ cdef np.ndarray[np.float64_t, ndim=1] merge_height(
 
 cpdef np.ndarray[np.float64_t, ndim=1] per_cluster_scores(
         np.intp_t point,
-        np.ndarray[np.inp_t, ndim=1] clusters,
+        np.ndarray[np.intp_t, ndim=1] clusters,
         np.ndarray tree,
         dict max_lambda_dict,
         np.ndarray cluster_tree):
