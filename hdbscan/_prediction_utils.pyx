@@ -181,11 +181,13 @@ cpdef np.ndarray[np.float64_t, ndim=1] per_cluster_scores(
     point_row = get_tree_row_with_child(tree, point)
     point_cluster = point_row['parent']
     point_lambda = point_row['lambda_val']
-    max_lambda = max_lambda_dict[point_cluster] + 1e-8 # avoid zero lambda vals in odd cases
+    max_lambda = max_lambda_dict[point_cluster] + 1e-8 # avoid zero lambda
 
     # Save an allocation by assigning and reusing result ...
-    # height = merge_height(point, point_cluster, point_lambda, clusters, cluster_tree)
-    result = merge_height(point, point_cluster, point_lambda, clusters, cluster_tree)
+    # height = merge_height(point, point_cluster, point_lambda,
+    #                       clusters, cluster_tree)
+    result = merge_height(point, point_cluster, point_lambda,
+                          clusters, cluster_tree)
 
     # result = (max_lambda / (max_lambda - height))
     # result = np.exp(-(max_lambda - height) / max_lambda)
@@ -195,3 +197,40 @@ cpdef np.ndarray[np.float64_t, ndim=1] per_cluster_scores(
         result[i] = exp(-(max_lambda / result[i]))
 
     return result
+
+
+cpdef np.ndarray[np.float64_t, ndim=2] all_points_per_cluster_scores(
+        np.ndarray[np.intp_t, ndim=1] clusters,
+        np.ndarray tree,
+        dict max_lambda_dict,
+        np.ndarray cluster_tree):
+
+    cdef np.intp_t num_points = tree['parent'].min()
+    cdef np.ndarray[np.float64_t, ndim=2] result_arr
+    cdef np.float64_t[:, ::1] result
+    cdef np.intp_t point
+    cdef np.intp_t point_cluster
+    cdef np.float64_t point_lambda
+    cdef np.float64_t max_lambda
+
+    result_arr = np.empty((num_points, clusters.shape[0]), dtype=np.float64)
+    result = (<np.float64_t [:num_points, :clusters.shape[0]:1]>
+                 (<np.float64_t *> result_arr.data))
+
+    point_tree = tree[tree['child_size'] == 1]
+
+    for i in range(point_tree.shape[0]):
+        point_row = point_tree[i]
+        point = point_row['child']
+        point_cluster = point_row['parent']
+        point_lambda = point_row['lambda_val']
+        max_lambda = max_lambda_dict[point_cluster] + 1e-8 # avoid zero lambda
+
+        result_arr[i] = fast_merge_height(point, point_cluster, point_lambda,
+                                          clusters, cluster_tree)
+
+        # Cythonize: result = np.exp(-(max_lambda / height))
+        for j in range(result_arr.shape[1]):
+            result[i][j] = exp(-(max_lambda / result[i][j]))
+
+    return result_arr
