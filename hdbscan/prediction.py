@@ -88,6 +88,11 @@ class PredictionData(object):
         self.cluster_map = dict(zip(selected_clusters, range(len(selected_clusters))))
         self.cluster_tree = raw_condensed_tree[raw_condensed_tree['child_size'] > 1]
         self.max_lambdas = {}
+        self.leaf_max_lambdas = {}
+
+        for cluster in set(self.cluster_tree[:,:2].flatten()):
+            self.leaf_max_lambdas[cluster] = raw_condensed_tree[
+                    raw_condensed_tree['parent'] == cluster].max()
 
         for cluster in selected_clusters:
             self.max_lambdas[cluster] = \
@@ -96,6 +101,12 @@ class PredictionData(object):
             for sub_cluster in self._clusters_below(cluster):
                 self.cluster_map[sub_cluster] = self.cluster_map[cluster]
                 self.max_lambdas[sub_cluster] = self.max_lambdas[cluster]
+
+                exemplar_points = raw_condensed_tree[raw_condensed_tree[
+                    'lambda_val'] == self.leaf_max_lambdas[cluster]]
+                exemplars[cluster].extend(exemplar_points)
+
+        self.exemplars = [np.array(x) for x in exemplars.values()]
 
 
 def _find_neighbor_and_lambda(neighbor_indices, neighbor_distances,
