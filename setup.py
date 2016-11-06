@@ -30,6 +30,12 @@ _prediction_utils = Extension('hdbscan._prediction_utils',
 dist_metrics = Extension('hdbscan.dist_metrics',
                          sources=['hdbscan/dist_metrics.pyx'],
                          include_dirs=[numpy.get_include()])
+kd_tree = Extension('hdbscan.kd_tree',
+                    sources=['hdbscan/kd_tree.pyx'],
+                    include_dirs=[numpy.get_include()])
+ball_tree = Extension('hdbscan.ball_tree',
+                      sources=['hdbscan/ball_tree.pyx'],
+                      include_dirs=[numpy.get_include()])
 
 def readme():
     with open('README.rst') as readme_file:
@@ -69,7 +75,9 @@ configuration = {
                      _hdbscan_boruvka,
                      _hdbscan_reachability,
                      _prediction_utils,
-                     dist_metrics],
+                     dist_metrics,
+                     kd_tree,
+                     ball_tree],
     'cmdclass' : {'build_ext' : build_ext},
     'test_suite' : 'nose.collector',
     'tests_require' : ['nose'],
@@ -83,6 +91,8 @@ if not HAVE_CYTHON:
     _hdbscan_reachability.sources[0] = '_hdbscan_reachability.c'
     _prediction_utils.sources[0] = '_prediction_utils.c'
     dist_metrics.sources[0] = 'dist_metric.c'
+    kd_tree.sources[0] = 'kd_tree.c'
+    ball_tree.sources[0] = 'ball_tree.c'
     configuration['install_requires'] = ['scikit-learn>=0.16']
 
 setup(**configuration)

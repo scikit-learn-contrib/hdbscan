@@ -14,7 +14,7 @@ import numpy as np
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import pairwise_distances
 from scipy.sparse import issparse
-from sklearn.neighbors import KDTree, BallTree
+# from sklearn.neighbors import KDTree, BallTree
 from sklearn.externals.joblib import Memory
 from sklearn.externals import six
 from warnings import warn
@@ -35,6 +35,8 @@ from ._hdbscan_reachability import mutual_reachability, sparse_mutual_reachabili
 
 from ._hdbscan_boruvka import KDTreeBoruvkaAlgorithm, BallTreeBoruvkaAlgorithm
 from .dist_metrics import DistanceMetric
+from .kd_tree import KDTree
+from .ball_tree import BallTree
 
 from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 from .prediction import PredictionData
