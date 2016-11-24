@@ -1,4 +1,6 @@
-#cython: boundscheck=False, nonecheck=False, initializedcheck=False
+# cython: boundscheck=False
+# cython: nonecheck=False
+# cython: initializedcheck=False
 # mutual reachability distance compiutations
 # Authors: Leland McInnes
 # License: 3-clause BSD
@@ -11,36 +13,37 @@ from scipy.sparse import lil_matrix as sparse_matrix
 from sklearn.neighbors import KDTree, BallTree
 import gc
 
+
 def mutual_reachability(distance_matrix, min_points=5, alpha=1.0):
     """Compute the weighted adjacency matrix of the mutual reachability
     graph of a distance matrix.
-    
+
     Parameters
     ----------
-    distance_matrix : array [n_samples, n_samples]
+    distance_matrix : ndarray, shape (n_samples, n_samples)
         Array of distances between samples.
-        
-    min_points : int optional
+
+    min_points : int, optional (default=5)
         The number of points in a neighbourhood for a point to be considered
-        a core point. (defaults to 5)
+        a core point.
 
     Returns
     -------
-    mututal_reachability: array [n_samples, n_samples]
+    mututal_reachability: ndarray, shape (n_samples, n_samples)
         Weighted adjacency matrix of the mutual reachability graph.
-        
+
     References
     ----------
-    R. Campello, D. Moulavi, and J. Sander, "Density-Based Clustering Based on
-    Hierarchical Density Estimates"
-    In: Advances in Knowledge Discovery and Data Mining, Springer, pp 160-172.
-    2013
+    .. [1] Campello, R. J., Moulavi, D., & Sander, J. (2013, April).
+       Density-based clustering based on hierarchical density estimates.
+       In Pacific-Asia Conference on Knowledge Discovery and Data Mining
+       (pp. 160-172). Springer Berlin Heidelberg.
     """
     size = distance_matrix.shape[0]
     min_points = min(size - 1, min_points)
     try:
-        core_distances = np.partition(distance_matrix, 
-                                      min_points, 
+        core_distances = np.partition(distance_matrix,
+                                      min_points,
                                       axis=0)[min_points]
     except AttributeError:
         core_distances = np.sort(distance_matrix,
@@ -48,14 +51,16 @@ def mutual_reachability(distance_matrix, min_points=5, alpha=1.0):
 
     if alpha != 1.0:
         distance_matrix = distance_matrix / alpha
-                                  
-    stage1 = np.where(core_distances > distance_matrix, 
+
+    stage1 = np.where(core_distances > distance_matrix,
                       core_distances, distance_matrix)
     result = np.where(core_distances > stage1.T,
                       core_distances.T, stage1.T).T
     return result
 
-cpdef sparse_mutual_reachability(object lil_matrix, np.intp_t min_points=5, float alpha=1.0):
+
+cpdef sparse_mutual_reachability(object lil_matrix, np.intp_t min_points=5,
+                                 float alpha=1.0):
 
     cdef np.intp_t i
     cdef np.intp_t j
@@ -88,7 +93,9 @@ cpdef sparse_mutual_reachability(object lil_matrix, np.intp_t min_points=5, floa
 
     return result.tocsr()
 
-def kdtree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5, alpha=1.0, **kwargs):
+
+def kdtree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5,
+                               alpha=1.0, **kwargs):
     dim = distance_matrix.shape[0]
     min_points = min(dim - 1, min_points)
 
@@ -97,7 +104,7 @@ def kdtree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5, al
     else:
         tree = KDTree(X, metric=metric, **kwargs)
 
-    core_distances = tree.query(X, k=min_points)[0][:,-1]
+    core_distances = tree.query(X, k=min_points)[0][:, -1]
 
     if alpha != 1.0:
         distance_matrix = distance_matrix / alpha
@@ -108,13 +115,15 @@ def kdtree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5, al
                       core_distances.T, stage1.T).T
     return result
 
-def balltree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5, alpha=1.0, **kwargs):
+
+def balltree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5,
+                                 alpha=1.0, **kwargs):
     dim = distance_matrix.shape[0]
     min_points = min(dim - 1, min_points)
 
     tree = BallTree(X, metric=metric, **kwargs)
 
-    core_distances = tree.query(X, k=min_points)[0][:,-1]
+    core_distances = tree.query(X, k=min_points)[0][:, -1]
 
     if alpha != 1.0:
         distance_matrix = distance_matrix / alpha
@@ -125,8 +134,10 @@ def balltree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5, 
                       core_distances.T, stage1.T).T
     return result
 
+
 cdef np.ndarray[np.double_t, ndim=1] mutual_reachability_from_pdist(
-        np.ndarray[np.double_t, ndim=1] core_distances, np.ndarray[np.double_t, ndim=1] dists, np.intp_t dim):
+        np.ndarray[np.double_t, ndim=1] core_distances,
+        np.ndarray[np.double_t, ndim=1] dists, np.intp_t dim):
 
     cdef np.intp_t i
     cdef np.intp_t j
@@ -148,7 +159,8 @@ cdef np.ndarray[np.double_t, ndim=1] mutual_reachability_from_pdist(
     return dists
 
 
-def kdtree_pdist_mutual_reachability(X,  metric, p=2, min_points=5, alpha=1.0, **kwargs):
+def kdtree_pdist_mutual_reachability(X,  metric, p=2, min_points=5, alpha=1.0,
+                                     **kwargs):
 
     dim = X.shape[0]
     min_points = min(dim - 1, min_points)
@@ -158,7 +170,7 @@ def kdtree_pdist_mutual_reachability(X,  metric, p=2, min_points=5, alpha=1.0, *
     else:
         tree = KDTree(X, metric=metric, **kwargs)
 
-    core_distances = tree.query(X, k=min_points)[0][:,-1]
+    core_distances = tree.query(X, k=min_points)[0][:, -1]
 
     del tree
     gc.collect()
@@ -172,14 +184,16 @@ def kdtree_pdist_mutual_reachability(X,  metric, p=2, min_points=5, alpha=1.0, *
 
     return dists
 
-def balltree_pdist_mutual_reachability(X, metric, p=2, min_points=5, alpha=1.0, **kwargs):
+
+def balltree_pdist_mutual_reachability(X, metric, p=2, min_points=5, alpha=1.0,
+                                       **kwargs):
 
     dim = X.shape[0]
     min_points = min(dim - 1, min_points)
 
     tree = BallTree(X, metric=metric, **kwargs)
 
-    core_distances = tree.query(X, k=min_points)[0][:,-1]
+    core_distances = tree.query(X, k=min_points)[0][:, -1]
 
     del tree
     gc.collect()
