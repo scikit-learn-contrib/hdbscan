@@ -120,7 +120,7 @@ def _rsl_boruvka_balltree(X, k=5, alpha=1.0,
     if core_dist_n_jobs < 1:
         core_dist_n_jobs = max(cpu_count() + 1 + core_dist_n_jobs, 1)
 
-     dim = X.shape[0]
+    dim = X.shape[0]
     min_samples = min(dim - 1, k)
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
