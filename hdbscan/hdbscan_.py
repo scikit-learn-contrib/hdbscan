@@ -641,7 +641,8 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
 
     core_dist_n_jobs : int, optional (default=4)
         Number of parallel jobs to run in core distance computations (if
-        supported by the specific algorithm).
+        supported by the specific algorithm). For ``core_dist_n_jobs``
+        below -1, (n_cpus + 1 + core_dist_n_jobs) are used.
 
     allow_single_cluster : bool, optional (default=False)
         By default HDBSCAN* will not produce a single cluster, setting this
