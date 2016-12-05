@@ -141,8 +141,8 @@ at least their core distance away from any other point. This effectively
 upon the choice of *k*; larger *k* values interpret more points as being
 in the 'sea'. All of this is a little easier to understand with a
 picture, so let's use a *k* value of five. Then for a given point we can
-draw a circle for the core distance as the circle that touches the fifth
-nearest neighbor, like so:
+draw a circle for the core distance as the circle that touches the sixth
+nearest neighbor (counting the point itself), like so:
 
 .. image:: images/distance1.svg
 
@@ -153,7 +153,7 @@ picked out).
 .. image:: images/distance2.svg
 
 And we can do that a third time for good measure, with another set of
-five nearest neighbors and another circle with slightly different radius
+six nearest neighbors and another circle with slightly different radius
 again.
 
 .. image:: images/distance3.svg
