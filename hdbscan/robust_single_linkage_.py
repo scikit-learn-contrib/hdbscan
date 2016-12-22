@@ -93,7 +93,11 @@ def _rsl_prims_balltree(X, k=5, alpha=1.4142135623730951, metric='euclidean',
 
 
 def _rsl_boruvka_kdtree(X, k=5, alpha=1.0,
-                        metric='euclidean', leaf_size=40, **kwargs):
+                        metric='euclidean', leaf_size=40,
+                        core_dist_n_jobs=4, **kwargs):
+
+    if core_dist_n_jobs < 1:
+        core_dist_n_jobs = max(cpu_count() + 1 + core_dist_n_jobs, 1)
 
     dim = X.shape[0]
     min_samples = min(dim - 1, k)
@@ -110,7 +114,11 @@ def _rsl_boruvka_kdtree(X, k=5, alpha=1.0,
 
 
 def _rsl_boruvka_balltree(X, k=5, alpha=1.0,
-                          metric='euclidean', leaf_size=40, **kwargs):
+                          metric='euclidean', leaf_size=40,
+                          core_dist_n_jobs=4, **kwargs):
+
+    if core_dist_n_jobs < 1:
+        core_dist_n_jobs = max(cpu_count() + 1 + core_dist_n_jobs, 1)
 
     dim = X.shape[0]
     min_samples = min(dim - 1, k)
@@ -128,9 +136,9 @@ def _rsl_boruvka_balltree(X, k=5, alpha=1.0,
 
 def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
                           gamma=5, metric='euclidean', algorithm='best',
-                          memory=Memory(cachedir=None, verbose=0),
-                          leaf_size=40, **kwargs):
-    r"""Perform robust single linkage clustering from a vector array
+                          memory=Memory(cachedir=None, verbose=0), leaf_size=40,
+                          core_dist_n_jobs=4, **kwargs):
+    """Perform robust single linkage clustering from a vector array
     or distance matrix.
 
     Parameters
@@ -187,6 +195,12 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
         Leaf size for trees responsible for fast nearest
         neighbour queries.
 
+    core_dist_n_jobs : int, optional
+        Number of parallel jobs to run in core distance computations (if
+        supported by the specific algorithm). For ``core_dist_n_jobs``
+        below -1, (n_cpus + 1 + core_dist_n_jobs) are used.
+        (default 4)
+
     Returns
     -------
     labels : ndarray, shape (n_samples, )
@@ -239,11 +253,13 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
             single_linkage_tree = memory.cache(_rsl_prims_balltree)(
                 X, k, alpha, metric, **kwargs)
         elif algorithm == 'boruvka_kdtree':
-            single_linkage_tree = memory.cache(_rsl_boruvka_kdtree)(
-                X, k, alpha, metric, leaf_size, **kwargs)
+            single_linkage_tree = \
+                memory.cache(_rsl_boruvka_kdtree)(X, k, alpha, metric, leaf_size,
+                                                  core_dist_n_jobs, **kwargs)
         elif algorithm == 'boruvka_balltree':
-            single_linkage_tree = memory.cache(_rsl_boruvka_balltree)(
-                X, k, alpha, metric, leaf_size, **kwargs)
+            single_linkage_tree = \
+                memory.cache(_rsl_boruvka_balltree)(X, k, alpha, metric, leaf_size,
+                                                    core_dist_n_jobs, **kwargs)
         else:
             raise TypeError('Unknown algorithm type %s specified' % algorithm)
     else:
@@ -258,8 +274,11 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
                 single_linkage_tree = memory.cache(_rsl_prims_kdtree)(
                     X, k, alpha, metric, **kwargs)
             else:
-                single_linkage_tree = memory.cache(_rsl_boruvka_kdtree)(
-                    X, k, alpha, metric, **kwargs)
+                single_linkage_tree = \
+                    memory.cache(_rsl_boruvka_kdtree)(X, k, alpha, metric,
+                                                        leaf_size,
+                                                        core_dist_n_jobs,
+                                                        **kwargs)
         else:  # Metric is a valid BallTree metric
             # Need heuristic to decide when to go to boruvka;
             # still debugging for now
@@ -267,8 +286,11 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
                 single_linkage_tree = memory.cache(_rsl_prims_kdtree)(
                     X, k, alpha, metric, **kwargs)
             else:
-                single_linkage_tree = memory.cache(_rsl_boruvka_balltree)(
-                    X, k, alpha, metric, **kwargs)
+                single_linkage_tree = \
+                    memory.cache(_rsl_boruvka_balltree)(X, k, alpha, metric,
+                                                        leaf_size,
+                                                        core_dist_n_jobs,
+                                                        **kwargs)
 
     labels = single_linkage_tree.get_clusters(cut, gamma)
 
@@ -328,6 +350,13 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
             * ``large_kdtree``
             * ``large_kdtree_fastcluster``
 
+
+    core_dist_n_jobs : int, optional
+        Number of parallel jobs to run in core distance computations (if
+        supported by the specific algorithm). For ``core_dist_n_jobs``
+        below -1, (n_cpus + 1 + core_dist_n_jobs) are used.
+        (default 4)
+
     Attributes
     -------
     labels_ : ndarray, shape (n_samples, )
@@ -350,7 +379,8 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
     """
 
     def __init__(self, cut=0.4, k=5, alpha=1.4142135623730951, gamma=5,
-                 metric='euclidean', algorithm='best', **kwargs):
+                 metric='euclidean', algorithm='best', core_dist_n_jobs=4,
+                 **kwargs):
 
         self.cut = cut
         self.k = k
@@ -358,6 +388,7 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
         self.gamma = gamma
         self.metric = metric
         self.algorithm = algorithm
+        self.core_dist_n_jobs = core_dist_n_jobs
 
         self._metric_kwargs = kwargs
 

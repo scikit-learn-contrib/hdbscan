@@ -466,6 +466,9 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         raise ValueError('Min samples and Min cluster size must be positive'
                          ' integers')
 
+    if min_cluster_size == 1:
+        raise ValueError('Min cluster size must be greater than one')
+
     if not isinstance(alpha, float) or alpha <= 0.0:
         raise ValueError('Alpha must be a positive float value greater than'
                          ' 0!')
@@ -653,7 +656,8 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
 
     core_dist_n_jobs : int, optional (default=4)
         Number of parallel jobs to run in core distance computations (if
-        supported by the specific algorithm).
+        supported by the specific algorithm). For ``core_dist_n_jobs``
+        below -1, (n_cpus + 1 + core_dist_n_jobs) are used.
 
     allow_single_cluster : bool, optional (default=False)
         By default HDBSCAN* will not produce a single cluster, setting this
