@@ -1,8 +1,7 @@
 import numpy as np
 from sklearn.metrics import pairwise_distances
 from scipy.spatial.distance import cdist
-from networkx import Graph
-
+from ._hdbscan_linkage import mst_linkage_core
 
 def all_points_core_distance(distance_matrix, d=2.0):
     """
@@ -25,14 +24,13 @@ def all_points_core_distance(distance_matrix, d=2.0):
     References
     ----------
     Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J.,
-    2014.
-    Density-Based Clustering Validation. In SDM (pp. 839-847).
+    2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
     distance_matrix[distance_matrix != 0] = (1.0 / distance_matrix[
         distance_matrix != 0]) ** d
     result = distance_matrix.sum(axis=1)
     result /= distance_matrix.shape[0] - 1
-    result = result ** (-1.0 / d)
+    result **= (-1.0 / d)
 
     return result
 
@@ -40,10 +38,12 @@ def all_points_core_distance(distance_matrix, d=2.0):
 def all_points_mutual_reachability(X, labels, cluster_id,
                                    metric='euclidean', d=None, **kwd_args):
     """
-    Compute the all-points-mutual-reachability distances for all the points of a cluster.
+    Compute the all-points-mutual-reachability distances for all the points of
+    a cluster.
 
     If metric is 'precomputed' then assume X is a distance matrix for the full
-    dataset. Note that in this case you must pass in 'd' the dimension of the dataset.
+    dataset. Note that in this case you must pass in 'd' the dimension of the
+    dataset.
 
     Parameters
     ----------
@@ -89,11 +89,13 @@ def all_points_mutual_reachability(X, labels, cluster_id,
 
     References
     ----------
-    Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J., 2014.
-    Density-Based Clustering Validation. In SDM (pp. 839-847).
+    Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J.,
+    2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
-    if metric == 'precomputed' and d is None:
-        raise ValueError('If metric is precomputed a d value must be provided!')
+    if metric == 'precomputed':
+        if d is None:
+            raise ValueError('If metric is precomputed a '
+                             'd value must be provided!')
         distance_matrix = X[labels == cluster_id, :][:, labels == cluster_id]
     else:
         subset_X = X[labels == cluster_id, :]
@@ -126,17 +128,20 @@ def internal_minimum_spanning_tree(mr_distances):
 
     Returns
     -------
-    internal_mst : networkx graph
-        The networkx graph that is the internal nodes and edges of the
-        minimum spanning tree of the all-points-mutual-reachability graphs.
+    internal_nodes : array
+        An array listing the indices of the internal nodes of the MST
+
+    internal_edges : array (?, 3)
+        An array of internal edges in weighted edge list format; that is
+        an edge is an array of length three listing the two vertices
+        forming the edge and weight of the edge.
 
     References
     ----------
-    Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J., 2014.
-    Density-Based Clustering Validation. In SDM (pp. 839-847).
+    Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J.,
+    2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
-    single_linkage_data = hdbscan._hdbscan_linkage.mst_linkage_core(
-        mr_distances)
+    single_linkage_data = mst_linkage_core(mr_distances)
     min_span_tree = single_linkage_data.copy()
     for index, row in enumerate(min_span_tree[1:], 1):
         candidates = np.where(np.isclose(mr_distances[int(row[1])], row[2]))[0]
@@ -146,13 +151,17 @@ def internal_minimum_spanning_tree(mr_distances):
         candidates = candidates[candidates != row[1]]
         assert len(candidates) > 0
         row[0] = candidates[0]
-    result = Graph()
-    for row in min_span_tree:
-        result.add_edge(row[0], row[1], weight=row[2])
-    degree_map = np.array(list(result.degree().items()))
-    internal_nodes = degree_map[degree_map.T[1] > 1].T[0]
-    result = result.subgraph(internal_nodes)
-    return result
+
+    vertices = np.arange(mr_distances.shape[0])[
+        np.bincount(min_span_tree.T[:2].flatten().astype(np.int64)) > 1]
+    # A little "fancy" we select from the flattened array reshape back
+    # (Fortran format to get indexing right) and take the product to do an and
+    # then convert back to boolean type.
+    edge_selection = np.prod(np.in1d(min_span_tree.T[:2], vertices).reshape(
+        (min_span_tree.shape[0], 2), order='F'), axis=1).astype(bool)
+    edges = min_span_tree[edge_selection]
+
+    return vertices, edges
 
 
 def density_separation(X, labels, cluster_id1, cluster_id2,
@@ -176,10 +185,16 @@ def density_separation(X, labels, cluster_id1, cluster_id2,
         cluster label to each data point, with -1 for noise points.
 
     cluster_id1 : integer
-        The first cluster label to compute separation bewteen.
+        The first cluster label to compute separation between.
 
     cluster_id2 : integer
-        The second cluster label to compute separation bewteen.
+        The second cluster label to compute separation between.
+
+    internal_nodes1 : array
+        The vertices of the MST for `cluster_id1` that were internal vertices.
+
+    internal_nodes2 : array
+        The vertices of the MST for `cluster_id2` that were internal vertices.
 
     core_distances1 : array (size of cluster_id1,)
         The all-points-core_distances of all points in the cluster
@@ -206,8 +221,8 @@ def density_separation(X, labels, cluster_id1, cluster_id2,
 
     References
     ----------
-    Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J., 2014.
-    Density-Based Clustering Validation. In SDM (pp. 839-847).
+    Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J.,
+    2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
     if metric == 'precomputed':
         distance_matrix = X[internal_nodes1, :][:, internal_nodes2]
@@ -279,12 +294,13 @@ def validity_index(X, labels, metric='euclidean',
 
     References
     ----------
-    Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J., 2014.
-    Density-Based Clustering Validation. In SDM (pp. 839-847).
+    Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J.,
+    2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
     core_distances = {}
     density_sparseness = {}
-    msts = {}
+    mst_nodes = {}
+    mst_edges = {}
 
     max_cluster_id = labels.max() + 1
     density_sep = np.inf * np.ones((max_cluster_id, max_cluster_id),
@@ -303,20 +319,18 @@ def validity_index(X, labels, metric='euclidean',
             **kwd_args
         )
 
-        msts[cluster_id] = internal_minimum_spanning_tree(mr_distances)
+        mst_nodes[cluster_id], mst_edges[cluster_id] = \
+            internal_minimum_spanning_tree(mr_distances)
         try:
-            density_sparseness[cluster_id] = max([x[2]['weight']
-                                                  for x in
-                                                  msts[cluster_id].edges(
-                                                      data=True)])
-        except ValueError as e:
+            density_sparseness[cluster_id] = mst_edges[cluster_id].T[2].max()
+        except ValueError:
             raise ValueError('Density Sparseness is not defined when the MST of'
                              ' a cluster has no internal edges!')
 
     for i in range(max_cluster_id):
-        internal_nodes_i = np.array(msts[i].nodes(), dtype=int)
+        internal_nodes_i = mst_nodes[i]
         for j in range(i + 1, max_cluster_id):
-            internal_nodes_j = np.array(msts[j].nodes(), dtype=int)
+            internal_nodes_j = mst_nodes[j]
             density_sep[i, j] = density_separation(
                 X, labels, i, j,
                 internal_nodes_i, internal_nodes_j,
@@ -331,8 +345,9 @@ def validity_index(X, labels, metric='euclidean',
     for i in range(max_cluster_id):
         min_density_sep = density_sep[i].min()
         cluster_validity_indices[i] = (
-        (min_density_sep - density_sparseness[i]) /
-        max(min_density_sep, density_sparseness[i]))
+            (min_density_sep - density_sparseness[i]) /
+            max(min_density_sep, density_sparseness[i])
+        )
         cluster_size = np.sum(labels == i)
         result += (cluster_size / n_samples) * cluster_validity_indices[i]
 
