@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.metrics import pairwise_distances
 from scipy.spatial.distance import cdist
 from ._hdbscan_linkage import mst_linkage_core
+from .hdbscan_ import isclose
 
 def all_points_core_distance(distance_matrix, d=2.0):
     """
@@ -144,7 +145,7 @@ def internal_minimum_spanning_tree(mr_distances):
     single_linkage_data = mst_linkage_core(mr_distances)
     min_span_tree = single_linkage_data.copy()
     for index, row in enumerate(min_span_tree[1:], 1):
-        candidates = np.where(np.isclose(mr_distances[int(row[1])], row[2]))[0]
+        candidates = np.where(isclose(mr_distances[int(row[1])], row[2]))[0]
         candidates = np.intersect1d(candidates,
                                     single_linkage_data[:index, :2].astype(
                                         int))
