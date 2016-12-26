@@ -238,7 +238,7 @@ def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
         X = np.array(X, dtype=np.double, order='C')
 
     if X.dtype != np.float64:
-        X = X.astype(np.float64, order='C')
+        X = X.astype(np.float64)
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
 
@@ -307,7 +307,7 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
         core_dist_n_jobs = max(cpu_count() + 1 + core_dist_n_jobs, 1)
 
     if X.dtype != np.float64:
-        X = X.astype(np.float64, order='C')
+        X = X.astype(np.float64)
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
     alg = BallTreeBoruvkaAlgorithm(tree, min_samples, metric=metric,
