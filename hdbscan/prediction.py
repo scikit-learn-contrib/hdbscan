@@ -308,7 +308,8 @@ def approximate_predict(clusterer, points_to_predict):
     If you simply wish to assign new points to an existing clustering
     in the 'best' way possible, this is the function to use. If you
     want to predict how ``points_to_predict`` would cluster with
-    the original data under HDBSCAN, you want ``reclustering_predict``.
+    the original data under HDBSCAN the most efficient existing approach
+    is to simply recluster with the new point(s) added to the original dataset.
 
     Parameters
     ----------
@@ -332,7 +333,6 @@ def approximate_predict(clusterer, points_to_predict):
 
     See Also
     --------
-    ``reclustering_predict``
     ``membership_vector``
 
     """
@@ -371,9 +371,50 @@ def approximate_predict(clusterer, points_to_predict):
 
     return labels, probabilities
 
-def reclustering_predict(clusterer, points_to_predict):
-    pass
-
-
 def membership_vector(clusterer, points_to_predict):
+    """Predict soft cluster membership. The result produces a vector
+    for each point in ``points_to_predict`` that gives a probability that
+    the given point is a member of a cluster for each of the selected clusters
+    of the ``clusterer``.
+
+    Parameters
+    ----------
+    clusterer : HDBSCAN
+        A clustering object that has been fit to the data and
+        either had ``prediction_data=True`` set, or called the
+        ``generate_prediction_data`` method after the fact.
+
+    points_to_predict : array, or array-like (n_samples, n_features)
+        The new data points to predict cluster labels for. They should
+        have the same dimensionality as the original dataset over which
+        clusterer was fit.
+
+    Returns
+    -------
+    membership_vectors : array (n_samples, n_clusters)
+        The probability that point ``i`` is a member of cluster ``j`` is
+        in ``membership_vectors[i, j]``.
+    """
+
+    clusters = np.array(list(clusterer.prediction_data_.cluster_map.keys()))
+
+    result = np.empty((points_to_predict.shape[0], clusters.shape[0]),
+                      dtype=np.float64)
+
+    for i in range(points_to_predict.shape[0]):
+        distance_vec = dist_membership_vector(point,
+                           clusterer.prediction_data_.exemplars,
+                           clusterer.dist_metric)
+        outlier_vec = outlier_membership_vector(point,
+                         clusters,
+                         clusterer.prediction_data_.tree,
+                         clusterer.prediction_data_.max_lambdas,
+                         clusterer.prediction_data_.cluster_tree)
+
+        result[i] = distance_vec ** 0.5 * outlier_vec ** 2
+        result[i] /= result[i].sum()
+
+    return result
+
+def all_points_membership_vectors(clusterer):
     pass

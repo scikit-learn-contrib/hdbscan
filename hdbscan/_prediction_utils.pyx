@@ -198,6 +198,18 @@ cpdef np.ndarray[np.float64_t, ndim=1] per_cluster_scores(
 
     return result
 
+cpdef outlier_membership_vector(point, clusters, tree,
+                                max_lambda_dict, cluster_tree, softmax=True):
+    if softmax:
+        result = np.exp(per_cluster_scores(point, clusters, tree,
+                                           max_lambda_dict, cluster_tree))
+        result[~np.isfinite(result)] = np.finfo(np.double).max
+    else:
+        result = per_cluster_scores(point, clusters, tree,
+                                    max_lambda_dict, cluster_tree)
+
+    result /= result.sum()
+    return result
 
 cpdef np.ndarray[np.float64_t, ndim=2] all_points_per_cluster_scores(
         np.ndarray[np.intp_t, ndim=1] clusters,
