@@ -160,7 +160,20 @@ def internal_minimum_spanning_tree(mr_distances):
     # then convert back to boolean type.
     edge_selection = np.prod(np.in1d(min_span_tree.T[:2], vertices).reshape(
         (min_span_tree.shape[0], 2), order='F'), axis=1).astype(bool)
-    edges = min_span_tree[edge_selection]
+
+    # Density sparseness is not well defined if there are no
+    # internal edges (as per the referenced paper). However
+    # MATLAB code from the original authors simply selects the
+    # largest of *all* the edges in the case that there are
+    # no internal edges, so we do the same here
+    if np.any(edge_selection):
+        # If there are any internal edges, then subselect them out
+        edges = min_span_tree[edge_selection]
+    else:
+        # If there are no internal edges then we want to take the
+        # max over all the edges that exist in the MST, so we simply
+        # do nothing and return all the edges in the MST.
+        pass
 
     return vertices, edges
 
@@ -323,11 +336,7 @@ def validity_index(X, labels, metric='euclidean',
 
         mst_nodes[cluster_id], mst_edges[cluster_id] = \
             internal_minimum_spanning_tree(mr_distances)
-        try:
-            density_sparseness[cluster_id] = mst_edges[cluster_id].T[2].max()
-        except ValueError:
-            raise ValueError('Density Sparseness is not defined when the MST of'
-                             ' a cluster has no internal edges!')
+        density_sparseness[cluster_id] = mst_edges[cluster_id].T[2].max()
 
     for i in range(max_cluster_id):
         internal_nodes_i = mst_nodes[i]
