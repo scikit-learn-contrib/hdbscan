@@ -96,6 +96,26 @@ cpdef np.ndarray[np.float64_t, ndim=1] dist_membership_vector(
 
     return result
 
+cpdef np.ndarray[np.float64_t, ndim=2] all_points_dist_membership_vector(
+        np.ndarray[np.float64_t, ndim=2] all_points,
+        list exemplars_list,
+        DistanceMetric dist_metric,
+        softmax=False):
+
+    cdef np.ndarray[np.float64_t, ndim=2] result
+    cdef np.intp_t i
+
+    result = np.empty((all_points.shape[0], len(exemplar_list)),
+                      dtype=np.float64)
+
+    for i in range(all_points.shape[0]):
+        result[i] = dist_membership_vector(all_points[i],
+                                           exemplar_list,
+                                           dist_metric,
+                                           softmax)
+
+    return result
+
 cdef np.ndarray[np.float64_t, ndim=1] merge_height(
         np.intp_t point,
         np.intp_t point_cluster,
@@ -246,3 +266,28 @@ cpdef np.ndarray[np.float64_t, ndim=2] all_points_per_cluster_scores(
             result[i][j] = exp(-(max_lambda / result[i][j]))
 
     return result_arr
+
+cpdef np.ndarray[np.float64_t, ndim=2] all_points_outlier_membership_vector(
+        np.ndarray[np.intp_t, ndim=1] clusters,
+        np.ndarray tree,
+        dict max_lambda_dict,
+        np.ndarray, cluster_tree,
+        np.intp_t softmax=True):
+
+    cdef np.ndarray[np.float64_t, ndim=2] per_cluster_scores
+
+    per_cluster_scores = all_points_per_cluster_scores(
+                                clusters,
+                                tree,
+                                max_lambda_dict,
+                                cluster_tree)
+    if softmax:
+        result = np.exp(per_cluster_scores)
+        result[~np.isfinite(result)] = np.finfo(np.double).max
+    else:
+        result = per_cluster_scores
+
+    row_sums = result.sum(axis=1)
+    result = result / row_sums[:, np.newaxis]
+
+    return result

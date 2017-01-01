@@ -411,10 +411,46 @@ def membership_vector(clusterer, points_to_predict):
                          clusterer.prediction_data_.max_lambdas,
                          clusterer.prediction_data_.cluster_tree)
 
-        result[i] = distance_vec ** 0.5 * outlier_vec ** 2
+        result[i] = distance_vec ** 0.5 * outlier_vec ** 2.0
         result[i] /= result[i].sum()
 
     return result
 
 def all_points_membership_vectors(clusterer):
-    pass
+    """Predict soft cluster membership vectors for all points in the
+    original dataset the clusterer was trained on. This function is more
+    efficient by making use of the fact that all points are already in the
+    condensed tree, and processing in bulk.
+
+    Parameters
+    ----------
+    clusterer : HDBSCAN
+         A clustering object that has been fit to the data and
+        either had ``prediction_data=True`` set, or called the
+        ``generate_prediction_data`` method after the fact.
+        This method does not work if the clusterer was trained
+        with ``metric='precomputed'``.
+
+    Returns
+    -------
+    membership_vectors : array (n_samples, n_clusters)
+        The probability that point ``i`` of the original dataset is a member of
+        cluster ``j`` is in ``membership_vectors[i, j]``.
+    """
+    clusters = np.array(list(clusterer.prediction_data_.cluster_map.keys()))
+    all_points = clusterer._raw_data
+
+    distance_vecs = all_points_dist_membership_vector(all_points,
+                        clusterer.prediction_data_.exemplars,
+                        clusterer.dist_metric)
+    outlier_vecs = all_points_outlier_membership_vector(clusters,
+                         clusterer.prediction_data_.tree,
+                         clusterer.prediction_data_.max_lambdas,
+                         clusterer.prediction_data_.cluster_tree)
+
+    result = distance_vecs ** 0.5 * outlier_vecs ** 2.0
+    row_sums = result.sum(axis=1)
+    result = result / row_sums[:, np.newaxis]
+
+    return result
+
