@@ -373,12 +373,14 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(
         np.ndarray tree,
         set clusters,
         dict cluster_label_map,
-        np.intp_t allow_single_cluster):
+        np.intp_t allow_single_cluster,
+        np.intp_t match_reference_implementation):
 
     cdef np.intp_t root_cluster
     cdef np.ndarray[np.intp_t, ndim=1] result_arr
     cdef np.ndarray[np.intp_t, ndim=1] parent_array
     cdef np.ndarray[np.intp_t, ndim=1] child_array
+    cdef np.ndarray[np.double_t, ndim=1] lambda_array
     cdef np.intp_t *result
     cdef TreeUnionFind union_find
     cdef np.intp_t parent
@@ -388,6 +390,7 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(
 
     child_array = tree['child']
     parent_array = tree['parent']
+    lambda_array = tree['lambda_val']
 
     root_cluster = parent_array.min()
     result_arr = np.empty(root_cluster, dtype=np.intp)
@@ -406,14 +409,22 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(
         if cluster < root_cluster:
             result[n] = -1
         elif cluster == root_cluster:
-            if len(clusters) == 1 and \
+            if len(clusters) == 1 and allow_single_cluster and \
                 tree['lambda_val'][tree['child'] == n] >= \
                     tree['lambda_val'][tree['parent'] == cluster].max():
                 result[n] = cluster_label_map[cluster]
             else:
                 result[n] = -1
         else:
-            result[n] = cluster_label_map[cluster]
+            if match_reference_implementation:
+                point_lambda = lambda_array[child_array == n][0]
+                cluster_lambda = lambda_array[child_array == cluster][0]
+                if point_lambda > cluster_lambda:
+                    result[n] = cluster_label_map[cluster]
+                else:
+                    result[n] = -1
+            else:
+                result[n] = cluster_label_map[cluster]
 
     return result_arr
 
@@ -525,7 +536,8 @@ cpdef np.ndarray get_stability_scores(np.ndarray labels, set clusters,
 
 
 cpdef tuple get_clusters(np.ndarray tree, dict stability,
-                         allow_single_cluster=False):
+                         allow_single_cluster=False,
+                         match_reference_implementation=False):
     """
     The tree is assumed to have numeric node ids such that a reverse numeric
     sort is equivalent to a topological sort.
@@ -571,10 +583,11 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                     is_cluster[sub_node] = False
 
     clusters = set([c for c in is_cluster if is_cluster[c]])
-    cluster_map = {c: n for n, c in enumerate(clusters)}
-    reverse_cluster_map = {n: c for n, c in enumerate(clusters)}
+    cluster_map = {c: n for n, c in enumerate(sorted(list(clusters)))}
+    reverse_cluster_map = {n: c for c, n in cluster_map.items()}
 
-    labels = do_labelling(tree, clusters, cluster_map, allow_single_cluster)
+    labels = do_labelling(tree, clusters, cluster_map,
+                    allow_single_cluster, match_reference_implementation)
     probs = get_probabilities(tree, reverse_cluster_map, labels)
     stabilities = get_stability_scores(labels, clusters, stability, max_lambda)
 

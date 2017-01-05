@@ -17,7 +17,7 @@ from sklearn.utils.testing import (assert_equal,
                                    assert_not_in,
                                    assert_no_warnings,
                                    if_matplotlib)
-from hdbscan import HDBSCAN, hdbscan
+from hdbscan import HDBSCAN, hdbscan, validity_index
 # from sklearn.cluster.tests.common import generate_clustered_data
 from sklearn.datasets import make_blobs
 from sklearn.utils import shuffle
@@ -34,7 +34,7 @@ import warnings
 
 n_clusters = 3
 # X = generate_clustered_data(n_clusters=n_clusters, n_samples_per_cluster=50)
-X, y = make_blobs(n_samples=50, random_state=0)
+X, y = make_blobs(n_samples=200, random_state=10)
 X, y = shuffle(X, y, random_state=7)
 X = StandardScaler().fit_transform(X)
 
@@ -102,6 +102,9 @@ def test_hdbscan_distance_matrix():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
 
+    validity = validity_index(D, labels, metric='precomputed', d=2)
+    assert_greater_equal(validity, 0.6)
+
 
 def test_hdbscan_sparse_distance_matrix():
     D = distance.squareform(distance.pdist(X))
@@ -132,6 +135,9 @@ def test_hdbscan_feature_vector():
     labels = HDBSCAN().fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
+
+    validity = validity_index(X, labels)
+    assert_greater_equal(validity, 0.4)
 
 
 def test_hdbscan_prims_kdtree():
@@ -172,7 +178,7 @@ def test_hdbscan_prims_balltree():
 
 def test_hdbscan_boruvka_kdtree():
     labels, p, persist, ctree, ltree, mtree = hdbscan(
-        X, algorithm='boruvka_kdtree', leaf_size=5)
+        X, algorithm='boruvka_kdtree')
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_1, n_clusters)
 
@@ -190,7 +196,7 @@ def test_hdbscan_boruvka_kdtree():
 
 def test_hdbscan_boruvka_balltree():
     labels, p, persist, ctree, ltree, mtree = hdbscan(
-        X, algorithm='boruvka_balltree', leaf_size=5)
+        X, algorithm='boruvka_balltree')
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_1, n_clusters)
 
