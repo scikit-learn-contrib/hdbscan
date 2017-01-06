@@ -173,7 +173,7 @@ def internal_minimum_spanning_tree(mr_distances):
         # If there are no internal edges then we want to take the
         # max over all the edges that exist in the MST, so we simply
         # do nothing and return all the edges in the MST.
-        pass
+        edges = min_span_tree.copy()
 
     return vertices, edges
 
