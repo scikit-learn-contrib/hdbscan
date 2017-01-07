@@ -20,6 +20,8 @@ consider a cluster. It can have slightly non-obvious effects however.
 Let's consider the digits dataset from sklearn. We can project the data
 into two dimensions to visualize it via t-SNE.
 
+.. code:: python
+
     digits = datasets.load_digits()
     data = digits.data
     projection = TSNE().fit_transform(data)
