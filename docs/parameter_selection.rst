@@ -15,7 +15,7 @@ Selecting ``min_cluster_size``
 
 The primary parameter to effect the resulting clustering is
 ``min_cluster_size``. Ideally this is a relatively intuitive parameter
-to select -- set it to the smallest size grouping that you sih to
+to select -- set it to the smallest size grouping that you wish to
 consider a cluster. It can have slightly non-obvious effects however.
 Let's consider the digits dataset from sklearn. We can project the data
 into two dimensions to visualize it via t-SNE.
@@ -31,7 +31,7 @@ into two dimensions to visualize it via t-SNE.
 .. image:: images/parameter_selection_3_1.png
 
 
-If we cluster this data in the full 64 dimensional space with hdbscan we
+If we cluster this data in the full 64 dimensional space with HDBSCAN\* we
 can see some effects from varying the ``min_cluster_size``.
 
 We start with a ``min_cluster_size`` of 15.
@@ -54,7 +54,7 @@ We start with a ``min_cluster_size`` of 15.
 Increasing the ``min_cluster_size`` to 30 reduces the number of
 clusters, merging some together. This is a result of HDBSCAN\*
 reoptimizing which flat clustering provides greater stability under a
-slightly different notion of what constitutes cluster.
+slightly different notion of what constitutes a cluster.
 
 .. code:: python
 
@@ -115,7 +115,7 @@ pruned out. Thus ``min_cluster_size`` does behave more closely to our
 intuitions, but only if we fix ``min_samples``. If you wish to explore
 different ``min_cluster_size`` settings with a fixed ``min_samples``
 value, especially for larger dataset sizes, you can cache the hard
-computation, and recompute onlythe relatively cheap flat cluster
+computation, and recompute only the relatively cheap flat cluster
 extraction using the ``memory`` parameter, which makes use of ``joblib``
 [link].
 
@@ -158,7 +158,7 @@ leaving the ``min_cluster_size`` at 60, but reducing ``min_samples`` to
 
 Now most points are clustered, and there are much fewer noise points.
 Steadily increasing ``min_samples`` will, as we saw in the examples
-above, make the clustering progressivly more conservative, culiminating
+above, make the clustering progressivly more conservative, culminating
 in the example above where ``min_samples`` was set to 60 and we had only
 two clusters with most points declared as noise.
 
