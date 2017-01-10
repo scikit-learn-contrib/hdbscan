@@ -324,6 +324,9 @@ def validity_index(X, labels, metric='euclidean',
 
     for cluster_id in range(max_cluster_id):
 
+        if np.sum(labels == cluster_id) == 0:
+            continue
+
         mr_distances, core_distances[
             cluster_id] = all_points_mutual_reachability(
             X,
@@ -339,6 +342,10 @@ def validity_index(X, labels, metric='euclidean',
         density_sparseness[cluster_id] = mst_edges[cluster_id].T[2].max()
 
     for i in range(max_cluster_id):
+
+        if np.sum(labels == i) == 0:
+            continue
+
         internal_nodes_i = mst_nodes[i]
         for j in range(i + 1, max_cluster_id):
             internal_nodes_j = mst_nodes[j]
@@ -354,6 +361,10 @@ def validity_index(X, labels, metric='euclidean',
     result = 0
 
     for i in range(max_cluster_id):
+
+        if np.sum(labels == i) == 0:
+            continue
+
         min_density_sep = density_sep[i].min()
         cluster_validity_indices[i] = (
             (min_density_sep - density_sparseness[i]) /
