@@ -348,6 +348,10 @@ def validity_index(X, labels, metric='euclidean',
 
         internal_nodes_i = mst_nodes[i]
         for j in range(i + 1, max_cluster_id):
+
+            if np.sum(labels == j) == 0:
+                continue
+
             internal_nodes_j = mst_nodes[j]
             density_sep[i, j] = density_separation(
                 X, labels, i, j,
