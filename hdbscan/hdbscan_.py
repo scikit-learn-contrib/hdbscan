@@ -172,7 +172,10 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
     if csgraph.connected_components(mutual_reachability_, directed=False,
                                     return_labels=False) > 1:
         raise ValueError('Sparse distance matrix has multiple connected'
-                         ' components!\nRun hdbscan on each component.')
+                         ' components!\nThat is, there exist groups of points '
+                         'that are completely disjoint -- there are no distance '
+                         'relations connecting them\n'
+                         'Run hdbscan on each component.')
 
     # Compute the minimum spanning tree for the sparse graph
     sparse_min_spanning_tree = csgraph.minimum_spanning_tree(
