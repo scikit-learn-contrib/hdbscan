@@ -105,12 +105,12 @@ cpdef np.ndarray[np.float64_t, ndim=2] all_points_dist_membership_vector(
     cdef np.ndarray[np.float64_t, ndim=2] result
     cdef np.intp_t i
 
-    result = np.empty((all_points.shape[0], len(exemplar_list)),
+    result = np.empty((all_points.shape[0], len(exemplars_list)),
                       dtype=np.float64)
 
     for i in range(all_points.shape[0]):
         result[i] = dist_membership_vector(all_points[i],
-                                           exemplar_list,
+                                           exemplars_list,
                                            dist_metric,
                                            softmax)
 
@@ -245,6 +245,8 @@ cpdef np.ndarray[np.float64_t, ndim=2] all_points_per_cluster_scores(
     cdef np.float64_t point_lambda
     cdef np.float64_t max_lambda
 
+    cdef np.intp_t i, j
+
     result_arr = np.empty((num_points, clusters.shape[0]), dtype=np.float64)
     result = (<np.float64_t [:num_points, :clusters.shape[0]:1]>
                  (<np.float64_t *> result_arr.data))
@@ -258,7 +260,8 @@ cpdef np.ndarray[np.float64_t, ndim=2] all_points_per_cluster_scores(
         point_lambda = point_row['lambda_val']
         max_lambda = max_lambda_dict[point_cluster] + 1e-8 # avoid zero lambda
 
-        result_arr[i] = fast_merge_height(point, point_cluster, point_lambda,
+        # Can we not do a faster merge height operation here?
+        result_arr[i] = merge_height(point, point_cluster, point_lambda,
                                           clusters, cluster_tree)
 
         # Cythonize: result = np.exp(-(max_lambda / height))

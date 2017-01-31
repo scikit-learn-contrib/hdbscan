@@ -782,7 +782,7 @@ class HDBSCAN (BaseEstimator, ClusterMixin):
         if self.metric != 'precomputed':
             min_samples = self.min_samples or self.min_cluster_size
             self._prediction_data = PredictionData(
-                self._raw_data, self._condensed_tree, min_samples,
+                self._raw_data, self.condensed_tree_, min_samples,
                 tree_type='kdtree', metric=self.metric,
                 **self._metric_kwargs
             )
