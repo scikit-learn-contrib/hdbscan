@@ -529,7 +529,7 @@ cpdef np.ndarray get_stability_scores(np.ndarray labels, set clusters,
     cdef np.intp_t n
 
     result = np.empty(len(clusters), dtype=np.double)
-    for n, c in enumerate(clusters):
+    for n, c in enumerate(sorted(list(clusters))):
         cluster_size = np.sum(labels == n)
         if np.isinf(max_lambda) or max_lambda == 0.0 or cluster_size == 0:
             result[n] = 1.0
