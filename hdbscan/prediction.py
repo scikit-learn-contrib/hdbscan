@@ -9,7 +9,10 @@ from sklearn.neighbors import KDTree, BallTree
 from .dist_metrics import DistanceMetric
 from ._prediction_utils import (get_tree_row_with_child,
                                 dist_membership_vector,
-                                outlier_membership_vector)
+                                outlier_membership_vector,
+                                prob_in_some_cluster,
+                                all_points_dist_membership_vector,
+                                all_points_outlier_membership_vector)
 
 
 class PredictionData(object):
@@ -81,6 +84,15 @@ class PredictionData(object):
 
         return result
 
+    def _recurse_leaf_dfs(self, current_node):
+        children = self.cluster_tree[self.cluster_tree['parent'] ==
+                                     current_node]['child']
+        if len(children) == 0:
+            return [current_node, ]
+        else:
+            return sum(
+                [self._recurse_leaf_dfs(child) for child in children], [])
+
     def __init__(self, data, condensed_tree, min_samples,
                  tree_type='kdtree', metric='euclidean', **kwargs):
         self.raw_data = data
@@ -99,14 +111,14 @@ class PredictionData(object):
                                                > 1]
         self.max_lambdas = {}
         self.leaf_max_lambdas = {}
-        exemplars = {}
+        self.exemplars = []
 
         all_clusters = set(np.hstack([self.cluster_tree['parent'],
                                       self.cluster_tree['child']]))
 
         for cluster in all_clusters:
             self.leaf_max_lambdas[cluster] = raw_condensed_tree['lambda_val'][
-                    raw_condensed_tree['parent'] == cluster].max()
+                raw_condensed_tree['parent'] == cluster].max()
 
         for cluster in selected_clusters:
             self.max_lambdas[cluster] = \
@@ -117,16 +129,16 @@ class PredictionData(object):
                 self.cluster_map[sub_cluster] = self.cluster_map[cluster]
                 self.max_lambdas[sub_cluster] = self.max_lambdas[cluster]
 
-                exemplar_points = raw_condensed_tree['child'][
-                    (raw_condensed_tree['lambda_val'] ==
-                        self.leaf_max_lambdas[cluster]) &
-                    (raw_condensed_tree['parent']) == sub_cluster]
-                if cluster in exemplars:
-                    exemplars[cluster].extend(exemplar_points)
-                else:
-                    exemplars[cluster] = exemplar_points.tolist()
+            cluster_exemplars = np.array([], dtype=np.int64)
+            for leaf in self._recurse_leaf_dfs(cluster):
+                leaf_max_lambda = raw_condensed_tree['lambda_val'][
+                    raw_condensed_tree['parent'] == leaf].max()
+                points = raw_condensed_tree['child'][
+                    (raw_condensed_tree['parent'] == leaf) &
+                    (raw_condensed_tree['lambda_val'] == leaf_max_lambda)]
+                cluster_exemplars = np.hstack([cluster_exemplars, points])
 
-        self.exemplars = [self.raw_data[x] for x in exemplars.values()]
+            self.exemplars.append(self.raw_data[cluster_exemplars])
 
 
 def _find_neighbor_and_lambda(neighbor_indices, neighbor_distances,
@@ -385,6 +397,7 @@ def approximate_predict(clusterer, points_to_predict):
 
     return labels, probabilities
 
+
 def membership_vector(clusterer, points_to_predict):
     """Predict soft cluster membership. The result produces a vector
     for each point in ``points_to_predict`` that gives a probability that
@@ -410,25 +423,58 @@ def membership_vector(clusterer, points_to_predict):
         in ``membership_vectors[i, j]``.
     """
 
-    clusters = np.array(list(clusterer.prediction_data_.cluster_map.keys()))
+    clusters = np.array(list(clusterer.condensed_tree_._select_clusters()
+
+    )).astype(np.intp)
 
     result = np.empty((points_to_predict.shape[0], clusters.shape[0]),
                       dtype=np.float64)
 
+    min_samples = clusterer.min_samples or clusterer.min_cluster_size
+    neighbor_distances, neighbor_indices = \
+        clusterer.prediction_data_.tree.query(points_to_predict,
+                                              k=2 * min_samples)
+
+
     for i in range(points_to_predict.shape[0]):
+
+        # We need to find where in the tree the new point would go
+        # for the purposes of outlier membership approximation
+        nearest_neighbor, lambda_ = \
+            _find_neighbor_and_lambda(neighbor_indices[i],
+                                      neighbor_distances[i],
+                                      clusterer.prediction_data_.core_distances,
+                                      min_samples
+                                      )
+
+        neighbor_tree_row = get_tree_row_with_child(
+            clusterer.condensed_tree_._raw_tree, nearest_neighbor)
+
+        if neighbor_tree_row['lambda_val'] <= lambda_:
+            lambda_ = neighbor_tree_row['lambda_val']
+
         distance_vec = dist_membership_vector(points_to_predict[i],
-                           clusterer.prediction_data_.exemplars,
-                           clusterer.prediction_data_.dist_metric)
-        outlier_vec = outlier_membership_vector(points_to_predict[i],
-                         clusters,
-                         clusterer.prediction_data_.tree,
-                         clusterer.prediction_data_.max_lambdas,
-                         clusterer.prediction_data_.cluster_tree)
+                                              clusterer.prediction_data_.exemplars,
+                                              clusterer.prediction_data_.dist_metric)
+        outlier_vec = outlier_membership_vector(nearest_neighbor,
+                                                lambda_,
+                                                clusters,
+                                                clusterer.condensed_tree_._raw_tree,
+                                                clusterer.prediction_data_.leaf_max_lambdas,
+                                                clusterer.prediction_data_.cluster_tree)
 
         result[i] = distance_vec ** 0.5 * outlier_vec ** 2.0
         result[i] /= result[i].sum()
 
+        result[i] *= prob_in_some_cluster(nearest_neighbor,
+                                          lambda_,
+                                          clusters,
+                                          clusterer.condensed_tree_._raw_tree,
+                                          clusterer.prediction_data_.leaf_max_lambdas,
+                                          clusterer.prediction_data_.cluster_tree)
+
     return result
+
 
 def all_points_membership_vectors(clusterer):
     """Predict soft cluster membership vectors for all points in the
@@ -455,16 +501,17 @@ def all_points_membership_vectors(clusterer):
     all_points = clusterer.prediction_data_.raw_data
 
     distance_vecs = all_points_dist_membership_vector(all_points,
-                        clusterer.prediction_data_.exemplars,
-                        clusterer.prediction_data_.dist_metric)
+                                                      clusterer.prediction_data_.exemplars,
+                                                      clusterer.prediction_data_.dist_metric)
     outlier_vecs = all_points_outlier_membership_vector(clusters,
-                         clusterer.prediction_data_.tree,
-                         clusterer.prediction_data_.max_lambdas,
-                         clusterer.prediction_data_.cluster_tree)
+                                                        clusterer.condensed_tree_._raw_tree,
+                                                        clusterer.prediction_data_.leaf_max_lambdas,
+                                                        clusterer.prediction_data_.cluster_tree)
+    in_cluster_probs = all_points_prob_in_some_cluster()
 
     result = distance_vecs ** 0.5 * outlier_vecs ** 2.0
     row_sums = result.sum(axis=1)
     result = result / row_sums[:, np.newaxis]
+    result *= in_cluster_probs
 
     return result
-
