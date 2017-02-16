@@ -5915,7 +5915,7 @@ static PyArrayObject *__pyx_f_7hdbscan_17_prediction_utils_all_points_per_cluste
   __pyx_t_5numpy_intp_t __pyx_v_num_points;
   PyArrayObject *__pyx_v_result_arr = 0;
   __Pyx_memviewslice __pyx_v_result = { 0, 0, { 0 }, { 0 }, { 0 } };
-  CYTHON_UNUSED __pyx_t_5numpy_intp_t __pyx_v_point;
+  __pyx_t_5numpy_intp_t __pyx_v_point;
   __pyx_t_5numpy_intp_t __pyx_v_point_cluster;
   __pyx_t_5numpy_float64_t __pyx_v_point_lambda;
   __pyx_t_5numpy_float64_t __pyx_v_max_lambda;
@@ -6213,20 +6213,20 @@ static PyArrayObject *__pyx_f_7hdbscan_17_prediction_utils_all_points_per_cluste
     /* "hdbscan/_prediction_utils.pyx":291
  * 
  *         # Can we not do a faster merge height operation here?
- *         result_arr[i] = merge_height(point_cluster, point_lambda,             # <<<<<<<<<<<<<<
+ *         result_arr[point] = merge_height(point_cluster, point_lambda,             # <<<<<<<<<<<<<<
  *                                           clusters, cluster_tree)
  * 
  */
     __pyx_t_6 = ((PyObject *)__pyx_f_7hdbscan_17_prediction_utils_merge_height(__pyx_v_point_cluster, __pyx_v_point_lambda, ((PyArrayObject *)__pyx_v_clusters), __pyx_v_cluster_tree)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 291, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_result_arr), __pyx_v_i, __pyx_t_6, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 1, 0) < 0)) __PYX_ERR(0, 291, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_result_arr), __pyx_v_point, __pyx_t_6, __pyx_t_5numpy_intp_t, 1, __Pyx_PyInt_From_Py_intptr_t, 0, 1, 0) < 0)) __PYX_ERR(0, 291, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
     /* "hdbscan/_prediction_utils.pyx":295
  * 
  *         # Cythonize: result = np.exp(-(max_lambda / height))
  *         for j in range(result_arr.shape[1]):             # <<<<<<<<<<<<<<
- *             result[i][j] = exp(-(max_lambda / result[i][j]))
+ *             result[point][j] = exp(-(max_lambda / result[point][j]))
  * 
  */
     __pyx_t_18 = (__pyx_v_result_arr->dimensions[1]);
@@ -6236,7 +6236,7 @@ static PyArrayObject *__pyx_f_7hdbscan_17_prediction_utils_all_points_per_cluste
       /* "hdbscan/_prediction_utils.pyx":296
  *         # Cythonize: result = np.exp(-(max_lambda / height))
  *         for j in range(result_arr.shape[1]):
- *             result[i][j] = exp(-(max_lambda / result[i][j]))             # <<<<<<<<<<<<<<
+ *             result[point][j] = exp(-(max_lambda / result[point][j]))             # <<<<<<<<<<<<<<
  * 
  *     return result_arr
  */
@@ -6244,7 +6244,7 @@ static PyArrayObject *__pyx_f_7hdbscan_17_prediction_utils_all_points_per_cluste
       __pyx_t_19.memview = __pyx_v_result.memview;
       __PYX_INC_MEMVIEW(&__pyx_t_19, 0);
       {
-    Py_ssize_t __pyx_tmp_idx = __pyx_v_i;
+    Py_ssize_t __pyx_tmp_idx = __pyx_v_point;
     Py_ssize_t __pyx_tmp_shape = __pyx_v_result.shape[0];
     Py_ssize_t __pyx_tmp_stride = __pyx_v_result.strides[0];
     if (1 && (__pyx_tmp_idx < 0))
@@ -6272,7 +6272,7 @@ __pyx_t_20 = __pyx_v_j;
       __pyx_t_19.memview = __pyx_v_result.memview;
       __PYX_INC_MEMVIEW(&__pyx_t_19, 0);
       {
-    Py_ssize_t __pyx_tmp_idx = __pyx_v_i;
+    Py_ssize_t __pyx_tmp_idx = __pyx_v_point;
     Py_ssize_t __pyx_tmp_shape = __pyx_v_result.shape[0];
     Py_ssize_t __pyx_tmp_stride = __pyx_v_result.strides[0];
     if (1 && (__pyx_tmp_idx < 0))
@@ -6296,7 +6296,7 @@ __pyx_t_21 = __pyx_v_j;
   }
 
   /* "hdbscan/_prediction_utils.pyx":298
- *             result[i][j] = exp(-(max_lambda / result[i][j]))
+ *             result[point][j] = exp(-(max_lambda / result[point][j]))
  * 
  *     return result_arr             # <<<<<<<<<<<<<<
  * 
@@ -6989,7 +6989,7 @@ static PyObject *__pyx_f_7hdbscan_17_prediction_utils_all_points_prob_in_some_cl
   PyArrayObject *__pyx_v_heights = 0;
   __pyx_t_5numpy_intp_t __pyx_v_num_points;
   PyArrayObject *__pyx_v_result = 0;
-  CYTHON_UNUSED __pyx_t_5numpy_intp_t __pyx_v_point;
+  __pyx_t_5numpy_intp_t __pyx_v_point;
   __pyx_t_5numpy_intp_t __pyx_v_point_cluster;
   __pyx_t_5numpy_float64_t __pyx_v_point_lambda;
   __pyx_t_5numpy_float64_t __pyx_v_max_lambda;
@@ -7246,7 +7246,7 @@ static PyObject *__pyx_f_7hdbscan_17_prediction_utils_all_points_prob_in_some_cl
  *                                clusters, cluster_tree)
  *         max_lambda = max(max_lambda_dict[clusters[heights.argmax()]],
  *                          point_lambda)             # <<<<<<<<<<<<<<
- *         result[i] = (heights.max() / max_lambda)
+ *         result[point] = (heights.max() / max_lambda)
  * 
  */
     __pyx_t_14 = __pyx_v_point_lambda;
@@ -7256,7 +7256,7 @@ static PyObject *__pyx_f_7hdbscan_17_prediction_utils_all_points_prob_in_some_cl
  *                                clusters, cluster_tree)
  *         max_lambda = max(max_lambda_dict[clusters[heights.argmax()]],             # <<<<<<<<<<<<<<
  *                          point_lambda)
- *         result[i] = (heights.max() / max_lambda)
+ *         result[point] = (heights.max() / max_lambda)
  */
     if (unlikely(__pyx_v_max_lambda_dict == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -7293,7 +7293,7 @@ static PyObject *__pyx_f_7hdbscan_17_prediction_utils_all_points_prob_in_some_cl
  *                                clusters, cluster_tree)
  *         max_lambda = max(max_lambda_dict[clusters[heights.argmax()]],
  *                          point_lambda)             # <<<<<<<<<<<<<<
- *         result[i] = (heights.max() / max_lambda)
+ *         result[point] = (heights.max() / max_lambda)
  * 
  */
     __pyx_t_2 = PyFloat_FromDouble(__pyx_t_14); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 355, __pyx_L1_error)
@@ -7319,7 +7319,7 @@ static PyObject *__pyx_f_7hdbscan_17_prediction_utils_all_points_prob_in_some_cl
     /* "hdbscan/_prediction_utils.pyx":356
  *         max_lambda = max(max_lambda_dict[clusters[heights.argmax()]],
  *                          point_lambda)
- *         result[i] = (heights.max() / max_lambda)             # <<<<<<<<<<<<<<
+ *         result[point] = (heights.max() / max_lambda)             # <<<<<<<<<<<<<<
  * 
  *     return result
  */
@@ -7351,13 +7351,13 @@ static PyObject *__pyx_f_7hdbscan_17_prediction_utils_all_points_prob_in_some_cl
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_14 == (npy_float64)-1) && PyErr_Occurred())) __PYX_ERR(0, 356, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_16 = __pyx_v_i;
+    __pyx_t_16 = __pyx_v_point;
     if (__pyx_t_16 < 0) __pyx_t_16 += __pyx_pybuffernd_result.diminfo[0].shape;
     *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_result.rcbuffer->pybuffer.buf, __pyx_t_16, __pyx_pybuffernd_result.diminfo[0].strides) = __pyx_t_14;
   }
 
   /* "hdbscan/_prediction_utils.pyx":358
- *         result[i] = (heights.max() / max_lambda)
+ *         result[point] = (heights.max() / max_lambda)
  * 
  *     return result             # <<<<<<<<<<<<<<
  * 
@@ -7530,6 +7530,233 @@ static PyObject *__pyx_pf_7hdbscan_17_prediction_utils_16all_points_prob_in_some
   __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_clusters.rcbuffer->pybuffer);
   __pyx_L2:;
   __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "dist_metrics.pxd":31
+ * #  We use these for the default (euclidean) case so that they can be
+ * #  inlined.  This leads to faster computation for the most common case
+ * cdef inline DTYPE_t euclidean_dist(DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
+ *                                    ITYPE_t size) nogil except -1:
+ *     cdef DTYPE_t tmp, d=0
+ */
+
+static CYTHON_INLINE __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_euclidean_dist(__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x1, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x2, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_v_size) {
+  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_tmp;
+  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_d;
+  __pyx_t_5numpy_intp_t __pyx_v_j;
+  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
+  __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_t_1;
+  __pyx_t_5numpy_intp_t __pyx_t_2;
+
+  /* "dist_metrics.pxd":33
+ * cdef inline DTYPE_t euclidean_dist(DTYPE_t* x1, DTYPE_t* x2,
+ *                                    ITYPE_t size) nogil except -1:
+ *     cdef DTYPE_t tmp, d=0             # <<<<<<<<<<<<<<
+ *     cdef np.intp_t j
+ *     for j in range(size):
+ */
+  __pyx_v_d = 0.0;
+
+  /* "dist_metrics.pxd":35
+ *     cdef DTYPE_t tmp, d=0
+ *     cdef np.intp_t j
+ *     for j in range(size):             # <<<<<<<<<<<<<<
+ *         tmp = x1[j] - x2[j]
+ *         d += tmp * tmp
+ */
+  __pyx_t_1 = __pyx_v_size;
+  for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
+    __pyx_v_j = __pyx_t_2;
+
+    /* "dist_metrics.pxd":36
+ *     cdef np.intp_t j
+ *     for j in range(size):
+ *         tmp = x1[j] - x2[j]             # <<<<<<<<<<<<<<
+ *         d += tmp * tmp
+ *     return sqrt(d)
+ */
+    __pyx_v_tmp = ((__pyx_v_x1[__pyx_v_j]) - (__pyx_v_x2[__pyx_v_j]));
+
+    /* "dist_metrics.pxd":37
+ *     for j in range(size):
+ *         tmp = x1[j] - x2[j]
+ *         d += tmp * tmp             # <<<<<<<<<<<<<<
+ *     return sqrt(d)
+ * 
+ */
+    __pyx_v_d = (__pyx_v_d + (__pyx_v_tmp * __pyx_v_tmp));
+  }
+
+  /* "dist_metrics.pxd":38
+ *         tmp = x1[j] - x2[j]
+ *         d += tmp * tmp
+ *     return sqrt(d)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = sqrt(__pyx_v_d);
+  goto __pyx_L0;
+
+  /* "dist_metrics.pxd":31
+ * #  We use these for the default (euclidean) case so that they can be
+ * #  inlined.  This leads to faster computation for the most common case
+ * cdef inline DTYPE_t euclidean_dist(DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
+ *                                    ITYPE_t size) nogil except -1:
+ *     cdef DTYPE_t tmp, d=0
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "dist_metrics.pxd":41
+ * 
+ * 
+ * cdef inline DTYPE_t euclidean_rdist(DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
+ *                                     ITYPE_t size) nogil except -1:
+ *     cdef DTYPE_t tmp, d=0
+ */
+
+static CYTHON_INLINE __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_euclidean_rdist(__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x1, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x2, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_v_size) {
+  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_tmp;
+  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_d;
+  __pyx_t_5numpy_intp_t __pyx_v_j;
+  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
+  __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_t_1;
+  __pyx_t_5numpy_intp_t __pyx_t_2;
+
+  /* "dist_metrics.pxd":43
+ * cdef inline DTYPE_t euclidean_rdist(DTYPE_t* x1, DTYPE_t* x2,
+ *                                     ITYPE_t size) nogil except -1:
+ *     cdef DTYPE_t tmp, d=0             # <<<<<<<<<<<<<<
+ *     cdef np.intp_t j
+ *     for j in range(size):
+ */
+  __pyx_v_d = 0.0;
+
+  /* "dist_metrics.pxd":45
+ *     cdef DTYPE_t tmp, d=0
+ *     cdef np.intp_t j
+ *     for j in range(size):             # <<<<<<<<<<<<<<
+ *         tmp = x1[j] - x2[j]
+ *         d += tmp * tmp
+ */
+  __pyx_t_1 = __pyx_v_size;
+  for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
+    __pyx_v_j = __pyx_t_2;
+
+    /* "dist_metrics.pxd":46
+ *     cdef np.intp_t j
+ *     for j in range(size):
+ *         tmp = x1[j] - x2[j]             # <<<<<<<<<<<<<<
+ *         d += tmp * tmp
+ *     return d
+ */
+    __pyx_v_tmp = ((__pyx_v_x1[__pyx_v_j]) - (__pyx_v_x2[__pyx_v_j]));
+
+    /* "dist_metrics.pxd":47
+ *     for j in range(size):
+ *         tmp = x1[j] - x2[j]
+ *         d += tmp * tmp             # <<<<<<<<<<<<<<
+ *     return d
+ * 
+ */
+    __pyx_v_d = (__pyx_v_d + (__pyx_v_tmp * __pyx_v_tmp));
+  }
+
+  /* "dist_metrics.pxd":48
+ *         tmp = x1[j] - x2[j]
+ *         d += tmp * tmp
+ *     return d             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_d;
+  goto __pyx_L0;
+
+  /* "dist_metrics.pxd":41
+ * 
+ * 
+ * cdef inline DTYPE_t euclidean_rdist(DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
+ *                                     ITYPE_t size) nogil except -1:
+ *     cdef DTYPE_t tmp, d=0
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "dist_metrics.pxd":51
+ * 
+ * 
+ * cdef inline DTYPE_t euclidean_dist_to_rdist(DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
+ *     return dist * dist
+ * 
+ */
+
+static CYTHON_INLINE __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_euclidean_dist_to_rdist(__pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_dist) {
+  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
+
+  /* "dist_metrics.pxd":52
+ * 
+ * cdef inline DTYPE_t euclidean_dist_to_rdist(DTYPE_t dist) nogil except -1:
+ *     return dist * dist             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = (__pyx_v_dist * __pyx_v_dist);
+  goto __pyx_L0;
+
+  /* "dist_metrics.pxd":51
+ * 
+ * 
+ * cdef inline DTYPE_t euclidean_dist_to_rdist(DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
+ *     return dist * dist
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "dist_metrics.pxd":55
+ * 
+ * 
+ * cdef inline DTYPE_t euclidean_rdist_to_dist(DTYPE_t dist) except -1:             # <<<<<<<<<<<<<<
+ *     return sqrt(dist)
+ * 
+ */
+
+static CYTHON_INLINE __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_euclidean_rdist_to_dist(__pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_dist) {
+  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("euclidean_rdist_to_dist", 0);
+
+  /* "dist_metrics.pxd":56
+ * 
+ * cdef inline DTYPE_t euclidean_rdist_to_dist(DTYPE_t dist) except -1:
+ *     return sqrt(dist)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = sqrt(__pyx_v_dist);
+  goto __pyx_L0;
+
+  /* "dist_metrics.pxd":55
+ * 
+ * 
+ * cdef inline DTYPE_t euclidean_rdist_to_dist(DTYPE_t dist) except -1:             # <<<<<<<<<<<<<<
+ *     return sqrt(dist)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -9652,233 +9879,6 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   /* function exit code */
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "dist_metrics.pxd":31
- * #  We use these for the default (euclidean) case so that they can be
- * #  inlined.  This leads to faster computation for the most common case
- * cdef inline DTYPE_t euclidean_dist(DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
- *                                    ITYPE_t size) nogil except -1:
- *     cdef DTYPE_t tmp, d=0
- */
-
-static CYTHON_INLINE __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_euclidean_dist(__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x1, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x2, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_v_size) {
-  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_tmp;
-  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_d;
-  __pyx_t_5numpy_intp_t __pyx_v_j;
-  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
-  __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_t_1;
-  __pyx_t_5numpy_intp_t __pyx_t_2;
-
-  /* "dist_metrics.pxd":33
- * cdef inline DTYPE_t euclidean_dist(DTYPE_t* x1, DTYPE_t* x2,
- *                                    ITYPE_t size) nogil except -1:
- *     cdef DTYPE_t tmp, d=0             # <<<<<<<<<<<<<<
- *     cdef np.intp_t j
- *     for j in range(size):
- */
-  __pyx_v_d = 0.0;
-
-  /* "dist_metrics.pxd":35
- *     cdef DTYPE_t tmp, d=0
- *     cdef np.intp_t j
- *     for j in range(size):             # <<<<<<<<<<<<<<
- *         tmp = x1[j] - x2[j]
- *         d += tmp * tmp
- */
-  __pyx_t_1 = __pyx_v_size;
-  for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
-    __pyx_v_j = __pyx_t_2;
-
-    /* "dist_metrics.pxd":36
- *     cdef np.intp_t j
- *     for j in range(size):
- *         tmp = x1[j] - x2[j]             # <<<<<<<<<<<<<<
- *         d += tmp * tmp
- *     return sqrt(d)
- */
-    __pyx_v_tmp = ((__pyx_v_x1[__pyx_v_j]) - (__pyx_v_x2[__pyx_v_j]));
-
-    /* "dist_metrics.pxd":37
- *     for j in range(size):
- *         tmp = x1[j] - x2[j]
- *         d += tmp * tmp             # <<<<<<<<<<<<<<
- *     return sqrt(d)
- * 
- */
-    __pyx_v_d = (__pyx_v_d + (__pyx_v_tmp * __pyx_v_tmp));
-  }
-
-  /* "dist_metrics.pxd":38
- *         tmp = x1[j] - x2[j]
- *         d += tmp * tmp
- *     return sqrt(d)             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __pyx_r = sqrt(__pyx_v_d);
-  goto __pyx_L0;
-
-  /* "dist_metrics.pxd":31
- * #  We use these for the default (euclidean) case so that they can be
- * #  inlined.  This leads to faster computation for the most common case
- * cdef inline DTYPE_t euclidean_dist(DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
- *                                    ITYPE_t size) nogil except -1:
- *     cdef DTYPE_t tmp, d=0
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "dist_metrics.pxd":41
- * 
- * 
- * cdef inline DTYPE_t euclidean_rdist(DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
- *                                     ITYPE_t size) nogil except -1:
- *     cdef DTYPE_t tmp, d=0
- */
-
-static CYTHON_INLINE __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_euclidean_rdist(__pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x1, __pyx_t_7hdbscan_12dist_metrics_DTYPE_t *__pyx_v_x2, __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_v_size) {
-  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_tmp;
-  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_d;
-  __pyx_t_5numpy_intp_t __pyx_v_j;
-  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
-  __pyx_t_7hdbscan_12dist_metrics_ITYPE_t __pyx_t_1;
-  __pyx_t_5numpy_intp_t __pyx_t_2;
-
-  /* "dist_metrics.pxd":43
- * cdef inline DTYPE_t euclidean_rdist(DTYPE_t* x1, DTYPE_t* x2,
- *                                     ITYPE_t size) nogil except -1:
- *     cdef DTYPE_t tmp, d=0             # <<<<<<<<<<<<<<
- *     cdef np.intp_t j
- *     for j in range(size):
- */
-  __pyx_v_d = 0.0;
-
-  /* "dist_metrics.pxd":45
- *     cdef DTYPE_t tmp, d=0
- *     cdef np.intp_t j
- *     for j in range(size):             # <<<<<<<<<<<<<<
- *         tmp = x1[j] - x2[j]
- *         d += tmp * tmp
- */
-  __pyx_t_1 = __pyx_v_size;
-  for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
-    __pyx_v_j = __pyx_t_2;
-
-    /* "dist_metrics.pxd":46
- *     cdef np.intp_t j
- *     for j in range(size):
- *         tmp = x1[j] - x2[j]             # <<<<<<<<<<<<<<
- *         d += tmp * tmp
- *     return d
- */
-    __pyx_v_tmp = ((__pyx_v_x1[__pyx_v_j]) - (__pyx_v_x2[__pyx_v_j]));
-
-    /* "dist_metrics.pxd":47
- *     for j in range(size):
- *         tmp = x1[j] - x2[j]
- *         d += tmp * tmp             # <<<<<<<<<<<<<<
- *     return d
- * 
- */
-    __pyx_v_d = (__pyx_v_d + (__pyx_v_tmp * __pyx_v_tmp));
-  }
-
-  /* "dist_metrics.pxd":48
- *         tmp = x1[j] - x2[j]
- *         d += tmp * tmp
- *     return d             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __pyx_r = __pyx_v_d;
-  goto __pyx_L0;
-
-  /* "dist_metrics.pxd":41
- * 
- * 
- * cdef inline DTYPE_t euclidean_rdist(DTYPE_t* x1, DTYPE_t* x2,             # <<<<<<<<<<<<<<
- *                                     ITYPE_t size) nogil except -1:
- *     cdef DTYPE_t tmp, d=0
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "dist_metrics.pxd":51
- * 
- * 
- * cdef inline DTYPE_t euclidean_dist_to_rdist(DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
- *     return dist * dist
- * 
- */
-
-static CYTHON_INLINE __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_euclidean_dist_to_rdist(__pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_dist) {
-  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
-
-  /* "dist_metrics.pxd":52
- * 
- * cdef inline DTYPE_t euclidean_dist_to_rdist(DTYPE_t dist) nogil except -1:
- *     return dist * dist             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __pyx_r = (__pyx_v_dist * __pyx_v_dist);
-  goto __pyx_L0;
-
-  /* "dist_metrics.pxd":51
- * 
- * 
- * cdef inline DTYPE_t euclidean_dist_to_rdist(DTYPE_t dist) nogil except -1:             # <<<<<<<<<<<<<<
- *     return dist * dist
- * 
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  return __pyx_r;
-}
-
-/* "dist_metrics.pxd":55
- * 
- * 
- * cdef inline DTYPE_t euclidean_rdist_to_dist(DTYPE_t dist) except -1:             # <<<<<<<<<<<<<<
- *     return sqrt(dist)
- * 
- */
-
-static CYTHON_INLINE __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_f_7hdbscan_12dist_metrics_euclidean_rdist_to_dist(__pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_v_dist) {
-  __pyx_t_7hdbscan_12dist_metrics_DTYPE_t __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("euclidean_rdist_to_dist", 0);
-
-  /* "dist_metrics.pxd":56
- * 
- * cdef inline DTYPE_t euclidean_rdist_to_dist(DTYPE_t dist) except -1:
- *     return sqrt(dist)             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __pyx_r = sqrt(__pyx_v_dist);
-  goto __pyx_L0;
-
-  /* "dist_metrics.pxd":55
- * 
- * 
- * cdef inline DTYPE_t euclidean_rdist_to_dist(DTYPE_t dist) except -1:             # <<<<<<<<<<<<<<
- *     return sqrt(dist)
- * 
- */
-
-  /* function exit code */
-  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }

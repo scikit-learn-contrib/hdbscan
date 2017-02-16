@@ -288,12 +288,12 @@ cpdef np.ndarray[np.float64_t, ndim=2] all_points_per_cluster_scores(
         max_lambda = max_lambda_dict[point_cluster] + 1e-8 # avoid zero lambda
 
         # Can we not do a faster merge height operation here?
-        result_arr[i] = merge_height(point_cluster, point_lambda,
+        result_arr[point] = merge_height(point_cluster, point_lambda,
                                           clusters, cluster_tree)
 
         # Cythonize: result = np.exp(-(max_lambda / height))
         for j in range(result_arr.shape[1]):
-            result[i][j] = exp(-(max_lambda / result[i][j]))
+            result[point][j] = exp(-(max_lambda / result[point][j]))
 
     return result_arr
 
@@ -353,7 +353,7 @@ cpdef all_points_prob_in_some_cluster(
                                clusters, cluster_tree)
         max_lambda = max(max_lambda_dict[clusters[heights.argmax()]],
                          point_lambda)
-        result[i] = (heights.max() / max_lambda)
+        result[point] = (heights.max() / max_lambda)
 
     return result
 
