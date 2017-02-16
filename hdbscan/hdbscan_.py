@@ -93,9 +93,10 @@ else:
 
 
 def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
+                    cluster_selection_method='eom',
                     allow_single_cluster=False,
                     match_reference_implementation=False):
-    """ Converts a pretrained tree and cluster size into a
+    """Converts a pretrained tree and cluster size into a
     set of labels and probabilities.
     """
     condensed_tree = condense_tree(single_linkage_tree,
@@ -103,6 +104,7 @@ def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
     stability_dict = compute_stability(condensed_tree)
     labels, probabilities, stabilities = get_clusters(condensed_tree,
                                                       stability_dict,
+                                                      cluster_selection_method,
                                                       allow_single_cluster,
                                                       match_reference_implementation)
 
@@ -331,7 +333,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             metric='minkowski', p=2, leaf_size=40,
             algorithm='best', memory=Memory(cachedir=None, verbose=0),
             approx_min_span_tree=True, gen_min_span_tree=False,
-            core_dist_n_jobs=4, allow_single_cluster=False,
+            core_dist_n_jobs=4,
+            cluster_selection_method='eom', allow_single_cluster=False,
             match_reference_implementation=False, **kwargs):
     """Perform HDBSCAN clustering from a vector array or distance matrix.
 
@@ -404,6 +407,14 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         supported by the specific algorithm). For ``core_dist_n_jobs``
         below -1, (n_cpus + 1 + core_dist_n_jobs) are used.
 
+    cluster_selection_method : string, optional (default='eom')
+        The method used to select clusters from the condensed tree. The
+        standard approach for HDBSCAN* is to use an Excess of Mass algorithm
+        to find the most persistent clusters. Alternatively you can instead
+        select the clusters at the leaves of the tree -- this provides the
+        most fine grained and homogeneous clusters. Options are:
+            * ``eom``
+            * ``leaf``
 
     allow_single_cluster : bool, optional (default=False)
         By default HDBSCAN* will not produce a single cluster, setting this
@@ -494,6 +505,10 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         min_samples = min_samples - 1
         min_cluster_size = min_cluster_size + 1
         approx_min_span_tree = False
+
+    if cluster_selection_method not in ('eom', 'leaf'):
+        raise ValueError('Invalid Cluster Selection Method: %s\n'
+                         'Should be one of: "eom", "leaf"\n')
 
     # Checks input and converts to an nd-array where possible
     X = check_array(X, accept_sparse='csr')
@@ -592,6 +607,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     return _tree_to_labels(X,
                            single_linkage_tree,
                            min_cluster_size,
+                           cluster_selection_method,
                            allow_single_cluster,
                            match_reference_implementation) + \
             (result_min_span_tree,)
@@ -673,6 +689,15 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         supported by the specific algorithm). For ``core_dist_n_jobs``
         below -1, (n_cpus + 1 + core_dist_n_jobs) are used.
 
+    cluster_selection_method : string, optional (default='eom')
+        The method used to select clusters from the condensed tree. The
+        standard approach for HDBSCAN* is to use an Excess of Mass algorithm
+        to find the most persistent clusters. Alternatively you can instead
+        select the clusters at the leaves of the tree -- this provides the
+        most fine grained and homogeneous clusters. Options are:
+            * ``eom``
+            * ``leaf``
+
     allow_single_cluster : bool, optional (default=False)
         By default HDBSCAN* will not produce a single cluster, setting this
         to True will override this and allow single cluster results in
@@ -753,6 +778,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                  approx_min_span_tree=True,
                  gen_min_span_tree=False,
                  core_dist_n_jobs=4,
+                 cluster_selection_method='eom',
                  allow_single_cluster=False,
                  match_reference_implementation=False, **kwargs):
         self.min_cluster_size = min_cluster_size
@@ -767,6 +793,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self.approx_min_span_tree = approx_min_span_tree
         self.gen_min_span_tree = gen_min_span_tree
         self.core_dist_n_jobs = core_dist_n_jobs
+        self.cluster_selection_method = cluster_selection_method
         self.allow_single_cluster = allow_single_cluster
         self.match_reference_implementation = match_reference_implementation
 

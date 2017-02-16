@@ -538,8 +538,20 @@ cpdef np.ndarray get_stability_scores(np.ndarray labels, set clusters,
 
     return result
 
+cpdef list recurse_leaf_dfs(np.ndarray cluster_tree, np.intp_t current_node):
+    children = cluster_tree[cluster_tree['parent'] == current_node]['child']
+    if len(children) == 0:
+        return [current_node,]
+    else:
+        return sum([recurse_leaf_dfs(cluster_tree, child) for child in children], [])
+
+
+cpdef list get_cluster_tree_leaves(np.ndarray cluster_tree):
+    root = cluster_tree['parent'].min()
+    return recurse_leaf_dfs(cluster_tree, root)
 
 cpdef tuple get_clusters(np.ndarray tree, dict stability,
+                         cluster_selection_method='eom',
                          allow_single_cluster=False,
                          match_reference_implementation=False):
     """
@@ -573,18 +585,29 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
     num_points = np.max(tree[tree['child_size'] == 1]['child']) + 1
     max_lambda = np.max(tree['lambda_val'])
 
-    for node in node_list:
-        child_selection = (cluster_tree['parent'] == node)
-        subtree_stability = np.sum([
-            stability[child] for
-            child in cluster_tree['child'][child_selection]])
-        if subtree_stability > stability[node]:
-            is_cluster[node] = False
-            stability[node] = subtree_stability
-        else:
-            for sub_node in bfs_from_cluster_tree(cluster_tree, node):
-                if sub_node != node:
-                    is_cluster[sub_node] = False
+    if cluster_selection_method == 'eom':
+        for node in node_list:
+            child_selection = (cluster_tree['parent'] == node)
+            subtree_stability = np.sum([
+                stability[child] for
+                child in cluster_tree['child'][child_selection]])
+            if subtree_stability > stability[node]:
+                is_cluster[node] = False
+                stability[node] = subtree_stability
+            else:
+                for sub_node in bfs_from_cluster_tree(cluster_tree, node):
+                    if sub_node != node:
+                        is_cluster[sub_node] = False
+    elif cluster_selection_method == 'leaf':
+        leaves = set(get_cluster_tree_leaves(cluster_tree))
+        for c in is_cluster:
+            if c in leaves:
+                is_cluster[c] = True
+            else:
+                is_cluster[c] = False
+    else:
+        raise ValueError('Invalid Cluster Selection Method: %s\n'
+                         'Should be one of: "eom", "leaf"\n')
 
     clusters = set([c for c in is_cluster if is_cluster[c]])
     cluster_map = {c: n for n, c in enumerate(sorted(list(clusters)))}
