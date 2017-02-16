@@ -49,8 +49,9 @@ def _get_leaves(condensed_tree):
     return _recurse_leaf_dfs(cluster_tree, root)
 
 class CondensedTree(object):
-    def __init__(self, condensed_tree_array):
+    def __init__(self, condensed_tree_array, cluster_selection_method='eom'):
         self._raw_tree = condensed_tree_array
+        self.cluster_selection_method = cluster_selection_method
 
     def get_plot_data(self, leaf_separation=1, log_size=False):
         """Generates data for use in plotting the 'icicle plot' or dendrogram 
@@ -184,25 +185,28 @@ class CondensedTree(object):
         }
 
     def _select_clusters(self):
-        stability = compute_stability(self._raw_tree)
-        node_list = sorted(stability.keys(), reverse=True)[:-1]
-        cluster_tree = self._raw_tree[self._raw_tree['child_size'] > 1]
-        is_cluster = {cluster: True for cluster in node_list}
+        if self.cluster_selection_method == 'eom':
+            stability = compute_stability(self._raw_tree)
+            node_list = sorted(stability.keys(), reverse=True)[:-1]
+            cluster_tree = self._raw_tree[self._raw_tree['child_size'] > 1]
+            is_cluster = {cluster: True for cluster in node_list}
 
-        for node in node_list:
-            child_selection = (cluster_tree['parent'] == node)
-            subtree_stability = np.sum([stability[child] for
-                                        child in cluster_tree['child'][child_selection]])
+            for node in node_list:
+                child_selection = (cluster_tree['parent'] == node)
+                subtree_stability = np.sum([stability[child] for
+                                            child in cluster_tree['child'][child_selection]])
 
-            if subtree_stability > stability[node]:
-                is_cluster[node] = False
-                stability[node] = subtree_stability
-            else:
-                for sub_node in _bfs_from_cluster_tree(cluster_tree, node):
-                    if sub_node != node:
-                        is_cluster[sub_node] = False
+                if subtree_stability > stability[node]:
+                    is_cluster[node] = False
+                    stability[node] = subtree_stability
+                else:
+                    for sub_node in _bfs_from_cluster_tree(cluster_tree, node):
+                        if sub_node != node:
+                            is_cluster[sub_node] = False
 
-        return [cluster for cluster in is_cluster if is_cluster[cluster]]
+            return [cluster for cluster in is_cluster if is_cluster[cluster]]
+        else:
+            return _get_leaves(self._raw_tree)
 
     def plot(self, leaf_separation=1, cmap='viridis', select_clusters=False,
              label_clusters=False, selection_palette=None,
