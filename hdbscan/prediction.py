@@ -12,7 +12,8 @@ from ._prediction_utils import (get_tree_row_with_child,
                                 outlier_membership_vector,
                                 prob_in_some_cluster,
                                 all_points_dist_membership_vector,
-                                all_points_outlier_membership_vector)
+                                all_points_outlier_membership_vector,
+                                all_points_prob_in_some_cluster)
 
 
 class PredictionData(object):
@@ -424,7 +425,6 @@ def membership_vector(clusterer, points_to_predict):
     """
 
     clusters = np.array(list(clusterer.condensed_tree_._select_clusters()
-
     )).astype(np.intp)
 
     result = np.empty((points_to_predict.shape[0], clusters.shape[0]),
@@ -497,7 +497,8 @@ def all_points_membership_vectors(clusterer):
         The probability that point ``i`` of the original dataset is a member of
         cluster ``j`` is in ``membership_vectors[i, j]``.
     """
-    clusters = np.array(list(clusterer.prediction_data_.cluster_map.keys()))
+    clusters = np.array(list(clusterer.condensed_tree_._select_clusters()
+                             )).astype(np.intp)
     all_points = clusterer.prediction_data_.raw_data
 
     distance_vecs = all_points_dist_membership_vector(all_points,
@@ -507,11 +508,14 @@ def all_points_membership_vectors(clusterer):
                                                         clusterer.condensed_tree_._raw_tree,
                                                         clusterer.prediction_data_.leaf_max_lambdas,
                                                         clusterer.prediction_data_.cluster_tree)
-    in_cluster_probs = all_points_prob_in_some_cluster()
+    in_cluster_probs = all_points_prob_in_some_cluster(clusters,
+                                                       clusterer.condensed_tree_._raw_tree,
+                                                       clusterer.prediction_data_.leaf_max_lambdas,
+                                                       clusterer.prediction_data_.cluster_tree)
 
     result = distance_vecs ** 0.5 * outlier_vecs ** 2.0
     row_sums = result.sum(axis=1)
     result = result / row_sums[:, np.newaxis]
-    result *= in_cluster_probs
+    result *= in_cluster_probs[:, np.newaxis]
 
     return result

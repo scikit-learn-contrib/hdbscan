@@ -254,9 +254,9 @@ cpdef np.float64_t prob_in_some_cluster(neighbor, lambda_, clusters, tree,
     point_height = cluster_merge_heights.max()
     nearest_cluster = clusters[cluster_merge_heights.argmax()]
 
-    max_lambda = max_lambda_dict[nearest_cluster] + 1e-8 # avoid zero
+    max_lambda = max(lambda_, max_lambda_dict[nearest_cluster]) + 1e-8 # avoid z
 
-    return point_height / max_lambda
+    return (point_height / max_lambda)
 
 cpdef np.ndarray[np.float64_t, ndim=2] all_points_per_cluster_scores(
         np.ndarray[np.intp_t, ndim=1] clusters,
@@ -301,7 +301,7 @@ cpdef np.ndarray[np.float64_t, ndim=2] all_points_outlier_membership_vector(
         np.ndarray[np.intp_t, ndim=1] clusters,
         np.ndarray tree,
         dict max_lambda_dict,
-        np.ndarray, cluster_tree,
+        np.ndarray cluster_tree,
         np.intp_t softmax=True):
 
     cdef np.ndarray[np.float64_t, ndim=2] per_cluster_scores
@@ -326,13 +326,11 @@ cpdef all_points_prob_in_some_cluster(
         np.ndarray[np.intp_t, ndim=1] clusters,
         np.ndarray tree,
         dict max_lambda_dict,
-        np.ndarray, cluster_tree):
-
+        np.ndarray cluster_tree):
 
     cdef np.ndarray[np.float64_t, ndim=1] heights
     cdef np.intp_t num_points = tree['parent'].min()
-    cdef np.ndarray[np.float64_t, ndim=2] result_arr
-    cdef np.float64_t[:, ::1] result
+    cdef np.ndarray[np.float64_t, ndim=1] result
     cdef np.intp_t point
     cdef np.intp_t point_cluster
     cdef np.float64_t point_lambda
@@ -340,23 +338,22 @@ cpdef all_points_prob_in_some_cluster(
 
     cdef np.intp_t i
 
-    result_arr = np.empty((num_points, clusters.shape[0]), dtype=np.float64)
-    result = (<np.float64_t [:num_points, :clusters.shape[0]:1]>
-                 (<np.float64_t *> result_arr.data))
+    result = np.empty(num_points, dtype=np.float64)
 
     point_tree = tree[tree['child_size'] == 1]
 
     for i in range(point_tree.shape[0]):
         point_row = point_tree[i]
         point = point_row['child']
-        point_cluster = point_row
+        point_cluster = point_row['parent']
         point_lambda = point_row['lambda_val']
 
         # Can we not do a faster merge height operation here?
         heights = merge_height(point_cluster, point_lambda,
                                clusters, cluster_tree)
-        max_lambda = max_lambda_dict[clusters[heights.argmax()]]
-        result_arr[i] = (heights.max() / max_lambda)
+        max_lambda = max(max_lambda_dict[clusters[heights.argmax()]],
+                         point_lambda)
+        result[i] = (heights.max() / max_lambda)
 
-    return result_arr
+    return result
 
