@@ -205,8 +205,11 @@ class CondensedTree(object):
                             is_cluster[sub_node] = False
 
             return [cluster for cluster in is_cluster if is_cluster[cluster]]
-        else:
+        elif self.cluster_selection_method == 'leaf':
             return _get_leaves(self._raw_tree)
+        else:
+            raise ValueError('Invalid Cluster Selection Method: %s\n'
+                             'Should be one of: "eom", "leaf"\n')
 
     def plot(self, leaf_separation=1, cmap='viridis', select_clusters=False,
              label_clusters=False, selection_palette=None,
