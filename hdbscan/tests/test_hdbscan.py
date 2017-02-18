@@ -462,6 +462,15 @@ def test_hdbscan_membership_vector():
     vector = membership_vector(clusterer, np.array([[0.0, 0.0]]))
     assert_array_almost_equal(vector, np.array([[ 0.03545607,  0.03363318,  0.04643177]]))
 
+def test_hdbscan_all_points_membership_vectors():
+    clusterer = HDBSCAN(prediction_data=True).fit(X)
+    vects = all_points_membership_vectors(clusterer)
+    assert_array_almost_equal(vects[0], np.array([7.86400992e-002,
+                                                   2.52734246e-001,
+                                                   8.38299608e-002]))
+    assert_array_almost_equal(vects[-1], np.array([8.09055344e-001,
+                                                   8.35882503e-002,
+                                                   1.07356406e-001]))
 
 def test_hdbscan_badargs():
     assert_raises(ValueError,
