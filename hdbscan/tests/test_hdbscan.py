@@ -12,6 +12,7 @@ from scipy import stats
 from sklearn.utils.estimator_checks import check_estimator
 from sklearn.utils.testing import (assert_equal,
                                    assert_array_equal,
+                                   assert_array_almost_equal,
                                    assert_raises,
                                    assert_in,
                                    assert_not_in,
@@ -451,6 +452,16 @@ def test_hdbscan_approximate_predict():
     assert_equal(cluster, 1)
     cluster, prob = approximate_predict(clusterer, np.array([[0.0, 0.0]]))
     assert_equal(cluster, -1)
+
+def test_hdbscan_membership_vector():
+    clusterer = HDBSCAN(prediction_data=True).fit(X)
+    vector = membership_vector(clusterer, np.array([[-1.5, -1.0]]))
+    assert_array_almost_equal(vector, np.array([[ 0.05705305,  0.05974177,  0.12228153]]))
+    vector = membership_vector(clusterer, np.array([[1.5, -1.0]]))
+    assert_array_almost_equal(vector, np.array([[ 0.09462176,  0.32061556,  0.10112905]]))
+    vector = membership_vector(clusterer, np.array([[0.0, 0.0]]))
+    assert_array_almost_equal(vector, np.array([[ 0.03545607,  0.03363318,  0.04643177]]))
+
 
 def test_hdbscan_badargs():
     assert_raises(ValueError,
