@@ -89,8 +89,8 @@ class CondensedTree(object):
                                      giving the bounds on a full set of 
                                      cluster bars
                     Data associates with cluster splits:
-                        `line_xs` x coordinates for horiontal dendrogram lines
-                        `line_ys` y coordinates for horiontal dendrogram lines
+                        `line_xs` x coordinates for horizontal dendrogram lines
+                        `line_ys` y coordinates for horizontal dendrogram lines
         """
         leaves = _get_leaves(self._raw_tree)
         last_leaf = self._raw_tree['parent'].max()
