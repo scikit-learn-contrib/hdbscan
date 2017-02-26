@@ -6,7 +6,7 @@
     - machine learning
   authors:
    - name: Leland McInnes
-     orcid: 0000-0000-0000-1234
+     orcid: 0000-0003-2143-6834
      affiliation: 1
    - name: John Healy
      affiliation: 1
