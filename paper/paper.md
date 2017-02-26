@@ -1,25 +1,25 @@
 ---
-  title: 'hdbscan: Hierarchical density based clustering'
-  tags:
-    - clustering
-    - unsupervised learning
-    - machine learning
-  authors:
-   - name: Leland McInnes
-     orcid: 0000-0003-2143-6834
-     affiliation: 1
-   - name: John Healy
-     affiliation: 1
-   - name: Steve Astels
-     affiliation: 2
-  affiliations:
-   - name: Tutte Institute for Mathematics and Computing
-     index: 1
-   - name: Shopify
-     index: 2
-  date: 26 February 2017
-  bibliography: paper.bib
-  ---
+title: 'hdbscan: Hierarchical density based clustering'
+tags:
+  - clustering
+  - unsupervised learning
+  - machine learning
+authors:
+ - name: Leland McInnes
+   orcid: 0000-0003-2143-6834
+   affiliation: 1
+ - name: John Healy
+  affiliation: 1
+ - name: Steve Astels
+   affiliation: 2
+affiliations:
+ - name: Tutte Institute for Mathematics and Computing
+   index: 1
+ - name: Shopify
+   index: 2
+date: 26 February 2017
+bibliography: paper.bib
+---
 
   # Summary
 
