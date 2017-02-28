@@ -883,11 +883,19 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         you are intending to use functions from ``hdbscan.prediction``.
         """
 
-        if self.metric != 'precomputed':
+        if self.metric not in FAST_METRICS:
             min_samples = self.min_samples or self.min_cluster_size
+            if self.metric in KDTree.valid_metrics:
+                tree_type = 'kdtree'
+            elif self.metric in BallTree.valid_metrics:
+                tree_type = 'balltree'
+            else:
+                warn('Metric {} not supported for prediction data!'.format(self.metric))
+                return
+                
             self._prediction_data = PredictionData(
                 self._raw_data, self.condensed_tree_, min_samples,
-                tree_type='kdtree', metric=self.metric,
+                tree_type=tree_type, metric=self.metric,
                 **self._metric_kwargs
             )
         else:
