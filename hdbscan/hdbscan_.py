@@ -883,7 +883,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         you are intending to use functions from ``hdbscan.prediction``.
         """
 
-        if self.metric not in FAST_METRICS:
+        if self.metric in FAST_METRICS:
             min_samples = self.min_samples or self.min_cluster_size
             if self.metric in KDTree.valid_metrics:
                 tree_type = 'kdtree'
