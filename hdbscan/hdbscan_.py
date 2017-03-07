@@ -956,3 +956,16 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                  'This may be due to optimized algorithm variations that skip'
                  ' explicit generation of the spanning tree.')
             return None
+
+    @property
+    def exemplars_(self):
+        if self._prediction_data is not None:
+            return self._prediction_data.exemplars
+        elif self.metric in FAST_METRICS:
+            self.generate_prediction_data()
+            return self._prediction_data.exemplars
+        else:
+            warn('Currently exemplars require the use of vector input data'
+                 'with a suitable metric. This will likely change in the '
+                 'future, but for now no exemplars can be provided')
+            return None
