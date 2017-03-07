@@ -6,7 +6,7 @@ Once you have the basics of clustering sorted you may want to dig a
 little deeper than just the cluster labels returned to you. Fortunately
 the hdbscan library provides you with the facilities to do this. During
 processing HDBSCAN\* builds a hierarchy of potential clusters, from
-which is extracts the flat clustering returned. It can be informative to
+which it extracts the flat clustering returned. It can be informative to
 look at that hierarchy, and potentially make use of the extra
 information contained therein.
 
@@ -66,7 +66,7 @@ hierarchy we can call the ``plot`` method:
 .. image:: images/advanced_hdbscan_9_1.png
 
 
-We can now see the hierarchy as a dendrogram, the width (and color) or
+We can now see the hierarchy as a dendrogram, the width (and color) of
 each branch representing the number of points in the cluster at that
 level. If we wish to know which branches were selected by the HDBSCAN\*
 algorithm we can pass ``select_clusters=True``. You can even pass a
@@ -94,10 +94,10 @@ subclusters that in turn persist for quite some time -- so there is some
 interesting substructure to the pale blue cluster that is not present,
 for example, in the dark blue cluster.
 
-In this was a simple visual analysis of the condensed tree can tell you
+If this was a simple visual analysis of the condensed tree can tell you
 a lot more about the structure of your data. This is not all we can do
 with condensed trees however. For larger and more complex datasets the
-tree itself may be very complex, and it may be desireable to run more
+tree itself may be very complex, and it may be desirable to run more
 interesting analytics over the tree itself. This can be achieved via
 several converter methods: ``to_networkx``, ``to_pandas``, and
 ``to_numpy``.
@@ -278,7 +278,7 @@ presenting and summarising the data. There is a lot less to be gained
 from visual inspection of a plot like this (and it only gets worse for
 larger datasets). The plot function support most of the same
 fucntionality as the dendrogram plotting from
-``scipy.cluster.hierarchy``, so you can view various truncations of th
+``scipy.cluster.hierarchy``, so you can view various truncations of the
 tree if necessary. In practice, however, you are more likely to be
 interested in access the raw data for further analysis. Again we have
 ``to_networkx``, ``to_pandas`` and ``to_numpy``. This time the
