@@ -298,3 +298,23 @@ above. The numpy and pandas results conform to the single linkage
 hierarchy format of ``scipy.cluster.hierarchy``, and can be passed to
 routines there if necessary.
 
+If you wish to know what the clusters are at a given fixed level of the
+single linkage tree you can use the ``get_clusters`` method to extract
+a vector of cluster labels. The method takes a cut value of the level
+at which to cut the tree, and a ``minimum_cluster_size`` to determine
+noise points (any cluster smaller than the ``minimum_cluster_size``).
+
+.. code:: python
+
+    clusterer.single_linkage_tree_.get_clusters(0.023, min_cluster_size=2)
+
+
+
+.. parsed-literal::
+
+    array([ 0, -1,  0, ..., -1, -1,  0])
+
+
+In this way it is possible to extract the DBSCAN clustering that would result
+for any given epsilon value, all from one run of hdbscan.
+
