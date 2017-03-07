@@ -765,6 +765,13 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         unseen points. Necessary only if you are using functions from
         ``hdbscan.prediction``.
 
+    exemplars_ : list
+        A list of exemplar points for clusters. Since HDBSCAN supports
+        arbitrary shapes for clusters we cannot provide a single cluster
+        exemplar per cluster. Instead a list is returned with each element
+        of the list being a numpy array of exemplar points for a cluster --
+        these points are the "most representative" points of the cluster.
+
     References
     ----------
 
