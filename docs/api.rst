@@ -16,3 +16,18 @@ RobustSingleLinkage
    :members:
 
 
+Utilities
+---------
+
+Other useful classes are contained in the plots module, the validity module,
+and the prediction
+module.
+
+.. automodule:: hdbscan.plots
+   :members:
+
+.. automodule:: hdbscan.validity
+   :members:
+
+.. automodule:: hdbscan.prediction
+   :members:
