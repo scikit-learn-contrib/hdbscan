@@ -216,6 +216,17 @@ the ``child_size`` provides the number of points in the child cluster.
 As you can see the start of the dataframe has singleton points falling
 out of the root cluster, with each ``child_size`` equal to 1.
 
+If you want just he clusters, rather than all the individual points
+as well, simply select the rows of the dataframe with ``child_size``
+greater than 1.
+
+.. code:: python
+
+    tree = clusterer.condensed_tree_.to_pandas()
+    cluster_tree = tree[tree.child_size > 1]
+
+
+
 Finally we have the ``to_numpy`` function, which returns a numpy record
 array:
 
