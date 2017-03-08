@@ -116,8 +116,8 @@ intuitions, but only if we fix ``min_samples``. If you wish to explore
 different ``min_cluster_size`` settings with a fixed ``min_samples``
 value, especially for larger dataset sizes, you can cache the hard
 computation, and recompute only the relatively cheap flat cluster
-extraction using the ``memory`` parameter, which makes use of ``joblib``
-[link].
+extraction using the ``memory`` parameter, which makes use of
+`joblib <https://pythonhosted.org/joblib/>`_
 
 Selecting ``min_samples``
 -----------------------
