@@ -27,9 +27,9 @@ HDBSCAN object.
 
     clusterer = hdbscan.HDBSCAN(min_cluster_size=15).fit(data)
 
-The clusterer object now has an attribute (computed when first accessed)
+The ``clusterer`` object now has an attribute (computed when first accessed)
 called ``outlier_scores_``. This provides a numpy array with a value for
-each sample in the original dataset that was fit with the clusterer. The
+each sample in the original dataset that was fit with the ``clusterer``. The
 higher the score, the more likely the point is to be an outlier. In
 practice it is often best to look at the distributions of outlier
 scores.
