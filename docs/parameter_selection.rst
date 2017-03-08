@@ -205,3 +205,20 @@ homogeneous clusters. Note that you can still get variable density clusters
 via this method, and it is also still possible to get large clusters, but
 there will be a tendency to produce a more fine grained clustering than
 Excess of Mass can provide.
+
+Allowing a single cluster
+-------------------------
+
+In contrast, if you are getting lots of small clusters, but believe there
+should be some larger scale structure (or the possibility of no structure),
+consider the ``allow_single_cluster`` option. By default HDBSCAN\* does not
+allow a single cluster to be returned -- this is due to how the Excess of
+Mass algorithm works, and a bias towards the root cluster that may occur. You
+can override this behaviour and see what clustering would look like if you
+allow a single cluster to be returned. This can alleviate issue caused by
+there only being a single large cluster, or by data that is essentially just
+noise. For example, the image below shows the effects of setting
+``allow_single_cluster=True`` in the bottom row, compared to the top row
+which used default settings.
+
+.. image:: images/allow_single_cluster.png
