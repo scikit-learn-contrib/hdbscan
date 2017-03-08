@@ -20,10 +20,15 @@ Utilities
 ---------
 
 Other useful classes are contained in the plots module, the validity module,
-and the prediction
-module.
+and the prediction module.
 
-.. automodule:: hdbscan.plots
+.. autoclass:: hdbscan.plots.CondensedTree
+   :members:
+
+.. autoclass:: hdbscan.plots.SingleLinkageTree
+   :members:
+
+.. autoclass:: hdbscan.plots.MinimumSpanningTree
    :members:
 
 .. automodule:: hdbscan.validity
