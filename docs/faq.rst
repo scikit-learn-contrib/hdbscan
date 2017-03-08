@@ -32,8 +32,8 @@ Density based clustering relies on having enough data to separate dense areas
 requires more data. Quite possibly there is not enough data to make your
 clusters clearly separable. Consider the following plots:
 
-.. image:: images/generate_model_scatter.png
-.. image:: images/generate_model_kde.png
+.. image:: images/generative_model_scatter.png
+.. image:: images/generative_model_kde.png
 
 Four different generative models, when sampled, produce results that are hard to
 easily differentiate. The blue dataset is sampled from a mixture of three
@@ -53,7 +53,7 @@ Q: I want to predict the cluster of a new unseen point. How do I do this?
 This is possible via the function ``approximate_predict``. Note that you
 either need to set ``prediction_data=True`` on initialization of your
 clusterer object, or run the ``generate_prediction_data`` method after
-fitting. With that done you can run :ref:`approximate_predict` with the model
+fitting. With that done you can run :func:`approximate_predict` with the model
 and any new data points you wish to predict. Note that this differs from
 re-running HDBSCAN with the new points added since no new clusters will be
 considered -- instead the new points will be labelled according to the
