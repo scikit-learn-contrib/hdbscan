@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-hdbscan.plots: Use matplotlib to display plots of internal 
-               tree structures used by HDBSCAN.
-"""
 # Author: Leland McInnes <leland.mcinnes@gmail.com>
 #
 # License: BSD 3 clause
