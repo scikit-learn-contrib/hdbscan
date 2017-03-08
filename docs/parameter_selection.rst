@@ -164,7 +164,7 @@ Selecting ``alpha``
 -----------------
 
 A further parameter that effects the resulting clustering is ``alpha``.
-In practice it is best not to mess with this paramter -- ultimately it
+In practice it is best not to mess with this parameter -- ultimately it
 is part of the ``RobustSingleLinkage`` code, but flows naturally into
 HDBSCAN\*. If, for some reason, ``min_samples`` is not providing you
 what you need, stop, rethink things, and try again with ``min_samples``.
