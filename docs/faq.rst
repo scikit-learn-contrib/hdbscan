@@ -46,3 +46,15 @@ background noise.
 Despite the generate model having clearly different "clusters", without more
 data we simply cannot differentiate between these models, and hence no
 density based clustering will manage cluster these according to the model.
+
+Q: I want to predict the cluster of a new unseen point. How do I do this?
+-------------------------------------------------------------------------
+
+This is possible via the function ``approximate_predict``. Note that you
+either need to set ``prediction_data=True`` on initialization of your
+clusterer object, or run the ``generate_prediction_data`` method after
+fitting. With that done you can run :ref:`approximate_predict` with the model
+and any new data points you wish to predict. Note that this differs from
+re-running HDBSCAN with the new points added since no new clusters will be
+considered -- instead the new points will be labelled according to the
+clusters already labelled by the model.
