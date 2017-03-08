@@ -5,7 +5,7 @@ Parameter Selection for HDBSCAN\*
 While the HDBSCAN class has a large number of parameters that can be set
 on initialization, in practice there are a very small number of
 parameters that have significant practical effect on clustering. We will
-first consider those major parameters, and consider how one may go about
+consider those major parameters, and consider how one may go about
 choosing them effectively.
 
 Selecting ``min_cluster_size``
@@ -188,4 +188,20 @@ as we can see by setting ``alpha`` to 1.3.
 
 .. image:: images/parameter_selection_18_1.png
 
+Leaf clustering
+---------------
 
+HDBSCAN supports an extra parameter ``cluster_selection_method`` to determine
+how it selects flat clusters from the cluster tree hierarchy. The default
+method is ``'eom'`` for Excess of Mass, the algorithm described in
+:ref:`how_hdbscan_works`. This is not always the most desireable approach to
+cluster selection. If you are more interested in having small homogeneous
+clusters then you may find Excess of Mass has a tendency to pick one or two
+large clusters and then a number of small extra clusters. In this situation
+you may be tempted to recluster just the data in the single large cluster.
+Instead, a better option is to select ``'leaf'`` as a cluster selection
+method. This will select leaf nodes from the tree, producing many small
+homogeneous clusters. Note that you can still get variable density clusters
+via this method, and it is also still possible to get large clusters, but
+there will be a tendency to produce a more fine grained clustering than
+Excess of Mass can provide.
