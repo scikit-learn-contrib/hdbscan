@@ -203,7 +203,7 @@ Leaf clustering
 HDBSCAN supports an extra parameter ``cluster_selection_method`` to determine
 how it selects flat clusters from the cluster tree hierarchy. The default
 method is ``'eom'`` for Excess of Mass, the algorithm described in
-:ref:`how_hdbscan_works`. This is not always the most desireable approach to
+:doc:`how_hdbscan_works`. This is not always the most desireable approach to
 cluster selection. If you are more interested in having small homogeneous
 clusters then you may find Excess of Mass has a tendency to pick one or two
 large clusters and then a number of small extra clusters. In this situation
