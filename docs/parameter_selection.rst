@@ -6,9 +6,7 @@ While the HDBSCAN class has a large number of parameters that can be set
 on initialization, in practice there are a very small number of
 parameters that have significant practical effect on clustering. We will
 first consider those major parameters, and consider how one may go about
-choosing them effectively. With that out of the way we'll look at the
-remaining parameters and see what their effects are -- many just effect
-performance for various different use cases.
+choosing them effectively.
 
 Selecting ``min_cluster_size``
 ------------------------------
@@ -158,7 +156,7 @@ leaving the ``min_cluster_size`` at 60, but reducing ``min_samples`` to
 
 Now most points are clustered, and there are much fewer noise points.
 Steadily increasing ``min_samples`` will, as we saw in the examples
-above, make the clustering progressivly more conservative, culminating
+above, make the clustering progressively more conservative, culminating
 in the example above where ``min_samples`` was set to 60 and we had only
 two clusters with most points declared as noise.
 
