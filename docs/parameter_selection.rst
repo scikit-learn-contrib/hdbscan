@@ -8,7 +8,7 @@ parameters that have significant practical effect on clustering. We will
 consider those major parameters, and consider how one may go about
 choosing them effectively.
 
-.. _min_cluster_size_label
+.. _min_cluster_size_label:
 
 Selecting ``min_cluster_size``
 ------------------------------
@@ -119,7 +119,7 @@ computation, and recompute only the relatively cheap flat cluster
 extraction using the ``memory`` parameter, which makes use of
 `joblib <https://pythonhosted.org/joblib/>`_
 
-.. _min_samples_label
+.. _min_samples_label:
 
 Selecting ``min_samples``
 -----------------------
@@ -164,7 +164,7 @@ above, make the clustering progressively more conservative, culminating
 in the example above where ``min_samples`` was set to 60 and we had only
 two clusters with most points declared as noise.
 
-.. _alpha_label
+.. _alpha_label:
 
 Selecting ``alpha``
 -----------------
@@ -195,7 +195,7 @@ as we can see by setting ``alpha`` to 1.3.
 .. image:: images/parameter_selection_18_1.png
 
 
-.. _leaf_clustering_label
+.. _leaf_clustering_label:
 
 Leaf clustering
 ---------------
@@ -215,7 +215,7 @@ via this method, and it is also still possible to get large clusters, but
 there will be a tendency to produce a more fine grained clustering than
 Excess of Mass can provide.
 
-.. _single_cluster_label
+.. _single_cluster_label:
 
 Allowing a single cluster
 -------------------------
