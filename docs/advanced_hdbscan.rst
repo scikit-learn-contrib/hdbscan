@@ -99,8 +99,8 @@ a lot more about the structure of your data. This is not all we can do
 with condensed trees however. For larger and more complex datasets the
 tree itself may be very complex, and it may be desirable to run more
 interesting analytics over the tree itself. This can be achieved via
-several converter methods: :py:meth:`~hdbscan.plots.CondensedTree.to_networkx`, :py:meth:`~hdbscan.plots.CondensedTree.`to_pandas`, and
-:py:meth:`~hdbscan.plots.CondensedTree.`to_numpy`.
+several converter methods: :py:meth:`~hdbscan.plots.CondensedTree.to_networkx`, :py:meth:`~hdbscan.plots.CondensedTree.to_pandas`, and
+:py:meth:`~hdbscan.plots.CondensedTree.to_numpy`.
 
 First we'll consider :py:meth:`~hdbscan.plots.CondensedTree.to_networkx`
 
@@ -141,7 +141,7 @@ clusters as well as the clusters themselves. Each node has an associated
 at which that edge forms. This allows for much more interesting
 analyses.
 
-Next we have the :py:meth:`~hdbscan.plots.CondensedTree.`to_pandas` method, which returns a panda dataframe
+Next we have the :py:meth:`~hdbscan.plots.CondensedTree.to_pandas` method, which returns a panda dataframe
 where each row corresponds to an edge of the networkx graph:
 
 .. code:: python
@@ -227,7 +227,7 @@ greater than 1.
 
 
 
-Finally we have the :py:meth:`~hdbscan.plots.CondensedTree.`to_numpy` function, which returns a numpy record
+Finally we have the :py:meth:`~hdbscan.plots.CondensedTree.to_numpy` function, which returns a numpy record
 array:
 
 .. code:: python
@@ -292,14 +292,14 @@ fucntionality as the dendrogram plotting from
 ``scipy.cluster.hierarchy``, so you can view various truncations of the
 tree if necessary. In practice, however, you are more likely to be
 interested in access the raw data for further analysis. Again we have
-:py:meth:`~hdbscan.plots.SingleLinkageTree.to_networkx`, :py:meth:`~hdbscan.plots.SingleLinkageTree.`to_pandas` and :py:meth:`~hdbscan.plots.SingleLinkageTree.`to_numpy`. This time the
-:py:meth:`~hdbscan.plots.SingleLinkageTree.`to_networkx` provides a direct networkx version of what you see
+:py:meth:`~hdbscan.plots.SingleLinkageTree.to_networkx`, :py:meth:`~hdbscan.plots.SingleLinkageTree.to_pandas` and :py:meth:`~hdbscan.plots.SingleLinkageTree.to_numpy`. This time the
+:py:meth:`~hdbscan.plots.SingleLinkageTree.to_networkx` provides a direct networkx version of what you see
 above. The numpy and pandas results conform to the single linkage
 hierarchy format of ``scipy.cluster.hierarchy``, and can be passed to
 routines there if necessary.
 
 If you wish to know what the clusters are at a given fixed level of the
-single linkage tree you can use the :py:meth:`~hdbscan.plots.SingleLinkageTree.`get_clusters` method to extract
+single linkage tree you can use the :py:meth:`~hdbscan.plots.SingleLinkageTree.get_clusters` method to extract
 a vector of cluster labels. The method takes a cut value of the level
 at which to cut the tree, and a ``minimum_cluster_size`` to determine
 noise points (any cluster smaller than the ``minimum_cluster_size``).
