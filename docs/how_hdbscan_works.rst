@@ -349,10 +349,10 @@ Declare all leaf nodes to be selected clusters. Now work up through the
 tree (the reverse topological sort order). If the sum of the stabilities
 of the child clusters is greater than the stability of the cluster then
 we set the cluster stability to be the sum of the child stabilities. If,
-on the other hand, the cluster's stability is greater than the su of
+on the other hand, the cluster's stability is greater than the sum of
 it's children then we declare the cluster to be a selected cluster, and
 unselect all its descendants. Once we reach the root node we call the
-current set of selected clusters our flat clsutering and return that.
+current set of selected clusters our flat clustering and return that.
 
 Okay, that was wordy and complicated, but it really is simply performing
 our 'select the clusters in the plot with the largest total ink area'
