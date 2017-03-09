@@ -64,12 +64,6 @@ are doing more work to provide a better clustering.
     sns.set_palette('Paired', 10)
     sns.set_color_codes()
 
-
-.. parsed-literal::
-
-    :0: FutureWarning: IPython widgets are experimental and may change in the future.
-
-
 Now we need some benchmarking code at various dataset sizes. Because
 some clustering algorithms have performance that can vary quite a lot
 depending on the exact nature of the dataset we'll also need to run
