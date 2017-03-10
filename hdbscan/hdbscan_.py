@@ -763,7 +763,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     prediction_data_ : PredictionData object
         Cached data used for predicting the cluster labels of new or
         unseen points. Necessary only if you are using functions from
-        ``hdbscan.prediction``.
+        ``hdbscan.prediction`` (see
+        :func:`~hdbscan.prediction.approximate_predict`,
+        :func:`~hdbscan.prediction.membership_vector`,
+        and :func:`~hdbscan.prediction.all_points_membership_vectors`).
 
     exemplars_ : list
         A list of exemplar points for clusters. Since HDBSCAN supports
