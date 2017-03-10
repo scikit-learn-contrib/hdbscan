@@ -209,12 +209,10 @@ cpdef np.ndarray[np.float64_t, ndim=1] per_cluster_scores(
     result = merge_height(point_cluster, point_lambda,
                           clusters, cluster_tree)
 
-    # result = (max_lambda / (max_lambda - height))
-    # result = np.exp(-(max_lambda - height) / max_lambda)
-
     # Cythonize: result = np.exp(-(max_lambda / height))
     for i in range(result.shape[0]):
-        result[i] = exp(-(max_lambda / result[i]))
+        # result[i] = exp(-(max_lambda / result[i]))
+        result[i] = (max_lambda / (max_lambda - height))
 
     return result
 
