@@ -23,7 +23,7 @@ left with no idea as to which, if any cluster, they might have just
 missed the cur on being in.
 
 The remedy for this is 'soft clustering' or 'fuzzy clustering'. In this
-approach points are no assigned cluster labels, but are instead assigned
+approach points are not assigned cluster labels, but are instead assigned
 a vector of probabilities. The length of the vector is equal to the
 number of clusters found. The probability value at the :math:`i`\ th
 entry of the vector is the probability that that point is a member of
