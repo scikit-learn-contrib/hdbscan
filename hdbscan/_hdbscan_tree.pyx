@@ -319,6 +319,29 @@ cpdef np.ndarray[np.intp_t, ndim=1] labelling_at_cut(
         np.ndarray linkage,
         np.double_t cut,
         np.intp_t min_cluster_size):
+    """Given a single linkage tree and a cut value, return the
+    vector of cluster labels at that cut value. This is useful 
+    for Robust Single Linkage, and extracting DBSCAN results
+    from a single HDBSCAN run.
+    
+    Parameters
+    ----------
+    linkage : ndarray (n_samples, 4)
+        The single linkage tree in scipy.cluster.hierarchy format.
+        
+    cut : double
+        The cut value at which to find clusters.
+        
+    min_cluster_size : int
+        The minimum cluster size; clusters below this size at
+        the cut will be considered noise.
+        
+    Returns
+    -------
+    labels : ndarray (n_samples,)
+        The cluster labels for each point in the data set;
+        a label of -1 denotes a noise assignment.
+    """
 
     cdef np.intp_t root
     cdef np.intp_t num_points
