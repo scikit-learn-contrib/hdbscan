@@ -360,7 +360,8 @@ def approximate_predict(clusterer, points_to_predict):
 
     See Also
     --------
-    ``membership_vector``
+    :py:func:`hdbscan.predict.membership_vector`
+    :py:func:`hdbscan.predict.all_points_membership_vectors`
 
     """
     if clusterer.prediction_data_ is None:
@@ -422,7 +423,12 @@ def membership_vector(clusterer, points_to_predict):
     membership_vectors : array (n_samples, n_clusters)
         The probability that point ``i`` is a member of cluster ``j`` is
         in ``membership_vectors[i, j]``.
-    """
+
+    See Also
+    --------
+    :py:func:`hdbscan.predict.predict`
+    :py:func:`hdbscan.predict.all_points_membership_vectors`
+"""
 
     clusters = np.array(list(clusterer.condensed_tree_._select_clusters()
     )).astype(np.intp)
@@ -496,6 +502,11 @@ def all_points_membership_vectors(clusterer):
     membership_vectors : array (n_samples, n_clusters)
         The probability that point ``i`` of the original dataset is a member of
         cluster ``j`` is in ``membership_vectors[i, j]``.
+        
+    See Also
+    --------
+    :py:func:`hdbscan.predict.predict`
+    :py:func:`hdbscan.predict.all_points_membership_vectors`
     """
     clusters = np.array(list(clusterer.condensed_tree_._select_clusters()
                              )).astype(np.intp)
