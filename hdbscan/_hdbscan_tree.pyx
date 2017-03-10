@@ -474,6 +474,19 @@ cdef get_probabilities(np.ndarray tree, dict cluster_map, np.ndarray labels):
 
 
 cpdef np.ndarray[np.double_t, ndim=1] outlier_scores(np.ndarray tree):
+    """Generate GLOSH outlier scores from a condensed tree.
+    
+    Parameters
+    ----------
+    tree : numpy recarray
+        The condensed tree to generate GLOSH outlier scores from
+        
+    Returns
+    -------
+    outlier_scores : ndarray (n_samples,)
+        Outlier scores for each sample point. The larger the score
+        the more outlying the point.
+    """
 
     cdef np.ndarray[np.double_t, ndim=1] result
     cdef np.ndarray[np.double_t, ndim=1] deaths
