@@ -462,6 +462,16 @@ def _line_width(y, linkage):
 
 
 class SingleLinkageTree(object):
+    """A single linkage format dendrogram tree, with plotting functionality
+    and networkX support.
+    
+    Parameters
+    ----------
+    linkage : ndarray (n_samples, 4)
+        The numpy array that holds the tree structure. As output by
+        scipy.cluster.hierarchy, hdbscan, of fastcluster.
+    
+    """
     def __init__(self, linkage):
         self._linkage = linkage
 
