@@ -25,24 +25,6 @@ This has been implemented in ``hdbscan`` as the
 :py:func:``~hdbscan.predict.approximate_predict`` function. We'll look
 at how this works below.
 
-.. code:: python
-
-    import hdbscan
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-    import matplotlib as mpl
-    from sklearn.neighbors import KDTree, BallTree
-    from sklearn.datasets import make_blobs
-    
-    %matplotlib inline
-    sns.set_context('poster')
-    sns.set_style('white')
-    sns.set_color_codes()
-    
-    plot_kwds={'alpha':0.25, 's':60, 'linewidths':0}
-    palette = sns.color_palette('deep', 12)
-
 As usual we begin with our test synthetic data set, and cluster it with
 HDBSCAN. The primary point to note here, however, is the use of the
 ``prediction_data=True`` keyword argument. This ensures that HDBSCAN
@@ -78,14 +60,6 @@ they happen to fall.
                                                                 clusterer.probabilities_)]
     plt.scatter(data.T[0], data.T[1], c=colors, **plot_kwds);
     plt.scatter(*test_points.T, c='k', s=50)
-
-
-
-
-.. parsed-literal::
-
-    <matplotlib.collections.PathCollection at 0x115af1908>
-
 
 
 
@@ -131,14 +105,6 @@ into.
     test_colors = [pal[col] if col >= 0 else (0.1, 0.1, 0.1) for col in test_labels]
     plt.scatter(data.T[0], data.T[1], c=colors, **plot_kwds);
     plt.scatter(*test_points.T, c=test_colors, s=80, linewidths=1, edgecolors='k')
-
-
-
-
-.. parsed-literal::
-
-    <matplotlib.collections.PathCollection at 0x1162f8eb8>
-
 
 
 
