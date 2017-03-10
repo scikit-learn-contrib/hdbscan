@@ -42,6 +42,27 @@ cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy,
 
 cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
                                np.intp_t min_cluster_size=10):
+    """Condense a tree according to a minimum cluster size. This is akin
+    to the runt pruning procedure of Stuetzle. The result is a much simpler
+    tree that is easier to visualize. We include extra information on the 
+    lambda value at which individual points depart clusters for later
+    analysis and computation.
+    
+    Parameters
+    ----------
+    hierarchy : ndarray (n_samples, 4)
+        A single linkage hierarchy in scipy.cluster.hierarchy format.
+        
+    min_cluster_size : int, optional (default 10)
+        The minimum size of clusters to consider. Smaller "runt" 
+        clusters are pruned from the tree.
+        
+    Returns
+    -------
+    condensed_tree : numpy recarray
+        Effectively an edgelist with a parent, child, lambda_val
+        and child_size in each row providing a tree structure.
+    """
 
     cdef np.intp_t root
     cdef np.intp_t num_points
