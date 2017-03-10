@@ -578,6 +578,17 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
     match_reference_implementation : boolean, optional (default False)
         Whether to match the reference implementation in how to handle
         certain edge cases.
+        
+    Returns
+    -------
+    labels : ndarray (n_samples,)
+        An integer array of cluster labels, with -1 denoting noise.
+        
+    probabilities : ndarray (n_samples,)
+        The cluster membership strength of each sample.
+        
+    stabilities : ndarray (n_clusters,)
+        The cluster coherence strengths of each cluster.
     """
     cdef list node_list
     cdef np.ndarray cluster_tree
