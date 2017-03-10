@@ -6,8 +6,7 @@ Soft clustering is a new (and still somewhat experimental) feature of
 the hdbscan library. It takes advantage of the fact that the condensed
 tree is a kind of smoothed density function over data points, and the
 notion of exemplars for clusters. If you want to better understand how
-soft clustering works please refer to How Soft Clustering for HDBSCAN\*
-Works.
+soft clustering works please refer to :any:`soft_clustering_explanation`.
 
 Let's consider the digits dataset from sklearn. We can project the data
 into two dimensions to visualize it via t-SNE.
@@ -19,14 +18,6 @@ into two dimensions to visualize it via t-SNE.
     import matplotlib.pyplot as plt
     import seaborn as sns
     import numpy as np
-    
-    %matplotlib inline
-    
-    sns.set_context('poster')
-    sns.set_style('white')
-    sns.set_color_codes()
-    
-    plot_kwds={'alpha':0.25, 's':60, 'linewidths':0}
 
 .. code:: python
 
@@ -34,15 +25,6 @@ into two dimensions to visualize it via t-SNE.
     data = digits.data
     projection = TSNE().fit_transform(data)
     plt.scatter(*projection.T, **plot_kwds)
-
-
-
-
-.. parsed-literal::
-
-    <matplotlib.collections.PathCollection at 0x112d39978>
-
-
 
 
 .. image:: soft_clustering_files/soft_clustering_3_1.png
@@ -68,14 +50,6 @@ clustering to work.
     cluster_member_colors = [sns.desaturate(x, p) for x, p in 
                              zip(cluster_colors, clusterer.probabilities_)]
     plt.scatter(*projection.T, s=50, linewidth=0, c=cluster_member_colors, alpha=0.25)
-
-
-
-
-.. parsed-literal::
-
-    <matplotlib.collections.PathCollection at 0x112a80e10>
-
 
 
 
@@ -111,14 +85,6 @@ highest probability of being in).
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.collections.PathCollection at 0x112cec358>
-
-
-
-
 .. image:: soft_clustering_files/soft_clustering_8_1.png
 
 
@@ -137,14 +103,6 @@ cluster.
     cluster_colors = [sns.desaturate(color_palette[np.argmax(x)], np.max(x))
                       for x in soft_clusters]
     plt.scatter(*projection.T, s=50, linewidth=0, c=cluster_colors, alpha=0.25)
-
-
-
-
-.. parsed-literal::
-
-    <matplotlib.collections.PathCollection at 0x112dbe9e8>
-
 
 
 
@@ -180,13 +138,6 @@ the other clusters).
     colors = [(0.75, 0.1, 0.1) if x in mixed_points 
               else (0.5, 0.5, 0.5) for x in range(data.shape[0])]
     plt.scatter(*projection.T, s=50, linewidth=0, c=colors, alpha=0.5)
-
-
-
-
-.. parsed-literal::
-
-    <matplotlib.collections.PathCollection at 0x1129ba9b0>
 
 
 
