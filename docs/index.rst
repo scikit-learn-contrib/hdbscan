@@ -33,6 +33,7 @@ Background on Clustering with HDBSCAN
    how_hdbscan_works
    comparing_clustering_algorithms
    performance_and_scalability
+   soft_clustering_explanation
 
 API Reference
 -------------
