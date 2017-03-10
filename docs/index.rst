@@ -22,6 +22,7 @@ User Guide / Tutorial
    advanced_hdbscan
    parameter_selection
    outlier_detection
+   soft_clustering
    faq
 
 Background on Clustering with HDBSCAN
