@@ -554,9 +554,30 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                          cluster_selection_method='eom',
                          allow_single_cluster=False,
                          match_reference_implementation=False):
-    """
-    The tree is assumed to have numeric node ids such that a reverse numeric
-    sort is equivalent to a topological sort.
+    """Given a tree and stability dict, produce the cluster labels 
+    (and probabilities) for a flat clustering based on the chosen
+    cluster selection method.
+    
+    Parameters
+    ----------
+    tree : numpy recarray
+        The condensed tree to extract flat clusters from
+        
+    stability : dict
+        A dictionary mapping cluster_ids to stability values
+        
+    cluster_selection_method : string, optional (default 'eom')
+        The method of selecting clusters. The default is the
+        Excess of Mass algorithm specified by 'eom'. The alternate
+        option is 'leaf'.
+        
+    allow_single_cluster : boolean, optional (default False)
+        Whether to allow a single cluster to be selected by the
+        Excess of Mass algorithm.
+        
+    match_reference_implementation : boolean, optional (default False)
+        Whether to match the reference implementation in how to handle
+        certain edge cases.
     """
     cdef list node_list
     cdef np.ndarray cluster_tree
