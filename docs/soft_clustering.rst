@@ -27,7 +27,7 @@ into two dimensions to visualize it via t-SNE.
     plt.scatter(*projection.T, **plot_kwds)
 
 
-.. image:: soft_clustering_files/soft_clustering_3_1.png
+.. image:: images/soft_clustering_3_1.png
 
 
 Now we import hdbscan and then cluster in the full 64 dimensional space.
@@ -53,7 +53,7 @@ clustering to work.
 
 
 
-.. image:: soft_clustering_files/soft_clustering_6_1.png
+.. image:: images/soft_clustering_6_1.png
 
 
 Certainly a number of clusters were found, but the data is fairly noisy
@@ -85,7 +85,7 @@ highest probability of being in).
 
 
 
-.. image:: soft_clustering_files/soft_clustering_8_1.png
+.. image:: images/soft_clustering_8_1.png
 
 
 This fills out the clusters nicely -- we see that there were many noise
@@ -106,7 +106,7 @@ cluster.
 
 
 
-.. image:: soft_clustering_files/soft_clustering_10_1.png
+.. image:: images/soft_clustering_10_1.png
 
 
 We see that many points actually have a low probability of being in the
@@ -142,7 +142,7 @@ the other clusters).
 
 
 
-.. image:: soft_clustering_files/soft_clustering_13_1.png
+.. image:: images/soft_clustering_13_1.png
 
 
 We can look at a few of these and see that many are, indeed, hard to
@@ -159,7 +159,7 @@ cluster and is seen as a mixture of other clusters.
 
 
 
-.. image:: soft_clustering_files/soft_clustering_15_0.png
+.. image:: images/soft_clustering_15_0.png
 
 
 There is, of course, a lot more analysis that can be done from here, but
