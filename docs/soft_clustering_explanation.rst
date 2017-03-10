@@ -183,7 +183,7 @@ following the coloring used in the plot of the clusters above.
 
 
 You can see the several leaves in action here, with the red and cyan
-clusters having several subclusters streched along their length.
+clusters having several subclusters stretched along their length.
 
 Now to compute a cluster membership score for a point we need to simply
 compute the distance to each of the cluster exemplar sets and scale
@@ -243,7 +243,7 @@ that is not really ideal. This is because we are using pure distance
 (rather than any sort of cluster/manifold/density aware distance) and
 latching on to whatever is closest. What we need is an approach the
 understands the cluster structure better -- something based off the the
-actual structure (and lambda values therein) of the consdensed tree.
+actual structure (and lambda values therein) of the condensed tree.
 This is exactly the sort of approach something based on outlier scores
 can provide.
 
@@ -353,7 +353,7 @@ normalization.
 
 We can apply the same approach as before to get a general notion of what
 this approach has done for us, coloring points by the most likely
-cluster and then desaturating accoding to the actual membership
+cluster and then desaturating according to the actual membership
 strength.
 
 .. code:: python
