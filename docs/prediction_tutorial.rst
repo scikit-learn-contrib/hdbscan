@@ -4,7 +4,7 @@ Predicting clusters for new points
 
 Often it is useful to train a model once on a large amount of data, and
 then query the model repeatedly with small amounts of new data. This is
-hard for HDBSCAN\* as it is a transdusctive method -- new data points
+hard for HDBSCAN\* as it is a transductive method -- new data points
 can (and should!) be able to alter the underlying clustering. That is,
 given new information it might make sense to create a new cluster, split
 an existing cluster, or merge two previously separate clusters. If the
@@ -12,17 +12,17 @@ actual clusters (and hence their labels) change with each new data point
 it becomes impossible to compare the cluster assignments between such
 queries.
 
-We can accomodate this by effectively holding a clustering fixed (after
+We can accommodate this by effectively holding a clustering fixed (after
 a potentially expensive training run) and then asking: *if we do not
 change the existing clusters* which cluster would HDBSCAN\* assign a new
 data point to. In practice this amounts to determining where in the
 condensed tree the new data point would fall (see
-:any:``how_hdbscan_works``) assuming we do not change the condensed
+:any:`how_hdbscan_works`) assuming we do not change the condensed
 tree. This allows for a very inexpensive operation to compute a
 predicted cluster for the new data point.
 
 This has been implemented in ``hdbscan`` as the
-:py:func:``~hdbscan.predict.approximate_predict`` function. We'll look
+:py:func:`~hdbscan.predict.approximate_predict` function. We'll look
 at how this works below.
 
 As usual we begin with our test synthetic data set, and cluster it with
@@ -32,7 +32,7 @@ does a little extra computation when fitting the model that can
 dramatically speed up the prediction queries later.
 
 You can also get an HDBSCAN object to create this data after the fact
-via the :py:meth:``~hdbscan.HDBSCAN.generate_prediction_data`` method.
+via the :py:meth:`~hdbscan.HDBSCAN.generate_prediction_data` method.
 
 .. code:: python
 
@@ -67,9 +67,9 @@ they happen to fall.
 
 
 We can use the predict API on this data, calling
-:py:func:~hdbscan.predict.approximate\_predict with the HDBSCAN object,
+:py:func:`~hdbscan.predict.approximate_predict` with the HDBSCAN object,
 and the numpy array of new points. Note that
-:py:func:~hdbscan.predict.approximate\_predict takes an *array* of new
+:py:func:`~hdbscan.predict.approximate_predict` takes an *array* of new
 points. If you have a single point be sure to wrap it in a list.
 
 .. code:: python
