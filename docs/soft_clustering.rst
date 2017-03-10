@@ -63,10 +63,10 @@ information about some of these noise points.
 
 To generate a soft clustering for all the points in the original dataset
 we use the
-:py:func:``~hdbscan.prediction.all_points_membership_vectors`` function
+:py:func:`~hdbscan.prediction.all_points_membership_vectors` function
 which takes a clusterer object. If we wanted to get soft cluster
 membership values for a set of new unseen points we could use
-:py:func:``~hdbscan.prediction.membership_vector`` instead.
+:py:func:`~hdbscan.prediction.membership_vector` instead.
 
 The return value is a two-dimensional numpy array. Each point of the
 input data is assigned a vector of probabilities of being in a cluster.
