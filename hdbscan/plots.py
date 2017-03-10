@@ -45,6 +45,19 @@ def _get_leaves(condensed_tree):
     return _recurse_leaf_dfs(cluster_tree, root)
 
 class CondensedTree(object):
+    """The condensed tree structure, which provides a simplified or smoothed version
+    of the :class:`~hdbscan.plots.SingleLinkageTree`.
+    
+    Parameters
+    ----------
+    condensed_tree_array : numpy recarray from :class:`~hdbscan.HDBSCAN`
+        The raw numpy rec array version of the condensed tree as produced
+        internally by hdbscan.
+        
+    cluster_selection_method : string, optional (default 'eom')
+        The method of selecting clusters. One of 'eom' or 'leaf'
+    
+    """
     def __init__(self, condensed_tree_array, cluster_selection_method='eom'):
         self._raw_tree = condensed_tree_array
         self.cluster_selection_method = cluster_selection_method
