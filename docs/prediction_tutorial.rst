@@ -45,7 +45,7 @@ via the :py:meth:``~hdbscan.HDBSCAN.generate_prediction_data`` method.
 
 
 
-.. image:: prediction_tutorial_files/prediction_tutorial_3_0.png
+.. image:: images/prediction_tutorial_3_0.png
 
 
 Now to make things a little more interesting let's generate 50 new data
@@ -63,7 +63,7 @@ they happen to fall.
 
 
 
-.. image:: prediction_tutorial_files/prediction_tutorial_5_1.png
+.. image:: images/prediction_tutorial_5_1.png
 
 
 We can use the predict API on this data, calling
@@ -108,7 +108,7 @@ into.
 
 
 
-.. image:: prediction_tutorial_files/prediction_tutorial_9_1.png
+.. image:: images/prediction_tutorial_9_1.png
 
 
 It is as simple as that. So now you can get started using HDBSCAN as a
