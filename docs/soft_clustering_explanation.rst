@@ -80,7 +80,7 @@ example.
 
 
 
-.. image:: How%20Soft%20Clustering%20for%20HDBSCAN%20Works_files/How%20Soft%20Clustering%20for%20HDBSCAN%20Works_2_0.png
+.. image:: images/soft_clustering_explanation_2_0.png
 
 
 Now let's build a clusterer and fit it to this data.
@@ -102,7 +102,7 @@ clusters may be) to get an idea of what we are looking at:
 
 
 
-.. image:: How%20Soft%20Clustering%20for%20HDBSCAN%20Works_files/How%20Soft%20Clustering%20for%20HDBSCAN%20Works_6_0.png
+.. image:: images/soft_clustering_explanation_6_0.png
 
 
 Suppose now that we have a data point and we want to get a notion of how
@@ -179,7 +179,7 @@ following the coloring used in the plot of the clusters above.
 
 
 
-.. image:: How%20Soft%20Clustering%20for%20HDBSCAN%20Works_files/How%20Soft%20Clustering%20for%20HDBSCAN%20Works_11_0.png
+.. image:: images/soft_clustering_explanation_11_0.png
 
 
 You can see the several leaves in action here, with the red and cyan
@@ -232,7 +232,7 @@ strength of membership.
 
 
 
-.. image:: How%20Soft%20Clustering%20for%20HDBSCAN%20Works_files/How%20Soft%20Clustering%20for%20HDBSCAN%20Works_15_0.png
+.. image:: images/soft_clustering_explanation_15_0.png
 
 
 As you can see this is something that is a step in the right direction,
@@ -374,7 +374,7 @@ strength.
 
 
 
-.. image:: How%20Soft%20Clustering%20for%20HDBSCAN%20Works_files/How%20Soft%20Clustering%20for%20HDBSCAN%20Works_26_0.png
+.. image:: images/soft_clustering_explanation_26_0.png
 
 
 We see that we follow the clusters much better with this approach, but
@@ -426,7 +426,7 @@ the probability that the point is "in" that cluster.
 
 
 
-.. image:: How%20Soft%20Clustering%20for%20HDBSCAN%20Works_files/How%20Soft%20Clustering%20for%20HDBSCAN%20Works_31_0.png
+.. image:: images/soft_clustering_explanation_31_0.png
 
 
 This looks a lot closer to what we had in mind -- We have cluster
@@ -486,7 +486,7 @@ visualize the results again.
 
 
 
-.. image:: How%20Soft%20Clustering%20for%20HDBSCAN%20Works_files/How%20Soft%20Clustering%20for%20HDBSCAN%20Works_36_0.png
+.. image:: images/soft_clustering_explanation_36_0.png
 
 
 And there we have the result!
