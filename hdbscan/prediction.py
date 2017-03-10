@@ -524,7 +524,7 @@ def all_points_membership_vectors(clusterer):
                                                        clusterer.prediction_data_.leaf_max_lambdas,
                                                        clusterer.prediction_data_.cluster_tree)
 
-    result = distance_vecs ** 0.5 * outlier_vecs ** 2.0
+    result = distance_vecs * outlier_vecs
     row_sums = result.sum(axis=1)
     result = result / row_sums[:, np.newaxis]
     result *= in_cluster_probs[:, np.newaxis]
