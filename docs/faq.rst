@@ -58,3 +58,10 @@ and any new data points you wish to predict. Note that this differs from
 re-running HDBSCAN with the new points added since no new clusters will be
 considered -- instead the new points will be labelled according to the
 clusters already labelled by the model.
+
+Q: Haversine metric is not clustering my Lat-Lon data correctly.
+----------------------------------------------------------------
+
+The Haversine metric as implemented supports coordinates in radians. That
+means you'll need to convert your latitide and longitude data into radians
+before passing it in to HDBSCAN.
