@@ -23,12 +23,15 @@ bibliography: paper.bib
 
 # Summary
 
-HDBSCAN: Hierarchical Density-Based Spatial Clustering of Applications with Noise. 
+HDBSCAN: Hierarchical Density-Based Spatial Clustering of Applications with Noise 
+\cite{campello2013density}, \cite{campello2015hierarchical}. 
 Performs DBSCAN over varying epsilon values and integrates the result to find a 
 clustering that gives the best stability over epsilon. This allows HDBSCAN to 
 find clusters of varying densities (unlike DBSCAN), and be more robust to parameter 
-selection. The library also includes support for Robust Single Linkage clustering,
-GLOSH outlier detection, and tools for visualizing and exploring cluster structures.
+selection. The library also includes support for Robust Single Linkage clustering
+\cite{chaudhuri2014consistent}, \cite{chaudhuri2010rates},
+GLOSH outlier detection\cite{campello2015hierarchical}, and tools for visualizing 
+and exploring cluster structures.
 Finally support for prediction and soft clustering is also available.
 
 -![Example clusterign results.](hdbscan_clustering_result.png)
