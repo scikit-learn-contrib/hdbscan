@@ -9,7 +9,7 @@ authors:
    orcid: 0000-0003-2143-6834
    affiliation: 1
  - name: John Healy
-  affiliation: 1
+   affiliation: 1
  - name: Steve Astels
    affiliation: 2
 affiliations:
