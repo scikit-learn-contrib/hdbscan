@@ -203,6 +203,12 @@ Install the package
 
     python setup.py install
     
+--------------
+Python Version
+--------------
+
+The hdbscan library supports both Python 2 and Python 3. However we recommend Python 3 as the better option if it is available to you.
+    
 ----------------
 Help and Support
 ----------------
