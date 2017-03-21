@@ -16,6 +16,9 @@
 .. image:: https://readthedocs.org/projects/hdbscan/badge/?version=latest
     :target: https://hdbscan.readthedocs.org
     :alt: Docs
+.. image:: http://joss.theoj.org/papers/10.21105/joss.00205/status.svg
+    :target: http://joss.theoj.org/papers/10.21105/joss.00205
+    :alt: JOSS article
 .. image:: https://zenodo.org/badge/34392144.svg
     :target: https://zenodo.org/badge/latestdoi/34392144
 
@@ -224,6 +227,15 @@ Contributing
 We welcome contributions in any form! Assistance with documentation, particularly expanding tutorials,
 is always welcome. To contribute please `fork the project <https://github.com/scikit-learn-contrib/hdbscan/issues#fork-destination-box>`_ make your changes and submit a pull request. We will do our best to work through any issues with
 you and get your code merged into the main branch.
+
+------
+Citing
+------
+
+If you have used this codebase in a scientific publication and wish to cite it, please use the `Journal of Open Source Software article <http://joss.theoj.org/papers/10.21105/joss.00205>`_:
+    L. McInnes, J. Healy, S. Astels *hdbscan: Hierarchical density based clustering*
+    In: Journal of Open Source Software, The Open Journal, volume 2, number 11.
+    2017
 
 ---------
 Licensing
