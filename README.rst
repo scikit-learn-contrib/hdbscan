@@ -21,6 +21,7 @@
     :alt: JOSS article
 .. image:: https://zenodo.org/badge/34392144.svg
     :target: https://zenodo.org/badge/latestdoi/34392144
+    :alt: Zenodo DOI
 
 
 =======
@@ -233,6 +234,7 @@ Citing
 ------
 
 If you have used this codebase in a scientific publication and wish to cite it, please use the `Journal of Open Source Software article <http://joss.theoj.org/papers/10.21105/joss.00205>`_.
+
     L. McInnes, J. Healy, S. Astels, *hdbscan: Hierarchical density based clustering*
     In: Journal of Open Source Software, The Open Journal, volume 2, number 11.
     2017
