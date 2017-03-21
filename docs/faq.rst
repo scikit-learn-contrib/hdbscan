@@ -65,3 +65,29 @@ Q: Haversine metric is not clustering my Lat-Lon data correctly.
 The Haversine metric as implemented supports coordinates in radians. That
 means you'll need to convert your latitide and longitude data into radians
 before passing it in to HDBSCAN.
+
+Q: I want to cite this software in my journal publication. How do I do that?
+----------------------------------------------------------------------------
+
+If you have used this codebase in a scientific publication and wish to cite it, please use the `Journal of Open Source Software article <http://joss.theoj.org/papers/10.21105/joss.00205>`_.
+
+    L. McInnes, J. Healy, S. Astels, *hdbscan: Hierarchical density based clustering* 
+    In: Journal of Open Source Software, The Open Journal, volume 2, number 11. 
+    2017
+    
+BibTeX::
+    
+    @article{McInnes2017,
+      doi = {10.21105/joss.00205},
+      url = {https://doi.org/10.21105%2Fjoss.00205},
+      year  = {2017},
+      month = {mar},
+      publisher = {The Open Journal},
+      volume = {2},
+      number = {11},
+      author = {Leland McInnes and John Healy and Steve Astels},
+      title = {hdbscan: Hierarchical density based clustering},
+      journal = {The Journal of Open Source Software}
+    }
+    
+::
