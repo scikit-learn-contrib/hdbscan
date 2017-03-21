@@ -16,7 +16,8 @@
 .. image:: https://readthedocs.org/projects/hdbscan/badge/?version=latest
     :target: https://hdbscan.readthedocs.org
     :alt: Docs
-
+.. image:: https://zenodo.org/badge/34392144.svg
+    :target: https://zenodo.org/badge/latestdoi/34392144
 
 
 =======
