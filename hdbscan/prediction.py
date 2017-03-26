@@ -327,7 +327,7 @@ def _find_cluster_and_probability(tree, cluster_tree, neighbor_indices,
 
 def approximate_predict(clusterer, points_to_predict):
     """Predict the cluster label of new points. The returned labels
-    will be those of the original clustering found by ``clustererer``,
+    will be those of the original clustering found by ``clusterer``,
     and therefore are not (necessarily) the cluster labels that would
     be found by clustering the original data combined with
     ``points_to_predict``, hence the 'approximate' label.
