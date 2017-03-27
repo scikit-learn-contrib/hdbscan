@@ -184,7 +184,10 @@ def _find_neighbor_and_lambda(neighbor_indices, neighbor_distances,
     nn_index = mr_distances.argmin()
 
     nearest_neighbor = neighbor_indices[nn_index]
-    lambda_ = 1. / mr_distances[nn_index]
+    if mr_distances[nn_index] > 0.0:
+        lambda_ = 1. / mr_distances[nn_index]
+    else:
+        lambda_ = np.finfo(np.double).max
 
     return nearest_neighbor, lambda_
 
