@@ -159,7 +159,7 @@ again.
 .. image:: images/distance3.svg
 
 Now if we want to know the mutual reachability distance between the
-blue and green points we can start by drawing in and arrow giving the
+blue and green points we can start by drawing in an arrow giving the
 distance between green and blue:
 
 .. image:: images/distance4.svg
