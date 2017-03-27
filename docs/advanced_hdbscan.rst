@@ -216,7 +216,7 @@ the ``child_size`` provides the number of points in the child cluster.
 As you can see the start of the dataframe has singleton points falling
 out of the root cluster, with each ``child_size`` equal to 1.
 
-If you want just he clusters, rather than all the individual points
+If you want just the clusters, rather than all the individual points
 as well, simply select the rows of the dataframe with ``child_size``
 greater than 1.
 
