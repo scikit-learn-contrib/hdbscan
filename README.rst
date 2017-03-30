@@ -4,6 +4,9 @@
 .. image:: https://anaconda.org/conda-forge/hdbscan/badges/version.svg
     :target: https://anaconda.org/conda-forge/hdbscan
     :alt: Conda-forge Version
+.. image:: https://anaconda.org/conda-forge/hdbscan/badges/downloads.svg
+    :target: https://anaconda.org/conda-forge/hdbscan
+    :alt: Conda-forge downloads
 .. image:: https://img.shields.io/pypi/l/hdbscan.svg
     :target: https://github.com/scikit-learn-contrib/hdbscan/blob/master/LICENSE
     :alt: License
@@ -19,9 +22,6 @@
 .. image:: http://joss.theoj.org/papers/10.21105/joss.00205/status.svg
     :target: http://joss.theoj.org/papers/10.21105/joss.00205
     :alt: JOSS article
-.. image:: https://zenodo.org/badge/34392144.svg
-    :target: https://zenodo.org/badge/latestdoi/34392144
-    :alt: Zenodo DOI
 
 
 =======
