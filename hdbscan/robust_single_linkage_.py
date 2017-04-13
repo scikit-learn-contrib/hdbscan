@@ -301,7 +301,7 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
     r"""Perform robust single linkage clustering from a vector array
     or distance matrix.
 
-    Roust single linkage is a modified version of single linkage that
+    Robust single linkage is a modified version of single linkage that
     attempts to be more robust to noise. Specifically the goal is to
     more accurately approximate the level set tree of the unknown
     probability density function from which the sample data has
