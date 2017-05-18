@@ -14,6 +14,7 @@ from ._prediction_utils import (get_tree_row_with_child,
                                 all_points_dist_membership_vector,
                                 all_points_outlier_membership_vector,
                                 all_points_prob_in_some_cluster)
+from warnings import warn
 
 
 class PredictionData(object):
@@ -370,13 +371,20 @@ def approximate_predict(clusterer, points_to_predict):
     if clusterer.prediction_data_ is None:
         raise ValueError('Clusterer does not have prediction data!'
                          ' Try fitting with prediction_data=True set,'
-                         ' or run generate_preiction_data on the clusterer')
+                         ' or run generate_prediction_data on the clusterer')
 
     points_to_predict = np.asarray(points_to_predict)
 
     if points_to_predict.shape[1] != \
             clusterer.prediction_data_.raw_data.shape[1]:
         raise ValueError('New points dimension does not match fit data!')
+
+    if clusterer.prediction_data_.cluster_tree.shape[0] == 0:
+        warn('Clusterer does not have any defined clusters, new data'
+             ' will be automatically predicted as noise.')
+        labels = -1 * np.ones(points_to_predict.shape[0], dtype=np.int32)
+        probabilities = np.zeros(points_to_predict.shape[0],dtype=np.float32)
+        return labels, probabilities
 
     labels = np.empty(points_to_predict.shape[0], dtype=np.int)
     probabilities = np.empty(points_to_predict.shape[0], dtype=np.float64)
