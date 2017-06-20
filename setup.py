@@ -77,12 +77,12 @@ configuration = {
     }
 
 if not HAVE_CYTHON:
-    _hdbscan_tree.sources[0] = '_hdbscan_tree.c'
-    _hdbscan_linkage.sources[0] = '_hdbscan_linkage.c'
-    _hdbscan_boruvka.sources[0] = '_hdbscan_boruvka.c'
-    _hdbscan_reachability.sources[0] = '_hdbscan_reachability.c'
-    _prediction_utils.sources[0] = '_prediction_utils.c'
-    dist_metrics.sources[0] = 'dist_metric.c'
+    _hdbscan_tree.sources[0] = 'hdbscan/_hdbscan_tree.c'
+    _hdbscan_linkage.sources[0] = 'hdbscan/_hdbscan_linkage.c'
+    _hdbscan_boruvka.sources[0] = 'hdbscan/_hdbscan_boruvka.c'
+    _hdbscan_reachability.sources[0] = 'hdbscan/_hdbscan_reachability.c'
+    _prediction_utils.sources[0] = 'hdbscan/_prediction_utils.c'
+    dist_metrics.sources[0] = 'hdbscan/dist_metric.c'
     configuration['install_requires'] = ['scikit-learn>=0.16']
 
 setup(**configuration)
