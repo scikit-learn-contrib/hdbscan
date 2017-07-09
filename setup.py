@@ -82,7 +82,7 @@ if not HAVE_CYTHON:
     _hdbscan_boruvka.sources[0] = 'hdbscan/_hdbscan_boruvka.c'
     _hdbscan_reachability.sources[0] = 'hdbscan/_hdbscan_reachability.c'
     _prediction_utils.sources[0] = 'hdbscan/_prediction_utils.c'
-    dist_metrics.sources[0] = 'hdbscan/dist_metric.c'
+    dist_metrics.sources[0] = 'hdbscan/dist_metrics.c'
     configuration['install_requires'] = ['scikit-learn>=0.16']
 
 setup(**configuration)
