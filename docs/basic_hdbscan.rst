@@ -19,6 +19,11 @@ put it in a dataframe for a nice clean table view of it.
 
 .. code:: python
 
+    from sklearn.datasets import make_blobs
+    import pandas as pd
+    
+.. code:: python
+
     blobs, labels = make_blobs(n_samples=2000, n_features=10)
 
 .. code:: python
@@ -180,7 +185,7 @@ So we have a total of three clusters, with labels 0, 1, and 2.
 Importantly HDBSCAN is noise aware -- it has a notion of data samples
 that are not assigned to any cluster. This is handled by assigning these
 samples the label -1. But wait, there's more. The ``hdbscan`` library
-implements soft clustering, where wach data point is assigned a cluster
+implements soft clustering, where each data point is assigned a cluster
 membership score ranging from 0.0 to 1.0. A score of 0.0 represents a
 sample that is not in the cluster at all (all noise points will get this
 score) while a score of 1.0 represents a sample that is at the heart of
@@ -276,6 +281,10 @@ metric called ``precomputed``. If you create the clusterer with the
 metric set to ``precomputed`` then the clusterer will assume that,
 rather than being handed a vector of points in a vector space, it is
 recieving an all pairs distance matrix.
+
+.. code:: python
+
+    from sklearn.metrics.pairwise import pairwise_distances
 
 .. code:: python
 
