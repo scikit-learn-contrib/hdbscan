@@ -10,8 +10,53 @@ which it extracts the flat clustering returned. It can be informative to
 look at that hierarchy, and potentially make use of the extra
 information contained therein.
 
-Suppose we have a dataset for clustering
+Suppose we have a dataset for clustering. It is a binary file in nunpy format and it can be found at https://github.com/lmcinnes/hdbscan/blob/master/notebooks/clusterable_data.npy.
 
+.. code:: python
+
+    import hdbscan
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    %matplotlib inline
+    
+.. code:: python
+
+    data = np.load('clusterable_data.bin')
+    #or
+    data = np.load('clusterable_data.npy')
+    #depending on the format of the file
+    
+.. code:: python
+
+    data.shape
+    
+.. parsed-literal::
+
+    (2309, 2)
+    
+.. code:: python
+
+    data
+    
+.. parsed-literal::
+
+    array([[-0.12153499, -0.22876337],
+       [-0.22093687, -0.25251088],
+       [ 0.1259037 , -0.27314321],
+       ..., 
+       [ 0.50243143, -0.3002958 ],
+       [ 0.53822256,  0.19412199],
+       [-0.08688887, -0.2092721 ]])
+
+    
+.. code:: python
+
+    plt.scatter(*data.T, s=50, linewidth=0, c='b', alpha=0.25)
+    
+.. parsed-literal::
+
+    <matplotlib.collections.PathCollection at 0x7f6b61ad6e10>
 
 .. image:: images/advanced_hdbscan_3_1.png
 
@@ -85,7 +130,7 @@ labelling.
 From this we can see, for example, that the yellow cluster, at the
 center of the plot, forms early (breaking off from the pale blue and
 purple clusters) and persists for a long time. By comparison the green
-cluster, which also forming early, quickly breaks apart and then
+cluster, which also forms early, quickly breaks apart and then
 vanishes altogether (shattering into clusters all smaller than the
 ``min_cluster_size`` of 15).
 
