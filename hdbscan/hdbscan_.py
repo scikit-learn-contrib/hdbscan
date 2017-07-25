@@ -191,7 +191,7 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
 
     # Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]),
-                        :]
+                        :][0]
 
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
