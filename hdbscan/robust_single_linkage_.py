@@ -444,6 +444,5 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
         if self._cluster_hierarchy_ is not None:
             return SingleLinkageTree(self._cluster_hierarchy_)
         else:
-            warn('No single linkage tree was generated; try running fit'
+            raise AttributeError('No single linkage tree was generated; try running fit'
                  ' first.')
-            return None
