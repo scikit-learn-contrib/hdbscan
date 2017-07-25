@@ -916,8 +916,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     @property
     def prediction_data_(self):
         if self._prediction_data is None:
-            warn('No prediction data was generated')
-            return None
+            raise AttributeError('No prediction data was generated')
         else:
             return self._prediction_data
 
@@ -930,25 +929,22 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                 self._outlier_scores = outlier_scores(self._condensed_tree)
                 return self._outlier_scores
             else:
-                warn('No condensed tree was generated; try running fit first.')
-                return None
+                raise AttributeError('No condensed tree was generated; try running fit first.')
 
     @property
     def condensed_tree_(self):
         if self._condensed_tree is not None:
             return CondensedTree(self._condensed_tree, self.cluster_selection_method)
         else:
-            warn('No condensed tree was generated; try running fit first.')
-            return None
+            raise AttributeError('No condensed tree was generated; try running fit first.')
 
     @property
     def single_linkage_tree_(self):
         if self._single_linkage_tree is not None:
             return SingleLinkageTree(self._single_linkage_tree)
         else:
-            warn('No single linkage tree was generated; try running fit'
+            raise AttributeError('No single linkage tree was generated; try running fit'
                  ' first.')
-            return None
 
     @property
     def minimum_spanning_tree_(self):
@@ -962,10 +958,9 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                      ' tree will be provided without raw data.')
                 return None
         else:
-            warn('No minimum spanning tree was generated.'
+            raise AttributeError('No minimum spanning tree was generated.'
                  'This may be due to optimized algorithm variations that skip'
                  ' explicit generation of the spanning tree.')
-            return None
 
     @property
     def exemplars_(self):
@@ -975,7 +970,6 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             self.generate_prediction_data()
             return self._prediction_data.exemplars
         else:
-            warn('Currently exemplars require the use of vector input data'
+            raise AttributeError('Currently exemplars require the use of vector input data'
                  'with a suitable metric. This will likely change in the '
                  'future, but for now no exemplars can be provided')
-            return None
