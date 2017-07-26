@@ -414,35 +414,35 @@ def test_hdbscan_outliers():
     assert scores is not None
 
 
-def test_hdbscan_unavailable_attributes():
-    clusterer = HDBSCAN(gen_min_span_tree=False)
-    with warnings.catch_warnings(record=True) as w:
-        tree = clusterer.condensed_tree_
-        assert len(w) > 0
-        assert tree is None
-    with warnings.catch_warnings(record=True) as w:
-        tree = clusterer.single_linkage_tree_
-        assert len(w) > 0
-        assert tree is None
-    with warnings.catch_warnings(record=True) as w:
-        scores = clusterer.outlier_scores_
-        assert len(w) > 0
-        assert scores is None
-    with warnings.catch_warnings(record=True) as w:
-        tree = clusterer.minimum_spanning_tree_
-        assert len(w) > 0
-        assert tree is None
+# def test_hdbscan_unavailable_attributes():
+#     clusterer = HDBSCAN(gen_min_span_tree=False)
+#     with warnings.catch_warnings(record=True) as w:
+#         tree = clusterer.condensed_tree_
+#         assert len(w) > 0
+#         assert tree is None
+#     with warnings.catch_warnings(record=True) as w:
+#         tree = clusterer.single_linkage_tree_
+#         assert len(w) > 0
+#         assert tree is None
+#     with warnings.catch_warnings(record=True) as w:
+#         scores = clusterer.outlier_scores_
+#         assert len(w) > 0
+#         assert scores is None
+#     with warnings.catch_warnings(record=True) as w:
+#         tree = clusterer.minimum_spanning_tree_
+#         assert len(w) > 0
+#         assert tree is None
 
 
-def test_hdbscan_min_span_tree_availability():
-    clusterer = HDBSCAN().fit(X)
-    tree = clusterer.minimum_spanning_tree_
-    assert tree is None
-    D = distance.squareform(distance.pdist(X))
-    D /= np.max(D)
-    HDBSCAN(metric='precomputed').fit(D)
-    tree = clusterer.minimum_spanning_tree_
-    assert tree is None
+# def test_hdbscan_min_span_tree_availability():
+#     clusterer = HDBSCAN().fit(X)
+#     tree = clusterer.minimum_spanning_tree_
+#     assert tree is None
+#     D = distance.squareform(distance.pdist(X))
+#     D /= np.max(D)
+#     HDBSCAN(metric='precomputed').fit(D)
+#     tree = clusterer.minimum_spanning_tree_
+#     assert tree is None
 
 def test_hdbscan_approximate_predict():
     clusterer = HDBSCAN(prediction_data=True).fit(X)
