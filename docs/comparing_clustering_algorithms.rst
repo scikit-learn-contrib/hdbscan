@@ -552,7 +552,7 @@ of a cluster'. This results in a smaller tree with fewer clusters that
 'lose points'. That tree can then be used to select the most stable or
 persistent clusters. This process allows the tree to be cut at varying
 height, picking our varying density clusters based on cluster stability.
-The immediate advantage of this is that we can ave varying density
+The immediate advantage of this is that we can have varying density
 clusters; the second benefit is that we have eliminated the epsilon
 parameter as we no longer need it to choose a cut of the dendrogram.
 Instead we have a new parameter ``min_cluster_size`` which is used to
