@@ -293,11 +293,11 @@ each at least as large as the minimum cluster size then we consider that
 a true cluster split and let that split persist in the tree. After
 walking through the whole hierarchy and doing this we end up with a much
 smaller tree with a small number of nodes, each of which has data about
-how the size of the cluster at that node descreases over varying
+how the size of the cluster at that node decreases over varying
 distance. We can visualize this as a dendrogram similar to the one above
 -- again we can have the width of the line represent the number of
 points in the cluster. This time, however, that width varies over the
-length of the line as points fall our of the cluster. For our data using
+length of the line as points fall out of the cluster. For our data using
 a minimum cluster size of 5 the result looks like this:
 
 .. code:: python
@@ -318,7 +318,7 @@ Extract the clusters
 --------------------
 
 Intuitively we want the choose clusters that persist and have a longer
-lifetime; short lived clusters are ultimately probably merely artifcacts
+lifetime; short lived clusters are probably merely artifacts
 of the single linkage approach. Looking at the previous plot we could
 say that we want to choose those clusters that have the greatest area of
 ink in the plot. To make a flat clustering we will need to add a further
@@ -340,17 +340,17 @@ out of the cluster' which is a value somewhere between
 :math:`\lambda_{\mathrm{birth}}` and :math:`\lambda_{\mathrm{death}}`
 since the point either falls out of the cluster at some point in the
 cluster's lifetime, or leaves the cluster when the cluster splits into
-two smaller clusters. Now, for each cluster compute the **stability** to
+two smaller clusters. Now, for each cluster compute the **stability**
 as
 
 :math:`\sum_{p \in \mathrm{cluster}} (\lambda_p - \lambda_{\mathrm{birth}})`.
 
 Declare all leaf nodes to be selected clusters. Now work up through the
 tree (the reverse topological sort order). If the sum of the stabilities
-of the child clusters is greater than the stability of the cluster then
+of the child clusters is greater than the stability of the cluster, then
 we set the cluster stability to be the sum of the child stabilities. If,
 on the other hand, the cluster's stability is greater than the sum of
-it's children then we declare the cluster to be a selected cluster, and
+its children then we declare the cluster to be a selected cluster and
 unselect all its descendants. Once we reach the root node we call the
 current set of selected clusters our flat clustering and return that.
 
