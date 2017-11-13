@@ -399,6 +399,18 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         performance cost, ensure that the clustering results match the
         reference implementation.
 
+    scale_invariant : bool, optional (default=True)
+        The original HDBSCAN is not fully scale invariant (rescalings of the
+        data *can* cause changes in clustering. Setting scale invariant
+        to False will recover this original version, and backwards
+        compatibility with pre-0.9 hdbscan. In general this should be set to
+        true.
+
+    negative_exp : bool, optional (default=True)
+        Instead of using 1/epsilon to convert distances to densities instead use
+        exp(-epsilon). This provides better interpretability and improved
+        outlier detection, but may not be desirable in all cases.
+
     **kwargs : optional
         Arguments passed to the distance metric
 
@@ -709,6 +721,19 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         performance cost, ensure that the clustering results match the
         reference implementation.
 
+
+    scale_invariant : bool, optional (default=True)
+        The original HDBSCAN is not fully scale invariant (rescalings of the
+        data *can* cause changes in clustering. Setting scale invariant
+        to False will recover this original version, and backwards
+        compatibility with pre-0.9 hdbscan. In general this should be set to
+        true.
+
+    negative_exp : bool, optional (default=True)
+        Instead of using 1/epsilon to convert distances to densities instead use
+        exp(-epsilon). This provides better interpretability and improved
+        outlier detection, but may not be desirable in all cases.
+
     **kwargs : optional
         Arguments passed to the distance metric
 
@@ -794,7 +819,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                  cluster_selection_method='eom',
                  allow_single_cluster=False,
                  prediction_data=False,
-                 match_reference_implementation=False, **kwargs):
+                 match_reference_implementation=False,
+                 scale_invariant=True,
+                 negative_exp=True,
+                 **kwargs):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
         self.alpha = alpha
@@ -811,6 +839,8 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self.allow_single_cluster = allow_single_cluster
         self.match_reference_implementation = match_reference_implementation
         self.prediction_data = prediction_data
+        self.scale_invariant = scale_invariant
+        self.negative_exp = negative_exp
 
         self._metric_kwargs = kwargs
 
