@@ -449,7 +449,7 @@ class CondensedTree(object):
         for row in self._raw_tree:
             result.add_edge(row['parent'], row['child'], weight=row['lambda_val'])
 
-        set_node_attributes(result, 'size', dict(self._raw_tree[['child', 'child_size']]))
+        set_node_attributes(result, dict(self._raw_tree[['child', 'child_size']]), 'size')
 
         return result
 
@@ -655,7 +655,7 @@ class SingleLinkageTree(object):
             result.add_edge(parent, row[1], weight=row[2])
 
         size_dict = {parent: row[3] for parent, row in enumerate(self._linkage, num_points)}
-        set_node_attributes(result, 'size', size_dict)
+        set_node_attributes(result, size_dict, 'size')
 
         return result
 
@@ -824,6 +824,6 @@ class MinimumSpanningTree(object):
             result.add_edge(row[0], row[1], weight=row[2])
 
         data_dict = {index: tuple(row) for index, row in enumerate(self._data)}
-        set_node_attributes(result, 'data', data_dict)
+        set_node_attributes(result, data_dict, 'data')
 
         return result

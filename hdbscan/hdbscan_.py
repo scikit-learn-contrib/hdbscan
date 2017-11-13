@@ -43,55 +43,7 @@ FAST_METRICS = (KDTree.valid_metrics + BallTree.valid_metrics +
 #         John Healy <jchealy@gmail.com>
 #
 # License: BSD 3 clause
-
-# Supporting numpy prior to version 1.7 is a little painful ...
-if hasattr(np, 'isclose'):
-    from numpy import isclose
-else:
-    def isclose(a, b, rtol=1.e-5, atol=1.e-8, equal_nan=False):
-
-        def within_tol(x, y, atol, rtol):
-            with np.errstate(invalid='ignore'):
-                result = np.less_equal(abs(x - y), atol + rtol * abs(y))
-            if np.isscalar(a) and np.isscalar(b):
-                result = bool(result)
-            return result
-
-        x = np.array(a, copy=False, subok=True, ndmin=1)
-        y = np.array(b, copy=False, subok=True, ndmin=1)
-
-        # Make sure y is an inexact type to avoid bad behavior on abs(MIN_INT).
-        # This will cause casting of x later. Also, make sure to allow
-        # subclasses (e.g., for numpy.ma).
-        dt = np.core.multiarray.result_type(y, 1.)
-        y = np.array(y, dtype=dt, copy=False, subok=True)
-
-        xfin = np.isfinite(x)
-        yfin = np.isfinite(y)
-        if np.all(xfin) and np.all(yfin):
-            return within_tol(x, y, atol, rtol)
-        else:
-            finite = xfin & yfin
-            cond = np.zeros_like(finite, subok=True)
-            # Because we're using boolean indexing, x & y must be the same
-            # shape. Ideally, we'd just do x, y = broadcast_arrays(x, y).
-            # It's in lib.stride_tricks, though, so we can't import it here.
-            x = x * np.ones_like(cond)
-            y = y * np.ones_like(cond)
-            # Avoid subtraction with infinite/nan values...
-            cond[finite] = within_tol(x[finite], y[finite], atol, rtol)
-            # Check for equality of infinite values...
-            cond[~finite] = (x[~finite] == y[~finite])
-            if equal_nan:
-                # Make NaN == NaN
-                both_nan = np.isnan(x) & np.isnan(y)
-                cond[both_nan] = both_nan[both_nan]
-
-            if np.isscalar(a) and np.isscalar(b):
-                return bool(cond)
-            else:
-                return cond
-
+from numpy import isclose
 
 def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
                     average_core_distance=1.0,
@@ -202,7 +154,7 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
 
     # Sort edges of the min_spanning_tree by weight
     min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]),
-                        :]
+                        :][0]
 
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
@@ -954,8 +906,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     @property
     def prediction_data_(self):
         if self._prediction_data is None:
-            warn('No prediction data was generated')
-            return None
+            raise AttributeError('No prediction data was generated')
         else:
             return self._prediction_data
 
@@ -968,25 +919,22 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                 self._outlier_scores = outlier_scores(self._condensed_tree)
                 return self._outlier_scores
             else:
-                warn('No condensed tree was generated; try running fit first.')
-                return None
+                raise AttributeError('No condensed tree was generated; try running fit first.')
 
     @property
     def condensed_tree_(self):
         if self._condensed_tree is not None:
             return CondensedTree(self._condensed_tree, self.cluster_selection_method)
         else:
-            warn('No condensed tree was generated; try running fit first.')
-            return None
+            raise AttributeError('No condensed tree was generated; try running fit first.')
 
     @property
     def single_linkage_tree_(self):
         if self._single_linkage_tree is not None:
             return SingleLinkageTree(self._single_linkage_tree)
         else:
-            warn('No single linkage tree was generated; try running fit'
+            raise AttributeError('No single linkage tree was generated; try running fit'
                  ' first.')
-            return None
 
     @property
     def minimum_spanning_tree_(self):
@@ -1000,10 +948,9 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                      ' tree will be provided without raw data.')
                 return None
         else:
-            warn('No minimum spanning tree was generated.'
+            raise AttributeError('No minimum spanning tree was generated.'
                  'This may be due to optimized algorithm variations that skip'
                  ' explicit generation of the spanning tree.')
-            return None
 
     @property
     def exemplars_(self):
@@ -1013,7 +960,6 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             self.generate_prediction_data()
             return self._prediction_data.exemplars
         else:
-            warn('Currently exemplars require the use of vector input data'
+            raise AttributeError('Currently exemplars require the use of vector input data'
                  'with a suitable metric. This will likely change in the '
                  'future, but for now no exemplars can be provided')
-            return None

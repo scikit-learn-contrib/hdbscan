@@ -392,7 +392,7 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
 
         self._metric_kwargs = kwargs
 
-        self._cluster_hierarchy_ = None
+        self._cluster_hierarchy = None
 
     def fit(self, X, y=None):
         """Perform robust single linkage clustering from features or
@@ -415,7 +415,7 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
         kwargs = self.get_params()
         kwargs.update(self._metric_kwargs)
 
-        self.labels_, self._cluster_hierarchy_ = robust_single_linkage(
+        self.labels_, self._cluster_hierarchy = robust_single_linkage(
             X, **kwargs)
 
         return self
@@ -441,9 +441,8 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
 
     @property
     def cluster_hierarchy_(self):
-        if self._cluster_hierarchy_ is not None:
-            return SingleLinkageTree(self._cluster_hierarchy_)
+        if self._cluster_hierarchy is not None:
+            return SingleLinkageTree(self._cluster_hierarchy)
         else:
-            warn('No single linkage tree was generated; try running fit'
+            raise AttributeError('No single linkage tree was generated; try running fit'
                  ' first.')
-            return None

@@ -27,8 +27,8 @@ and what you are looking for is leaf clustering :any:`_leaf_cluster_label` .
 Q: HDBSCAN is failing to separate the clusters I think it should.
 -----------------------------------------------------------------
 
-Density based clustering relies on having enough data to separate dense areas
-. In higher dimensional spaces this becomes more difficult, and hecne
+Density based clustering relies on having enough data to separate dense areas.
+In higher dimensional spaces this becomes more difficult, and hence
 requires more data. Quite possibly there is not enough data to make your
 clusters clearly separable. Consider the following plots:
 
@@ -40,7 +40,7 @@ easily differentiate. The blue dataset is sampled from a mixture of three
 standard Gaussians centered at (-2, 0), (0,0) and (2,0); the green dataset is
 sampled from a mixture of two standard Gaussians centered at (-1,0) and (1,0);
 the red data is sampled from a multivariate Gaussian with covariance
-[2, 0; 0 1]; the purple data is a single standard Gaussian with uniform
+[2, 0; 0, 1]; the purple data is a single standard Gaussian with uniform
 background noise.
 
 Despite the generate model having clearly different "clusters", without more
@@ -63,7 +63,7 @@ Q: Haversine metric is not clustering my Lat-Lon data correctly.
 ----------------------------------------------------------------
 
 The Haversine metric as implemented supports coordinates in radians. That
-means you'll need to convert your latitide and longitude data into radians
+means you'll need to convert your latitude and longitude data into radians
 before passing it in to HDBSCAN.
 
 Q: I want to cite this software in my journal publication. How do I do that?

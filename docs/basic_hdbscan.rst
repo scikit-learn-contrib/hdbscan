@@ -4,7 +4,7 @@ Basic Usage of HDBSCAN\* for Clustering
 
 We have some data, and we want to cluster it. How exactly do we do that,
 and what do the results look like? If you are very familiar with sklearn
-and it's API, particularly for clustering, then you can probably skip
+and its API, particularly for clustering, then you can probably skip
 this tutorial -- ``hdbscan`` implements exactly this API, so you can use
 it just as you would any other sklearn clustering algorithm. If, on the
 other hand, you aren't that familiar with sklearn, fear not, and read
@@ -168,9 +168,9 @@ and stores the result in an attribute ``labels_``.
 
 So it is an array of integers. What are we to make of that? It is an
 array with an integer for each data sample. Samples that are in the same
-cluster get assigned the same number. The cluster labels are 0 up
-numbers. We can thus determine the number of clusters found by checking
-what the largest cluster label is.
+cluster get assigned the same number. The cluster labels start at 0 and count
+up. We can thus determine the number of clusters found by finding the largest
+cluster label.
 
 .. code:: python
 

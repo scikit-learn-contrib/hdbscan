@@ -105,12 +105,12 @@ def test_rsl_prims_kdtree():
     assert_equal(n_clusters_2, n_clusters)
 
 
-def test_rsl_unavailable_hierarchy():
-    clusterer = RobustSingleLinkage()
-    with warnings.catch_warnings(record=True) as w:
-        tree = clusterer.cluster_hierarchy_
-        assert len(w) > 0
-        assert tree is None
+# def test_rsl_unavailable_hierarchy():
+#     clusterer = RobustSingleLinkage()
+#     with warnings.catch_warnings(record=True) as w:
+#         tree = clusterer.cluster_hierarchy_
+#         assert len(w) > 0
+#         assert tree is None
 
 
 def test_rsl_hierarchy():
