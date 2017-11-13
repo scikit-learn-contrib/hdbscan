@@ -839,6 +839,9 @@ cdef class KDTreeBoruvkaAlgorithm (object):
 
         return self.edges
 
+    def mean_core_dist(self):
+        return np.mean(self.core_distance_arr)
+
 
 cdef class BallTreeBoruvkaAlgorithm (object):
     """A Dual Tree Boruvka Algorithm implemented for the sklearn
@@ -1433,3 +1436,6 @@ cdef class BallTreeBoruvkaAlgorithm (object):
             num_components = self.update_components()
 
         return self.edges
+
+    def mean_core_dist(self):
+        return np.mean(self.core_distance_arr)

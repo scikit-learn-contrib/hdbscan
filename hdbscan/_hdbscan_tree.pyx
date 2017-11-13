@@ -8,6 +8,8 @@
 import numpy as np
 cimport numpy as np
 
+from libc.math cimport exp
+
 cdef np.double_t INFTY = np.inf
 
 
@@ -41,7 +43,10 @@ cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy,
 
 
 cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
-                               np.intp_t min_cluster_size=10):
+                               np.intp_t min_cluster_size=10,
+                               np.double_t mean_core_dist,
+                               np.int scale_invariant=1,
+                               np.int neg_exp=0):
     """Condense a tree according to a minimum cluster size. This is akin
     to the runt pruning procedure of Stuetzle. The result is a much simpler
     tree that is easier to visualize. We include extra information on the 
@@ -82,6 +87,9 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     cdef np.intp_t left_count
     cdef np.intp_t right_count
 
+    if neg_exp == 1:
+        scale_invariant = 1
+
     root = 2 * hierarchy.shape[0]
     num_points = root // 2 + 1
     next_label = num_points + 1
@@ -100,10 +108,16 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
         children = hierarchy[node - num_points]
         left = <np.intp_t> children[0]
         right = <np.intp_t> children[1]
-        if children[2] > 0.0:
-            lambda_value = 1.0 / children[2]
+        if neg_exp:
+            lambda_value = exp(-children[2] / mean_core_dist)
         else:
-            lambda_value = INFTY
+            if children[2] > 0.0:
+                if scale_invariant:
+                    lambda_value = mean_core_dist / children[2]
+                else:
+                    lambda_value = 1.0 / children[2]
+            else:
+                lambda_value = INFTY
 
         if left >= num_points:
             left_count = <np.intp_t> hierarchy[left - num_points][3]
