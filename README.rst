@@ -23,7 +23,7 @@
     :target: http://joss.theoj.org/papers/10.21105/joss.00205
     :alt: JOSS article
 .. image:: https://mybinder.org/badge.svg 
-    :target: https://mybinder.org/v2/gh/scikit-learn-contrib/hdbscan/notebooks/master
+    :target: https://mybinder.org/v2/gh/scikit-learn-contrib/hdbscan
     :alt: Launch example notebooks in Binder
 
 
