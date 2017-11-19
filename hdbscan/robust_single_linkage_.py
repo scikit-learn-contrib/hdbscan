@@ -294,7 +294,7 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
 
     labels = single_linkage_tree.get_clusters(cut, gamma)
 
-    return labels, single_linkage_tree
+    return labels, single_linkage_tree.to_numpy()
 
 
 class RobustSingleLinkage(BaseEstimator, ClusterMixin):
