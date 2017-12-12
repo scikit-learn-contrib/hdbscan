@@ -10,7 +10,7 @@ from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 from sklearn.metrics import pairwise_distances
 from warnings import warn
-from ._hdbscan_tree import compute_stability, labelling_at_cut
+from ._hdbscan_tree import compute_stability, labelling_at_cut, recurse_leaf_dfs
 
 CB_LEFT = 0
 CB_RIGHT = 1
@@ -37,10 +37,14 @@ def _recurse_leaf_dfs(cluster_tree, current_node):
     if len(children) == 0:
         return [current_node,]
     else:
-        return sum([_recurse_leaf_dfs(cluster_tree, child) for child in children], [])
+        return sum([recurse_leaf_dfs(cluster_tree, child) for child in children], [])
 
 def _get_leaves(condensed_tree):
     cluster_tree = condensed_tree[condensed_tree['child_size'] > 1]
+    if cluster_tree.shape[0] == 0:
+        # Just return the only cluster which is the root
+        return condensed_tree['parent'].min()
+
     root = cluster_tree['parent'].min()
     return _recurse_leaf_dfs(cluster_tree, root)
 
@@ -222,7 +226,11 @@ class CondensedTree(object):
     def _select_clusters(self):
         if self.cluster_selection_method == 'eom':
             stability = compute_stability(self._raw_tree)
-            node_list = sorted(stability.keys(), reverse=True)[:-1]
+            if self.allow_single_cluster:
+                node_list = sorted(stability.keys(), reverse=True)
+            else:
+                # exclude root
+                node_list = sorted(stability.keys(), reverse=True)[:-1]
             cluster_tree = self._raw_tree[self._raw_tree['child_size'] > 1]
             is_cluster = {cluster: True for cluster in node_list}
 
@@ -239,7 +247,10 @@ class CondensedTree(object):
                         if sub_node != node:
                             is_cluster[sub_node] = False
 
-            return [cluster for cluster in is_cluster if is_cluster[cluster]]
+            return sorted([cluster
+                           for cluster in is_cluster
+                           if is_cluster[cluster]])
+
         elif self.cluster_selection_method == 'leaf':
             return _get_leaves(self._raw_tree)
         else:
