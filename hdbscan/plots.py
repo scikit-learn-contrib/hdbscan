@@ -60,11 +60,16 @@ class CondensedTree(object):
         
     cluster_selection_method : string, optional (default 'eom')
         The method of selecting clusters. One of 'eom' or 'leaf'
+
+    allow_single_cluster : Boolean, optional (default False)
+        Whether to allow the root cluster as the only selected cluster
     
     """
-    def __init__(self, condensed_tree_array, cluster_selection_method='eom'):
+    def __init__(self, condensed_tree_array, cluster_selection_method='eom',
+                 allow_single_cluster=False):
         self._raw_tree = condensed_tree_array
         self.cluster_selection_method = cluster_selection_method
+        self.allow_single_cluster = allow_single_cluster
 
     def get_plot_data(self,
                       leaf_separation=1,
@@ -226,7 +231,10 @@ class CondensedTree(object):
     def _select_clusters(self):
         if self.cluster_selection_method == 'eom':
             stability = compute_stability(self._raw_tree)
-            node_list = sorted(stability.keys(), reverse=True)[:-1]
+            if self.allow_single_cluster:
+                node_list = sorted(stability.keys(), reverse=True)
+            else:
+                node_list = sorted(stability.keys(), reverse=True)[:-1]
             cluster_tree = self._raw_tree[self._raw_tree['child_size'] > 1]
             is_cluster = {cluster: True for cluster in node_list}
 
@@ -243,7 +251,10 @@ class CondensedTree(object):
                         if sub_node != node:
                             is_cluster[sub_node] = False
 
-            return [cluster for cluster in is_cluster if is_cluster[cluster]]
+            return sorted([cluster
+                           for cluster in is_cluster
+                           if is_cluster[cluster]])
+
         elif self.cluster_selection_method == 'leaf':
             return _get_leaves(self._raw_tree)
         else:
