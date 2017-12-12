@@ -10,7 +10,7 @@ from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 from sklearn.metrics import pairwise_distances
 from warnings import warn
-from ._hdbscan_tree import compute_stability, labelling_at_cut
+from ._hdbscan_tree import compute_stability, labelling_at_cut, recurse_leaf_dfs
 
 CB_LEFT = 0
 CB_RIGHT = 1
@@ -37,7 +37,7 @@ def _recurse_leaf_dfs(cluster_tree, current_node):
     if len(children) == 0:
         return [current_node,]
     else:
-        return sum([_recurse_leaf_dfs(cluster_tree, child) for child in children], [])
+        return sum([recurse_leaf_dfs(cluster_tree, child) for child in children], [])
 
 def _get_leaves(condensed_tree):
     cluster_tree = condensed_tree[condensed_tree['child_size'] > 1]
