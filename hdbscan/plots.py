@@ -117,8 +117,11 @@ class CondensedTree(object):
         # We want to get the x and y coordinates for the start of each cluster
         # Initialize the leaves, since we know where they go, the iterate
         # through everything from the leaves back, setting coords as we go
-        cluster_x_coords = dict(zip(leaves, [leaf_separation * x
-                                             for x in range(len(leaves))]))
+        if isinstance(leaves, np.int64):
+            cluster_x_coords = {leaves: leaf_separation}
+        else:
+            cluster_x_coords = dict(zip(leaves, [leaf_separation * x
+                                                 for x in range(len(leaves))]))
         cluster_y_coords = {root: 0.0}
 
         for cluster in range(last_leaf, root - 1, -1):
