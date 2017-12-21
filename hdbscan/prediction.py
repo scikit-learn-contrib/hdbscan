@@ -513,7 +513,7 @@ def all_points_membership_vectors(clusterer):
     membership_vectors : array (n_samples, n_clusters)
         The probability that point ``i`` of the original dataset is a member of
         cluster ``j`` is in ``membership_vectors[i, j]``.
-        
+
     See Also
     --------
     :py:func:`hdbscan.predict.predict`
@@ -522,6 +522,10 @@ def all_points_membership_vectors(clusterer):
     clusters = np.array(list(clusterer.condensed_tree_._select_clusters()
                              )).astype(np.intp)
     all_points = clusterer.prediction_data_.raw_data
+
+    # When no clusters found, return array of 0's
+    if clusters.size == 0:
+        return np.zeros(all_points.shape[0])
 
     distance_vecs = all_points_dist_membership_vector(all_points,
                                                       clusterer.prediction_data_.exemplars,

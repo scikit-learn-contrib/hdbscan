@@ -472,6 +472,12 @@ def test_hdbscan_approximate_predict():
 #                                                    8.35882503e-002,
 #                                                    1.07356406e-001]))
 
+def test_hdbscan_all_points_membership_vectors():
+    clusterer = HDBSCAN(prediction_data=True, min_cluster_size=200).fit(X)
+    vects = all_points_membership_vectors(clusterer)
+    assert_array_equal(vects, np.zeros(clusterer.prediction_data_.raw_data.shape[0]))
+
+
 def test_hdbscan_badargs():
     assert_raises(ValueError,
                   hdbscan,
