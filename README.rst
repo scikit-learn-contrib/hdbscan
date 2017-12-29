@@ -45,7 +45,12 @@ HDBSCAN is ideal for exploratory data analysis; it's a fast and robust
 algorithm that you can trust to return meaningful clusters (if there
 are any).
 
-Based on the paper:
+Based on the papers:
+
+    McInnes L, Healy J. *Accelerated Hierarchical Density Based Clustering* 
+    In: 2017 IEEE International Conference on Data Mining Workshops (ICDMW), IEEE, pp 33-42.
+    2017
+
     R. Campello, D. Moulavi, and J. Sander, *Density-Based Clustering Based on
     Hierarchical Density Estimates*
     In: Advances in Knowledge Discovery and Data Mining, Springer, pp 160-172.
@@ -240,6 +245,12 @@ If you have used this codebase in a scientific publication and wish to cite it, 
 
     L. McInnes, J. Healy, S. Astels, *hdbscan: Hierarchical density based clustering*
     In: Journal of Open Source Software, The Open Journal, volume 2, number 11.
+    2017
+    
+To refernece the high performance algorithm developed in this library please cite our paper in ICDMW 2017 proceedings.
+
+    McInnes L, Healy J. *Accelerated Hierarchical Density Based Clustering* 
+    In: 2017 IEEE International Conference on Data Mining Workshops (ICDMW), IEEE, pp 33-42.
     2017
 
 ---------
