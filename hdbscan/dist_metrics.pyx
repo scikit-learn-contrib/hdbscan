@@ -1135,10 +1135,9 @@ cdef class PyFuncDistance(DistanceMetric):
                              ITYPE_t size) except -1 with gil:
         cdef np.ndarray x1arr
         cdef np.ndarray x2arr
-        with gil:
-            x1arr = _buffer_to_ndarray(x1, size)
-            x2arr = _buffer_to_ndarray(x2, size)
-            return self.func(x1arr, x2arr, **self.kwargs)
+        x1arr = _buffer_to_ndarray(x1, size)
+        x2arr = _buffer_to_ndarray(x2, size)
+        return self.func(x1arr, x2arr, **self.kwargs)
 
 
 cdef inline double fmax(double a, double b) nogil:
