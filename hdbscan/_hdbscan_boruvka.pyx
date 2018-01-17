@@ -60,6 +60,8 @@
 import numpy as np
 cimport numpy as np
 
+import sys
+
 from libc.float cimport DBL_MAX
 from libc.math cimport fabs, pow
 
@@ -71,6 +73,7 @@ cimport dist_metrics as dist_metrics
 from sklearn.externals.joblib import Parallel, delayed
 
 cdef np.double_t INF = np.inf
+cdef np.intp_t INT_MAX = sys.maxint
 
 
 # Define the NodeData struct used in sklearn trees for faster
@@ -271,6 +274,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
     cdef object tree
     cdef object core_dist_tree
     cdef dist_metrics.DistanceMetric dist
+    cdef np.ndarray sample_weights
     cdef np.ndarray _data
     cdef np.double_t[:, ::1] _raw_data
     cdef np.double_t[:, :, ::1] node_bounds
@@ -314,14 +318,16 @@ cdef class KDTreeBoruvkaAlgorithm (object):
     cdef np.ndarray candidate_neighbor_arr
     cdef np.ndarray candidate_distance_arr
 
-    def __init__(self, tree, min_samples=5, metric='euclidean', leaf_size=20,
-                 alpha=1.0, approx_min_span_tree=False, n_jobs=4, **kwargs):
+    def __init__(self, tree, sample_weights=None, min_samples=5,
+                 metric='euclidean', leaf_size=20, alpha=1.0,
+                 approx_min_span_tree=False, n_jobs=4, **kwargs):
 
         self.core_dist_tree = tree
         self.tree = KDTree(tree.data, metric=metric, leaf_size=leaf_size,
                            **kwargs)
         self._data = np.array(self.tree.data)
         self._raw_data = self.tree.data
+        self.sample_weights = sample_weights
         self.node_bounds = self.tree.node_bounds
         self.min_samples = min_samples
         self.alpha = alpha
@@ -423,7 +429,29 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                 dualtree=True,
                 breadth_first=True)
 
-        self.core_distance_arr = knn_dist[:, self.min_samples].copy()
+        if self.sample_weights is not None:
+            # Use cumulative sum of weights to find the weighted nearest
+            # neighbour satisfying min_samples.
+            # TODO: This part might have the highest impact on performance.
+            self.core_distance_arr = np.empty(
+                shape=(self.num_points), dtype='float64')
+            for idx in range(self.num_points):
+                idx_row = knn_indices[idx, :].reshape(1, -1).flatten()
+                cs = np.cumsum(self.sample_weights[idx_row])
+                if cs[self.min_samples] < self.min_samples:
+                    # If zero weights don't allow for a big enough cluster
+                    # return maximal possible core distance to "ignore"
+                    # the point under consideration.
+                    # TODO: INF would be more apporpriate, but is causing errors
+                    # on later stages with spanning_tree() (hdbscan_.py 244)
+                    self.core_distance_arr[idx] = INT_MAX
+                else:
+                    # Based on https://stackoverflow.com/a/25032853/4272484
+                    weighted_idx = np.searchsorted(cs, self.min_samples)
+                    self.core_distance_arr[idx] = knn_dist[idx, weighted_idx]
+        else:
+            self.core_distance_arr = knn_dist[:, self.min_samples].copy()
+
         self.core_distance = (<np.double_t[:self.num_points:1]> (
             <np.double_t *> self.core_distance_arr.data))
 
@@ -882,6 +910,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef object tree
     cdef object core_dist_tree
     cdef dist_metrics.DistanceMetric dist
+    cdef np.ndarray sample_weights
     cdef np.ndarray _data
     cdef np.double_t[:, ::1] _raw_data
     cdef np.double_t alpha
@@ -924,15 +953,16 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef np.ndarray candidate_neighbor_arr
     cdef np.ndarray candidate_distance_arr
 
-    def __init__(self, tree, min_samples=5, metric='euclidean',
-                 alpha=1.0, leaf_size=20, approx_min_span_tree=False, n_jobs=4,
-                 **kwargs):
+    def __init__(self, tree, sample_weights=None, min_samples=5,
+                 metric='euclidean', alpha=1.0, leaf_size=20,
+                 approx_min_span_tree=False, n_jobs=4, **kwargs):
 
         self.core_dist_tree = tree
         self.tree = BallTree(tree.data, metric=metric, leaf_size=leaf_size,
                              **kwargs)
         self._data = np.array(self.tree.data)
         self._raw_data = self.tree.data
+        self.sample_weights = sample_weights
         self.min_samples = min_samples
         self.alpha = alpha
         self.approx_min_span_tree = approx_min_span_tree
@@ -1027,7 +1057,29 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                 dualtree=True,
                 breadth_first=True)
 
-        self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
+        if self.sample_weights is not None:
+            # Use cumulative sum of weights to find the weighted nearest
+            # neighbour satisfying min_samples.
+            # TODO: This part might have the highest impact on performance.
+            self.core_distance_arr = np.empty(
+                shape=(self.num_points), dtype='float64')
+            for idx in range(self.num_points):
+                idx_row = knn_indices[idx, :].reshape(1, -1).flatten()
+                cs = np.cumsum(self.sample_weights[idx_row])
+                if cs[self.min_samples] < self.min_samples:
+                    # If zero weights don't allow for a big enough cluster
+                    # return maximal possible core distance to "ignore"
+                    # the point under consideration.
+                    # TODO: INF would be more apporpriate, but is causing errors
+                    # on later stages with spanning_tree() (hdbscan_.py 244)
+                    self.core_distance_arr[idx] = INT_MAX
+                else:
+                    # Based on https://stackoverflow.com/a/25032853/4272484
+                    weighted_idx = np.searchsorted(cs, self.min_samples)
+                    self.core_distance_arr[idx] = knn_dist[idx, weighted_idx]
+        else:
+            self.core_distance_arr = knn_dist[:, self.min_samples].copy()
+
         self.core_distance = (<np.double_t[:self.num_points:1]> (
             <np.double_t *> self.core_distance_arr.data))
 
