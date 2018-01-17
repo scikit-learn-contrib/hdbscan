@@ -866,7 +866,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             else:
                 warn('Metric {} not supported for prediction data!'.format(self.metric))
                 return
-                
+
             self._prediction_data = PredictionData(
                 self._raw_data, self.condensed_tree_, min_samples,
                 tree_type=tree_type, metric=self.metric,
