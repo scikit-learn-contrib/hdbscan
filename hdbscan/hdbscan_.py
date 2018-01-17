@@ -105,8 +105,7 @@ def _hdbscan_generic(X, sample_weights=None, min_samples=5, alpha=1.0,
         result_min_span_tree = None
 
     # Sort edges of the min_spanning_tree by weight
-    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]),
-                        :]
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
 
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree, sample_weights)
@@ -143,8 +142,7 @@ def _hdbscan_sparse_distance_matrix(X, sample_weights=None, min_samples=5, alpha
     min_spanning_tree = np.vstack(nonzeros + (nonzero_vals,)).T
 
     # Sort edges of the min_spanning_tree by weight
-    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]),
-                        :][0]
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :][0]
 
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree, sample_weights)
@@ -211,8 +209,7 @@ def _hdbscan_prims_balltree(X, sample_weights=None, min_samples=5, alpha=1.0,
     min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric,
                                                 alpha)
     # Sort edges of the min_spanning_tree by weight
-    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]),
-                        :]
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :]
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree, sample_weights)
 
@@ -274,8 +271,8 @@ def _hdbscan_boruvka_balltree(X, sample_weights=None, min_samples=5, alpha=1.0,
                                    n_jobs=core_dist_n_jobs, **kwargs)
     min_spanning_tree = alg.spanning_tree()
     # Sort edges of the min_spanning_tree by weight
-    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]),
-                        :]
+    row_order = np.argsort(min_spanning_tree.T[2])
+    min_spanning_tree = min_spanning_tree[row_order, :]
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree, sample_weights)
 
@@ -750,7 +747,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
     """
 
-    def __init__(self, min_cluster_size=5, min_samples=None,
+    def __init__(self, min_samples=None, min_cluster_size=5,
                  metric='euclidean', alpha=1.0, p=None,
                  algorithm='best', leaf_size=40,
                  memory=Memory(cachedir=None, verbose=0),
@@ -761,8 +758,8 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                  allow_single_cluster=False,
                  prediction_data=False,
                  match_reference_implementation=False, **kwargs):
-        self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
+        self.min_cluster_size = min_cluster_size
         self.alpha = alpha
 
         self.metric = metric

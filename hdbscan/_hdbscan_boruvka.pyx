@@ -416,7 +416,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                                           3*(self.num_points//4)]),
                 np.asarray(self.tree.data[3*(self.num_points//4):
                                           self.num_points])
-                        ]
+            ]
 
             knn_data = Parallel(n_jobs=self.n_jobs)(
                 delayed(_core_dist_query,
@@ -1041,14 +1041,15 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.intp_t, ndim=1] idx_row
 
         if self.tree.data.shape[0] > 16384 and self.n_jobs > 1:
-            datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
-                        np.asarray(self.tree.data[self.num_points//4:
-                                                  self.num_points//2]),
-                        np.asarray(self.tree.data[self.num_points//2:
-                                                  3*(self.num_points//4)]),
-                        np.asarray(self.tree.data[3*(self.num_points//4):
-                                                  self.num_points])
-                        ]
+            datasets = [
+                np.asarray(self.tree.data[0:self.num_points//4]),
+                np.asarray(self.tree.data[self.num_points//4:
+                                          self.num_points//2]),
+                np.asarray(self.tree.data[self.num_points//2:
+                                          3*(self.num_points//4)]),
+                np.asarray(self.tree.data[3*(self.num_points//4):
+                                          self.num_points])
+            ]
 
             knn_data = Parallel(n_jobs=self.n_jobs)(
                 delayed(_core_dist_query,
