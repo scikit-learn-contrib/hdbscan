@@ -166,11 +166,16 @@ cdef class UnionFind (object):
     cdef np.intp_t *parent
     cdef np.intp_t *size
 
-    def __init__(self, N):
+    def __init__(self, N, sample_weights):
         self.parent_arr = -1 * np.ones(2 * N - 1, dtype=np.intp, order='C')
         self.next_label = N
-        self.size_arr = np.hstack((np.ones(N, dtype=np.intp),
-                                   np.zeros(N-1, dtype=np.intp)))
+        # Initialise size array with sample_weights if given
+        if sample_weights is not None:
+            self.size_arr = np.hstack((sample_weights,
+                                       np.zeros(N-1, dtype=np.intp)))
+        else:
+            self.size_arr = np.hstack((np.ones(N, dtype=np.intp),
+                                       np.zeros(N-1, dtype=np.intp)))
         self.parent = (<np.intp_t *> self.parent_arr.data)
         self.size = (<np.intp_t *> self.size_arr.data)
 
