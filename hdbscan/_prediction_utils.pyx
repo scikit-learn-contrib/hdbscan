@@ -324,7 +324,8 @@ cpdef all_points_prob_in_some_cluster(
         np.ndarray[np.intp_t, ndim=1] clusters,
         np.ndarray tree,
         dict max_lambda_dict,
-        np.ndarray cluster_tree):
+        np.ndarray cluster_tree,
+        inf = float('inf')):
 
     cdef np.ndarray[np.float64_t, ndim=1] heights
     cdef np.intp_t num_points = tree['parent'].min()
@@ -351,7 +352,9 @@ cpdef all_points_prob_in_some_cluster(
                                clusters, cluster_tree)
         max_lambda = max(max_lambda_dict[clusters[heights.argmax()]],
                          point_lambda)
-        result[point] = (heights.max() / max_lambda)
+        if max_lambda == inf:
+            result[point] = 1
+        else:
+            result[point] = (heights.max() / max_lambda)
 
     return result
-
