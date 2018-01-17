@@ -400,6 +400,10 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.intp_t, ndim=2] knn_indices
 
+        cdef np.intp_t idx
+        cdef np.intp_t weighted_idx
+        cdef np.ndarray[np.intp_t, ndim=1] idx_row
+
         # A shortcut: if we have a lot of points then we can split the points
         # into four piles and query them in parallel. On multicore systems
         # (most systems) this amounts to a 2x-3x wall clock improvement.
@@ -1031,6 +1035,10 @@ cdef class BallTreeBoruvkaAlgorithm (object):
 
         cdef np.ndarray[np.double_t, ndim=2] knn_dist
         cdef np.ndarray[np.intp_t, ndim=2] knn_indices
+
+        cdef np.intp_t idx
+        cdef np.intp_t weighted_idx
+        cdef np.ndarray[np.intp_t, ndim=1] idx_row
 
         if self.tree.data.shape[0] > 16384 and self.n_jobs > 1:
             datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
