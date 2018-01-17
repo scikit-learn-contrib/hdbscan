@@ -3,8 +3,12 @@
 #cython: wraparound=False
 #cython: cdivision=True
 
+import cython
 cimport cython
+
+import numpy as np
 cimport numpy as np
+
 from libc.math cimport fabs, sqrt, exp, cos, pow
 
 ctypedef np.double_t DTYPE_t
