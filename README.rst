@@ -49,7 +49,7 @@ Based on the papers:
 
     McInnes L, Healy J. *Accelerated Hierarchical Density Based Clustering* 
     In: 2017 IEEE International Conference on Data Mining Workshops (ICDMW), IEEE, pp 33-42.
-    2017
+    2017 `[pdf] <http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8215642>`_
 
     R. Campello, D. Moulavi, and J. Sander, *Density-Based Clustering Based on
     Hierarchical Density Estimates*

@@ -107,8 +107,9 @@ class PredictionData(object):
         # raw_condensed_tree = condensed_tree.to_numpy()
         raw_condensed_tree = condensed_tree._raw_tree
 
-        self.cluster_map = dict(zip(selected_clusters,
-                                    range(len(selected_clusters))))
+        self.cluster_map = {c: n for n, c in enumerate(sorted(list(selected_clusters)))}
+        self.reverse_cluster_map = {n: c for c, n in self.cluster_map.items()}
+
         self.cluster_tree = raw_condensed_tree[raw_condensed_tree['child_size']
                                                > 1]
         self.max_lambdas = {}
