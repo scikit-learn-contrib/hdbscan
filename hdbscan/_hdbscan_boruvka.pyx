@@ -433,28 +433,34 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                 dualtree=True,
                 breadth_first=True)
 
-        if self.sample_weights is not None:
-            # Use cumulative sum of weights to find the weighted nearest
-            # neighbour satisfying min_samples.
-            # TODO: This part might have the highest impact on performance.
-            self.core_distance_arr = np.empty(
-                shape=(self.num_points), dtype='float64')
-            for idx in range(self.num_points):
-                idx_row = knn_indices[idx, :].reshape(1, -1).flatten()
-                cs = np.cumsum(self.sample_weights[idx_row])
-                if cs[self.min_samples] < self.min_samples:
-                    # If zero weights don't allow for a big enough cluster
-                    # return maximal possible core distance to "ignore"
-                    # the point under consideration.
-                    # TODO: INF would be more apporpriate, but is causing errors
-                    # on later stages with spanning_tree() (hdbscan_.py 244)
-                    self.core_distance_arr[idx] = INT_MAX
-                else:
-                    # Based on https://stackoverflow.com/a/25032853/4272484
-                    weighted_idx = np.searchsorted(cs, self.min_samples)
-                    self.core_distance_arr[idx] = knn_dist[idx, weighted_idx]
-        else:
-            self.core_distance_arr = knn_dist[:, self.min_samples].copy()
+        # if self.sample_weights is not None:
+        #     # Use cumulative sum of weights to find the weighted nearest
+        #     # neighbour satisfying min_samples.
+        #     # TODO: This part might have the highest impact on performance.
+        #     self.core_distance_arr = np.empty(
+        #         shape=(self.num_points), dtype='float64')
+        #     for idx in range(self.num_points):
+        #         idx_row = knn_indices[idx, :].reshape(1, -1).flatten()
+        #         cs = np.cumsum(self.sample_weights[idx_row])
+        #         if cs[self.min_samples] < self.min_samples:
+        #             # If zero weights don't allow for a big enough cluster
+        #             # return maximal possible core distance to "ignore"
+        #             # the point under consideration.
+        #             # TODO: INF would be more apporpriate, but is causing errors
+        #             # on later stages with spanning_tree() (hdbscan_.py 244)
+        #             ###
+        #             weighted_idx = np.searchsorted(cs, self.min_samples)
+        #             self.core_distance_arr[idx] = knn_dist[idx, weighted_idx]
+        #             ###
+        #             # self.core_distance_arr[idx] = knn_dist[idx, self.min_samples]
+        #             # self.core_distance_arr[idx] = self.min_samples
+        #             # self.core_distance_arr[idx] = INT_MAX
+        #         else:
+        #             # Based on https://stackoverflow.com/a/25032853/4272484
+        #             weighted_idx = np.searchsorted(cs, self.min_samples)
+        #             self.core_distance_arr[idx] = knn_dist[idx, weighted_idx]
+        # else:
+        self.core_distance_arr = knn_dist[:, self.min_samples].copy()
 
         self.core_distance = (<np.double_t[:self.num_points:1]> (
             <np.double_t *> self.core_distance_arr.data))
@@ -1065,28 +1071,34 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                 dualtree=True,
                 breadth_first=True)
 
-        if self.sample_weights is not None:
-            # Use cumulative sum of weights to find the weighted nearest
-            # neighbour satisfying min_samples.
-            # TODO: This part might have the highest impact on performance.
-            self.core_distance_arr = np.empty(
-                shape=(self.num_points), dtype='float64')
-            for idx in range(self.num_points):
-                idx_row = knn_indices[idx, :].reshape(1, -1).flatten()
-                cs = np.cumsum(self.sample_weights[idx_row])
-                if cs[self.min_samples] < self.min_samples:
-                    # If zero weights don't allow for a big enough cluster
-                    # return maximal possible core distance to "ignore"
-                    # the point under consideration.
-                    # TODO: INF would be more apporpriate, but is causing errors
-                    # on later stages with spanning_tree() (hdbscan_.py 244)
-                    self.core_distance_arr[idx] = INT_MAX
-                else:
-                    # Based on https://stackoverflow.com/a/25032853/4272484
-                    weighted_idx = np.searchsorted(cs, self.min_samples)
-                    self.core_distance_arr[idx] = knn_dist[idx, weighted_idx]
-        else:
-            self.core_distance_arr = knn_dist[:, self.min_samples].copy()
+        # if self.sample_weights is not None:
+        #     # Use cumulative sum of weights to find the weighted nearest
+        #     # neighbour satisfying min_samples.
+        #     # TODO: This part might have the highest impact on performance.
+        #     self.core_distance_arr = np.empty(
+        #         shape=(self.num_points), dtype='float64')
+        #     for idx in range(self.num_points):
+        #         idx_row = knn_indices[idx, :].reshape(1, -1).flatten()
+        #         cs = np.cumsum(self.sample_weights[idx_row])
+        #         if cs[self.min_samples] < self.min_samples:
+        #             # If zero weights don't allow for a big enough cluster
+        #             # return maximal possible core distance to "ignore"
+        #             # the point under consideration.
+        #             # TODO: INF would be more apporpriate, but is causing errors
+        #             # on later stages with spanning_tree() (hdbscan_.py 244)
+        #             ###
+        #             # weighted_idx = np.searchsorted(cs, self.min_samples)
+        #             # self.core_distance_arr[idx] = knn_dist[idx, weighted_idx]
+        #             ###
+        #             # self.core_distance_arr[idx] = knn_dist[idx, self.min_samples]
+        #             # self.core_distance_arr[idx] = self.min_samples
+        #             self.core_distance_arr[idx] = INT_MAX
+        #         else:
+        #             # Based on https://stackoverflow.com/a/25032853/4272484
+        #             weighted_idx = np.searchsorted(cs, self.min_samples)
+        #             self.core_distance_arr[idx] = knn_dist[idx, weighted_idx]
+        # else:
+        self.core_distance_arr = knn_dist[:, self.min_samples].copy()
 
         self.core_distance = (<np.double_t[:self.num_points:1]> (
             <np.double_t *> self.core_distance_arr.data))
