@@ -77,11 +77,9 @@ cpdef np.ndarray[np.float64_t, ndim=1] dist_membership_vector(
 
     if softmax:
         for i in range(vector.shape[0]):
-            if vector[i] != 0:
-                result[i] = np.exp(1.0 / vector[i])
-            else:
-                result[i] = DBL_MAX / vector.shape[0]
-            sum += result[i]
+            result[i] = 1.0 / vector[i]
+        result = np.exp(result - np.nanmax(result))
+        sum = np.sum(result)
 
     else:
         for i in range(vector.shape[0]):
