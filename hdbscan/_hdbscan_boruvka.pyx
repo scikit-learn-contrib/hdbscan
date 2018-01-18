@@ -73,7 +73,7 @@ cimport dist_metrics as dist_metrics
 from sklearn.externals.joblib import Parallel, delayed
 
 cdef np.double_t INF = np.inf
-cdef np.intp_t INT_MAX = sys.maxint
+# cdef np.intp_t INT_MAX = sys.maxint
 
 
 # Define the NodeData struct used in sklearn trees for faster
