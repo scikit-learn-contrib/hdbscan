@@ -77,11 +77,9 @@ cpdef np.ndarray[np.float64_t, ndim=1] dist_membership_vector(
 
     if softmax:
         for i in range(vector.shape[0]):
-            if vector[i] != 0:
-                result[i] = np.exp(1.0 / vector[i])
-            else:
-                result[i] = DBL_MAX / vector.shape[0]
-            sum += result[i]
+            result[i] = 1.0 / vector[i]
+        result = np.exp(result - np.nanmax(result))
+        sum = np.sum(result)
 
     else:
         for i in range(vector.shape[0]):
@@ -225,8 +223,10 @@ cpdef np.ndarray[np.float64_t, ndim=1] outlier_membership_vector(neighbor,
     if softmax:
         result = per_cluster_scores(neighbor, lambda_, clusters, tree,
                                     max_lambda_dict, cluster_tree)
-        result = np.exp(result)
-        result[~np.isfinite(result)] = np.finfo(np.double).max
+        # Scale for numerical stability, mathematically equivalent with old
+        # version due to the scaling with the sum in below.
+        result = np.exp(result - np.nanmax(result))
+        #result[~np.isfinite(result)] = np.finfo(np.double).max
     else:
         result = per_cluster_scores(neighbor, lambda_, clusters, tree,
                                     max_lambda_dict, cluster_tree)
@@ -310,8 +310,10 @@ cpdef np.ndarray[np.float64_t, ndim=2] all_points_outlier_membership_vector(
                                 max_lambda_dict,
                                 cluster_tree)
     if softmax:
-        result = np.exp(per_cluster_scores)
-        result[~np.isfinite(result)] = np.finfo(np.double).max
+        # Scale for numerical stability, mathematically equivalent with old
+        # version due to the scaling with the sum in below.
+        result = np.exp(per_cluster_scores - np.nanmax(per_cluster_scores))
+        #result[~np.isfinite(result)] = np.finfo(np.double).max
     else:
         result = per_cluster_scores
 
@@ -354,4 +356,3 @@ cpdef all_points_prob_in_some_cluster(
         result[point] = (heights.max() / max_lambda)
 
     return result
-

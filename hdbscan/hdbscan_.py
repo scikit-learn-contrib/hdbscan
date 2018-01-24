@@ -954,7 +954,9 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     @property
     def condensed_tree_(self):
         if self._condensed_tree is not None:
-            return CondensedTree(self._condensed_tree, self.cluster_selection_method)
+            return CondensedTree(self._condensed_tree,
+                                 self.cluster_selection_method,
+                                 self.allow_single_cluster)
         else:
             raise AttributeError('No condensed tree was generated; try running fit first.')
 

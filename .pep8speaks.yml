@@ -1,0 +1,24 @@
+# File : .pep8speaks.yml
+
+message:  # Customize the comment made by the bot
+    opened:  # Messages when a new PR is submitted
+        header: "Hello @{name}, Thank you for submitting the Pull Request !"
+                # The keyword {name} is converted into the author's username
+        footer: ""
+                # The messages can be written as they would over GitHub
+    updated:  # Messages when new commits are added to the PR
+        header: "Hello @{name}, Thank you for updating !"
+        footer: ""  # Why to comment the link to the style guide everytime? :)
+    no_errors: "Cheers ! There are no PEP8 issues in this Pull Request. :beers: "
+
+scanner:
+    diff_only: False  # If True, errors caused by only the patch are shown
+
+pycodestyle:
+    max-line-length: 100  # Default is 79 in PEP8
+    ignore:  # Errors and warnings to ignore
+        - W391
+        - E203
+
+only_mention_files_with_errors: True  # If False, a separate status comment for each file is made.
+descending_issues_order: False # If True, PEP8 issues in message will be displayed in descending order of line numbers in the file
