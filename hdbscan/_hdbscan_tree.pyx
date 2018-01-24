@@ -604,6 +604,8 @@ cpdef list recurse_leaf_dfs(np.ndarray cluster_tree, np.intp_t current_node):
 
 
 cpdef list get_cluster_tree_leaves(np.ndarray cluster_tree):
+    if cluster_tree.shape[0] == 0:
+        return []
     root = cluster_tree['parent'].min()
     return recurse_leaf_dfs(cluster_tree, root)
 
@@ -689,6 +691,10 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                         is_cluster[sub_node] = False
     elif cluster_selection_method == 'leaf':
         leaves = set(get_cluster_tree_leaves(cluster_tree))
+        if len(leaves) == 0:
+            for c in is_cluster:
+                is_cluster[c] = False
+            is_cluster[tree['parent'].min()] = True
         for c in is_cluster:
             if c in leaves:
                 is_cluster[c] = True
