@@ -3,14 +3,13 @@ Getting More Information About a Clustering
 ===========================================
 
 Once you have the basics of clustering sorted you may want to dig a
-little deeper than just the cluster labels returned to you. Fortunately
-the hdbscan library provides you with the facilities to do this. During
+little deeper than just the cluster labels returned to you. Fortunately, the hdbscan library provides you with the facilities to do this. During
 processing HDBSCAN\* builds a hierarchy of potential clusters, from
 which it extracts the flat clustering returned. It can be informative to
 look at that hierarchy, and potentially make use of the extra
 information contained therein.
 
-Suppose we have a dataset for clustering. It is a binary file in nunpy format and it can be found at https://github.com/lmcinnes/hdbscan/blob/master/notebooks/clusterable_data.npy.
+Suppose we have a dataset for clustering. It is a binary file in NumPy format and it can be found at https://github.com/lmcinnes/hdbscan/blob/master/notebooks/clusterable_data.npy.
 
 .. code:: python
 
@@ -116,7 +115,7 @@ each branch representing the number of points in the cluster at that
 level. If we wish to know which branches were selected by the HDBSCAN\*
 algorithm we can pass ``select_clusters=True``. You can even pass a
 selection palette to color the selections according to the cluster
-labelling.
+labeling.
 
 .. code:: python
 
@@ -127,8 +126,8 @@ labelling.
 .. image:: images/advanced_hdbscan_11_1.png
 
 
-From this we can see, for example, that the yellow cluster, at the
-center of the plot, forms early (breaking off from the pale blue and
+From this, we can see, for example, that the yellow cluster at the
+center of the plot forms early (breaking off from the pale blue and
 purple clusters) and persists for a long time. By comparison the green
 cluster, which also forms early, quickly breaks apart and then
 vanishes altogether (shattering into clusters all smaller than the
@@ -141,7 +140,7 @@ for example, in the dark blue cluster.
 
 If this was a simple visual analysis of the condensed tree can tell you
 a lot more about the structure of your data. This is not all we can do
-with condensed trees however. For larger and more complex datasets the
+with condensed trees, however. For larger and more complex datasets the
 tree itself may be very complex, and it may be desirable to run more
 interesting analytics over the tree itself. This can be achieved via
 several converter methods: :py:meth:`~hdbscan.plots.CondensedTree.to_networkx`, :py:meth:`~hdbscan.plots.CondensedTree.to_pandas`, and
@@ -162,9 +161,9 @@ First we'll consider :py:meth:`~hdbscan.plots.CondensedTree.to_networkx`
 
 
 
-As you can see we get a networkx directed graph, which we can then use
-all the regular networkx tools and analytics on. The graph is richer
-than the visual plot above may lead you to believe however:
+As you can see we get a NetworkX directed graph, which we can then use
+all the regular NetworkX tools and analytics on. The graph is richer
+than the visual plot above may lead you to believe, however:
 
 .. code:: python
 
@@ -182,12 +181,12 @@ than the visual plot above may lead you to believe however:
 
 The graph actually contains nodes for all the points falling out of
 clusters as well as the clusters themselves. Each node has an associated
-``size`` attribute, and each edge has a ``weight`` of the lambda value
+``size`` attribute and each edge has a ``weight`` of the lambda value
 at which that edge forms. This allows for much more interesting
 analyses.
 
-Next we have the :py:meth:`~hdbscan.plots.CondensedTree.to_pandas` method, which returns a panda dataframe
-where each row corresponds to an edge of the networkx graph:
+Next, we have the :py:meth:`~hdbscan.plots.CondensedTree.to_pandas` method, which returns a panda DataFrame
+where each row corresponds to an edge of the NetworkX graph:
 
 .. code:: python
 
@@ -258,11 +257,11 @@ the id of the child cluster (or, if the child is a single data point
 rather than a cluster, the index in the dataset of that point), the
 ``lambda_val`` provides the lambda value at which the edge forms, and
 the ``child_size`` provides the number of points in the child cluster.
-As you can see the start of the dataframe has singleton points falling
+As you can see the start of the DataFrame has singleton points falling
 out of the root cluster, with each ``child_size`` equal to 1.
 
 If you want just the clusters, rather than all the individual points
-as well, simply select the rows of the dataframe with ``child_size``
+as well, simply select the rows of the DataFrame with ``child_size``
 greater than 1.
 
 .. code:: python
@@ -293,13 +292,13 @@ array:
 
 
 
-This is equivalent to the pandas dataframe, but is in pure numpy and
+This is equivalent to the pandas DataFrame but is in pure NumPy and
 hence has no pandas dependencies if you do not wish to use pandas.
 
 Single Linkage Trees
 --------------------
 
-We have still more data at our disposal however. As noted in the How
+We have still more data at our disposal, however. As noted in the How
 HDBSCAN Works section, prior to providing a condensed tree the algorithm
 builds a complete dendrogram. We have access to this too via the
 :py:attr:`~hdbscan.HDBSCAN.single_linkage_tree_` attribute of the clusterer.
@@ -333,13 +332,13 @@ As you can see we gain a lot from condensing the tree in terms of better
 presenting and summarising the data. There is a lot less to be gained
 from visual inspection of a plot like this (and it only gets worse for
 larger datasets). The plot function support most of the same
-fucntionality as the dendrogram plotting from
+functionality as the dendrogram plotting from
 ``scipy.cluster.hierarchy``, so you can view various truncations of the
 tree if necessary. In practice, however, you are more likely to be
 interested in access the raw data for further analysis. Again we have
 :py:meth:`~hdbscan.plots.SingleLinkageTree.to_networkx`, :py:meth:`~hdbscan.plots.SingleLinkageTree.to_pandas` and :py:meth:`~hdbscan.plots.SingleLinkageTree.to_numpy`. This time the
-:py:meth:`~hdbscan.plots.SingleLinkageTree.to_networkx` provides a direct networkx version of what you see
-above. The numpy and pandas results conform to the single linkage
+:py:meth:`~hdbscan.plots.SingleLinkageTree.to_networkx` provides a direct NetworkX version of what you see
+above. The NumPy and pandas results conform to the single linkage
 hierarchy format of ``scipy.cluster.hierarchy``, and can be passed to
 routines there if necessary.
 
@@ -360,6 +359,6 @@ noise points (any cluster smaller than the ``minimum_cluster_size``).
     array([ 0, -1,  0, ..., -1, -1,  0])
 
 
-In this way it is possible to extract the DBSCAN clustering that would result
+In this way, it is possible to extract the DBSCAN clustering that would result
 for any given epsilon value, all from one run of hdbscan.
 
