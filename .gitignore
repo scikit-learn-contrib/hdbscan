@@ -1,5 +1,8 @@
 build/*
 hdbscan/*.pyc
+hdbscan/tests/*.pyc
+hdbscan/*.pyd
+hdbscan/tests/*.pyd
 hdbscan/__pycache__/*
 dist/*
 *egg-info
