@@ -71,6 +71,11 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0, metric='minkowski', p=2,
         distance_matrix = pairwise_distances(X, metric=metric, p=p)
     elif metric == 'arccos':
         distance_matrix = pairwise_distances(X, metric='cosine', **kwargs)
+    elif metric == 'precomputed':
+        # Treating this case explicitly instead of letting sklearn.metrics.pairwise_distances handle it enables
+        #   the usage of numpy.inf in the distance matrix to indicate missing information.
+        # TODO: Check if copying is necessary
+        distance_matrix = X.copy()
     else:
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
 
@@ -282,6 +287,14 @@ def _hdbscan_boruvka_balltree(X, min_samples=5, alpha=1.0,
         return single_linkage_tree, None
 
 
+def check_precomputed_distance_matrix(X):
+    """Perform check_array(X) after removing infinite values (numpy.inf) from the given distance matrix.
+    """
+    tmp = X.copy()
+    tmp[np.isinf(tmp)] = 1
+    check_array(tmp)
+
+
 def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
             metric='minkowski', p=2, leaf_size=40,
             algorithm='best', memory=Memory(cachedir=None, verbose=0),
@@ -464,7 +477,10 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                          'Should be one of: "eom", "leaf"\n')
 
     # Checks input and converts to an nd-array where possible
-    X = check_array(X, accept_sparse='csr')
+    if metric != 'precomputed':
+        X = check_array(X, accept_sparse='csr')
+    else:
+        check_precomputed_distance_matrix(X)
     # Python 2 and 3 compliant string_type checking
     if isinstance(memory, six.string_types):
         memory = Memory(cachedir=memory, verbose=0)
@@ -798,9 +814,11 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self : object
             Returns self
         """
-        X = check_array(X, accept_sparse='csr')
         if self.metric != 'precomputed':
+            X = check_array(X, accept_sparse='csr')
             self._raw_data = X
+        else:
+            check_precomputed_distance_matrix(X)
 
         kwargs = self.get_params()
         # prediction data only applies to the persistent model, so remove
