@@ -72,8 +72,10 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0, metric='minkowski', p=2,
     elif metric == 'arccos':
         distance_matrix = pairwise_distances(X, metric='cosine', **kwargs)
     elif metric == 'precomputed':
-        # Treating this case explicitly instead of letting sklearn.metrics.pairwise_distances handle it enables
-        #   the usage of numpy.inf in the distance matrix to indicate missing information.
+        # Treating this case explicitly, instead of letting
+        #   sklearn.metrics.pairwise_distances handle it,
+        #   enables the usage of numpy.inf in the distance
+        #   matrix to indicate missing distance information.
         # TODO: Check if copying is necessary
         distance_matrix = X.copy()
     else:
@@ -90,6 +92,13 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0, metric='minkowski', p=2,
                                                min_samples, alpha)
 
     min_spanning_tree = mst_linkage_core(mutual_reachability_)
+
+    # Warn if the MST couldn't be constructed around the missing distances
+    if np.isinf(min_spanning_tree.T[2]).any():
+        warn('The minimum spanning tree contains edge weights with value '
+             'infinity. Potentially, you are missing too many distances '
+             'in the initial distance matrix for the given neighborhood '
+             'size.', UserWarning)
 
     # mst_linkage_core does not generate a full minimal spanning tree
     # If a tree is required then we must build the edges from the information
@@ -477,10 +486,13 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                          'Should be one of: "eom", "leaf"\n')
 
     # Checks input and converts to an nd-array where possible
-    if metric != 'precomputed':
+    if metric != 'precomputed' or issparse(X):
         X = check_array(X, accept_sparse='csr')
     else:
+        # Only non-sparse, precomputed distance matrices are handled here
+        #   and thereby allowed to contain numpy.inf for missing distances
         check_precomputed_distance_matrix(X)
+
     # Python 2 and 3 compliant string_type checking
     if isinstance(memory, six.string_types):
         memory = Memory(cachedir=memory, verbose=0)
