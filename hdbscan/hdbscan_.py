@@ -829,7 +829,12 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         if self.metric != 'precomputed':
             X = check_array(X, accept_sparse='csr')
             self._raw_data = X
+        elif issparse(X):
+            # Handle sparse precomputed distance matrices separately
+            X = check_array(X, accept_sparse='csr')
         else:
+            # Only non-sparse, precomputed distance matrices are allowed
+            #   to have numpy.inf values indicating missing distances
             check_precomputed_distance_matrix(X)
 
         kwargs = self.get_params()
