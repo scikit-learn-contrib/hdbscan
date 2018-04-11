@@ -3,7 +3,7 @@ hdbscan/*.py[cdo]
 hdbscan/tests/*.py[cdo]
 hdbscan/*.c
 hdbscan/tests/*.c
-hdbscan/__pycache__/*
+**/__pycache__/*
 dist/*
 *egg-info
 notebooks/.ipynb_checkpoints/*
