@@ -47,7 +47,7 @@ def readme():
 
 configuration = {
     'name': 'hdbscan',
-    'version': '0.8.12',
+    'version': '0.8.13rc1',
     'description': 'Clustering based on density with variable density clusters',
     'long_description': readme(),
     'classifiers': [
@@ -71,7 +71,7 @@ configuration = {
     'maintainer': 'Leland McInnes',
     'maintainer_email': 'leland.mcinnes@gmail.com',
     'license': 'BSD',
-    'packages': ['hdbscan'],
+    'packages': ['hdbscan', 'hdbscan.tests'],
     'install_requires': ['numpy',
                          'scikit-learn>=0.16',
                          'cython >= 0.17'],
