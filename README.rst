@@ -216,8 +216,6 @@ Install the package
 
     python setup.py install
 
-If one or more of the tests fail, please report a bug at https://github.com/scikit-learn-contrib/hdbscan/issues/new
-
 -----------------
 Running the Tests
 -----------------
@@ -228,11 +226,13 @@ The package tests can be run after installation using the command:
 
     nosetests -s hdbscan
 
-or, if `nose` is installed but `nosetests` is not in your PATH variable:
+or, if ``nose`` is installed but ``nosetests`` is not in your ``PATH`` variable:
 
 .. code:: bash
 
     python -m nose -s hdbscan
+
+If one or more of the tests fail, please report a bug at https://github.com/scikit-learn-contrib/hdbscan/issues/new
 
 --------------
 Python Version
