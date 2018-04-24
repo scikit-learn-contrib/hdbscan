@@ -20,7 +20,7 @@ first cluster" as a point solidly in the center that is very distant
 from the second cluster. Equally, if the clustering algorithm supports
 noise assignments, then points are simply assigned as "noise". We are
 left with no idea as to which, if any cluster, they might have just
-missed the cur on being in.
+missed the cut on being in.
 
 The remedy for this is 'soft clustering' or 'fuzzy clustering'. In this
 approach points are not assigned cluster labels, but are instead assigned
@@ -116,7 +116,7 @@ than ideal. The second way of looking at things is to consider how much
 of an outlier the point is relative to each cluster -- using something
 akin to the outlier scores from GLOSH. The advantage of this approach is
 that it handles odd shaped clusters (even toroidal clusters) far better
-since it will explciitly follow the manifolds of the clusters. The down
+since it will explicitly follow the manifolds of the clusters. The down
 side of the outlier approach is that many points will all be equally
 "outlying", particularly noise points. Our goal is to fuse these two
 ideas.
