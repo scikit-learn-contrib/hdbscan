@@ -71,7 +71,7 @@ configuration = {
     'maintainer': 'Leland McInnes',
     'maintainer_email': 'leland.mcinnes@gmail.com',
     'license': 'BSD',
-    'packages': ['hdbscan'],
+    'packages': ['hdbscan', 'hdbscan.tests'],
     'install_requires': ['numpy',
                          'scikit-learn>=0.16',
                          'cython >= 0.17'],

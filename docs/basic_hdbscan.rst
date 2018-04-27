@@ -280,7 +280,11 @@ distance, etc. Again, this is all fine as ``hdbscan`` supports a special
 metric called ``precomputed``. If you create the clusterer with the
 metric set to ``precomputed`` then the clusterer will assume that,
 rather than being handed a vector of points in a vector space, it is
-recieving an all pairs distance matrix.
+recieving an all pairs distance matrix. Missing distances can be
+indicated by ``numpy.inf``, which leads HDBSCAN to ignore these pairwise
+relationships as long as there exists a path between two points that
+contains defined distances (i.e. if there are too many distances
+missing, the clustering is going to fail).
 
 .. code:: python
 

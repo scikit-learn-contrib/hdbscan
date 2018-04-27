@@ -47,6 +47,17 @@ Despite the generate model having clearly different "clusters", without more
 data we simply cannot differentiate between these models, and hence no
 density based clustering will manage cluster these according to the model.
 
+Q: I am not getting the claimed performance. Why not?
+-----------------------------------------------------
+
+The most likely explanation is to do with the dimensionality of your input data.
+While HDBSCAN can perform well on low to medium dimensional data the performance
+tends to decrease significantly as dimension increases. In general HDBSCAN can do
+well on up to around 50 or 100 dimensional data, but performance can see 
+significant decreases beyond that. Of course a lot is also dataset dependent, so 
+you can still get good performance even on high dimensional data, but it
+is no longer guaranteed.
+
 Q: I want to predict the cluster of a new unseen point. How do I do this?
 -------------------------------------------------------------------------
 
