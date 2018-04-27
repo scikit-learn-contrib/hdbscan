@@ -179,6 +179,9 @@ PyPI install, presuming you have sklearn and all its requirements (numpy and sci
 
     pip install hdbscan
 
+Binary wheels for a number of platforms are available thanks to the work of
+Ryan Helinski <rlhelinski@gmail.com>.
+
 If pip is having difficulties pulling the dependencies then we'd suggest installing
 the dependencies manually using anaconda followed by pulling hdbscan from pip:
 
