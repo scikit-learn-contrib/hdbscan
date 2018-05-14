@@ -94,7 +94,7 @@ class PredictionData(object):
             return [current_node, ]
         else:
             return sum(
-                [recurse_leaf_dfs(child) for child in children], [])
+                [recurse_leaf_dfs(self.cluster_tree, child) for child in children], [])
 
     def __init__(self, data, condensed_tree, min_samples,
                  tree_type='kdtree', metric='euclidean', **kwargs):
