@@ -149,7 +149,7 @@ Example usage:
     import hdbscan
     from sklearn.datasets import make_blobs
     
-    data = make_blobs(1000)
+    data, _ = make_blobs(1000)
     
     clusterer = hdbscan.RobustSingleLinkage(cut=0.125, k=7)
     cluster_labels = clusterer.fit_predict(data)
