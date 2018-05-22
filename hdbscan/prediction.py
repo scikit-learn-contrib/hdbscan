@@ -7,6 +7,7 @@ import numpy as np
 
 from sklearn.neighbors import KDTree, BallTree
 from .dist_metrics import DistanceMetric
+from ._hdbscan_tree import compute_stability, labelling_at_cut, recurse_leaf_dfs
 from ._prediction_utils import (get_tree_row_with_child,
                                 dist_membership_vector,
                                 outlier_membership_vector,
@@ -93,7 +94,7 @@ class PredictionData(object):
             return [current_node, ]
         else:
             return sum(
-                [self._recurse_leaf_dfs(child) for child in children], [])
+                [recurse_leaf_dfs(self.cluster_tree, child) for child in children], [])
 
     def __init__(self, data, condensed_tree, min_samples,
                  tree_type='kdtree', metric='euclidean', **kwargs):
@@ -443,7 +444,7 @@ def membership_vector(clusterer, points_to_predict):
 """
 
     clusters = np.array(
-        list(clusterer.condensed_tree_._select_clusters())).astype(np.intp)
+        sorted(list(clusterer.condensed_tree_._select_clusters()))).astype(np.intp)
 
     result = np.empty((points_to_predict.shape[0], clusters.shape[0]),
                       dtype=np.float64)
@@ -522,8 +523,7 @@ def all_points_membership_vectors(clusterer):
     :py:func:`hdbscan.predict.predict`
     :py:func:`hdbscan.predict.all_points_membership_vectors`
     """
-    clusters = np.array(list(clusterer.condensed_tree_._select_clusters()
-                             )).astype(np.intp)
+    clusters = np.array(sorted(list(clusterer.condensed_tree_._select_clusters()))).astype(np.intp)
     all_points = clusterer.prediction_data_.raw_data
 
     # When no clusters found, return array of 0's
