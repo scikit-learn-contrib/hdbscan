@@ -268,7 +268,7 @@ If you have used this codebase in a scientific publication and wish to cite it, 
     In: Journal of Open Source Software, The Open Journal, volume 2, number 11.
     2017
     
-To refernece the high performance algorithm developed in this library please cite our paper in ICDMW 2017 proceedings.
+To reference the high performance algorithm developed in this library please cite our paper in ICDMW 2017 proceedings.
 
     McInnes L, Healy J. *Accelerated Hierarchical Density Based Clustering* 
     In: 2017 IEEE International Conference on Data Mining Workshops (ICDMW), IEEE, pp 33-42.
