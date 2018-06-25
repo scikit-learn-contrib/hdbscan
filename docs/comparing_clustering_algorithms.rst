@@ -171,14 +171,16 @@ multiple different clusterings. This does not engender much confidence
 in any individual clustering that may result.
 
 So, in summary, here's how K-Means seems to stack up against out
-desiderata: \* **Don't be wrong!**: K-means is going to throw points
+desiderata: 
+- **Don't be wrong!**: K-means is going to throw points
 into clusters whether they belong or not; it also assumes you clusters
-are globular. K-Means scores very poorly on this point. \* **Intuitive
-parameters**: If you have a good intuition for how many clusters the
+are globular. K-Means scores very poorly on this point.
+- **Intuitive parameters**: If you have a good intuition for how many clusters the
 dataset your exploring has then great, otherwise you might have a
-problem. \* **Stability**: Hopefully the clustering is stable for your
-data. Best to have many runs and check though. \* **Performance**: This
-is K-Means big win. It's a simple algorithm and with the right tricks
+problem. 
+- **Stability**: Hopefully the clustering is stable for your
+data. Best to have many runs and check though. 
+- **Performance**: This is K-Means big win. It's a simple algorithm and with the right tricks
 and optimizations can be made exceptionally efficient. There are few
 algorithms that can compete with K-Means for performance. If you have
 truly huge data then K-Means might be your only option.
