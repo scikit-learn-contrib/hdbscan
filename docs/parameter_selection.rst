@@ -112,12 +112,13 @@ of 15.
 As you can see this results in us recovering something much closer to
 our original clustering, only now with some of the smaller clusters
 pruned out. Thus ``min_cluster_size`` does behave more closely to our
-intuitions, but only if we fix ``min_samples``. If you wish to explore
-different ``min_cluster_size`` settings with a fixed ``min_samples``
-value, especially for larger dataset sizes, you can cache the hard
-computation, and recompute only the relatively cheap flat cluster
-extraction using the ``memory`` parameter, which makes use of
-`joblib <https://pythonhosted.org/joblib/>`_
+intuitions, but only if we fix ``min_samples``. 
+
+    If you wish to explore different ``min_cluster_size`` settings with 
+    a fixed ``min_samples`` value, especially for larger dataset sizes, 
+    you can cache the hard computation, and recompute only the relatively
+    cheap flat cluster extraction using the ``memory`` parameter, which 
+    makes use of `joblib <https://pythonhosted.org/joblib/>`_
 
 .. _min_samples_label:
 
@@ -134,6 +135,9 @@ to progressively more dense areas. We can see this in practice by
 leaving the ``min_cluster_size`` at 60, but reducing ``min_samples`` to
 1.
 
+    Note: adjusting ``min_samples`` will result in recomputing the **hard 
+    comptuation** of the single linkage tree.
+    
 .. code:: python
 
     clusterer = hdbscan.HDBSCAN(min_cluster_size=60, min_samples=1).fit(data)
@@ -180,6 +184,9 @@ slightly different approach to determining how conservative the
 clustering is. By default ``alpha`` is set to 1.0. Increasing ``alpha``
 will make the clustering more conservative, but on a much tighter scale,
 as we can see by setting ``alpha`` to 1.3.
+
+    Note: adjusting ``alpha`` will result in recomputing the **hard 
+    comptuation** of the single linkage tree.
 
 .. code:: python
 
