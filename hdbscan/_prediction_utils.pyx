@@ -32,7 +32,8 @@ cdef np.float64_t min_dist_to_exemplar(
     cdef np.float64_t distance
     cdef np.float64_t *point_ptr = (<np.float64_t *> point.data)
     cdef np.float64_t[:, ::1] exemplars_view = \
-        (<np.float64_t [:cluster_exemplars.shape[0], :cluster_exemplars.shape[1]:1]> (<np.float64_t *> cluster_exemplars.data))
+        (<np.float64_t [:cluster_exemplars.shape[0], :cluster_exemplars.shape[1]:1]>
+            (<np.float64_t *> cluster_exemplars.data))
     cdef np.float64_t *exemplars_ptr = \
         (<np.float64_t *> &exemplars_view[0, 0])
     cdef np.intp_t num_features = point.shape[0]
