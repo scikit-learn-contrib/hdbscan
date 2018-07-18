@@ -74,7 +74,7 @@ configuration = {
     'packages': ['hdbscan', 'hdbscan.tests'],
     'install_requires': ['numpy',
                          'scikit-learn>=0.16',
-                         'cython >= 0.17'],
+                         'cython >= 0.26'],
     'ext_modules': [_hdbscan_tree,
                     _hdbscan_linkage,
                     _hdbscan_boruvka,
