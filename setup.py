@@ -47,7 +47,7 @@ def readme():
 
 configuration = {
     'name': 'hdbscan',
-    'version': '0.8.13',
+    'version': '0.8.14',
     'description': 'Clustering based on density with variable density clusters',
     'long_description': readme(),
     'classifiers': [
@@ -74,7 +74,7 @@ configuration = {
     'packages': ['hdbscan', 'hdbscan.tests'],
     'install_requires': ['numpy',
                          'scikit-learn>=0.16',
-                         'cython >= 0.17'],
+                         'cython >= 0.26'],
     'ext_modules': [_hdbscan_tree,
                     _hdbscan_linkage,
                     _hdbscan_boruvka,
@@ -88,12 +88,8 @@ configuration = {
 }
 
 if not HAVE_CYTHON:
-    _hdbscan_tree.sources[0] = 'hdbscan/_hdbscan_tree.c'
-    _hdbscan_linkage.sources[0] = 'hdbscan/_hdbscan_linkage.c'
-    _hdbscan_boruvka.sources[0] = 'hdbscan/_hdbscan_boruvka.c'
-    _hdbscan_reachability.sources[0] = 'hdbscan/_hdbscan_reachability.c'
-    _prediction_utils.sources[0] = 'hdbscan/_prediction_utils.c'
-    dist_metrics.sources[0] = 'hdbscan/dist_metrics.c'
-    configuration['install_requires'] = ['numpy', 'scikit-learn>=0.16']
+    warnings.warn('Due to incompatibilities with Python 3.7 hdbscan now'
+                  'requires Cython to be installed in order to build it')
+    raise ImportError('Cython not found! Please install cython and try again')
 
 setup(**configuration)
