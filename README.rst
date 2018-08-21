@@ -269,6 +269,7 @@ If you have used this codebase in a scientific publication and wish to cite it, 
     2017
     
 .. code:: bibtex
+
     @article{mcinnes2017hdbscan,
       title={hdbscan: Hierarchical density based clustering},
       author={McInnes, Leland and Healy, John and Astels, Steve},
@@ -287,6 +288,7 @@ To reference the high performance algorithm developed in this library please cit
 
 
 .. code:: bibtex
+
     @inproceedings{mcinnes2017accelerated,
       title={Accelerated Hierarchical Density Based Clustering},
       author={McInnes, Leland and Healy, John},
