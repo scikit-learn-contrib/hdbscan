@@ -414,7 +414,7 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
         X = check_array(X, accept_sparse='csr')
 
         kwargs = self.get_params()
-        del kwargs('metric_params')
+        del kwargs['metric_params']
         kwargs.update(self.metric_params)
 
         self.labels_, self._cluster_hierarchy = robust_single_linkage(
