@@ -338,6 +338,10 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
         metric parameter.
         If metric is "precomputed", X is assumed to be a distance matrix and
         must be square.
+        
+    metric_params : dict, option (default={})
+        Keyword parameter arguments for calling the metric (for example
+        the p values if using the minkowski metric).
 
     algorithm : string, optional (default='best')
         Exactly which algorithm to use; hdbscan has variants specialised
@@ -380,7 +384,7 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
 
     def __init__(self, cut=0.4, k=5, alpha=1.4142135623730951, gamma=5,
                  metric='euclidean', algorithm='best', core_dist_n_jobs=4,
-                 **kwargs):
+                 metric_params={}):
 
         self.cut = cut
         self.k = k
@@ -389,10 +393,7 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
         self.metric = metric
         self.algorithm = algorithm
         self.core_dist_n_jobs = core_dist_n_jobs
-
-        self._metric_kwargs = kwargs
-
-        self._cluster_hierarchy = None
+        self.metric_params = metric_params
 
     def fit(self, X, y=None):
         """Perform robust single linkage clustering from features or
@@ -413,7 +414,7 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
         X = check_array(X, accept_sparse='csr')
 
         kwargs = self.get_params()
-        kwargs.update(self._metric_kwargs)
+        kwargs.update(self.metric_params)
 
         self.labels_, self._cluster_hierarchy = robust_single_linkage(
             X, **kwargs)
@@ -441,7 +442,7 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
 
     @property
     def cluster_hierarchy_(self):
-        if self._cluster_hierarchy is not None:
+        if hasattr(self, '_cluster_hierarchy'):
             return SingleLinkageTree(self._cluster_hierarchy)
         else:
             raise AttributeError('No single linkage tree was generated; try running fit'
