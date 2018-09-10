@@ -44,6 +44,10 @@ def readme():
     with open('README.rst') as readme_file:
         return readme_file.read()
 
+def requirements():
+    # The dependencies are the same as the contents of requirements.txt
+    with open('requirements.txt') as f:
+        return [line.strip() for line in f if line.strip()]
 
 configuration = {
     'name': 'hdbscan',
@@ -72,9 +76,7 @@ configuration = {
     'maintainer_email': 'leland.mcinnes@gmail.com',
     'license': 'BSD',
     'packages': ['hdbscan', 'hdbscan.tests'],
-    'install_requires': ['numpy',
-                         'scikit-learn>=0.16',
-                         'cython >= 0.26'],
+    'install_requires': requirements(),
     'ext_modules': [_hdbscan_tree,
                     _hdbscan_linkage,
                     _hdbscan_boruvka,
