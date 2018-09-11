@@ -173,7 +173,7 @@ Easiest install, if you have Anaconda (thanks to conda-forge which is awesome!):
 
     conda install -c conda-forge hdbscan
 
-PyPI install, presuming you have sklearn and all its requirements (numpy and scipy) installed:
+PyPI install, presuming you have an up to date pip:
 
 .. code:: bash
 
@@ -182,8 +182,15 @@ PyPI install, presuming you have sklearn and all its requirements (numpy and sci
 Binary wheels for a number of platforms are available thanks to the work of
 Ryan Helinski <rlhelinski@gmail.com>.
 
-If pip is having difficulties pulling the dependencies then we'd suggest installing
-the dependencies manually using anaconda followed by pulling hdbscan from pip:
+If pip is having difficulties pulling the dependencies then we'd suggest to first upgrade
+pip to at least version 10 and try again:
+
+.. code:: bash
+
+    pip install --upgrade pip
+    pip install hdbscan
+
+Otherwise install the dependencies manually using anaconda followed by pulling hdbscan from pip:
 
 .. code:: bash
 
@@ -192,7 +199,15 @@ the dependencies manually using anaconda followed by pulling hdbscan from pip:
     conda install scikit-learn
     pip install hdbscan
 
-For a manual install get this package:
+
+For a manual install of the latest code directly from GitHub:
+
+.. code:: bash
+
+    pip install --upgrade git+https://github.com/scikit-learn-contrib/hdbscan.git#egg=hdbscan
+
+
+Alternatively download the package, install requirements, and manually run the installer:
 
 .. code:: bash
 
@@ -200,23 +215,9 @@ For a manual install get this package:
     unzip master.zip
     rm master.zip
     cd hdbscan-master
-
-Install the requirements
-
-.. code:: bash
-
-    sudo pip install -r requirements.txt
     
-or
-
-.. code:: bash
-
-    conda install scikit-learn cython 
-
-Install the package
-
-.. code:: bash
-
+    pip install -r requirements.txt
+    
     python setup.py install
 
 -----------------
