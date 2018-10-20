@@ -758,6 +758,17 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         of the list being a numpy array of exemplar points for a cluster --
         these points are the "most representative" points of the cluster.
 
+    relative_validity_ : float
+        A fast approximation of the Density Based Cluster Validity (DBCV)
+        score [4]. The only differece, and the speed, comes from the fact
+        that this relative_validity_ is computed using the mutual-
+        reachability minimum spanning tree, i.e. minimum_spanning_tree_,
+        instead of the all-points minimum spanning tree used in the
+        reference. This score might not be an objective measure of the
+        goodness of clusterering. It may only be used to compare results
+        across different choices of hyper-parameters, therefore is only a
+        relative score.
+
     References
     ----------
 
@@ -774,6 +785,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     .. [3] Chaudhuri, K., & Dasgupta, S. (2010). Rates of convergence for the
        cluster tree. In Advances in Neural Information Processing Systems
        (pp. 343-351).
+
+    .. [4] Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and
+       Sander, J., 2014. Density-Based Clustering Validation. In SDM
+       (pp. 839-847).
 
     """
 
@@ -813,6 +828,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self._raw_data = None
         self._outlier_scores = None
         self._prediction_data = None
+        self._relative_validity = None
 
     def fit(self, X, y=None):
         """Perform HDBSCAN clustering from features or distance matrix.
@@ -892,7 +908,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             else:
                 warn('Metric {} not supported for prediction data!'.format(self.metric))
                 return
-                
+
             self._prediction_data = PredictionData(
                 self._raw_data, self.condensed_tree_, min_samples,
                 tree_type=tree_type, metric=self.metric,
@@ -963,5 +979,80 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             return self._prediction_data.exemplars
         else:
             raise AttributeError('Currently exemplars require the use of vector input data'
-                 'with a suitable metric. This will likely change in the '
-                 'future, but for now no exemplars can be provided')
+                                 'with a suitable metric. This will likely change in the '
+                                 'future, but for now no exemplars can be provided')
+
+    @property
+    def relative_validity_(self):
+        if self._relative_validity is not None:
+            return self._relative_validity
+
+        if not self.gen_min_span_tree:
+            raise AttributeError("Minimum spanning tree not present. " +
+                                 "Either HDBSCAN object was created with " +
+                                 "gen_min_span_tree=False or the tree was " +
+                                 "not generated in spite of it owing to " +
+                                 "internal optimization criteria.")
+            return
+
+        labels = self.labels_
+        noise_size, *cluster_size = np.bincount(labels + 1)
+        total = noise_size + np.sum(cluster_size)
+        num_clusters = len(cluster_size)
+        DSC = np.zeros(num_clusters)
+        min_outlier_sep = np.inf  # only required if num_clusters = 1
+        correction_const = 2  # only required if num_clusters = 1
+
+        # Unltimately, for each Ci, we only require the
+        # minimum of DSPC(Ci, Cj) over all Cj != Ci.
+        # So let's call this value DSPC_wrt(Ci), i.e.
+        # density separation 'with respect to' Ci.
+        DSPC_wrt = np.ones(num_clusters) * np.inf
+        max_distance = 0
+
+        mst_df = self.minimum_spanning_tree_.to_pandas()
+
+        for edge in mst_df.iterrows():
+            label1 = labels[int(edge[1]['from'])]
+            label2 = labels[int(edge[1]['to'])]
+            length = edge[1]['distance']
+
+            max_distance = max(max_distance, length)
+
+            if label1 == -1 and label2 == -1:
+                continue
+            elif label1 == -1 or label2 == -1:
+                # If exactly one of the points is noise
+                min_outlier_sep = min(min_outlier_sep, length)
+                continue
+
+            if label1 == label2:
+                # Set the density sparseness of the cluster
+                # to the sparsest value seen so far.
+                DSC[label1] = max(length, DSC[label1])
+            else:
+                # Check whether density separations with
+                # respect to each of these clusters can
+                # be reduced.
+                DSPC_wrt[label1] = min(length, DSPC_wrt[label1])
+                DSPC_wrt[label2] = min(length, DSPC_wrt[label2])
+
+        # In case min_outlier_sep is still np.inf, we assign a new value to it.
+        # This only makes sense if num_clusters = 1 since it has turned out
+        # that the MR-MST has no edges between a noise point and a core point.
+        min_outlier_sep = max_distance if min_outlier_sep == np.inf else min_outlier_sep
+
+        # DSPC_wrt[Ci] might be infinite if the connected component for Ci is
+        # an "island" in the MR-MST. Whereas for other clusters Cj and Ck, the
+        # MR-MST might contain an edge with one point in Cj and ther other one
+        # in Ck. Here, we replace the infinite density separation of Ci by
+        # another large enough value.
+        #
+        # TODO: Think of a better yet efficient way to handle this.
+        correction = correction_const * (max_distance if num_clusters > 1 else min_outlier_sep)
+        DSPC_wrt[np.where(DSPC_wrt == np.inf)] = correction
+
+        V_index = [(DSPC_wrt[i] - DSC[i]) / max(DSPC_wrt[i], DSC[i]) for i in range(num_clusters)]
+        score = np.sum([(cluster_size[i] * V_index[i]) / total for i in range(num_clusters)])
+        self._relative_validity = score
+        return self._relative_validity
