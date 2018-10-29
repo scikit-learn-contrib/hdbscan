@@ -996,7 +996,9 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             return
 
         labels = self.labels_
-        noise_size, *cluster_size = np.bincount(labels + 1)
+        sizes = np.bincount(labels + 1)
+        noise_size = sizes[0]
+        cluster_size = sizes[1:]
         total = noise_size + np.sum(cluster_size)
         num_clusters = len(cluster_size)
         DSC = np.zeros(num_clusters)
