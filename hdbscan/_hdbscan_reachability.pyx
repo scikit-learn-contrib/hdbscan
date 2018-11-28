@@ -126,6 +126,7 @@ def sparse_mutual_reachability_new(lil_mat, min_points=5):
     """Added by codingafuture for performance comparation.
        Compared to sparse_mutual_reachability_old, sparse_mutual_reachability_new speed up 20+ times.
     """
+    from scipy.sparse import csr_matrix
     core_distance = np.empty(lil_mat.shape[0], dtype=np.double)
 
     for i in range(lil_mat.shape[0]):  # 5w
