@@ -60,7 +60,7 @@ def mutual_reachability(distance_matrix, min_points=5, alpha=1.0):
 
 
 cpdef sparse_mutual_reachability(object lil_matrix, np.intp_t min_points=5,
-                                 float alpha=1.0):
+                                 float alpha=1.0, float max_dist=0.):
 
     cdef np.intp_t i
     cdef np.intp_t j
@@ -90,6 +90,8 @@ cpdef sparse_mutual_reachability(object lil_matrix, np.intp_t min_points=5,
         mr_dist = max(core_distance[i], core_distance[j], lil_matrix[i, j])
         if np.isfinite(mr_dist):
             result[i, j] = mr_dist
+        elif max_dist > 0:
+            result[i, j] = max_dist
 
     return result.tocsr()
 
