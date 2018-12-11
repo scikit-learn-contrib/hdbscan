@@ -43,7 +43,7 @@ def _get_leaves(condensed_tree):
     cluster_tree = condensed_tree[condensed_tree['child_size'] > 1]
     if cluster_tree.shape[0] == 0:
         # Return the only cluster, the root
-        return condensed_tree['parent'].min()
+        return [condensed_tree['parent'].min()]
 
     root = cluster_tree['parent'].min()
     return _recurse_leaf_dfs(cluster_tree, root)
