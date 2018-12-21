@@ -286,6 +286,12 @@ relationships as long as there exists a path between two points that
 contains defined distances (i.e. if there are too many distances
 missing, the clustering is going to fail).
 
+NOTE: The input vector _must_ contain numerical data. If you have a 
+distance matrix for non-numerical vectors, you will need to map your
+input vectors to numerical vectors. (e.g use map ['A', 'G', 'C', 'T']->
+[ 1, 2, 3, 4] to replace input vector ['A', 'A', 'A', 'C', 'G'] with
+[ 1, 1, 1, 3, 2])
+
 .. code:: python
 
     from sklearn.metrics.pairwise import pairwise_distances
