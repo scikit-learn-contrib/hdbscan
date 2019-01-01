@@ -22,7 +22,7 @@ is going on once we've got data. Obviously this is not an exhaustive
 collection of clustering implementations, so if I've left off your
 favourite I apologise, but one has to draw a line somewhere.
 
-The implementations being test are:
+The implementations being tested are:
 
 -  `Sklearn <http://scikit-learn.org/stable/modules/clustering.html>`__
    (which implements several algorithms):
