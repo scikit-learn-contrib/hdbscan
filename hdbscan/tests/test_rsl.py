@@ -128,7 +128,7 @@ def test_rsl_high_dimensional():
 
     labels = RobustSingleLinkage(cut=5.5, algorithm='best',
                                  metric='seuclidean',
-                                 V=np.ones(H.shape[1])).fit(H).labels_
+                                 metric_params={'V': np.ones(H.shape[1])}).fit(H).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert_equal(n_clusters_2, n_clusters)
 
