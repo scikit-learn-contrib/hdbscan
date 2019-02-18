@@ -374,6 +374,22 @@ class CondensedTree(object):
                 raise ImportError('You must have matplotlib.patches available to plot selected clusters.')
 
             chosen_clusters = self._select_clusters()
+            
+            # Extract the chosen cluster bounds. If enough duplicate data points exist in the
+            # data the lambda value might be infinite. This breaks labeling and highlighting
+            # the chosen clusters.
+            cluster_bounds = np.array([ plot_data['cluster_bounds'][c] for c in chosen_clusters ])
+            if not np.isfinite(cluster_bounds).all():
+                warn('Infinite lambda values encountered in chosen clusters.'
+                     ' This might be due to duplicates in the data.')
+
+            # Extract the plot range of the y-axis and set default center and height values for ellipses.
+            # Extremly dense clusters might result in near infinite lambda values. Setting max_height
+            # based on the percentile should alleviate the impact on plotting.
+            plot_range = np.hstack([plot_data['bar_tops'], plot_data['bar_bottoms']])
+            plot_range = plot_range[np.isfinite(plot_range)]
+            mean_y_center = np.mean([np.max(plot_range), np.min(plot_range)])
+            max_height = np.diff(np.percentile(plot_range, q=[10,90]))
 
             for i, c in enumerate(chosen_clusters):
                 c_bounds = plot_data['cluster_bounds'][c]
@@ -383,6 +399,17 @@ class CondensedTree(object):
                     np.mean([c_bounds[CB_LEFT], c_bounds[CB_RIGHT]]),
                     np.mean([c_bounds[CB_TOP], c_bounds[CB_BOTTOM]]),
                 )
+                
+                # Set center and height to default values if necessary
+                if not np.isfinite(center[1]):
+                    center = (center[0], mean_y_center)
+                if not np.isfinite(height):
+                    height = max_height
+
+                # Ensure the ellipse is visible
+                min_height = 0.1*max_height
+                if height < min_height:
+                    height = min_height
 
                 if selection_palette is not None and \
                         len(selection_palette) >= len(chosen_clusters):
