@@ -98,7 +98,7 @@ class PredictionData(object):
 
     def __init__(self, data, condensed_tree, min_samples,
                  tree_type='kdtree', metric='euclidean', **kwargs):
-        self.raw_data = data
+        self.raw_data = data.astype(np.float64)
         self.tree = self._tree_type_map[tree_type](self.raw_data,
                                                    metric=metric, **kwargs)
         self.core_distances = self.tree.query(data, k=min_samples)[0][:, -1]
