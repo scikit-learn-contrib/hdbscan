@@ -443,6 +443,7 @@ def membership_vector(clusterer, points_to_predict):
     :py:func:`hdbscan.predict.all_points_membership_vectors`
 """
 
+    points_to_predict = points_to_predict.astype(np.float64)
     clusters = np.array(
         sorted(list(clusterer.condensed_tree_._select_clusters()))).astype(np.intp)
 
