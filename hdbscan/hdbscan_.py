@@ -209,6 +209,11 @@ def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
 
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
+         
+    if gen_min_span_tree:
+        warn('Cannot generate Minimum Spanning Tree; ' 
+             'the implemented Prim\'s does not produce '
+             'the full minimum spanning tree ', UserWarning)
 
     return single_linkage_tree, None
 
@@ -240,6 +245,11 @@ def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
                         :]
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
+    
+    if gen_min_span_tree:
+        warn('Cannot generate Minimum Spanning Tree; ' 
+             'the implemented Prim\'s does not produce '
+             'the full minimum spanning tree ', UserWarning)
 
     return single_linkage_tree, None
 
