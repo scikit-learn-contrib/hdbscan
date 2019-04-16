@@ -24,6 +24,7 @@ from sklearn.datasets import make_blobs
 from sklearn.utils import shuffle
 from sklearn.preprocessing import StandardScaler
 
+from nose import SkipTest
 
 n_clusters = 3
 X, y = make_blobs(n_samples=50, random_state=1)
