@@ -146,7 +146,8 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
     max_dist = kwargs.get("max_dist", 0.)
     mutual_reachability_ = sparse_mutual_reachability(lil_matrix,
                                                       min_points=min_samples,
-                                                      max_dist=max_dist)
+                                                      max_dist=max_dist,
+                                                      alpha=alpha)
     # Check connected component on mutual reachability
     # If more than one component, it means that even if the distance matrix X
     # has one component, there exists with less than `min_samples` neighbors
