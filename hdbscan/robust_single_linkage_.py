@@ -8,7 +8,7 @@ from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import pairwise_distances
 from scipy.sparse import issparse
 
-from sklearn.externals.joblib import Memory
+from joblib import Memory
 from sklearn.externals import six
 from sklearn.utils import check_array
 

@@ -12,9 +12,9 @@ from sklearn.utils.testing import (assert_equal,
                                    assert_raises,
                                    assert_in,
                                    assert_not_in,
-                                   assert_no_warnings,
-                                   if_matplotlib)
+                                   assert_no_warnings)
 from hdbscan import RobustSingleLinkage, robust_single_linkage
+
 # from sklearn.cluster.tests.common import generate_clustered_data
 
 from sklearn import datasets

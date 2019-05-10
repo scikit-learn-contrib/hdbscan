@@ -16,14 +16,14 @@ from sklearn.utils.testing import (assert_equal,
                                    assert_raises,
                                    assert_in,
                                    assert_not_in,
-                                   assert_no_warnings,
-                                   if_matplotlib)
+                                   assert_no_warnings)
 from hdbscan import (HDBSCAN,
                      hdbscan,
                      validity_index,
                      approximate_predict,
                      membership_vector,
-                     all_points_membership_vectors)
+                     all_points_membership_vectors,
+                     if_matplotlib)
 # from sklearn.cluster.tests.common import generate_clustered_data
 from sklearn.datasets import make_blobs
 from sklearn.utils import shuffle
