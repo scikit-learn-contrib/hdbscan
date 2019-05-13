@@ -10,11 +10,11 @@ from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import pairwise_distances
 from scipy.sparse import issparse
 from sklearn.neighbors import KDTree, BallTree
-from sklearn.externals.joblib import Memory
+from joblib import Memory
 from sklearn.externals import six
 from warnings import warn
 from sklearn.utils import check_array
-from sklearn.externals.joblib.parallel import cpu_count
+from joblib.parallel import cpu_count
 
 from scipy.sparse import csgraph
 
