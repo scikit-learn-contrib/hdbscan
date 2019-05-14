@@ -22,8 +22,7 @@ from hdbscan import (HDBSCAN,
                      validity_index,
                      approximate_predict,
                      membership_vector,
-                     all_points_membership_vectors,
-                     if_matplotlib)
+                     all_points_membership_vectors)
 # from sklearn.cluster.tests.common import generate_clustered_data
 from sklearn.datasets import make_blobs
 from sklearn.utils import shuffle
@@ -43,6 +42,28 @@ n_clusters = 3
 X, y = make_blobs(n_samples=200, random_state=10)
 X, y = shuffle(X, y, random_state=7)
 X = StandardScaler().fit_transform(X)
+
+
+def if_matplotlib(func):
+    """Test decorator that skips test if matplotlib not installed.
+
+    Parameters
+    ----------
+    func
+    """
+    @wraps(func)
+    def run_test(*args, **kwargs):
+        try:
+            import matplotlib
+            matplotlib.use('Agg', warn=False)
+            # this fails if no $DISPLAY specified
+            import matplotlib.pyplot as plt
+            plt.figure()
+        except ImportError:
+            raise SkipTest('Matplotlib not available.')
+        else:
+            return func(*args, **kwargs)
+    return run_test
 
 
 def if_pandas(func):
