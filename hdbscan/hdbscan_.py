@@ -11,7 +11,7 @@ from sklearn.metrics import pairwise_distances
 from scipy.sparse import issparse
 from sklearn.neighbors import KDTree, BallTree
 from joblib import Memory
-from sklearn.externals import six
+import six
 from warnings import warn
 from sklearn.utils import check_array
 from joblib.parallel import cpu_count
