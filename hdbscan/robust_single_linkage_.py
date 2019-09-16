@@ -9,7 +9,7 @@ from sklearn.metrics import pairwise_distances
 from scipy.sparse import issparse
 
 from joblib import Memory
-from sklearn.externals import six
+import six
 from sklearn.utils import check_array
 
 from ._hdbscan_linkage import mst_linkage_core, mst_linkage_core_vector, label
