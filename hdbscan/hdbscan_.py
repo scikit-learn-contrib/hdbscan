@@ -48,7 +48,8 @@ from numpy import isclose
 def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
                     cluster_selection_method='eom',
                     allow_single_cluster=False,
-                    match_reference_implementation=False):
+                    match_reference_implementation=False,
+					epsilon=None):
     """Converts a pretrained tree and cluster size into a
     set of labels and probabilities.
     """
@@ -59,7 +60,8 @@ def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
                                                       stability_dict,
                                                       cluster_selection_method,
                                                       allow_single_cluster,
-                                                      match_reference_implementation)
+                                                      match_reference_implementation,
+													  epsilon)
 
     return (labels, probabilities, stabilities, condensed_tree,
             single_linkage_tree)
@@ -210,9 +212,9 @@ def _hdbscan_prims_kdtree(X, min_samples=5, alpha=1.0,
 
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
-         
+
     if gen_min_span_tree:
-        warn('Cannot generate Minimum Spanning Tree; ' 
+        warn('Cannot generate Minimum Spanning Tree; '
              'the implemented Prim\'s does not produce '
              'the full minimum spanning tree ', UserWarning)
 
@@ -246,9 +248,9 @@ def _hdbscan_prims_balltree(X, min_samples=5, alpha=1.0,
                         :]
     # Convert edge list into standard hierarchical clustering format
     single_linkage_tree = label(min_spanning_tree)
-    
+
     if gen_min_span_tree:
-        warn('Cannot generate Minimum Spanning Tree; ' 
+        warn('Cannot generate Minimum Spanning Tree; '
              'the implemented Prim\'s does not produce '
              'the full minimum spanning tree ', UserWarning)
 
@@ -327,7 +329,7 @@ def check_precomputed_distance_matrix(X):
     check_array(tmp)
 
 
-def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
+def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, epsilon=None,
             metric='minkowski', p=2, leaf_size=40,
             algorithm='best', memory=Memory(cachedir=None, verbose=0),
             approx_min_span_tree=True, gen_min_span_tree=False,
@@ -352,6 +354,9 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
         The number of samples in a neighborhood for a point
         to be considered as a core point. This includes the point itself.
         defaults to the min_cluster_size.
+
+	epsilon: float, optional (default=None)
+		A threshold for cluster splits.
 
     alpha : float, optional (default=1.0)
         A distance scaling parameter as used in robust single linkage.
@@ -485,6 +490,15 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     if min_cluster_size == 1:
         raise ValueError('Min cluster size must be greater than one')
 
+    if epsilon is None:
+        epsilon = 0.0
+
+    if type(epsilon) is int:
+        epsilon = float(epsilon)
+
+    if type(epsilon) is not float or epsilon < 0.0:
+        raise ValueError('Epsilon must be a float value greater than or equal to 0!')
+
     if not isinstance(alpha, float) or alpha <= 0.0:
         raise ValueError('Alpha must be a positive float value greater than'
                          ' 0!')
@@ -528,7 +542,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
     if algorithm != 'best':
         if metric != 'precomputed' and issparse(X) and metric != 'generic':
             raise ValueError("Sparse data matrices only support algorithm 'generic'.")
-                  
+
         if algorithm == 'generic':
             (single_linkage_tree,
              result_min_span_tree) = memory.cache(
@@ -616,7 +630,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0,
                            min_cluster_size,
                            cluster_selection_method,
                            allow_single_cluster,
-                           match_reference_implementation) + \
+                           match_reference_implementation,
+						   epsilon) + \
             (result_min_span_tree,)
 
 
@@ -815,7 +830,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
     """
 
-    def __init__(self, min_cluster_size=5, min_samples=None,
+    def __init__(self, min_cluster_size=5, min_samples=None, epsilon=None,
                  metric='euclidean', alpha=1.0, p=None,
                  algorithm='best', leaf_size=40,
                  memory=Memory(cachedir=None, verbose=0),
@@ -829,7 +844,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
         self.alpha = alpha
-
+        self.epsilon = epsilon
         self.metric = metric
         self.p = p
         self.algorithm = algorithm
