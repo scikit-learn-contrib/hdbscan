@@ -609,7 +609,7 @@ cpdef list get_cluster_tree_leaves(np.ndarray cluster_tree):
     root = cluster_tree['parent'].min()
     return recurse_leaf_dfs(cluster_tree, root)
 
-cpdef np.intp_t traverse_upwards(np.ndarray cluster_tree, np.double_t cut_value, np.intp_t leaf):
+cpdef np.intp_t traverse_upwards(np.ndarray cluster_tree, np.double_t cluster_selection_epsilon, np.intp_t leaf):
 
     root = cluster_tree['parent'].min()
     parent = cluster_tree[cluster_tree['child'] == leaf]['parent']
@@ -617,21 +617,21 @@ cpdef np.intp_t traverse_upwards(np.ndarray cluster_tree, np.double_t cut_value,
         return leaf #return node closest to root
 
     parent_eps = 1/cluster_tree[cluster_tree['child'] == parent]['lambda_val']
-    if parent_eps > cut_value:
+    if parent_eps > cluster_selection_epsilon:
         return parent
     else:
-        return traverse_upwards(cluster_tree, cut_value, parent)
+        return traverse_upwards(cluster_tree, cluster_selection_epsilon, parent)
 
-cpdef set epsilon_search(set leaves, np.ndarray cluster_tree, np.double_t cut_value):
+cpdef set epsilon_search(set leaves, np.ndarray cluster_tree, np.double_t cluster_selection_epsilon):
 
     selected_clusters = list()
     processed = list()
 
     for leaf in leaves:
         eps = 1/cluster_tree['lambda_val'][cluster_tree['child'] == leaf][0]
-        if eps < cut_value:
+        if eps < cluster_selection_epsilon:
                 if leaf not in processed:
-                    epsilon_child = traverse_upwards(cluster_tree, cut_value, leaf)
+                    epsilon_child = traverse_upwards(cluster_tree, cluster_selection_epsilon, leaf)
                     selected_clusters.append(epsilon_child)
 
                     for sub_node in bfs_from_cluster_tree(cluster_tree, epsilon_child):
@@ -646,7 +646,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                          cluster_selection_method='eom',
                          allow_single_cluster=False,
                          match_reference_implementation=False,
-                         cut_value=None):
+                         cluster_selection_epsilon=0.0):
     """Given a tree and stability dict, produce the cluster labels
     (and probabilities) for a flat clustering based on the chosen
     cluster selection method.
@@ -672,8 +672,8 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
         Whether to match the reference implementation in how to handle
         certain edge cases.
 
-    cut_value: float, optional (default None)
-        A threshold for cluster splits
+    cluster_selection_epsilon: float, optional (default 0.0)
+        A distance threshold for cluster splits.
 
     Returns
     -------
@@ -727,10 +727,10 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                     if sub_node != node:
                         is_cluster[sub_node] = False
 
-        if cut_value is not None and cut_value != 0.0:
+        if cluster_selection_epsilon != 0.0:
 
             eom_clusters = set([c for c in is_cluster if is_cluster[c]])
-            selected_clusters = epsilon_search(eom_clusters, cluster_tree, cut_value)
+            selected_clusters = epsilon_search(eom_clusters, cluster_tree, cluster_selection_epsilon)
             for c in is_cluster:
                 if c in selected_clusters:
                     is_cluster[c] = True
@@ -745,8 +745,8 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                 is_cluster[c] = False
             is_cluster[tree['parent'].min()] = True
 
-        if cut_value is not None and cut_value != 0.0:
-            selected_clusters = epsilon_search(leaves, cluster_tree, cut_value)
+        if cluster_selection_epsilon != 0.0:
+            selected_clusters = epsilon_search(leaves, cluster_tree, cluster_selection_epsilon)
         else:
             selected_clusters = leaves
 

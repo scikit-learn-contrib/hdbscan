@@ -49,7 +49,7 @@ def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
                     cluster_selection_method='eom',
                     allow_single_cluster=False,
                     match_reference_implementation=False,
-					epsilon=None):
+					cluster_selection_epsilon=0.0):
     """Converts a pretrained tree and cluster size into a
     set of labels and probabilities.
     """
@@ -61,7 +61,7 @@ def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
                                                       cluster_selection_method,
                                                       allow_single_cluster,
                                                       match_reference_implementation,
-													  epsilon)
+													  cluster_selection_epsilon)
 
     return (labels, probabilities, stabilities, condensed_tree,
             single_linkage_tree)
@@ -329,7 +329,7 @@ def check_precomputed_distance_matrix(X):
     check_array(tmp)
 
 
-def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, epsilon=None,
+def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selection_epsilon=0.0,
             metric='minkowski', p=2, leaf_size=40,
             algorithm='best', memory=Memory(cachedir=None, verbose=0),
             approx_min_span_tree=True, gen_min_span_tree=False,
@@ -355,8 +355,9 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, epsilon=None,
         to be considered as a core point. This includes the point itself.
         defaults to the min_cluster_size.
 
-	epsilon: float, optional (default=None)
-		A threshold for cluster splits.
+	cluster_selection_epsilon: float, optional (default=0.0)
+		A distance threshold. Clusters below this value will be merged.
+        See [3]_ for more information.
 
     alpha : float, optional (default=1.0)
         A distance scaling parameter as used in robust single linkage.
@@ -476,6 +477,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, epsilon=None,
        cluster tree. In Advances in Neural Information Processing Systems
        (pp. 343-351).
 
+    .. [3] Malzer, C., & Baum, M. (2019). HDBSCAN(ε^): An Alternative Cluster
+       Extraction Method for HDBSCAN. arxiv preprint 1911.02282.
     """
     if min_samples is None:
         min_samples = min_cluster_size
@@ -490,13 +493,10 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, epsilon=None,
     if min_cluster_size == 1:
         raise ValueError('Min cluster size must be greater than one')
 
-    if epsilon is None:
-        epsilon = 0.0
+    if type(cluster_selection_epsilon) is int:
+        cluster_selection_epsilon = float(cluster_selection_epsilon)
 
-    if type(epsilon) is int:
-        epsilon = float(epsilon)
-
-    if type(epsilon) is not float or epsilon < 0.0:
+    if type(cluster_selection_epsilon) is not float or cluster_selection_epsilon < 0.0:
         raise ValueError('Epsilon must be a float value greater than or equal to 0!')
 
     if not isinstance(alpha, float) or alpha <= 0.0:
@@ -631,7 +631,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, epsilon=None,
                            cluster_selection_method,
                            allow_single_cluster,
                            match_reference_implementation,
-						   epsilon) + \
+						   cluster_selection_epsilon) + \
             (result_min_span_tree,)
 
 
@@ -670,6 +670,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     alpha : float, optional (default=1.0)
         A distance scaling parameter as used in robust single linkage.
         See [3]_ for more information.
+
+    cluster_selection_epsilon: float, optional (default=0.0)
+		A distance threshold. Clusters below this value will be merged.
+        See [5]_ for more information.
 
     algorithm : string, optional (default='best')
         Exactly which algorithm to use; hdbscan has variants specialised
@@ -828,9 +832,12 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
        Sander, J., 2014. Density-Based Clustering Validation. In SDM
        (pp. 839-847).
 
+    .. [5] Malzer, C., & Baum, M. (2019). HDBSCAN(ε^): An Alternative Cluster
+       Extraction Method for HDBSCAN. arxiv preprint 1911.02282.
+
     """
 
-    def __init__(self, min_cluster_size=5, min_samples=None, epsilon=None,
+    def __init__(self, min_cluster_size=5, min_samples=None, cluster_selection_epsilon=0.0,
                  metric='euclidean', alpha=1.0, p=None,
                  algorithm='best', leaf_size=40,
                  memory=Memory(cachedir=None, verbose=0),
@@ -844,7 +851,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
         self.alpha = alpha
-        self.epsilon = epsilon
+        self.cluster_selection_epsilon = cluster_selection_epsilon
         self.metric = metric
         self.p = p
         self.algorithm = algorithm
