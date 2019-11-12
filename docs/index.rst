@@ -24,6 +24,7 @@ User Guide / Tutorial
    outlier_detection
    prediction_tutorial
    soft_clustering
+   how_to_use_epsilon
    faq
 
 Background on Clustering with HDBSCAN
