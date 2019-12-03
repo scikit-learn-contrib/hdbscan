@@ -6,7 +6,7 @@ While DBSCAN needs a minimum cluster size *and* a distance threshold epsilon as 
 HDBSCAN\* is basically a DBSCAN implementation for varying epsilon values and therefore only needs the minimum cluster size as single input parameter.
 The ``'eom'`` (Excess of Mass) cluster selection method then returns clusters with the best stability over epsilon.
 
-Unlike DBSCAN, this allows to find clusters of variable densities without having to choose a suitable distance treshold first.
+Unlike DBSCAN, this allows to it find clusters of variable densities without having to choose a suitable distance threshold first.
 However, there are cases where we could still benefit from the use of an epsilon threshold.
 
 For illustration, see this map with GPS locations, representing recorded pick-up and drop-off locations for customers of a ride pooling provider.
