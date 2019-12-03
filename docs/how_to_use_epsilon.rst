@@ -11,7 +11,7 @@ However, there are cases where we could still benefit from the use of an epsilon
 
 For illustration, see this map with GPS locations, representing recorded pick-up and drop-off locations for customers of a ride pooling provider.
 The largest (visual) data cluster can be found around the train station. Smaller clusters are placed along the streets, depending on the requested location
-in form of a postal address or point of interest. Since we are considering a door-to-door system where customers are not bound to collective pick-up or
+in the form of a postal address or point of interest. Since we are considering a door-to-door system where customers are not bound to collective pick-up or
 drop-off locations, we are interested in both large clusters and small clusters with a minimum size of 4.  
 
 .. image:: images/epsilon_parameter_dataset.png
