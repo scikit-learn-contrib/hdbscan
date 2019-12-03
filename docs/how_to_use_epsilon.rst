@@ -34,7 +34,7 @@ separated by a relatively large distance.
 	
 This is where the parameter ``cluster_selection_epsilon`` comes into play. The cluster extraction method using this parameter, as described in detail
 by `Malzer and Baum <https://arxiv.org/abs/1911.02282>`__, acts like a hybrid between DBSCAN 
-(or, to be precise, DBSCAN*, i.e. DBSCAN without the border points) by extracting DBSCAN results for data partitions
+(or, to be precise, DBSCAN\*, i.e. DBSCAN without the border points) by extracting DBSCAN results for data partitions
 affected by the given parameter value, and HDBSCAN\* results for all others. 
 
 In our example, we choose to merge nested clusters below 5 meters (0.005 kilometers) and therefore set  the parameter ``cluster_selection_epsilon`` accordingly: 
