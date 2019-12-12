@@ -477,8 +477,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
        cluster tree. In Advances in Neural Information Processing Systems
        (pp. 343-351).
 
-    .. [3] Malzer, C., & Baum, M. (2019). HDBSCAN(ε^): An Alternative Cluster
-       Extraction Method for HDBSCAN. arxiv preprint 1911.02282.
+    .. [3] Malzer, C., & Baum, M. (2019). A Hybrid Approach To Hierarchical 
+	   Density-based Cluster Selection. arxiv preprint 1911.02282.
     """
     if min_samples is None:
         min_samples = min_cluster_size
@@ -832,8 +832,8 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
        Sander, J., 2014. Density-Based Clustering Validation. In SDM
        (pp. 839-847).
 
-    .. [5] Malzer, C., & Baum, M. (2019). HDBSCAN(ε^): An Alternative Cluster
-       Extraction Method for HDBSCAN. arxiv preprint 1911.02282.
+    .. [5] Malzer, C., & Baum, M. (2019). A Hybrid Approach To Hierarchical 
+	   Density-based Cluster Selection. arxiv preprint 1911.02282.
 
     """
 
