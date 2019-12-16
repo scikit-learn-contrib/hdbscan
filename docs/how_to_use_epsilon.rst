@@ -29,7 +29,7 @@ even though we would prefer one or only few clusters representing this location.
 the smoothing parameter ``min_samples``, but with the trade-off of losing small clusters in less dense areas or merging them into other clusters 
 separated by a relatively large distance.
 
-.. image:: images/epsilon_parameter_HDBSCAN_eom.png
+.. image:: images/epsilon_parameter_hdbscan_eom.png
 	:align: center
 	
 This is where the parameter ``cluster_selection_epsilon`` comes into play. The cluster extraction method using this parameter, as described in detail
@@ -52,7 +52,7 @@ In our example, we choose to merge nested clusters below 5 meters (0.005 kilomet
 And indeed, the result looks like a mix between DBSCAN and HDBSCAN(eom). We no longer lose clusters of variable densities beyond the given epsilon, but at the
 same time avoid the abundance of micro-clusters in the original HDBSCAN\* clustering, which was an undesired side-effect of having to choose a low ``min_cluster_size`` value.
 
-.. image:: images/epsilon_parameter_HDBSCAN_eps.png
+.. image:: images/epsilon_parameter_hdbscan_eps.png
 	:align: center
 	
 Note that for the given parameter setting, running HDBSCAN\* based on ``cluster_selection_method = 'eom'`` or ``cluster_selection_method = 'leaf'`` does not make
@@ -60,7 +60,7 @@ any difference: the ``cluster_selection_epsilon`` threshold neutralizes the effe
 When using a lower threshold, some minor differences can be noticed. For example, an epsilon value of 3 meters with ``'eom'`` produces the same results as
 a the 5 meter value on the given data set, but 3 meters in combination with ``'leaf'`` achieves a slightly different result:
 	
-.. image:: images/epsilon_parameter_HDBSCAN_e3_leaf.png
+.. image:: images/epsilon_parameter_hdbscan_e3_leaf.png
 	:align: center
 
 A ``cluster_selection_epsilon`` value of 0 (the default value) always returns the original HDBSCAN\* results, either according to ``'eom'`` or ``'leaf'``.
