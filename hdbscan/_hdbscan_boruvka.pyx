@@ -408,7 +408,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                                           self.num_points])
                         ]
 
-            knn_data = Parallel(n_jobs=self.n_jobs)(
+            knn_data = Parallel(n_jobs=self.n_jobs, prefer="threads")(
                 delayed(_core_dist_query,
                         check_pickle=False)
                 (self.core_dist_tree, points,
@@ -1012,7 +1012,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                                                   self.num_points])
                         ]
 
-            knn_data = Parallel(n_jobs=self.n_jobs)(
+            knn_data = Parallel(n_jobs=self.n_jobs, prefer="threads")(
                 delayed(_core_dist_query,
                         check_pickle=False)
                 (self.core_dist_tree, points,
