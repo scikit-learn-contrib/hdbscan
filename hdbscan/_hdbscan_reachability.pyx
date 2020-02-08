@@ -1,15 +1,16 @@
 # cython: boundscheck=False
+# cython: wraparound=False
 # cython: nonecheck=False
 # cython: initializedcheck=False
-# mutual reachability distance compiutations
+# mutual reachability distance computations
 # Authors: Leland McInnes
 # License: 3-clause BSD
 
 import numpy as np
 cimport numpy as np
 
+from numpy.math cimport INFINITY, isfinite
 from scipy.spatial.distance import pdist, squareform
-from scipy.sparse import lil_matrix as sparse_matrix
 from sklearn.neighbors import KDTree, BallTree
 import gc
 
@@ -59,44 +60,87 @@ def mutual_reachability(distance_matrix, min_points=5, alpha=1.0):
     return result
 
 
-cpdef sparse_mutual_reachability(object lil_matrix, np.intp_t min_points=5,
-                                 float alpha=1.0, float max_dist=0.):
+cpdef sparse_mutual_reachability(object distance_matrix, np.intp_t min_points=5,
+                                 float alpha=1.0, float max_dist=0.0):
+    """ Compute mutual reachability for distance matrix. For best performance
+    pass distance_matrix in CSR form which will modify it in place and return
+    it without making a copy """
 
-    cdef np.intp_t i
-    cdef np.intp_t j
-    cdef np.intp_t n
-    cdef np.double_t mr_dist
-    cdef list sorted_row_data
-    cdef np.ndarray[dtype=np.double_t, ndim=1] core_distance
-    cdef np.ndarray[dtype=np.int32_t, ndim=1] nz_row_data
-    cdef np.ndarray[dtype=np.int32_t, ndim=1] nz_col_data
-
-    result = sparse_matrix(lil_matrix.shape)
-    core_distance = np.empty(lil_matrix.shape[0], dtype=np.double)
-
-    for i in range(lil_matrix.shape[0]):
-        sorted_row_data = sorted(lil_matrix.data[i])
-        if min_points < len(sorted_row_data):
-            core_distance[i] = sorted_row_data[min_points]
+    # tocsr() is a fast noop if distance_matrix is already CSR
+    D = distance_matrix.tocsr()
+    # Convert to smallest supported data type if necessary
+    if D.dtype not in (np.float32, np.float64):
+        if D.dtype <= np.dtype(np.float32):
+            D = D.astype(np.float32)
         else:
-            core_distance[i] = np.infty
+            D = D.astype(np.float64)
 
-    if alpha != 1.0:
-        lil_matrix = lil_matrix / alpha
+    # Call typed function which modifies D in place
+    t = (D.data.dtype, D.indices.dtype, D.indptr.dtype)
+    if t == (np.float32, np.int32, np.int32):
+        sparse_mr_fast[np.float32_t, np.int32_t](D.data, D.indices, D.indptr,
+                                                 min_points, alpha, max_dist)
+    elif t == (np.float32, np.int64, np.int64):
+        sparse_mr_fast[np.float32_t, np.int64_t](D.data, D.indices, D.indptr,
+                                                 min_points, alpha, max_dist)
+    elif t == (np.float64, np.int32, np.int32):
+        sparse_mr_fast[np.float64_t, np.int32_t](D.data, D.indices, D.indptr,
+                                                 min_points, alpha, max_dist)
+    elif t == (np.float64, np.int64, np.int64):
+        sparse_mr_fast[np.float64_t, np.int64_t](D.data, D.indices, D.indptr,
+                                                 min_points, alpha, max_dist)
+    else:
+        raise Exception("Unsupported CSR format {}".format(t))
 
-    nz_row_data, nz_col_data = lil_matrix.nonzero()
+    return D
 
-    for n in range(nz_row_data.shape[0]):
-        i = nz_row_data[n]
-        j = nz_col_data[n]
 
-        mr_dist = max(core_distance[i], core_distance[j], lil_matrix[i, j])
-        if np.isfinite(mr_dist):
-            result[i, j] = mr_dist
-        elif max_dist > 0:
-            result[i, j] = max_dist
+ctypedef fused mr_indx_t:
+    np.int32_t
+    np.int64_t
 
-    return result.tocsr()
+ctypedef fused mr_data_t:
+    np.float32_t
+    np.float64_t
+
+cdef sparse_mr_fast(np.ndarray[dtype=mr_data_t, ndim=1] data,
+                    np.ndarray[dtype=mr_indx_t, ndim=1] indices,
+                    np.ndarray[dtype=mr_indx_t, ndim=1] indptr,
+                    mr_indx_t min_points,
+                    mr_data_t alpha,
+                    mr_data_t max_dist):
+    cdef mr_indx_t row, col, colptr
+    cdef mr_data_t mr_dist
+    cdef np.ndarray[dtype=mr_data_t, ndim=1] row_data
+    cdef np.ndarray[dtype=mr_data_t, ndim=1] core_distance
+
+    core_distance = np.empty(data.shape[0], dtype=data.dtype)
+
+    for row in range(indptr.shape[0]-1):
+        row_data = data[indptr[row]:indptr[row+1]].copy()
+        if min_points < row_data.shape[0]:
+            # sort is faster for small arrays because of lower startup cost but
+            # partition has worst case O(n) runtime for larger ones.
+            # https://stackoverflow.com/questions/43588711/numpys-partition-slower-than-sort-for-small-arrays
+            if row_data.shape[0] > 200:
+                row_data.partition(min_points)
+            else:
+                row_data.sort()
+            core_distance[row] = row_data[min_points]
+        else:
+            core_distance[row] = INFINITY
+
+    if alpha != <mr_data_t>1.0:
+        data /= alpha
+
+    for row in range(indptr.shape[0]-1):
+        for colptr in range(indptr[row],indptr[row+1]):
+            col = indices[colptr]
+            mr_dist = max(core_distance[row], core_distance[col], data[colptr])
+            if isfinite(mr_dist):
+                data[colptr] = mr_dist
+            elif max_dist > 0:
+                data[colptr] = max_dist
 
 
 def kdtree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5,
