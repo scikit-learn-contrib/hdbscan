@@ -68,6 +68,8 @@ cpdef sparse_mutual_reachability(object distance_matrix, np.intp_t min_points=5,
 
     # tocsr() is a fast noop if distance_matrix is already CSR
     D = distance_matrix.tocsr()
+    if D.shape != (D.shape[0], D.shape[0]):
+        raise Exception("Distance matrix must be 2D square shaped instead of {}".format(D.shape))
     # Convert to smallest supported data type if necessary
     if D.dtype not in (np.float32, np.float64):
         if D.dtype <= np.dtype(np.float32):
@@ -103,18 +105,18 @@ ctypedef fused mr_data_t:
     np.float32_t
     np.float64_t
 
-cdef sparse_mr_fast(np.ndarray[dtype=mr_data_t, ndim=1] data,
-                    np.ndarray[dtype=mr_indx_t, ndim=1] indices,
-                    np.ndarray[dtype=mr_indx_t, ndim=1] indptr,
+cdef sparse_mr_fast(np.ndarray[dtype=mr_data_t, ndim=1, mode='c'] data,
+                    np.ndarray[dtype=mr_indx_t, ndim=1, mode='c'] indices,
+                    np.ndarray[dtype=mr_indx_t, ndim=1, mode='c'] indptr,
                     mr_indx_t min_points,
                     mr_data_t alpha,
                     mr_data_t max_dist):
     cdef mr_indx_t row, col, colptr
     cdef mr_data_t mr_dist
-    cdef np.ndarray[dtype=mr_data_t, ndim=1] row_data
-    cdef np.ndarray[dtype=mr_data_t, ndim=1] core_distance
+    cdef np.ndarray[dtype=mr_data_t, ndim=1, mode='c'] row_data
+    cdef np.ndarray[dtype=mr_data_t, ndim=1, mode='c'] core_distance
 
-    core_distance = np.empty(data.shape[0], dtype=data.dtype)
+    core_distance = np.empty(indptr.shape[0]-1, dtype=data.dtype)
 
     for row in range(indptr.shape[0]-1):
         row_data = data[indptr[row]:indptr[row+1]].copy()
