@@ -161,7 +161,7 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
 
     # Compute the minimum spanning tree for the sparse graph
     sparse_min_spanning_tree = csgraph.minimum_spanning_tree(
-        mutual_reachability_)
+        mutual_reachability_, overwrite=True)
 
     # Convert the graph to scipy cluster array format
     nonzeros = sparse_min_spanning_tree.nonzero()
