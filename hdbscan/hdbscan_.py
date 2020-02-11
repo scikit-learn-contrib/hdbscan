@@ -78,8 +78,12 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0, metric='minkowski', p=2,
         #   sklearn.metrics.pairwise_distances handle it,
         #   enables the usage of numpy.inf in the distance
         #   matrix to indicate missing distance information.
-        # Need copy because distance_matrix may be modified if sparse
-        distance_matrix = X.copy()
+        # Give the user the option to have the distance matrix
+        #   modified to save memory.
+        if kwargs.get("overwrite", False):
+            distance_matrix = X
+        else:
+            distance_matrix = X.copy()
     else:
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
 
