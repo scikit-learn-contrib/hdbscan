@@ -964,6 +964,66 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                  'space inputs -- access to the source data rather'
                  'than mere distances is required!')
 
+
+    def weighted_cluster_centroid(self, cluster_id):
+        """Provide an approximate representative point for a given cluster.
+        Note that this technique assumes a euclidean metric for speed of
+        computation. For more general metrics use the ``weighted_cluster_medoid``
+        method which is slower, but can work with the metric the model trained
+        with.
+
+        Parameters
+        ----------
+        cluster_id: int
+            The id of the cluster to compute a centroid for.
+
+        Returns
+        -------
+        centroid: array of shape (n_features,)
+            A representative centroid for cluster ``cluster_id``.
+        """
+        if not hasattr(self, 'labels_'):
+            raise AttributeError('Model has not been fit to data')
+
+        mask = self.labels_ == cluster_id
+        cluster_data = self._raw_data[mask]
+        cluster_membership_strengths = self.probabilities_[mask]
+
+        return np.average(cluster_data, weights=cluster_membership_strengths, axis=0)
+
+
+    def weighted_cluster_medoid(self, cluster_id):
+        """Provide an approximate representative point for a given cluster.
+        Note that this technique can be very slow and memory intensive for
+        large clusters. For faster results use the ``weighted_cluster_centroid``
+        method which is faster, but assumes a euclidean metric.
+
+        Parameters
+        ----------
+        cluster_id: int
+            The id of the cluster to compute a medoid for.
+
+        Returns
+        -------
+        centroid: array of shape (n_features,)
+            A representative medoid for cluster ``cluster_id``.
+        """
+        if not hasattr(self, 'labels_'):
+            raise AttributeError('Model has not been fit to data')
+
+        mask = self.labels_ == cluster_id
+        cluster_data = self._raw_data[mask]
+        cluster_membership_strengths = self.probabilities_[mask]
+
+        dist_mat = pairwise_distances(cluster_data,
+                                      metric=self.metric,
+                                      **self._metric_kwargs)
+
+        dist_mat = dist_mat * cluster_membership_strengths
+        medoid_index = np.argmax(dist_mat.sum(axis=1))
+        return cluster_data[medoid_index]
+
+
     @property
     def prediction_data_(self):
         if self._prediction_data is None:
