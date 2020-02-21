@@ -578,6 +578,10 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
             if metric not in BallTree.valid_metrics:
                 raise ValueError("Cannot use Boruvka with BallTree for this"
                                  " metric!")
+            if (X.shape[0] // leaf_size) > 16000:
+                warn("A large dataset size and small leaf_size may induce excessive "
+                     "memory usage. If you are running out of memory consider "
+                     "increasing the ``leaf_size`` parameter.")
             (single_linkage_tree, result_min_span_tree) = memory.cache(
                 _hdbscan_boruvka_balltree)(X, min_samples, alpha,
                                            metric, p, leaf_size,
