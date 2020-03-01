@@ -517,7 +517,7 @@ So, in summary:
    clustering algorithms can tackle datasets as large as DBSCAN can.
 
 So how does it cluster our test dataset? I played with a few epsilon
-values until I got somethign reasonable, but there was little science to
+values until I got something reasonable, but there was little science to
 this -- getting the parameters right can be hard.
 
 .. code:: python
