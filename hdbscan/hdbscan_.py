@@ -1024,7 +1024,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                                       **self._metric_kwargs)
 
         dist_mat = dist_mat * cluster_membership_strengths
-        medoid_index = np.argmax(dist_mat.sum(axis=1))
+        medoid_index = np.argmin(dist_mat.sum(axis=1))
         return cluster_data[medoid_index]
 
 
