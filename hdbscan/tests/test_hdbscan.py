@@ -589,6 +589,7 @@ def test_hdbscan_caching():
     n_clusters2 = len(set(labels2)) - int(-1 in labels2)
     assert_equal(n_clusters1, n_clusters2)
 
+
 def test_hdbscan_centroids_medoids():
     centers = [(0.0, 0.0), (3.0, 3.0)]
     H, y = make_blobs(n_samples=1000, random_state=0, centers=centers, cluster_std=0.5)
@@ -597,7 +598,7 @@ def test_hdbscan_centroids_medoids():
     for idx, center in enumerate(centers):
         centroid = clusterer.weighted_cluster_centroid(idx)
         assert_array_almost_equal(centroid, center, decimal=1)
-        
+
         medoid = clusterer.weighted_cluster_medoid(idx)
         assert_array_almost_equal(medoid, center, decimal=1)
 
