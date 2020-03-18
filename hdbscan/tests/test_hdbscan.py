@@ -602,6 +602,13 @@ def test_hdbscan_centroids_medoids():
         medoid = clusterer.weighted_cluster_medoid(idx)
         assert_array_almost_equal(medoid, center, decimal=1)
 
+
+def test_hdbscan_no_centroid_medoid_for_noise():
+    clusterer = HDBSCAN().fit(X)
+    assert_raises(ValueError, clusterer.weighted_cluster_centroid, -1)
+    assert_raises(ValueError, clusterer.weighted_cluster_medoid, -1)
+
+
 # Disable for now -- need to refactor to meet newer standards
 @SkipTest
 def test_hdbscan_is_sklearn_estimator():
