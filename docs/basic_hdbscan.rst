@@ -275,12 +275,12 @@ Distance matrices
 What if you don't have a nice set of points in a vector space, but only
 have a pairwise distance matrix providing the distance between each pair
 of points? This is a common situation. Perhaps you have a complex custom
-distance measure; perhaps you have strings and are using Levenstein
+distance measure; perhaps you have strings and are using Levenshtein
 distance, etc. Again, this is all fine as ``hdbscan`` supports a special
 metric called ``precomputed``. If you create the clusterer with the
 metric set to ``precomputed`` then the clusterer will assume that,
 rather than being handed a vector of points in a vector space, it is
-recieving an all pairs distance matrix. Missing distances can be
+receiving an all-pairs distance matrix. Missing distances can be
 indicated by ``numpy.inf``, which leads HDBSCAN to ignore these pairwise
 relationships as long as there exists a path between two points that
 contains defined distances (i.e. if there are too many distances
