@@ -989,6 +989,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         if not hasattr(self, 'labels_'):
             raise AttributeError('Model has not been fit to data')
 
+        if cluster_id == -1:
+            raise ValueError('Cannot calculate weighted centroid for -1 cluster '
+                             'since it is a noise cluster')
+
         mask = self.labels_ == cluster_id
         cluster_data = self._raw_data[mask]
         cluster_membership_strengths = self.probabilities_[mask]
@@ -1014,6 +1018,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         """
         if not hasattr(self, 'labels_'):
             raise AttributeError('Model has not been fit to data')
+
+        if cluster_id == -1:
+            raise ValueError('Cannot calculate weighted centroid for -1 cluster '
+                             'since it is a noise cluster')
 
         mask = self.labels_ == cluster_id
         cluster_data = self._raw_data[mask]
