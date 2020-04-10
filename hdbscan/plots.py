@@ -435,7 +435,7 @@ class CondensedTree(object):
                 axis.add_artist(box)
 
         if colorbar:
-            cb = plt.colorbar(sm)
+            cb = plt.colorbar(sm, ax=axis)
             if log_size:
                 cb.ax.set_ylabel('log(Number of points)')
             else:
@@ -625,7 +625,7 @@ class SingleLinkageTree(object):
                       solid_joinstyle='miter', solid_capstyle='butt')
 
         if colorbar:
-            cb = plt.colorbar(sm)
+            cb = plt.colorbar(sm, ax=axis)
             cb.ax.set_ylabel('log(Number of points)')
 
         axis.set_xticks([])
@@ -829,7 +829,7 @@ class MinimumSpanningTree(object):
         axis.set_yticks([])
 
         if colorbar:
-            cb = plt.colorbar(line_collection)
+            cb = plt.colorbar(line_collection, ax=axis)
             cb.ax.set_ylabel('Mutual reachability distance')
 
         return axis
