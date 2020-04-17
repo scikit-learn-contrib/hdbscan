@@ -295,6 +295,8 @@ cdef max_lambdas(np.ndarray tree):
             # Initialize
             current_parent = parent
             max_lambda = lambda_
+    
+    deaths[current_parent] = max_lambda # value for last parent
 
     return deaths_arr
 
@@ -570,6 +572,7 @@ cpdef np.ndarray[np.double_t, ndim=1] outlier_scores(np.ndarray tree):
 
         cluster = parent_array[n]
         lambda_max = deaths[cluster]
+
 
         if lambda_max == 0.0 or not np.isfinite(lambda_array[n]):
             result[point] = 0.0
