@@ -21,6 +21,7 @@ from hdbscan import (HDBSCAN,
                      hdbscan,
                      validity_index,
                      approximate_predict,
+                     approximate_predict_scores,
                      membership_vector,
                      all_points_membership_vectors)
 # from sklearn.cluster.tests.common import generate_clustered_data
@@ -473,6 +474,14 @@ def test_hdbscan_approximate_predict():
     assert_equal(cluster, 1)
     cluster, prob = approximate_predict(clusterer, np.array([[0.0, 0.0]]))
     assert_equal(cluster, -1)
+
+def test_hdbscan_approximate_predict_score():
+    clusterer = HDBSCAN(prediction_data=True).fit(X)
+    scores = approximate_predict_scores(clusterer, X)
+    assert_array_almost_equal(scores, clusterer.outlier_scores_)
+    assert scores.min() >= 0
+    assert scores.max() <= 1
+
 
 # def test_hdbscan_membership_vector():
 #     clusterer = HDBSCAN(prediction_data=True).fit(X)
