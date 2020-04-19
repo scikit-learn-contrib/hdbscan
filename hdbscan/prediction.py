@@ -448,7 +448,9 @@ def approximate_predict_scores(clusterer, points_to_predict):
     :py:func:`hdbscan.predict.all_points_membership_vectors`
 
     """
-    if clusterer.prediction_data_ is None:
+    try:
+        clusterer.prediction_data_
+    except AttributeError:
         raise ValueError('Clusterer does not have prediction data!'
                          ' Try fitting with prediction_data=True set,'
                          ' or run generate_prediction_data on the clusterer')
@@ -463,7 +465,7 @@ def approximate_predict_scores(clusterer, points_to_predict):
         warn('Clusterer does not have any defined clusters, new data'
              ' will be automatically predicted as outliers.')
         scores = np.ones(points_to_predict.shape[0], dtype=np.int32)
-        return scores.cluster_tree
+        return scores
 
     scores = np.empty(points_to_predict.shape[0], dtype=np.float)
 
