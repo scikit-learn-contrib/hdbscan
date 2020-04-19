@@ -476,6 +476,16 @@ def test_hdbscan_approximate_predict():
     assert_equal(cluster, -1)
 
 def test_hdbscan_approximate_predict_score():
+    clusterer = HDBSCAN(min_cluster_size=200).fit(X)
+    # no prediction data error
+    assert_raises(ValueError, approximate_predict_scores, clusterer, X)
+    clusterer.generate_prediction_data()
+    # wrong dimensions error
+    assert_raises(ValueError, approximate_predict_scores, clusterer, np.array([[1, 2, 3]]))
+    with warnings.catch_warnings(record=True) as w:
+        approximate_predict_scores(clusterer, np.array([[1.5, -1.0]]))
+        # no clusters warning
+        assert 'Clusterer does not have any defined clusters' in str(w[-1].message)
     clusterer = HDBSCAN(prediction_data=True).fit(X)
     scores = approximate_predict_scores(clusterer, X)
     assert_array_almost_equal(scores, clusterer.outlier_scores_)
