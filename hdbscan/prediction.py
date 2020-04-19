@@ -88,8 +88,7 @@ class PredictionData(object):
         return result
 
     def _recurse_leaf_dfs(self, current_node):
-        children = self.cluster_tree[self.cluster_tree['parent'] ==
-                                     current_node]['child']
+        children = self.cluster_tree[self.cluster_tree['parent'] == current_node]['child']
         if len(children) == 0:
             return [current_node, ]
         else:
@@ -111,8 +110,7 @@ class PredictionData(object):
         self.cluster_map = {c: n for n, c in enumerate(sorted(list(selected_clusters)))}
         self.reverse_cluster_map = {n: c for c, n in self.cluster_map.items()}
 
-        self.cluster_tree = raw_condensed_tree[raw_condensed_tree['child_size']
-                                               > 1]
+        self.cluster_tree = raw_condensed_tree[raw_condensed_tree['child_size'] > 1]
         self.max_lambdas = {}
         self.leaf_max_lambdas = {}
         self.exemplars = []
@@ -126,8 +124,7 @@ class PredictionData(object):
 
         for cluster in selected_clusters:
             self.max_lambdas[cluster] = \
-                raw_condensed_tree['lambda_val'][raw_condensed_tree['parent']
-                                                 == cluster].max()
+                raw_condensed_tree['lambda_val'][raw_condensed_tree['parent'] == cluster].max()
 
             for sub_cluster in self._clusters_below(cluster):
                 self.cluster_map[sub_cluster] = self.cluster_map[cluster]
@@ -138,8 +135,9 @@ class PredictionData(object):
                 leaf_max_lambda = raw_condensed_tree['lambda_val'][
                     raw_condensed_tree['parent'] == leaf].max()
                 points = raw_condensed_tree['child'][
-                    (raw_condensed_tree['parent'] == leaf) &
-                    (raw_condensed_tree['lambda_val'] == leaf_max_lambda)]
+                    (raw_condensed_tree['parent'] == leaf)
+                    & (raw_condensed_tree['lambda_val'] == leaf_max_lambda)
+                ]
                 cluster_exemplars = np.hstack([cluster_exemplars, points])
 
             self.exemplars.append(self.raw_data[cluster_exemplars])
@@ -245,10 +243,9 @@ def _extend_condensed_tree(tree, neighbor_indices, neighbor_distances,
     else:
         # Find appropriate cluster based on lambda of new point
         while potential_cluster > tree_root and \
-                        tree[tree['child'] ==
-                                potential_cluster]['lambda_val'] >= lambda_:
-            potential_cluster = tree['parent'][tree['child']
-                                               == potential_cluster][0]
+                tree[tree['child']
+                     == potential_cluster]['lambda_val'] >= lambda_:
+            potential_cluster = tree['parent'][tree['child'] == potential_cluster][0]
 
         new_tree_row = (potential_cluster, -1, 1, lambda_)
 
@@ -411,6 +408,7 @@ def approximate_predict(clusterer, points_to_predict):
         probabilities[i] = prob
 
     return labels, probabilities
+
 
 def approximate_predict_scores(clusterer, points_to_predict):
     """Predict the outlier score of new points. The returned scores
