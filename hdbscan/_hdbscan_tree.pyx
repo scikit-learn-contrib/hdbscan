@@ -707,6 +707,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
     # if you do, change this accordingly!
     if allow_single_cluster:
         node_list = sorted(stability.keys(), reverse=True)
+        root = node_list[-1]
     else:
         node_list = sorted(stability.keys(), reverse=True)[:-1]
         # (exclude root)
@@ -732,9 +733,11 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
 
         if cluster_selection_epsilon != 0.0:
 
-            eom_clusters = set([c for c in is_cluster if is_cluster[c]])
+            eom_clusters = set([c for c in is_cluster if is_cluster[c] and c != root])
             selected_clusters = epsilon_search(eom_clusters, cluster_tree, cluster_selection_epsilon)
             for c in is_cluster:
+                if c == root:
+                    continue
                 if c in selected_clusters:
                     is_cluster[c] = True
                 else:
