@@ -398,15 +398,13 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         # into four piles and query them in parallel. On multicore systems
         # (most systems) this amounts to a 2x-3x wall clock improvement.
         if self.tree.data.shape[0] > 16384 and self.n_jobs > 1:
-            datasets = [
-                np.asarray(self.tree.data[0:self.num_points//4]),
-                np.asarray(self.tree.data[self.num_points//4:
-                                          self.num_points//2]),
-                np.asarray(self.tree.data[self.num_points//2:
-                                          3*(self.num_points//4)]),
-                np.asarray(self.tree.data[3*(self.num_points//4):
-                                          self.num_points])
-                        ]
+            split_cnt = self.num_points // self.n_jobs
+            datasets = []
+            for i in range(self.n_jobs):
+                if i == self.n_jobs - 1:
+                    datasets.append(np.asarray(self.tree.data[i*split_cnt:]))
+                else:
+                    datasets.append(np.asarray(self.tree.data[i*split_cnt:(i+1)*split_cnt]))
 
             knn_data = Parallel(n_jobs=self.n_jobs)(
                 delayed(_core_dist_query,
@@ -1003,14 +1001,13 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         cdef np.ndarray[np.intp_t, ndim=2] knn_indices
 
         if self.tree.data.shape[0] > 16384 and self.n_jobs > 1:
-            datasets = [np.asarray(self.tree.data[0:self.num_points//4]),
-                        np.asarray(self.tree.data[self.num_points//4:
-                                                  self.num_points//2]),
-                        np.asarray(self.tree.data[self.num_points//2:
-                                                  3*(self.num_points//4)]),
-                        np.asarray(self.tree.data[3*(self.num_points//4):
-                                                  self.num_points])
-                        ]
+            split_cnt = self.num_points // self.n_jobs
+            datasets = []
+            for i in range(self.n_jobs):
+                if i == self.n_jobs - 1:
+                    datasets.append(np.asarray(self.tree.data[i*split_cnt:]))
+                else:
+                    datasets.append(np.asarray(self.tree.data[i*split_cnt:(i+1)*split_cnt]))
 
             knn_data = Parallel(n_jobs=self.n_jobs)(
                 delayed(_core_dist_query,
