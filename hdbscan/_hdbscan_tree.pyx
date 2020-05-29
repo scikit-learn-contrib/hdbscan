@@ -612,20 +612,23 @@ cpdef list get_cluster_tree_leaves(np.ndarray cluster_tree):
     root = cluster_tree['parent'].min()
     return recurse_leaf_dfs(cluster_tree, root)
 
-cpdef np.intp_t traverse_upwards(np.ndarray cluster_tree, np.double_t cluster_selection_epsilon, np.intp_t leaf):
+cpdef np.intp_t traverse_upwards(np.ndarray cluster_tree, np.double_t cluster_selection_epsilon, np.intp_t leaf, np.intp_t allow_single_cluster):
 
     root = cluster_tree['parent'].min()
     parent = cluster_tree[cluster_tree['child'] == leaf]['parent']
     if parent == root:
-        return leaf #return node closest to root
+        if allow_single_cluster:
+            return parent
+        else:
+            return leaf #return node closest to root
 
     parent_eps = 1/cluster_tree[cluster_tree['child'] == parent]['lambda_val']
     if parent_eps > cluster_selection_epsilon:
         return parent
     else:
-        return traverse_upwards(cluster_tree, cluster_selection_epsilon, parent)
+        return traverse_upwards(cluster_tree, cluster_selection_epsilon, parent, allow_single_cluster)
 
-cpdef set epsilon_search(set leaves, np.ndarray cluster_tree, np.double_t cluster_selection_epsilon):
+cpdef set epsilon_search(set leaves, np.ndarray cluster_tree, np.double_t cluster_selection_epsilon, np.intp_t allow_single_cluster):
 
     selected_clusters = list()
     processed = list()
@@ -633,15 +636,15 @@ cpdef set epsilon_search(set leaves, np.ndarray cluster_tree, np.double_t cluste
     for leaf in leaves:
         eps = 1/cluster_tree['lambda_val'][cluster_tree['child'] == leaf][0]
         if eps < cluster_selection_epsilon:
-                if leaf not in processed:
-                    epsilon_child = traverse_upwards(cluster_tree, cluster_selection_epsilon, leaf)
-                    selected_clusters.append(epsilon_child)
+            if leaf not in processed:
+                epsilon_child = traverse_upwards(cluster_tree, cluster_selection_epsilon, leaf, allow_single_cluster)
+                selected_clusters.append(epsilon_child)
 
-                    for sub_node in bfs_from_cluster_tree(cluster_tree, epsilon_child):
-                        if sub_node != epsilon_child:
-                            processed.append(sub_node)
+                for sub_node in bfs_from_cluster_tree(cluster_tree, epsilon_child):
+                    if sub_node != epsilon_child:
+                        processed.append(sub_node)
         else:
-                selected_clusters.append(leaf)
+            selected_clusters.append(leaf)
 
     return set(selected_clusters)
 
@@ -705,10 +708,10 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
     # a topological sort of the tree; This is valid given the
     # current implementation above, so don't change that ... or
     # if you do, change this accordingly!
-    node_list = sorted(stability.keys(), reverse=True)
-    root = node_list[:-1]
-    if not allow_single_cluster:
-        node_list = node_list[:-1]
+    if allow_single_cluster:
+        node_list = sorted(stability.keys(), reverse=True)
+    else:
+        node_list = sorted(stability.keys(), reverse=True)[:-1]
         # (exclude root)
 
     cluster_tree = tree[tree['child_size'] > 1]
@@ -731,12 +734,9 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                         is_cluster[sub_node] = False
 
         if cluster_selection_epsilon != 0.0:
-
-            eom_clusters = set([c for c in is_cluster if is_cluster[c] and c != root])
-            selected_clusters = epsilon_search(eom_clusters, cluster_tree, cluster_selection_epsilon)
+            eom_clusters = set([c for c in is_cluster if is_cluster[c]])
+            selected_clusters = epsilon_search(eom_clusters, cluster_tree, cluster_selection_epsilon, allow_single_cluster)
             for c in is_cluster:
-                if allow_single_cluster and c == root:
-                    continue
                 if c in selected_clusters:
                     is_cluster[c] = True
                 else:
@@ -751,7 +751,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
             is_cluster[tree['parent'].min()] = True
 
         if cluster_selection_epsilon != 0.0:
-            selected_clusters = epsilon_search(leaves, cluster_tree, cluster_selection_epsilon)
+            selected_clusters = epsilon_search(leaves, cluster_tree, cluster_selection_epsilon, allow_single_cluster)
         else:
             selected_clusters = leaves
 
