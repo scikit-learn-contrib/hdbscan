@@ -1013,18 +1013,18 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                 delayed(_core_dist_query,
                         check_pickle=False)
                 (self.core_dist_tree, points,
-                 self.min_samples)
+                 self.min_samples + 1)
                 for points in datasets)
             knn_dist = np.vstack([x[0] for x in knn_data])
             knn_indices = np.vstack([x[1] for x in knn_data])
         else:
             knn_dist, knn_indices = self.core_dist_tree.query(
                 self.tree.data,
-                k=self.min_samples,
+                k=self.min_samples + 1,
                 dualtree=True,
                 breadth_first=True)
 
-        self.core_distance_arr = knn_dist[:, self.min_samples - 1].copy()
+        self.core_distance_arr = knn_dist[:, self.min_samples].copy()
         self.core_distance = (<np.double_t[:self.num_points:1]> (
             <np.double_t *> self.core_distance_arr.data))
 
@@ -1032,9 +1032,9 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         # points we can use this to do the first round of boruvka -- we won't
         # get every point due to core_distance/mutual reachability distance
         # issues, but we'll get quite a few, and they are the hard ones to get,
-        # so fill in any we ca and then run update components.
+        # so fill in any we can and then run update components.
         for n in range(self.num_points):
-            for i in range(self.min_samples - 1, 0):
+            for i in range(self.min_samples, 0):
                 m = knn_indices[n, i]
                 if self.core_distance[m] <= self.core_distance[n]:
                     self.candidate_point[n] = n
