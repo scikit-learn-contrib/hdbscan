@@ -1110,7 +1110,6 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                                  "gen_min_span_tree=False or the tree was " +
                                  "not generated in spite of it owing to " +
                                  "internal optimization criteria.")
-            return
 
         labels = self.labels_
         sizes = np.bincount(labels + 1)
