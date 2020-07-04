@@ -733,9 +733,15 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                     if sub_node != node:
                         is_cluster[sub_node] = False
 
-        if cluster_selection_epsilon != 0.0:
-            eom_clusters = set([c for c in is_cluster if is_cluster[c]])
-            selected_clusters = epsilon_search(eom_clusters, cluster_tree, cluster_selection_epsilon, allow_single_cluster)
+        if cluster_selection_epsilon != 0.0 and cluster_tree.shape[0] > 0:
+            eom_clusters = [c for c in is_cluster if is_cluster[c]]
+            selected_clusters = []
+            # first check if eom_clusters only has root node, which skips epsilon check.
+            if (len(eom_clusters) == 1 and eom_clusters[0] == cluster_tree['parent'].min()):
+                if allow_single_cluster:
+                    selected_clusters = eom_clusters
+            else:
+                selected_clusters = epsilon_search(set(eom_clusters), cluster_tree, cluster_selection_epsilon, allow_single_cluster)
             for c in is_cluster:
                 if c in selected_clusters:
                     is_cluster[c] = True
