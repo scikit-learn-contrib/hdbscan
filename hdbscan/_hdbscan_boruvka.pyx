@@ -731,7 +731,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
             # then propagate the results of that computation
             # up the tree.
             new_bound = min(new_upper_bound,
-                            new_lower_bound + 2 * node1_info.radius)
+                            new_lower_bound + 2 * self.dist._dist_to_rdist(node1_info.radius))
             # new_bound = new_upper_bound
             if new_bound < self.bounds_ptr[node1]:
                 self.bounds_ptr[node1] = new_bound
