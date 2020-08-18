@@ -438,8 +438,10 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         # issues, but we'll get quite a few, and they are the hard ones to
         # get, so fill in any we can and then run update components.
         for n in range(self.num_points):
-            for i in range(1, self.min_samples + 1):
+            for i in range(0, self.min_samples + 1):
                 m = knn_indices[n, i]
+                if n == m:
+                    continue
                 if self.core_distance[m] <= self.core_distance[n]:
                     self.candidate_point[n] = n
                     self.candidate_neighbor[n] = m
@@ -1034,12 +1036,15 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         # issues, but we'll get quite a few, and they are the hard ones to get,
         # so fill in any we can and then run update components.
         for n in range(self.num_points):
-            for i in range(self.min_samples, 0, -1):
+            for i in range(0, self.min_samples + 1):
                 m = knn_indices[n, i]
+                if n == m:
+                    continue
                 if self.core_distance[m] <= self.core_distance[n]:
                     self.candidate_point[n] = n
                     self.candidate_neighbor[n] = m
                     self.candidate_distance[n] = self.core_distance[n]
+                    break
 
         self.update_components()
 
