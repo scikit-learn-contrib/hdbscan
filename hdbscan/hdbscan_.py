@@ -49,7 +49,8 @@ def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
                     cluster_selection_method='eom',
                     allow_single_cluster=False,
                     match_reference_implementation=False,
-					cluster_selection_epsilon=0.0):
+					cluster_selection_epsilon=0.0,
+                    max_cluster_size=0):
     """Converts a pretrained tree and cluster size into a
     set of labels and probabilities.
     """
@@ -61,7 +62,8 @@ def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
                                                       cluster_selection_method,
                                                       allow_single_cluster,
                                                       match_reference_implementation,
-													  cluster_selection_epsilon)
+													  cluster_selection_epsilon,
+                                                      max_cluster_size)
 
     return (labels, probabilities, stabilities, condensed_tree,
             single_linkage_tree)
@@ -330,7 +332,7 @@ def check_precomputed_distance_matrix(X):
 
 
 def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selection_epsilon=0.0,
-            metric='minkowski', p=2, leaf_size=40,
+            max_cluster_size=0, metric='minkowski', p=2, leaf_size=40,
             algorithm='best', memory=Memory(cachedir=None, verbose=0),
             approx_min_span_tree=True, gen_min_span_tree=False,
             core_dist_n_jobs=4,
@@ -362,6 +364,12 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
     alpha : float, optional (default=1.0)
         A distance scaling parameter as used in robust single linkage.
         See [2]_ for more information.
+
+    max_cluster_size : int, optional (default=0)
+        A limit to the size of clusters returned by the eom algorithm.
+        Has no effect when using leaf clustering (where clusters are
+        usually small regardless) and can also be overridden in rare
+        cases by a high value for cluster_selection_epsilon.
 
     metric : string or callable, optional (default='minkowski')
         The metric to use when calculating distance between instances in a
@@ -635,7 +643,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
                            cluster_selection_method,
                            allow_single_cluster,
                            match_reference_implementation,
-						   cluster_selection_epsilon) + \
+						   cluster_selection_epsilon,
+                           max_cluster_size) + \
             (result_min_span_tree,)
 
 
