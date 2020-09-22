@@ -717,7 +717,6 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
     # if you do, change this accordingly!
     if allow_single_cluster:
         node_list = sorted(stability.keys(), reverse=True)
-        # Compute cluster size for the root node
     else:
         node_list = sorted(stability.keys(), reverse=True)[:-1]
         # (exclude root)
@@ -732,6 +731,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
     cluster_sizes = {child: child_size for child, child_size
                  in zip(cluster_tree['child'], cluster_tree['child_size'])}
     if allow_single_cluster:
+        # Compute cluster size for the root node
         cluster_sizes[node_list[-1]] = np.sum(
             cluster_tree[cluster_tree['parent'] == node_list[-1]]['child_size'])
 
