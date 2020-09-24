@@ -187,15 +187,19 @@ cdef class BoruvkaUnionFind (object):
         a component.
     """
 
-    cdef np.ndarray _data_arr
-    cdef np.intp_t[:, ::1] _data
+    cdef np.ndarray _parent_arr
+    cdef np.intp_t[::1] _parent
+    cdef np.ndarray _rank_arr
+    cdef np.uint8_t[::1] _rank
     cdef np.ndarray is_component
 
     def __init__(self, size):
-        self._data_arr = np.zeros((size, 2), dtype=np.intp)
-        self._data_arr.T[0] = np.arange(size)
-        self._data = (<np.intp_t[:size, :2:1]> (<np.intp_t *>
-                                                self._data_arr.data))
+        self._parent_arr = np.arange(size, dtype=np.intp)
+        self._parent = (<np.intp_t[:size:1]> (<np.intp_t *>
+                                              self._parent_arr.data))
+        self._rank_arr = np.zeros(size, dtype=np.uint8)
+        self._rank = (<np.uint8_t[:size:1]> (<np.uint8_t *>
+                                             self._rank_arr.data))
         self.is_component = np.ones(size, dtype=np.bool)
 
     cdef int union_(self, np.intp_t x, np.intp_t y) except -1:
@@ -203,22 +207,35 @@ cdef class BoruvkaUnionFind (object):
         cdef np.intp_t x_root = self.find(x)
         cdef np.intp_t y_root = self.find(y)
 
-        if self._data[x_root, 1] < self._data[y_root, 1]:
-            self._data[x_root, 0] = y_root
-        elif self._data[x_root, 1] > self._data[y_root, 1]:
-            self._data[y_root, 0] = x_root
+        if x_root == y_root:
+            return 0
+
+        if self._rank[x_root] < self._rank[y_root]:
+            self._parent[x_root] = y_root
+            self.is_component[x_root] = False
+        elif self._rank[x_root] > self._rank[y_root]:
+            self._parent[y_root] = x_root
+            self.is_component[y_root] = False
         else:
-            self._data[y_root, 0] = x_root
-            self._data[x_root, 1] += 1
+            self._rank[x_root] += 1
+            self._parent[y_root] = x_root
+            self.is_component[y_root] = False
 
         return 0
 
     cdef np.intp_t find(self, np.intp_t x) except -1:
         """Find the root or identifier for the component that x is in"""
-        if self._data[x, 0] != x:
-            self._data[x, 0] = self.find(self._data[x, 0])
-            self.is_component[x] = False
-        return self._data[x, 0]
+        cdef np.intp_t x_parent
+        cdef np.intp_t x_grandparent
+
+        x_parent = self._parent[x]
+        while True:
+            if x_parent == x:
+                return x
+            x_grandparent = self._parent[x_parent]
+            self._parent[x] = x_grandparent
+            x = x_parent
+            x_parent = x_grandparent
 
     cdef np.ndarray[np.intp_t, ndim=1] components(self):
         """Return an array of all component roots/identifiers"""
