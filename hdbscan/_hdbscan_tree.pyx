@@ -463,7 +463,7 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(
                     else:
                         result[n] = -1
                 elif tree['lambda_val'][tree['child'] == n] >= \
--                    tree['lambda_val'][tree['parent'] == cluster].max():
+                     tree['lambda_val'][tree['parent'] == cluster].max():
                     result[n] = cluster_label_map[cluster]
                 else:
                     result[n] = -1
