@@ -456,9 +456,17 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(
         if cluster < root_cluster:
             result[n] = -1
         elif cluster == root_cluster:
-            if len(clusters) == 1 and allow_single_cluster and \
-                tree['lambda_val'][tree['child'] == n] >= 1 / cluster_selection_epsilon :
-                result[n] = cluster_label_map[cluster]
+            if len(clusters) == 1 and allow_single_cluster:
+                if cluster_selection_epsilon != 0.0:
+                    if tree['lambda_val'][tree['child'] == n] >= 1 / cluster_selection_epsilon :
+                        result[n] = cluster_label_map[cluster]
+                    else:
+                        result[n] = -1
+                elif tree['lambda_val'][tree['child'] == n] >= \
+-                    tree['lambda_val'][tree['parent'] == cluster].max():
+                    result[n] = cluster_label_map[cluster]
+                else:
+                    result[n] = -1
             else:
                 result[n] = -1
         else:
