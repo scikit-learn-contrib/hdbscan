@@ -628,10 +628,11 @@ def test_hdbscan_no_centroid_medoid_for_noise():
     assert_raises(ValueError, clusterer.weighted_cluster_centroid, -1)
     assert_raises(ValueError, clusterer.weighted_cluster_medoid, -1)
 
+
 def test_hdbscan_allow_single_cluster_with_epsilon():
     np.random.seed(0)
     no_structure = np.random.rand(150, 2)
-    #without epsilon we should see many noise points as children of root.
+    # without epsilon we should see many noise points as children of root.
     labels = HDBSCAN(min_cluster_size=5,
                      cluster_selection_epsilon=0.0,
                      cluster_selection_method='eom',
@@ -640,7 +641,8 @@ def test_hdbscan_allow_single_cluster_with_epsilon():
     assert_equal(len(unique_labels), 2)
     assert_equal(counts[unique_labels == -1], 46)
 
-    # for this random seed an epsilon of 0.2 will produce exactly 2 noise points at that cut in single linkage.
+    # for this random seed an epsilon of 0.2 will produce exactly 2 noise
+    # points at that cut in single linkage.
     labels = HDBSCAN(min_cluster_size=5,
                      cluster_selection_epsilon=0.2,
                      cluster_selection_method='eom',
