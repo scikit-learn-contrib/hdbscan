@@ -420,6 +420,7 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(
         set clusters,
         dict cluster_label_map,
         np.intp_t allow_single_cluster,
+        np.double_t cluster_selection_epsilon,
         np.intp_t match_reference_implementation):
 
     cdef np.intp_t root_cluster
@@ -455,10 +456,17 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(
         if cluster < root_cluster:
             result[n] = -1
         elif cluster == root_cluster:
-            if len(clusters) == 1 and allow_single_cluster and \
-                tree['lambda_val'][tree['child'] == n] >= \
-                    tree['lambda_val'][tree['parent'] == cluster].max():
-                result[n] = cluster_label_map[cluster]
+            if len(clusters) == 1 and allow_single_cluster:
+                if cluster_selection_epsilon != 0.0:
+                    if tree['lambda_val'][tree['child'] == n] >= 1 / cluster_selection_epsilon :
+                        result[n] = cluster_label_map[cluster]
+                    else:
+                        result[n] = -1
+                elif tree['lambda_val'][tree['child'] == n] >= \
+                     tree['lambda_val'][tree['parent'] == cluster].max():
+                    result[n] = cluster_label_map[cluster]
+                else:
+                    result[n] = -1
             else:
                 result[n] = -1
         else:
@@ -770,13 +778,13 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
         raise ValueError('Invalid Cluster Selection Method: %s\n'
                          'Should be one of: "eom", "leaf"\n')
 
-
     clusters = set([c for c in is_cluster if is_cluster[c]])
     cluster_map = {c: n for n, c in enumerate(sorted(list(clusters)))}
     reverse_cluster_map = {n: c for c, n in cluster_map.items()}
 
     labels = do_labelling(tree, clusters, cluster_map,
-                    allow_single_cluster, match_reference_implementation)
+                          allow_single_cluster, cluster_selection_epsilon,
+                          match_reference_implementation)
     probs = get_probabilities(tree, reverse_cluster_map, labels)
     stabilities = get_stability_scores(labels, clusters, stability, max_lambda)
 
