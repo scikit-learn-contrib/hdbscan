@@ -420,7 +420,7 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(
         set clusters,
         dict cluster_label_map,
         np.intp_t allow_single_cluster,
-        double cluster_selection_epsilon,
+        np.double_t cluster_selection_epsilon,
         np.intp_t match_reference_implementation):
 
     cdef np.intp_t root_cluster
