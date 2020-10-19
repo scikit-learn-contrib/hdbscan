@@ -78,7 +78,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     cdef np.intp_t sub_node
     cdef np.intp_t left
     cdef np.intp_t right
-    cdef double lambda_value
+    cdef np.double_t lambda_value
     cdef np.intp_t left_count
     cdef np.intp_t right_count
 
@@ -157,8 +157,16 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
 
     return np.array(result_list, dtype=[('parent', np.intp),
                                         ('child', np.intp),
-                                        ('lambda_val', float),
+                                        ('lambda_val', np.double),
                                         ('child_size', np.intp)])
+
+
+# Cython version of tree entry, keep in sync with above.
+cdef packed struct tree_rec_t:
+  np.intp_t parent
+  np.intp_t child
+  np.double_t lambda_val
+  np.intp_t child_size
 
 
 cpdef dict compute_stability(np.ndarray condensed_tree):
@@ -295,7 +303,7 @@ cdef max_lambdas(np.ndarray tree):
             # Initialize
             current_parent = parent
             max_lambda = lambda_
-    
+
     deaths[current_parent] = max_lambda # value for last parent
 
     return deaths_arr
@@ -606,6 +614,7 @@ cpdef np.ndarray get_stability_scores(np.ndarray labels, set clusters,
 
     return result
 
+
 cpdef list recurse_leaf_dfs(np.ndarray cluster_tree, np.intp_t current_node):
     children = cluster_tree[cluster_tree['parent'] == current_node]['child']
     if len(children) == 0:
@@ -614,43 +623,133 @@ cpdef list recurse_leaf_dfs(np.ndarray cluster_tree, np.intp_t current_node):
         return sum([recurse_leaf_dfs(cluster_tree, child) for child in children], [])
 
 
-cpdef list get_cluster_tree_leaves(np.ndarray cluster_tree):
+cdef np.intp_t fast_recurse_leaf_dfs(np.ndarray[np.intp_t, ndim=1, mode='c'] leaves,
+                                     np.intp_t leaves_count,
+                                     np.ndarray[tree_rec_t, ndim=1, mode='c'] cluster_tree,
+                                     np.intp_t root,
+                                     np.intp_t current_node,
+                                     np.double_t cluster_selection_epsilon,
+                                     np.intp_t allow_single_cluster):
+    """ Optimized, internal version of recurse_leaf_dfs for use by get_cluster_tree_leaves
+    """
+    cdef np.intp_t first_parent, i
+    cdef np.double_t eps
+
+    for i in range(0, cluster_tree.shape[0]):
+        if cluster_tree[i].parent == current_node:
+            first_parent = i
+            break
+    else:
+        # If we didn't find anything then we don't have children and current_node is a leaf
+        leaves[leaves_count] = current_node
+        return leaves_count + 1
+
+    # If any of the children have eps below threshold the current cluster is the one we
+    # need. Also never select root as a leaf unless a single cluster is allowed.
+    if cluster_selection_epsilon != 0.0 and (current_node != root or allow_single_cluster):
+        for i in range(first_parent, cluster_tree.shape[0]):
+            if cluster_tree[i].parent != current_node:
+                break
+            eps = 1 / cluster_tree[i].lambda_val
+            if eps < cluster_selection_epsilon:
+                leaves[leaves_count] = current_node
+                return leaves_count + 1
+
+    # Otherwise recurse into all edges with current_node as parent. These are contiguous
+    # due to how cluster_tree is constructed in condense_tree.
+    for i in range(first_parent, cluster_tree.shape[0]):
+        if cluster_tree[i].parent != current_node:
+            break
+        leaves_count = fast_recurse_leaf_dfs(leaves, leaves_count, cluster_tree, root, cluster_tree[i].child,
+                                             cluster_selection_epsilon, allow_single_cluster)
+
+    return leaves_count
+
+cpdef list get_cluster_tree_leaves(np.ndarray cluster_tree, np.double_t cluster_selection_epsilon,
+                                   np.intp_t allow_single_cluster):
+    cdef np.ndarray[np.intp_t, ndim=1, mode='c'] leaves
+    cdef np.intp_t leaves_count, root
+
     if cluster_tree.shape[0] == 0:
         return []
     root = cluster_tree['parent'].min()
-    return recurse_leaf_dfs(cluster_tree, root)
 
-cpdef np.intp_t traverse_upwards(np.ndarray cluster_tree, np.double_t cluster_selection_epsilon, np.intp_t leaf, np.intp_t allow_single_cluster):
+    # There can never be more leaves than tree entries
+    leaves = np.empty(cluster_tree.shape[0], dtype=np.intp)
+    leaves_count = fast_recurse_leaf_dfs(leaves, 0, cluster_tree, root, root, cluster_selection_epsilon,
+                                         allow_single_cluster)
+    return leaves[:leaves_count].tolist()
 
+
+cdef np.intp_t tree_find_parent_index(np.ndarray[tree_rec_t, ndim=1, mode='c'] cluster_tree,
+                                      np.intp_t node, np.intp_t node_index):
+    """ Finds the _index_ in cluster_tree of the parent of node.
+        node_index is used as hint to speed up search, set to -1 if not known.
+    """
+    # Due to how cluster_tree is constructed parents are always at lower indices than
+    # their children and since there is only one parent we can abort the search when found.
+    cdef np.intp_t i
+    if node_index == -1:
+        node_index = cluster_tree.shape[0]
+    for i in range(node_index - 1, -1, -1):
+        if cluster_tree[i].child == node:
+            return i
+    raise ValueError("cluster_tree is malformed")
+
+cdef np.intp_t traverse_upwards(np.ndarray[tree_rec_t, ndim=1, mode='c'] cluster_tree,
+                                np.intp_t root,
+                                np.double_t cluster_selection_epsilon,
+                                np.intp_t allow_single_cluster,
+                                np.intp_t node_index):
+
+    cdef np.intp_t parent_index
+    cdef np.double_t parent_eps
+    cdef tree_rec_t node
+
+    while True:
+        node = cluster_tree[node_index]
+        if node.parent == root:
+            if allow_single_cluster:
+                return node.parent
+            else:
+                return node.child  # return node closest to root
+
+        parent_index = tree_find_parent_index(cluster_tree, node.parent, node_index)
+
+        parent_eps = 1 / cluster_tree[parent_index].lambda_val
+        if parent_eps > cluster_selection_epsilon:
+            return node.parent
+
+        node_index = parent_index
+
+cpdef set epsilon_search(set leaves, np.ndarray cluster_tree, np.double_t cluster_selection_epsilon,
+                         np.intp_t allow_single_cluster):
+
+    cdef list selected_clusters
+    cdef set processed
+    cdef np.intp_t epsilon_child, sub_node, leaf, parent_index
+    cdef np.double_t eps
+    cdef np.intp_t root
+
+    if len(leaves) == 0:
+        return set()
+
+    selected_clusters = []
+    processed = set()
     root = cluster_tree['parent'].min()
-    parent = cluster_tree[cluster_tree['child'] == leaf]['parent']
-    if parent == root:
-        if allow_single_cluster:
-            return parent
-        else:
-            return leaf #return node closest to root
-
-    parent_eps = 1/cluster_tree[cluster_tree['child'] == parent]['lambda_val']
-    if parent_eps > cluster_selection_epsilon:
-        return parent
-    else:
-        return traverse_upwards(cluster_tree, cluster_selection_epsilon, parent, allow_single_cluster)
-
-cpdef set epsilon_search(set leaves, np.ndarray cluster_tree, np.double_t cluster_selection_epsilon, np.intp_t allow_single_cluster):
-
-    selected_clusters = list()
-    processed = list()
 
     for leaf in leaves:
-        eps = 1/cluster_tree['lambda_val'][cluster_tree['child'] == leaf][0]
+        parent_index = tree_find_parent_index(cluster_tree, leaf, -1)
+        eps = 1 / cluster_tree[parent_index]['lambda_val']
         if eps < cluster_selection_epsilon:
             if leaf not in processed:
-                epsilon_child = traverse_upwards(cluster_tree, cluster_selection_epsilon, leaf, allow_single_cluster)
+                epsilon_child = traverse_upwards(cluster_tree, root, cluster_selection_epsilon,
+                                                 allow_single_cluster, parent_index)
                 selected_clusters.append(epsilon_child)
 
                 for sub_node in bfs_from_cluster_tree(cluster_tree, epsilon_child):
                     if sub_node != epsilon_child:
-                        processed.append(sub_node)
+                        processed.add(sub_node)
         else:
             selected_clusters.append(leaf)
 
@@ -749,7 +848,9 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                 if allow_single_cluster:
                     selected_clusters = eom_clusters
             else:
-                selected_clusters = epsilon_search(set(eom_clusters), cluster_tree, cluster_selection_epsilon, allow_single_cluster)
+                selected_clusters = epsilon_search(set(eom_clusters), cluster_tree,
+                                                   cluster_selection_epsilon,
+                                                   allow_single_cluster)
             for c in is_cluster:
                 if c in selected_clusters:
                     is_cluster[c] = True
@@ -758,22 +859,14 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
 
 
     elif cluster_selection_method == 'leaf':
-        leaves = set(get_cluster_tree_leaves(cluster_tree))
-        if len(leaves) == 0:
-            for c in is_cluster:
-                is_cluster[c] = False
-            is_cluster[tree['parent'].min()] = True
-
-        if cluster_selection_epsilon != 0.0:
-            selected_clusters = epsilon_search(leaves, cluster_tree, cluster_selection_epsilon, allow_single_cluster)
-        else:
-            selected_clusters = leaves
-
+        selected_clusters = set(get_cluster_tree_leaves(cluster_tree,
+                                                        cluster_selection_epsilon,
+                                                        allow_single_cluster))
         for c in is_cluster:
-                if c in selected_clusters:
-                    is_cluster[c] = True
-                else:
-                    is_cluster[c] = False
+            if c in selected_clusters:
+                is_cluster[c] = True
+            else:
+                is_cluster[c] = False
     else:
         raise ValueError('Invalid Cluster Selection Method: %s\n'
                          'Should be one of: "eom", "leaf"\n')
