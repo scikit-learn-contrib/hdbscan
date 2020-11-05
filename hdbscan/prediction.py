@@ -174,7 +174,7 @@ def _find_neighbor_and_lambda(neighbor_indices, neighbor_distances,
         The lambda value at which this point joins/merges with `neighbor`.
     """
     neighbor_core_distances = core_distances[neighbor_indices]
-    point_core_distances = neighbor_distances[min_samples] * np.ones(
+    point_core_distances = neighbor_distances[min_samples - 1] * np.ones(
         neighbor_indices.shape[0])
     mr_distances = np.vstack((
         neighbor_core_distances,
