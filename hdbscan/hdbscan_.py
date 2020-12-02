@@ -850,7 +850,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
     """
 
-    def __init__(self, min_cluster_size=5, min_samples=None, cluster_selection_epsilon=0.0,
+    def __init__(self, min_cluster_size=5, min_samples=None, cluster_selection_epsilon=0.0, max_cluster_size=0,
                  metric='euclidean', alpha=1.0, p=None,
                  algorithm='best', leaf_size=40,
                  memory=Memory(cachedir=None, verbose=0),
@@ -860,10 +860,12 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                  cluster_selection_method='eom',
                  allow_single_cluster=False,
                  prediction_data=False,
-                 match_reference_implementation=False, **kwargs):
+                 match_reference_implementation=False,
+                 **kwargs):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
         self.alpha = alpha
+        self.max_cluster_size = max_cluster_size
         self.cluster_selection_epsilon = cluster_selection_epsilon
         self.metric = metric
         self.p = p
