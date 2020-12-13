@@ -50,21 +50,23 @@ def _tree_to_labels(X, single_linkage_tree, min_cluster_size=10,
                     allow_single_cluster=False,
                     match_reference_implementation=False,
 					cluster_selection_epsilon=0.0,
-                    max_cluster_size=0):
+                    max_cluster_size=0, return_prediction_data=False):
     """Converts a pretrained tree and cluster size into a
     set of labels and probabilities.
     """
     condensed_tree = condense_tree(single_linkage_tree,
                                    min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
-    labels, probabilities, stabilities = get_clusters(condensed_tree,
+    labels, probabilities, stabilities, clusters, cluster_map, reverse_cluster_map = get_clusters(condensed_tree,
                                                       stability_dict,
                                                       cluster_selection_method,
                                                       allow_single_cluster,
                                                       match_reference_implementation,
 													  cluster_selection_epsilon,
-                                                      max_cluster_size)
-
+                                                      max_cluster_size, return_prediction_data=True)
+    if return_prediction_data:
+        return (labels, probabilities, stabilities, condensed_tree,
+            single_linkage_tree, clusters, cluster_map, reverse_cluster_map)
     return (labels, probabilities, stabilities, condensed_tree,
             single_linkage_tree)
 
@@ -636,7 +638,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
                                                approx_min_span_tree,
                                                gen_min_span_tree,
                                                core_dist_n_jobs, **kwargs)
-
+    breakpoint()
     return _tree_to_labels(X,
                            single_linkage_tree,
                            min_cluster_size,
@@ -644,7 +646,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
                            allow_single_cluster,
                            match_reference_implementation,
 						   cluster_selection_epsilon,
-                           max_cluster_size) + \
+                           max_cluster_size, return_prediction_data=True) + \
             (result_min_span_tree,)
 
 
