@@ -424,8 +424,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                     datasets.append(np.asarray(self.tree.data[i*split_cnt:(i+1)*split_cnt]))
 
             knn_data = Parallel(n_jobs=self.n_jobs)(
-                delayed(_core_dist_query,
-                        check_pickle=False)
+                delayed(_core_dist_query)
                 (self.core_dist_tree, points,
                  self.min_samples + 1)
                 for points in datasets)
@@ -1027,8 +1026,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                     datasets.append(np.asarray(self.tree.data[i*split_cnt:(i+1)*split_cnt]))
 
             knn_data = Parallel(n_jobs=self.n_jobs)(
-                delayed(_core_dist_query,
-                        check_pickle=False)
+                delayed(_core_dist_query)
                 (self.core_dist_tree, points,
                  self.min_samples)
                 for points in datasets)
