@@ -25,10 +25,9 @@ popd
 # Configure the conda environment and put it in the path using the
 # provided versions
 conda create -n testenv --yes python=$PYTHON_VERSION pip nose \
-      numpy=$NUMPY_VERSION scipy=$SCIPY_VERSION cython=$CYTHON_VERSION matplotlib pandas networkx
+      numpy scipy cython scikit-learn joblib matplotlib pandas networkx
 
 source activate testenv
-
 
 if [[ "$COVERAGE" == "true" ]]; then
     pip install coverage coveralls
