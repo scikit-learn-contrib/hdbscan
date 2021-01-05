@@ -10,13 +10,9 @@ from scipy.spatial import distance
 from scipy import sparse
 from scipy import stats
 from sklearn.utils.estimator_checks import check_estimator
-from sklearn.utils.testing import (assert_equal,
-                                   assert_array_equal,
+from sklearn.utils._testing import (assert_array_equal,
                                    assert_array_almost_equal,
-                                   assert_raises,
-                                   assert_in,
-                                   assert_not_in,
-                                   assert_no_warnings)
+                                   assert_raises)
 from hdbscan import (HDBSCAN,
                      hdbscan,
                      validity_index,
@@ -124,11 +120,11 @@ def test_hdbscan_distance_matrix():
     labels, p, persist, ctree, ltree, mtree = hdbscan(D, metric='precomputed')
     # number of clusters, ignoring noise if present
     n_clusters_1 = len(set(labels)) - int(-1 in labels)  # ignore noise
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = HDBSCAN(metric="precomputed").fit(D).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
     validity = validity_index(D, labels, metric='precomputed', d=2)
     assert_greater_equal(validity, 0.6)
@@ -147,22 +143,22 @@ def test_hdbscan_sparse_distance_matrix():
     labels, p, persist, ctree, ltree, mtree = hdbscan(D, metric='precomputed')
     # number of clusters, ignoring noise if present
     n_clusters_1 = len(set(labels)) - int(-1 in labels)  # ignore noise
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = HDBSCAN(metric="precomputed",
                      gen_min_span_tree=True).fit(D).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
 
 def test_hdbscan_feature_vector():
     labels, p, persist, ctree, ltree, mtree = hdbscan(X)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = HDBSCAN().fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
     validity = validity_index(X, labels)
     assert_greater_equal(validity, 0.4)
@@ -172,12 +168,12 @@ def test_hdbscan_prims_kdtree():
     labels, p, persist, ctree, ltree, mtree = hdbscan(X,
                                                       algorithm='prims_kdtree')
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = HDBSCAN(algorithm='prims_kdtree',
                      gen_min_span_tree=True).fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
     assert_raises(ValueError,
                   hdbscan,
@@ -190,12 +186,12 @@ def test_hdbscan_prims_balltree():
     labels, p, persist, ctree, ltree, mtree = hdbscan(
         X, algorithm='prims_balltree')
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = HDBSCAN(algorithm='prims_balltree',
                      gen_min_span_tree=True).fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
     assert_raises(ValueError,
                   hdbscan,
@@ -208,12 +204,12 @@ def test_hdbscan_boruvka_kdtree():
     labels, p, persist, ctree, ltree, mtree = hdbscan(
         X, algorithm='boruvka_kdtree')
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = HDBSCAN(algorithm='boruvka_kdtree',
                      gen_min_span_tree=True).fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
     assert_raises(ValueError,
                   hdbscan,
@@ -226,12 +222,12 @@ def test_hdbscan_boruvka_balltree():
     labels, p, persist, ctree, ltree, mtree = hdbscan(
         X, algorithm='boruvka_balltree')
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = HDBSCAN(algorithm='boruvka_balltree',
                      gen_min_span_tree=True).fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
     assert_raises(ValueError,
                   hdbscan,
@@ -243,12 +239,12 @@ def test_hdbscan_boruvka_balltree():
 def test_hdbscan_generic():
     labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm='generic')
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = HDBSCAN(algorithm='generic',
                      gen_min_span_tree=True).fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
 
 def test_hdbscan_high_dimensional():
@@ -257,34 +253,34 @@ def test_hdbscan_high_dimensional():
     H = StandardScaler().fit_transform(H)
     labels, p, persist, ctree, ltree, mtree = hdbscan(H)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = HDBSCAN(algorithm='best', metric='seuclidean',
                      V=np.ones(H.shape[1])).fit(H).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
 
 def test_hdbscan_best_balltree_metric():
     labels, p, persist, ctree, ltree, mtree = hdbscan(X, metric='seuclidean',
                                                       V=np.ones(X.shape[1]))
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = HDBSCAN(metric='seuclidean', V=np.ones(X.shape[1])).fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
 
 def test_hdbscan_no_clusters():
     labels, p, persist, ctree, ltree, mtree = hdbscan(
         X, min_cluster_size=len(X) + 1)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, 0)
+    assert(n_clusters_1 == 0)
 
     labels = HDBSCAN(min_cluster_size=len(X) + 1).fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, 0)
+    assert(n_clusters_2 == 0)
 
 
 def test_hdbscan_min_cluster_size():
@@ -309,11 +305,11 @@ def test_hdbscan_callable_metric():
 
     labels, p, persist, ctree, ltree, mtree = hdbscan(X, metric=metric)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = HDBSCAN(metric=metric).fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
 
 def test_hdbscan_input_lists():
@@ -469,11 +465,11 @@ def test_hdbscan_outliers():
 def test_hdbscan_approximate_predict():
     clusterer = HDBSCAN(prediction_data=True).fit(X)
     cluster, prob = approximate_predict(clusterer, np.array([[-1.5, -1.0]]))
-    assert_equal(cluster, 2)
+    assert(cluster == 2)
     cluster, prob = approximate_predict(clusterer, np.array([[1.5, -1.0]]))
-    assert_equal(cluster, 1)
+    assert(cluster == 1)
     cluster, prob = approximate_predict(clusterer, np.array([[0.0, 0.0]]))
-    assert_equal(cluster, -1)
+    assert(cluster == -1)
 
 
 def test_hdbscan_approximate_predict_score():
@@ -596,7 +592,7 @@ def test_hdbscan_sparse():
 
     labels = HDBSCAN().fit(sparse_X).labels_
     n_clusters = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters, 3)
+    assert(n_clusters == 3)
 
 
 def test_hdbscan_caching():
@@ -607,7 +603,7 @@ def test_hdbscan_caching():
                       min_cluster_size=6).fit(X).labels_
     n_clusters1 = len(set(labels1)) - int(-1 in labels1)
     n_clusters2 = len(set(labels2)) - int(-1 in labels2)
-    assert_equal(n_clusters1, n_clusters2)
+    assert(n_clusters1 == n_clusters2)
 
 
 def test_hdbscan_centroids_medoids():
@@ -638,8 +634,8 @@ def test_hdbscan_allow_single_cluster_with_epsilon():
                      cluster_selection_method='eom',
                      allow_single_cluster=True).fit_predict(no_structure)
     unique_labels, counts = np.unique(labels, return_counts=True)
-    assert_equal(len(unique_labels), 2)
-    assert_equal(counts[unique_labels == -1], 46)
+    assert(len(unique_labels) == 2)
+    assert(counts[unique_labels == -1] == 46)
 
     # for this random seed an epsilon of 0.2 will produce exactly 2 noise
     # points at that cut in single linkage.
@@ -648,8 +644,8 @@ def test_hdbscan_allow_single_cluster_with_epsilon():
                      cluster_selection_method='eom',
                      allow_single_cluster=True).fit_predict(no_structure)
     unique_labels, counts = np.unique(labels, return_counts=True)
-    assert_equal(len(unique_labels), 2)
-    assert_equal(counts[unique_labels == -1], 2)
+    assert(len(unique_labels) == 2)
+    assert(counts[unique_labels == -1] == 2)
 
 
 # Disable for now -- need to refactor to meet newer standards

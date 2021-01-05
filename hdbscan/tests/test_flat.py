@@ -15,9 +15,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.utils._testing import assert_array_equal, assert_array_less
 
-def assert_equal(a, b):
-    assert(a == b)
-
 # Ignore future warnings thrown by sklearn
 warnings.filterwarnings("ignore", category=FutureWarning)
 
@@ -185,7 +182,7 @@ def test_approx_predict_same_clusters():
 
     # Then, the number of clusters produced must match the original n_clusters
     n_clusters_out = n_clusters_from_labels(labels_flat)
-    assert_equal(n_clusters_out, n_clusters)
+    assert(n_clusters_out == n_clusters)
     # and all probabilities are <= 1.
     assert_array_less(proba_flat, np.ones(len(proba_flat))+1.e-14)
     return
@@ -208,7 +205,7 @@ def test_approx_predict_diff_clusters():
 
     # Then, the requested number of clusters must be produced
     n_clusters_out = n_clusters_from_labels(labels_flat)
-    assert_equal(n_clusters_out, n_clusters_predict)
+    assert(n_clusters_out == n_clusters_predict)
     # and all probabilities are <= 1.
     assert_array_less(proba_flat, np.ones(len(proba_flat))+1.e-14)
 
@@ -224,7 +221,7 @@ def test_approx_predict_diff_clusters():
         assert "Cannot predict" in str(w[-1].message)
     # But the requested number of clusters must still be produced using 'leaf'
     n_clusters_out = n_clusters_from_labels(labels_flat)
-    assert_equal(n_clusters_out, n_clusters_predict)
+    assert(n_clusters_out == n_clusters_predict)
     # and all probabilities are <= 1.
     assert_array_less(proba_flat, np.ones(len(proba_flat))+1.e-14)
     return
@@ -242,10 +239,9 @@ def test_mem_vec_same_clusters():
     memberships = membership_vector_flat(clusterer, X_test)
 
     # Then the number of clusters in memberships matches those of clusterer,
-    assert_equal(memberships.shape[1],
-                 n_clusters_from_labels(clusterer.labels_))
+    assert(memberships.shape[1] == n_clusters_from_labels(clusterer.labels_))
     # and the number of points should equal those in the test set
-    assert_equal(len(memberships), len(X_test))
+    assert(len(memberships) == len(X_test))
     # and all probabilities are <= 1.
     assert_array_less(memberships, np.ones(memberships.shape)+1.e-14)
 
@@ -258,9 +254,9 @@ def test_mem_vec_same_clusters():
     memberships = membership_vector_flat(clusterer, X_test)
 
     # Then the number of clusters in memberships matches those of clusterer,
-    assert_equal(memberships.shape[1], n_clusters_fit)
+    assert(memberships.shape[1] == n_clusters_fit)
     # and the number of points should equal those in the test set
-    assert_equal(len(memberships), len(X_test))
+    assert(len(memberships) == len(X_test))
     # and all probabilities are <= 1.
     assert_array_less(memberships, np.ones(memberships.shape)+1.e-14)
     return
@@ -284,9 +280,9 @@ def test_mem_vec_diff_clusters():
                                          n_clusters=n_clusters_predict)
 
     # Then the number of clusters in memberships should be as requested,
-    assert_equal(memberships.shape[1], n_clusters_predict)
+    assert(memberships.shape[1] == n_clusters_predict)
     # and the number of points should equal those in the test set
-    assert_equal(len(memberships), len(X_test))
+    assert(len(memberships) == len(X_test))
     # and all probabilities are <= 1.
     assert_array_less(memberships, np.ones(memberships.shape)+1.e-14)
 
@@ -301,9 +297,9 @@ def test_mem_vec_diff_clusters():
                                          n_clusters=n_clusters_predict)
 
     # Then the number of clusters in memberships should be as requested,
-    assert_equal(memberships.shape[1], n_clusters_predict)
+    assert(memberships.shape[1] == n_clusters_predict)
     # and the number of points should equal those in the test set
-    assert_equal(len(memberships), len(X_test))
+    assert(len(memberships) == len(X_test))
     # and all probabilities are <= 1.
     assert_array_less(memberships, np.ones(memberships.shape)+1.e-14)
     return
@@ -322,10 +318,9 @@ def test_all_points_mem_vec_same_clusters():
     memberships = all_points_membership_vectors_flat(clusterer)
 
     # Then the number of clusters in memberships matches those of clusterer,
-    assert_equal(memberships.shape[1],
-                 n_clusters_from_labels(clusterer.labels_))
+    assert(memberships.shape[1] == n_clusters_from_labels(clusterer.labels_))
     # and the number of points should equal those in the training set
-    assert_equal(len(memberships), len(X))
+    assert(len(memberships) == len(X))
     # and all probabilities are <= 1.
     assert_array_less(memberships, np.ones(memberships.shape)+1.e-14)
 
@@ -338,10 +333,9 @@ def test_all_points_mem_vec_same_clusters():
     memberships = all_points_membership_vectors_flat(clusterer)
 
     # Then the number of clusters in memberships matches those of clusterer,
-    assert_equal(memberships.shape[1],
-                 n_clusters_from_labels(clusterer.labels_))
+    assert(memberships.shape[1] == n_clusters_from_labels(clusterer.labels_))
     # and the number of points should equal those in the training set
-    assert_equal(len(memberships), len(X))
+    assert(len(memberships) == len(X))
     # and all probabilities are <= 1.
     assert_array_less(memberships, np.ones(memberships.shape)+1.e-14)
     return
@@ -365,9 +359,9 @@ def test_all_points_mem_vec_diff_clusters():
                         clusterer, n_clusters=n_clusters_predict)
 
     # Then the number of clusters in memberships should be as requested,
-    assert_equal(memberships.shape[1], n_clusters_predict)
+    assert(memberships.shape[1] == n_clusters_predict)
     # and the number of points should equal those in the training set
-    assert_equal(len(memberships), len(X))
+    assert(len(memberships) == len(X))
     # and all probabilities are <= 1.
     assert_array_less(memberships, np.ones(memberships.shape)+1.e-14)
 
@@ -382,9 +376,9 @@ def test_all_points_mem_vec_diff_clusters():
                         clusterer, n_clusters=n_clusters_predict)
 
     # Then the number of clusters in memberships should be as requested,
-    assert_equal(memberships.shape[1], n_clusters_predict)
+    assert(memberships.shape[1] == n_clusters_predict)
     # and the number of points should equal those in the training set
-    assert_equal(len(memberships), len(X))
+    assert(len(memberships) == len(X))
     # and all probabilities are <= 1.
     assert_array_less(memberships, np.ones(memberships.shape)+1.e-14)
     return
