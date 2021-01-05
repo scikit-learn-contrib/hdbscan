@@ -7,12 +7,7 @@ import numpy as np
 from scipy.spatial import distance
 from scipy import sparse
 from sklearn.utils.estimator_checks import check_estimator
-from sklearn.utils.testing import (assert_equal,
-                                   assert_array_equal,
-                                   assert_raises,
-                                   assert_in,
-                                   assert_not_in,
-                                   assert_no_warnings)
+from sklearn.utils._testing import assert_array_equal, assert_raises
 from hdbscan import RobustSingleLinkage, robust_single_linkage
 
 # from sklearn.cluster.tests.common import generate_clustered_data
@@ -32,7 +27,6 @@ X, y = shuffle(X, y, random_state=7)
 X = StandardScaler().fit_transform(X)
 # X = generate_clustered_data(n_clusters=n_clusters, n_samples_per_cluster=50)
 
-
 def test_rsl_distance_matrix():
     D = distance.squareform(distance.pdist(X))
     D /= np.max(D)
@@ -40,21 +34,21 @@ def test_rsl_distance_matrix():
     labels, tree = robust_single_linkage(D, 0.4, metric='precomputed')
     # number of clusters, ignoring noise if present
     n_clusters_1 = len(set(labels)) - int(-1 in labels)  # ignore noise
-    assert_equal(n_clusters_1, 2)
+    assert(n_clusters_1 == 2)
 
     labels = RobustSingleLinkage(metric="precomputed").fit(D).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, 2)
+    assert(n_clusters_2 == 2)
 
 
 def test_rsl_feature_vector():
     labels, tree = robust_single_linkage(X, 0.4)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = RobustSingleLinkage().fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
 
 def test_rsl_callable_metric():
@@ -63,11 +57,11 @@ def test_rsl_callable_metric():
 
     labels, tree = robust_single_linkage(X, 0.4, metric=metric)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = RobustSingleLinkage(metric=metric).fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
 
 def test_rsl_input_lists():
@@ -78,32 +72,32 @@ def test_rsl_input_lists():
 def test_rsl_boruvka_balltree():
     labels, tree = robust_single_linkage(X, 0.45, algorithm='boruvka_balltree')
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = RobustSingleLinkage(cut=0.45,
                                  algorithm='boruvka_balltree').fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
 
 def test_rsl_prims_balltree():
     labels, tree = robust_single_linkage(X, 0.4, algorithm='prims_balltree')
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = RobustSingleLinkage(algorithm='prims_balltree').fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
 
 def test_rsl_prims_kdtree():
     labels, tree = robust_single_linkage(X, 0.4, algorithm='prims_kdtree')
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = RobustSingleLinkage(algorithm='prims_kdtree').fit(X).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
 
 # def test_rsl_unavailable_hierarchy():
@@ -125,13 +119,13 @@ def test_rsl_high_dimensional():
     H = StandardScaler().fit_transform(H)
     labels, tree = robust_single_linkage(H, 5.5)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_1, n_clusters)
+    assert(n_clusters_1 == n_clusters)
 
     labels = RobustSingleLinkage(cut=5.5, algorithm='best',
                                  metric='seuclidean',
                                  metric_params={'V': np.ones(H.shape[1])}).fit(H).labels_
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
-    assert_equal(n_clusters_2, n_clusters)
+    assert(n_clusters_2 == n_clusters)
 
 
 def test_rsl_badargs():
