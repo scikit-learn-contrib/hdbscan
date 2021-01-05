@@ -13,7 +13,7 @@ from hdbscan.flat import (HDBSCAN_flat,
 from sklearn.datasets import make_blobs, make_moons
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-from sklearn.utils.testing import (assert_equal,
+from sklearn.utils._testing import (assert_equal,
                                    assert_array_equal,
                                    assert_array_less)
 
