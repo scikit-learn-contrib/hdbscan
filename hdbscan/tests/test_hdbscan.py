@@ -480,6 +480,7 @@ def test_hdbscan_approximate_predict_score():
     # wrong dimensions error
     assert_raises(ValueError, approximate_predict_scores, clusterer, np.array([[1, 2, 3]]))
     with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
         approximate_predict_scores(clusterer, np.array([[1.5, -1.0]]))
         # no clusters warning
         assert 'Clusterer does not have any defined clusters' in str(w[-1].message)
