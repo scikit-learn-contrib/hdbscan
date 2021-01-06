@@ -2,9 +2,6 @@
 Tests for HDBSCAN clustering algorithm
 Shamelessly based on (i.e. ripped off from) the DBSCAN test code
 """
-# import pickle
-from nose.tools import assert_less
-from nose.tools import assert_greater_equal
 import numpy as np
 from scipy.spatial import distance
 from scipy import sparse
@@ -28,7 +25,7 @@ from scipy.stats import mode
 
 from tempfile import mkdtemp
 from functools import wraps
-from nose import SkipTest
+import pytest
 
 from sklearn import datasets
 
@@ -52,12 +49,12 @@ def if_matplotlib(func):
     def run_test(*args, **kwargs):
         try:
             import matplotlib
-            matplotlib.use('Agg', warn=False)
+            matplotlib.use('Agg')
             # this fails if no $DISPLAY specified
             import matplotlib.pyplot as plt
             plt.figure()
         except ImportError:
-            raise SkipTest('Matplotlib not available.')
+            pytest.skip('Matplotlib not available.')
         else:
             return func(*args, **kwargs)
     return run_test
@@ -70,7 +67,7 @@ def if_pandas(func):
         try:
             import pandas
         except ImportError:
-            raise SkipTest('Pandas not available.')
+            pytest.skip('Pandas not available.')
         else:
             return func(*args, **kwargs)
     return run_test
@@ -83,7 +80,7 @@ def if_networkx(func):
         try:
             import networkx
         except ImportError:
-            raise SkipTest('NetworkX not available.')
+            pytest.skip('NetworkX not available.')
         else:
             return func(*args, **kwargs)
     return run_test
@@ -127,7 +124,7 @@ def test_hdbscan_distance_matrix():
     assert(n_clusters_2 == n_clusters)
 
     validity = validity_index(D, labels, metric='precomputed', d=2)
-    assert_greater_equal(validity, 0.6)
+    assert validity >= 0.6
 
 
 def test_hdbscan_sparse_distance_matrix():
@@ -161,7 +158,7 @@ def test_hdbscan_feature_vector():
     assert(n_clusters_2 == n_clusters)
 
     validity = validity_index(X, labels)
-    assert_greater_equal(validity, 0.4)
+    assert validity >= 0.4
 
 
 def test_hdbscan_prims_kdtree():
@@ -289,14 +286,12 @@ def test_hdbscan_min_cluster_size():
             X, min_cluster_size=min_cluster_size)
         true_labels = [label for label in labels if label != -1]
         if len(true_labels) != 0:
-            assert_greater_equal(np.min(np.bincount(true_labels)),
-                                 min_cluster_size)
+            assert np.min(np.bincount(true_labels)) >= min_cluster_size
 
         labels = HDBSCAN(min_cluster_size=min_cluster_size).fit(X).labels_
         true_labels = [label for label in labels if label != -1]
         if len(true_labels) != 0:
-            assert_greater_equal(np.min(np.bincount(true_labels)),
-                                 min_cluster_size)
+            assert np.min(np.bincount(true_labels)) >= min_cluster_size
 
 
 def test_hdbscan_callable_metric():
@@ -328,14 +323,14 @@ def test_hdbscan_boruvka_kdtree_matches():
 
     num_mismatches = homogeneity(labels_prims, labels_boruvka)
 
-    assert_less(num_mismatches / float(data.shape[0]), 0.15)
+    assert (num_mismatches / float(data.shape[0])) < 0.15
 
     labels_prims = HDBSCAN(algorithm='generic').fit_predict(data)
     labels_boruvka = HDBSCAN(algorithm='boruvka_kdtree').fit_predict(data)
 
     num_mismatches = homogeneity(labels_prims, labels_boruvka)
 
-    assert_less(num_mismatches / float(data.shape[0]), 0.15)
+    assert (num_mismatches / float(data.shape[0])) < 0.15
 
 
 def test_hdbscan_boruvka_balltree_matches():
@@ -349,14 +344,14 @@ def test_hdbscan_boruvka_balltree_matches():
 
     num_mismatches = homogeneity(labels_prims, labels_boruvka)
 
-    assert_less(num_mismatches / float(data.shape[0]), 0.15)
+    assert (num_mismatches / float(data.shape[0])) < 0.15
 
     labels_prims = HDBSCAN(algorithm='generic').fit_predict(data)
     labels_boruvka = HDBSCAN(algorithm='boruvka_balltree').fit_predict(data)
 
     num_mismatches = homogeneity(labels_prims, labels_boruvka)
 
-    assert_less(num_mismatches / float(data.shape[0]), 0.15)
+    assert (num_mismatches / float(data.shape[0])) < 0.15
 
 
 def test_condensed_tree_plot():
@@ -650,9 +645,8 @@ def test_hdbscan_allow_single_cluster_with_epsilon():
 
 
 # Disable for now -- need to refactor to meet newer standards
-@SkipTest
+@pytest.mark.skip(reason="need to refactor to meet newer standards")
 def test_hdbscan_is_sklearn_estimator():
-
     check_estimator(HDBSCAN)
 
 

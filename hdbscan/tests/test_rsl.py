@@ -2,7 +2,6 @@
 Tests for Robust Single Linkage clustering algorithm
 """
 # import pickle
-from nose.tools import assert_less
 import numpy as np
 from scipy.spatial import distance
 from scipy import sparse
@@ -19,7 +18,7 @@ from sklearn.datasets import make_blobs
 from sklearn.utils import shuffle
 from sklearn.preprocessing import StandardScaler
 
-from nose import SkipTest
+import pytest
 
 n_clusters = 3
 X, y = make_blobs(n_samples=50, random_state=1)
@@ -193,7 +192,6 @@ def test_rsl_badargs():
 
 
 # Disable for now -- need to refactor to meet newer standards
-@SkipTest
+@pytest.mark.skip(reason="need to refactor to meet newer standards")
 def test_rsl_is_sklearn_estimator():
-
     check_estimator(RobustSingleLinkage)
