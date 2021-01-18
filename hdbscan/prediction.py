@@ -103,7 +103,7 @@ class PredictionData(object):
         self.core_distances = self.tree.query(data, k=min_samples)[0][:, -1]
         self.dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
-        selected_clusters = condensed_tree._select_clusters()
+        selected_clusters = sorted(condensed_tree._select_clusters())
         # raw_condensed_tree = condensed_tree.to_numpy()
         raw_condensed_tree = condensed_tree._raw_tree
 
