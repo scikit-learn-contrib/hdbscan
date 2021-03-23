@@ -200,7 +200,7 @@ cdef class BoruvkaUnionFind (object):
         self._rank_arr = np.zeros(size, dtype=np.uint8)
         self._rank = (<np.uint8_t[:size:1]> (<np.uint8_t *>
                                              self._rank_arr.data))
-        self.is_component = np.ones(size, dtype=np.bool)
+        self.is_component = np.ones(size, dtype=bool)
 
     cdef int union_(self, np.intp_t x, np.intp_t y) except -1:
         """Union together elements x and y"""
