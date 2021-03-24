@@ -385,7 +385,7 @@ def approximate_predict(clusterer, points_to_predict):
         probabilities = np.zeros(points_to_predict.shape[0], dtype=np.float32)
         return labels, probabilities
 
-    labels = np.empty(points_to_predict.shape[0], dtype=np.int)
+    labels = np.empty(points_to_predict.shape[0], dtype=np.int32)
     probabilities = np.empty(points_to_predict.shape[0], dtype=np.float64)
 
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
@@ -465,7 +465,7 @@ def approximate_predict_scores(clusterer, points_to_predict):
         scores = np.ones(points_to_predict.shape[0], dtype=np.int32)
         return scores
 
-    scores = np.empty(points_to_predict.shape[0], dtype=np.float)
+    scores = np.empty(points_to_predict.shape[0], dtype=np.float64)
 
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
     neighbor_distances, neighbor_indices = \

@@ -91,7 +91,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     relabel = np.empty(root + 1, dtype=np.intp)
     relabel[root] = num_points
     result_list = []
-    ignore = np.zeros(len(node_list), dtype=np.int)
+    ignore = np.zeros(len(node_list), dtype=int)
 
     for node in node_list:
         if ignore[node] or node < num_points:
@@ -312,7 +312,7 @@ cdef class TreeUnionFind (object):
         self._data_arr.T[0] = np.arange(size)
         self._data = (<np.intp_t[:size, :2:1]> (
             <np.intp_t *> self._data_arr.data))
-        self.is_component = np.ones(size, dtype=np.bool)
+        self.is_component = np.ones(size, dtype=bool)
 
     cdef union_(self, np.intp_t x, np.intp_t y):
         cdef np.intp_t x_root = self.find(x)
