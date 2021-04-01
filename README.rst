@@ -13,8 +13,8 @@
 .. image:: https://travis-ci.org/scikit-learn-contrib/hdbscan.svg
     :target: https://travis-ci.org/scikit-learn-contrib/hdbscan
     :alt: Travis Build Status
-.. image:: https://coveralls.io/repos/github/scikit-learn-contrib/hdbscan/badge.svg?branch=master
-    :target: https://coveralls.io/github/scikit-learn-contrib/hdbscan?branch=master
+.. image:: https://codecov.io/gh/scikit-learn-contrib/hdbscan/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/scikit-learn-contrib/hdbscan
     :alt: Test Coverage
 .. image:: https://readthedocs.org/projects/hdbscan/badge/?version=latest
     :target: https://hdbscan.readthedocs.org

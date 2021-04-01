@@ -31,8 +31,8 @@ algorithms available stack up.
    no result at all than a result that is wrong. Bad results lead to
    false intuitions which in turn send you down completely the wrong
    path. Not only do you not understand your data, you *misunderstand*
-   your data. This means a good EDA clustering algorithm needs to
-   conservative in int's clustering; it should be willing to not assign
+   your data. This means a good EDA clustering algorithm needs to be
+   conservative in its clustering; it should be willing to not assign
    points to clusters; it should not group points together unless they
    really are in a cluster; this is true of far fewer algorithms than
    you might think.

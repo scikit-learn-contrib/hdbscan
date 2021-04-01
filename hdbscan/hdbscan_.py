@@ -554,7 +554,7 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
         min_samples = 1
 
     if algorithm != 'best':
-        if metric != 'precomputed' and issparse(X) and metric != 'generic':
+        if metric != 'precomputed' and issparse(X) and algorithm != 'generic':
             raise ValueError("Sparse data matrices only support algorithm 'generic'.")
 
         if algorithm == 'generic':
