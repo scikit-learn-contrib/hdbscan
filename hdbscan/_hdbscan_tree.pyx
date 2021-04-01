@@ -653,7 +653,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                          allow_single_cluster=False,
                          match_reference_implementation=False,
                          cluster_selection_epsilon=0.0,
-                         max_cluster_size=0, return_prediction_data=False):
+                         max_cluster_size=0):
     """Given a tree and stability dict, produce the cluster labels
     (and probabilities) for a flat clustering based on the chosen
     cluster selection method.
@@ -788,7 +788,5 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                     allow_single_cluster, match_reference_implementation)
     probs = get_probabilities(tree, reverse_cluster_map, labels)
     stabilities = get_stability_scores(labels, clusters, stability, max_lambda)
-    if return_prediction_data:
-        return (labels, probs, stabilities, clusters, cluster_map, reverse_cluster_map)
-    else:
-        return (labels, probs, stabilities)
+
+    return (labels, probs, stabilities)
