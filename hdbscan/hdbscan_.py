@@ -357,9 +357,12 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
         to be considered as a core point. This includes the point itself.
         defaults to the min_cluster_size.
 
-	cluster_selection_epsilon: float, optional (default=0.0)
-		A distance threshold. Clusters below this value will be merged.
-        See [3]_ for more information.
+    cluster_selection_epsilon: float, optional (default=0.0)
+        A distance threshold. Clusters below this value will be merged.
+        See [3]_ for more information. Note that this should not be used
+        if we want to predict the cluster labels for new points in future
+        (e.g. using approximate_predict), as the approximate_predict function
+        is not aware of this argument.
 
     alpha : float, optional (default=1.0)
         A distance scaling parameter as used in robust single linkage.
@@ -369,7 +372,10 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
         A limit to the size of clusters returned by the eom algorithm.
         Has no effect when using leaf clustering (where clusters are
         usually small regardless) and can also be overridden in rare
-        cases by a high value for cluster_selection_epsilon.
+        cases by a high value for cluster_selection_epsilon. Note that
+        this should not be used if we want to predict the cluster labels
+        for new points in future (e.g. using approximate_predict), as
+        the approximate_predict function is not aware of this argument.
 
     metric : string or callable, optional (default='minkowski')
         The metric to use when calculating distance between instances in a
