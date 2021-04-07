@@ -660,7 +660,8 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                          cluster_selection_method='eom',
                          allow_single_cluster=False,
                          match_reference_implementation=False,
-                         cluster_selection_epsilon=0.0):
+                         cluster_selection_epsilon=0.0,
+                         max_cluster_size=0):
     """Given a tree and stability dict, produce the cluster labels
     (and probabilities) for a flat clustering based on the chosen
     cluster selection method.
@@ -688,6 +689,11 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
 
     cluster_selection_epsilon: float, optional (default 0.0)
         A distance threshold for cluster splits.
+        
+    max_cluster_size: int, optional (default 0)
+        The maximum size for clusters located by the EOM clusterer. Can
+        be overridden by the cluster_selection_epsilon parameter in
+        rare cases.
 
     Returns
     -------
@@ -704,6 +710,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
     cdef np.ndarray cluster_tree
     cdef np.ndarray child_selection
     cdef dict is_cluster
+    cdef dict cluster_sizes
     cdef float subtree_stability
     cdef np.intp_t node
     cdef np.intp_t sub_node
@@ -727,13 +734,22 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
     num_points = np.max(tree[tree['child_size'] == 1]['child']) + 1
     max_lambda = np.max(tree['lambda_val'])
 
+    if max_cluster_size <= 0:
+        max_cluster_size = num_points + 1  # Set to a value that will never be triggered
+    cluster_sizes = {child: child_size for child, child_size
+                 in zip(cluster_tree['child'], cluster_tree['child_size'])}
+    if allow_single_cluster:
+        # Compute cluster size for the root node
+        cluster_sizes[node_list[-1]] = np.sum(
+            cluster_tree[cluster_tree['parent'] == node_list[-1]]['child_size'])
+
     if cluster_selection_method == 'eom':
         for node in node_list:
             child_selection = (cluster_tree['parent'] == node)
             subtree_stability = np.sum([
                 stability[child] for
                 child in cluster_tree['child'][child_selection]])
-            if subtree_stability > stability[node]:
+            if subtree_stability > stability[node] or cluster_sizes[node] > max_cluster_size:
                 is_cluster[node] = False
                 stability[node] = subtree_stability
             else:
@@ -755,7 +771,6 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                     is_cluster[c] = True
                 else:
                     is_cluster[c] = False
-
 
     elif cluster_selection_method == 'leaf':
         leaves = set(get_cluster_tree_leaves(cluster_tree))
