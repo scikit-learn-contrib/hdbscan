@@ -543,7 +543,7 @@ HDBSCAN
 -------
 
 HDBSCAN is a recent algorithm developed by some of the same people who
-write the original DBSCAN paper. Their goal was to allow varying density
+wrote the original DBSCAN paper. Their goal was to allow varying density
 clusters. The algorithm starts off much the same as DBSCAN: we transform
 the space according to density, exactly as DBSCAN does, and perform
 single linkage clustering on the transformed space. Instead of taking an
@@ -582,7 +582,7 @@ So, in summary:
    The current implementation has similar performance to
    ``fastcluster``'s agglomerative clustering (and will use
    ``fastcluster`` if it is available), but we expect future
-   implementations that take advantage of newer data structure such as
+   implementations that take advantage of newer data structures such as
    cover trees to scale significantly better.
 
 How does HDBSCAN perform on our test dataset? Unfortunately HDBSCAN is
