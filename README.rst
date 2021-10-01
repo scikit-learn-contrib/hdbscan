@@ -209,6 +209,7 @@ For a manual install of the latest code directly from GitHub:
 
 Alternatively download the package, install requirements, and manually run the installer:
 
+
 .. code:: bash
 
     wget https://github.com/scikit-learn-contrib/hdbscan/archive/master.zip
