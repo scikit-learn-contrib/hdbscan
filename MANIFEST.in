@@ -1,2 +1,4 @@
-include *.rst *.txt
+include *.rst *.txt pyproject.toml LICENSE
 recursive-include hdbscan *.py *.pyx *.pxd *.c
+recursive-include notebooks *.ipynb *.npy *.svg
+recursive-include examples *.py
