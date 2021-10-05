@@ -331,13 +331,113 @@ def check_precomputed_distance_matrix(X):
     check_array(tmp)
 
 
-def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selection_epsilon=0.0,
-            max_cluster_size=0, metric='minkowski', p=2, leaf_size=40,
-            algorithm='best', memory=Memory(cachedir=None, verbose=0),
-            approx_min_span_tree=True, gen_min_span_tree=False,
-            core_dist_n_jobs=4,
-            cluster_selection_method='eom', allow_single_cluster=False,
-            match_reference_implementation=False, **kwargs):
+def remap_condensed_tree(tree, internal_to_raw, outliers):
+    """
+    Takes an internal condensed_tree structure and adds back in a set of points
+    that were initially detected as non-finite and returns that new tree.
+    These points will all be split off from the maximal node at lambda zero and
+    considered noise points.
+
+    Parameters
+    ----------
+    tree: condensed_tree
+    internal_to_raw: dict
+        a mapping from internal integer index to the raw integer index
+    finite_index: ndarray
+        Boolean array of which entries in the raw data were finite
+    """
+    finite_count = len(internal_to_raw)
+
+    outlier_count = len(outliers)
+    for i, (parent, child, lambda_val, child_size) in enumerate(tree):
+        if child < finite_count:
+            child = internal_to_raw[child]
+        else:
+            child = child + outlier_count
+        tree[i] = (parent + outlier_count, child, lambda_val, child_size)
+
+    root = tree[0][0]  # Should I check to be sure this is the minimal lambda?
+    for i in outliers:
+        new_leaf = np.array(
+            (root, i, 0, 1),
+            dtype=[
+                ("parent", np.intp),
+                ("child", np.intp),
+                ("lambda_val", float),
+                ("child_size", np.intp),
+            ],
+        )
+        tree = np.append(new_leaf, tree)
+    return tree
+
+
+def remap_single_linkage_tree(tree, internal_to_raw, outliers):
+    """
+    Takes an internal single_linkage_tree structure and adds back in a set of points
+    that were initially detected as non-finite and returns that new tree.
+    These points will all be merged into the final node at np.inf distance and
+    considered noise points.
+
+    Parameters
+    ----------
+    tree: single_linkage_tree
+    internal_to_raw: dict
+        a mapping from internal integer index to the raw integer index
+    finite_index: ndarray
+        Boolean array of which entries in the raw data were finite
+    """
+    finite_count = len(internal_to_raw)
+
+    outlier_count = len(outliers)
+    for i, (left, right, distance, size) in enumerate(tree):
+        if left < finite_count:
+            tree[i, 0] = internal_to_raw[left]
+        else:
+            tree[i, 0] = left + outlier_count
+        if right < finite_count:
+            tree[i, 1] = internal_to_raw[right]
+        else:
+            tree[i, 1] = right + outlier_count
+
+    for i in outliers:
+        last_cluster_id = tree[tree.shape[0] - 1][0:2].max()
+        last_cluster_size = tree[tree.shape[0] - 1][3]
+        new_leaf = np.array((i, last_cluster_id + 1, np.inf, last_cluster_size + 1))
+        tree = np.append(tree, [new_leaf], axis=0)
+    return tree
+
+
+def get_finite_row_indices(matrix):
+    """Returns the indices of the purely finite rows of a sparse matrix or dense ndarray"""
+    if issparse(matrix):
+        row_indices = np.array(
+            [i for i, row in enumerate(matrix.tolil().data) if np.all(np.isfinite(row))]
+        )
+    else:
+        row_indices = np.where(np.isfinite(matrix).sum(axis=1) == matrix.shape[1])[0]
+    return row_indices
+
+
+def hdbscan(
+    X,
+    min_cluster_size=5,
+    min_samples=None,
+    alpha=1.0,
+    cluster_selection_epsilon=0.0,
+    max_cluster_size=0,
+    metric="minkowski",
+    p=2,
+    leaf_size=40,
+    algorithm="best",
+    memory=Memory(cachedir=None, verbose=0),
+    approx_min_span_tree=True,
+    gen_min_span_tree=False,
+    core_dist_n_jobs=4,
+    cluster_selection_method="eom",
+    allow_single_cluster=False,
+    match_reference_implementation=False,
+    **kwargs
+):
     """Perform HDBSCAN clustering from a vector array or distance matrix.
 
     Parameters
@@ -537,8 +637,8 @@ def hdbscan(X, min_cluster_size=5, min_samples=None, alpha=1.0, cluster_selectio
                          'Should be one of: "eom", "leaf"\n')
 
     # Checks input and converts to an nd-array where possible
-    if metric != 'precomputed' or issparse(X):
-        X = check_array(X, accept_sparse='csr')
+    if metric != "precomputed" or issparse(X):
+        X = check_array(X, accept_sparse="csr", force_all_finite=False)
     else:
         # Only non-sparse, precomputed distance matrices are handled here
         #   and thereby allowed to contain numpy.inf for missing distances
@@ -911,9 +1011,20 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self : object
             Returns self
         """
-        if self.metric != 'precomputed':
-            X = check_array(X, accept_sparse='csr')
+        if self.metric != "precomputed":
+            # Non-precomputed matrices may contain non-finite values.
+            # Rows with these values
+            X = check_array(X, accept_sparse="csr", force_all_finite=False)
             self._raw_data = X
+
+            # Pass only the purely finite indices into hdbscan
+            # We will later assign all non-finite points to the background -1 cluster
+            finite_index = get_finite_row_indices(X)
+            clean_data = X[finite_index]
+            internal_to_raw = {
+                x: y for x, y in zip(range(len(finite_index)), finite_index)
+            }
+            outliers = list(set(range(X.shape[0])) - set(finite_index))
         elif issparse(X):
             # Handle sparse precomputed distance matrices separately
             X = check_array(X, accept_sparse='csr')
@@ -921,19 +1032,38 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             # Only non-sparse, precomputed distance matrices are allowed
             #   to have numpy.inf values indicating missing distances
             check_precomputed_distance_matrix(X)
+            clean_data = X
 
         kwargs = self.get_params()
         # prediction data only applies to the persistent model, so remove
         # it from the keyword args we pass on the the function
-        kwargs.pop('prediction_data', None)
+        kwargs.pop("prediction_data", None)
         kwargs.update(self._metric_kwargs)
 
-        (self.labels_,
-         self.probabilities_,
-         self.cluster_persistence_,
-         self._condensed_tree,
-         self._single_linkage_tree,
-         self._min_spanning_tree) = hdbscan(X, **kwargs)
+        (
+            self.labels_,
+            self.probabilities_,
+            self.cluster_persistence_,
+            self._condensed_tree,
+            self._single_linkage_tree,
+            self._min_spanning_tree,
+        ) = hdbscan(clean_data, **kwargs)
+
+        if self.metric != "precomputed" and len(outliers)>0:
+            # remap indices to align with original data in the case of non-finite entries.
+            self._condensed_tree = remap_condensed_tree(
+                self._condensed_tree, internal_to_raw, outliers
+            )
+            self._single_linkage_tree = remap_single_linkage_tree(
+                self._single_linkage_tree, internal_to_raw, outliers
+            )
+            new_labels = np.full(X.shape[0], -1)
+            new_labels[finite_index] = self.labels_
+            self.labels_ = new_labels
+
+            new_probabilities = np.zeros(X.shape[0])
+            new_probabilities[finite_index] = self.probabilities_
+            self.probabilities_ = new_probabilities
 
         if self.prediction_data:
             self.generate_prediction_data()

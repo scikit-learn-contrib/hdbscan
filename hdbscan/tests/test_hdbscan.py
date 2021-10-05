@@ -37,6 +37,21 @@ X, y = make_blobs(n_samples=200, random_state=10)
 X, y = shuffle(X, y, random_state=7)
 X = StandardScaler().fit_transform(X)
 
+X_missing_data = X.copy()
+X_missing_data[0] = [np.nan, 1]
+X_missing_data[5] = [np.nan, np.nan]
+
+def test_missing_data():
+    """ Tests if nan data are treated as infinite distance from all other points and assigned to -1 cluster"""
+    model = HDBSCAN().fit(X_missing_data)
+    assert(model.labels_[0] == -1)
+    assert (model.labels_[5] == -1)
+    assert(model.probabilities_[0] == 0)
+    assert(model.probabilities_[5] == 0)
+    assert(model.probabilities_[5] == 0)
+    clean_indices = list(range(1, 5)) + list(range(6, 200))
+    clean_model = HDBSCAN().fit(X_missing_data[clean_indices])
+    assert np.allclose(clean_model.labels_, model.labels_[clean_indices])
 
 def if_matplotlib(func):
     """Test decorator that skips test if matplotlib not installed.
