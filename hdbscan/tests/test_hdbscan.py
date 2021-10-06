@@ -18,7 +18,7 @@ from hdbscan import (HDBSCAN,
                      membership_vector,
                      all_points_membership_vectors)
 # from sklearn.cluster.tests.common import generate_clustered_data
-from sklearn.datasets import make_blobs
+from sklearn.datasets import make_blobs, make_moons
 from sklearn.utils import shuffle
 from sklearn.preprocessing import StandardScaler
 from scipy.stats import mode
@@ -26,8 +26,6 @@ from scipy.stats import mode
 from tempfile import mkdtemp
 from functools import wraps
 import pytest
-
-from sklearn import datasets
 
 import warnings
 
@@ -87,10 +85,10 @@ def if_networkx(func):
 
 
 def generate_noisy_data():
-    blobs, _ = datasets.make_blobs(n_samples=200,
-                                   centers=[(-0.75, 2.25), (1.0, 2.0)],
-                                   cluster_std=0.25)
-    moons, _ = datasets.make_moons(n_samples=200, noise=0.05)
+    blobs, _ = make_blobs(n_samples=200,
+                          centers=[(-0.75, 2.25), (1.0, 2.0)],
+                          cluster_std=0.25)
+    moons, _ = make_moons(n_samples=200, noise=0.05)
     noise = np.random.uniform(-1.0, 3.0, (50, 2))
     return np.vstack([blobs, moons, noise])
 
