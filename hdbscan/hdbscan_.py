@@ -429,18 +429,18 @@ def remap_condensed_tree(tree, internal_to_raw, outliers):
             child = child + outlier_count
         tree[i] = (parent + outlier_count, child, lambda_val, child_size)
 
+    outlier_list = []
     root = tree[0][0]  # Should I check to be sure this is the minimal lambda?
-    for i in outliers:
-        new_leaf = np.array(
-            (root, i, 0, 1),
-            dtype=[
+    for outlier in outliers:
+        outlier_list.append((root, outlier, 0, 1))
+
+    outlier_tree = np.array(outlier_list, dtype=[
                 ("parent", np.intp),
                 ("child", np.intp),
                 ("lambda_val", float),
                 ("child_size", np.intp),
-            ],
-        )
-        tree = np.append(new_leaf, tree)
+            ],)
+    tree = np.append(outlier_tree, tree)
     return tree
 
 
@@ -472,13 +472,22 @@ def remap_single_linkage_tree(tree, internal_to_raw, outliers):
         else:
             tree[i, 1] = right + outlier_count
 
-    for i in outliers:
-        last_cluster_id = tree[tree.shape[0] - 1][0:2].max()
-        last_cluster_size = tree[tree.shape[0] - 1][3]
-        new_leaf = np.array((i, last_cluster_id + 1, np.inf, last_cluster_size + 1))
-        tree = np.append(tree, [new_leaf], axis=0)
+    outlier_tree = np.zeros((len(outliers), 4))
+    last_cluster_id = tree[tree.shape[0] - 1][0:2].max()
+    last_cluster_size = tree[tree.shape[0] - 1][3]
+    for i, outlier in enumerate(outliers):
+        outlier_tree[i] = (outlier, last_cluster_id + 1, np.inf, last_cluster_size + 1)
+        last_cluster_id += 1
+        last_cluster_size += 1
+    tree = np.vstack([tree, outlier_tree])
     return tree
 
+def is_finite(matrix):
+    """Returns true only if all the values of a ndarray or sparse matrix are finite"""
+    if issparse(matrix):
+        return np.alltrue(np.isfinite(matrix.tocooo().data))
+    else:
+        return np.alltrue(np.isfinite(matrix))
 
 def get_finite_row_indices(matrix):
     """Returns the indices of the purely finite rows of a sparse matrix or dense ndarray"""
@@ -1147,14 +1156,18 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             X = check_array(X, accept_sparse="csr", force_all_finite=False)
             self._raw_data = X
 
-            # Pass only the purely finite indices into hdbscan
-            # We will later assign all non-finite points to the background -1 cluster
-            finite_index = get_finite_row_indices(X)
-            clean_data = X[finite_index]
-            internal_to_raw = {
-                x: y for x, y in zip(range(len(finite_index)), finite_index)
-            }
-            outliers = list(set(range(X.shape[0])) - set(finite_index))
+            self._all_finite = is_finite(X)
+            if(~self._all_finite):
+                # Pass only the purely finite indices into hdbscan
+                # We will later assign all non-finite points to the background -1 cluster
+                finite_index = get_finite_row_indices(X)
+                clean_data = X[finite_index]
+                internal_to_raw = {
+                    x: y for x, y in zip(range(len(finite_index)), finite_index)
+                }
+                outliers = list(set(range(X.shape[0])) - set(finite_index))
+            else:
+                clean_data = X
         elif issparse(X):
             # Handle sparse precomputed distance matrices separately
             X = check_array(X, accept_sparse="csr")
@@ -1180,7 +1193,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             self._min_spanning_tree,
         ) = hdbscan(clean_data, **kwargs)
 
-        if self.metric != "precomputed" and len(outliers)>0:
+        if self.metric != "precomputed" and not self._all_finite:
             # remap indices to align with original data in the case of non-finite entries.
             self._condensed_tree = remap_condensed_tree(
                 self._condensed_tree, internal_to_raw, outliers
