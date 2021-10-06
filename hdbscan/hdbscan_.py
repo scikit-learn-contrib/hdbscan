@@ -80,13 +80,16 @@ def _hdbscan_generic(X, min_samples=5, alpha=1.0, metric='minkowski', p=2,
         #   sklearn.metrics.pairwise_distances handle it,
         #   enables the usage of numpy.inf in the distance
         #   matrix to indicate missing distance information.
-        # TODO: Check if copying is necessary
-        distance_matrix = X.copy()
+        # Give the user the option to have the distance matrix
+        #   modified to save memory.
+        if kwargs.get("overwrite", False):
+            distance_matrix = X
+        else:
+            distance_matrix = X.copy()
     else:
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
 
     if issparse(distance_matrix):
-        # raise TypeError('Sparse distance matrices not yet supported')
         return _hdbscan_sparse_distance_matrix(distance_matrix, min_samples,
                                                alpha, metric, p,
                                                leaf_size, gen_min_span_tree,
@@ -143,12 +146,11 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
                          'relations connecting them\n'
                          'Run hdbscan on each component.')
 
-    lil_matrix = X.tolil()
-
     # Compute sparse mutual reachability graph
     # if max_dist > 0, max distance to use when the reachability is infinite
     max_dist = kwargs.get("max_dist", 0.)
-    mutual_reachability_ = sparse_mutual_reachability(lil_matrix,
+    # sparse_mutual_reachability() may modify X in place and return it
+    mutual_reachability_ = sparse_mutual_reachability(X,
                                                       min_points=min_samples,
                                                       max_dist=max_dist,
                                                       alpha=alpha)
@@ -165,7 +167,7 @@ def _hdbscan_sparse_distance_matrix(X, min_samples=5, alpha=1.0,
 
     # Compute the minimum spanning tree for the sparse graph
     sparse_min_spanning_tree = csgraph.minimum_spanning_tree(
-        mutual_reachability_)
+        mutual_reachability_, overwrite=True)
 
     # Convert the graph to scipy cluster array format
     nonzeros = sparse_min_spanning_tree.nonzero()

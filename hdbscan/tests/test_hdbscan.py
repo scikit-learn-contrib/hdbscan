@@ -147,6 +147,12 @@ def test_hdbscan_sparse_distance_matrix():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert(n_clusters_2 == n_clusters)
 
+    # Verify single and double precision return same results
+    assert_equal(D.dtype, np.double)
+    labels_double = hdbscan(D, metric='precomputed')[0]
+    labels_single = hdbscan(D.astype(np.single), metric='precomputed')[0]
+    assert_array_equal(labels_single, labels_double)
+
 
 def test_hdbscan_feature_vector():
     labels, p, persist, ctree, ltree, mtree = hdbscan(X)
