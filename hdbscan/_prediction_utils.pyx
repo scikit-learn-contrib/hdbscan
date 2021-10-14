@@ -10,6 +10,8 @@ from dist_metrics cimport DistanceMetric
 
 from libc.float cimport DBL_MAX
 from libc.math cimport exp
+from cython cimport floating
+
 
 cpdef get_tree_row_with_child(np.ndarray tree, np.intp_t child):
 
@@ -181,6 +183,22 @@ cdef np.ndarray[np.float64_t, ndim=1] merge_height(
 
     return result
 
+
+cpdef floating safe_always_positive_division(
+        floating numerator,
+        floating denominator):
+    """ This is a helper function to divide numbers safely without getting a ZeroDivision error, the
+    function handles zero division by assuming the denominator is always positive 
+    :param numerator: 
+    :param denominator: 
+    :return: 
+    """
+    if denominator <= 0:
+        # prevent zero division or negative result
+        denominator = 1e-8
+    return numerator / denominator
+
+
 cpdef np.ndarray[np.float64_t, ndim=1] per_cluster_scores(
         np.intp_t neighbor,
         np.float32_t lambda_,
@@ -200,7 +218,7 @@ cpdef np.ndarray[np.float64_t, ndim=1] per_cluster_scores(
     point_row = get_tree_row_with_child(tree, neighbor)
     point_cluster = point_row['parent']
     point_lambda = lambda_
-    max_lambda = max_lambda_dict[point_cluster] + 1e-8 # avoid zero
+    max_lambda = max_lambda_dict[point_cluster]
 
     # Save an allocation by assigning and reusing result ...
     # height = merge_height(point_cluster, point_lambda,
@@ -211,7 +229,7 @@ cpdef np.ndarray[np.float64_t, ndim=1] per_cluster_scores(
     # Cythonize: result = np.exp(-(max_lambda / height))
     for i in range(result.shape[0]):
         # result[i] = exp(-(max_lambda / result[i]))
-        result[i] = (max_lambda / (max_lambda - result[i]))
+        result[i] = safe_always_positive_division(max_lambda, (max_lambda - result[i]))
 
     return result
 
