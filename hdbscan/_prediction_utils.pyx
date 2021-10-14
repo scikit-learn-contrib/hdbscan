@@ -189,9 +189,17 @@ cpdef floating safe_always_positive_division(
         floating denominator):
     """ This is a helper function to divide numbers safely without getting a ZeroDivision error, the
     function handles zero division by assuming the denominator is always positive 
-    :param numerator: 
-    :param denominator: 
-    :return: 
+    
+    Parameters
+    ----------
+    numerator: floating
+        any floating point type 
+    denominator: floating
+        any floating point type
+    
+    Returns
+    -------
+    floating
     """
     if denominator <= 0:
         # prevent zero division or negative result
