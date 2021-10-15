@@ -10,7 +10,9 @@ from dist_metrics cimport DistanceMetric
 
 from libc.float cimport DBL_MAX
 from libc.math cimport exp
-from cython cimport floating
+ctypedef fused floating:
+    np.float64_t
+    np.float32_t
 
 
 cpdef get_tree_row_with_child(np.ndarray tree, np.intp_t child):
