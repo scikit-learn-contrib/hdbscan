@@ -10,9 +10,6 @@ from dist_metrics cimport DistanceMetric
 
 from libc.float cimport DBL_MAX
 from libc.math cimport exp
-ctypedef fused floating:
-    np.float64_t
-    np.float32_t
 
 
 cpdef get_tree_row_with_child(np.ndarray tree, np.intp_t child):
@@ -186,9 +183,9 @@ cdef np.ndarray[np.float64_t, ndim=1] merge_height(
     return result
 
 
-cpdef floating safe_always_positive_division(
-        floating numerator,
-        floating denominator):
+cpdef np.float64_t safe_always_positive_division(
+        np.float64_t numerator,
+        np.float64_t denominator):
     """ This is a helper function to divide numbers safely without getting a ZeroDivision error, the
     function handles zero division by assuming the denominator is always positive 
     
