@@ -11,7 +11,6 @@ from dist_metrics cimport DistanceMetric
 from libc.float cimport DBL_MAX
 from libc.math cimport exp
 
-
 cpdef get_tree_row_with_child(np.ndarray tree, np.intp_t child):
 
     cdef np.intp_t i
