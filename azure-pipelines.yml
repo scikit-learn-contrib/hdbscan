@@ -1,0 +1,153 @@
+# Python package
+# Create and test a Python package on multiple Python versions.
+# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
+trigger:
+- master
+
+jobs:
+  - job: Linux
+    pool:
+      vmImage: ubuntu-latest
+    strategy:
+      matrix:
+        Python36:
+          python.version: '3.6'
+        Python37:
+          python.version: '3.7'
+        Python38:
+          python.version: '3.8'
+        Python39:
+          python.version: '3.9'
+
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '$(python.version)'
+        displayName: 'Use Python $(python.version)'
+
+      - script: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        displayName: 'Install dependencies'
+
+      - script: |
+          pip install cython
+          python setup.py develop
+
+      - script: |
+          pip install pytest pytest-azurepipelines
+          pytest
+        displayName: 'pytest'
+
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFiles: 'pytest.xml'
+          testRunTitle: '$(Agent.OS) - $(Build.BuildNumber)[$(Agent.JobName)] - Python $(python.version)'
+        condition: succeededOrFailed()
+
+  - job: Windows
+    pool:
+      vmImage: 'windows-latest'
+    strategy:
+      matrix:
+        Python36:
+          python.version: '3.6'
+        Python37:
+          python.version: '3.7'
+        Python38:
+          python.version: '3.8'
+        Python39:
+          python.version: '3.9'
+
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '$(python.version)'
+        displayName: 'Use Python $(python.version)'
+
+      - script: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        displayName: 'Install dependencies'
+
+      - script: |
+          pip install cython
+          python setup.py develop
+
+      - script: |
+          pip install pytest pytest-azurepipelines
+          pytest
+        displayName: 'pytest'
+
+  - job: MacOS
+    pool:
+      vmImage: 'macos-latest'
+    strategy:
+      matrix:
+        Python37:
+          python.version: '3.7'
+        Python38:
+          python.version: '3.8'
+        Python39:
+          python.version: '3.9'
+
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '$(python.version)'
+        displayName: 'Use Python $(python.version)'
+
+      - script: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        displayName: 'Install dependencies'
+
+      - script: |
+          pip install cython
+          python setup.py develop
+
+      - script: |
+          pip install pytest pytest-azurepipelines
+          pytest
+        displayName: 'pytest'
+
+  - job: Coverage
+    pool:
+      vmImage: ubuntu-latest
+    strategy:
+      matrix:
+        Python39:
+          python.version: '3.9'
+
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '$(python.version)'
+        displayName: 'Use Python $(python.version)'
+
+      - script: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        displayName: 'Install dependencies'
+
+      - script: |
+          pip install cython
+          pip install pytest
+          pip install pytest-cov
+          pip install coveralls
+          pip install codecov
+          python setup.py develop
+
+      - script: |
+          pip install pytest pytest-azurepipelines
+          pytest hdbscan/tests --show-capture=no -v --disable-warnings --junitxml=pytest.xml --cov=hdbscan/ --cov-report=xml --cov-report=html
+          codecov
+        displayName: 'pytest'
+
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFiles: 'pytest.xml'
+          testRunTitle: '$(Agent.OS) - $(Build.BuildNumber)[$(Agent.JobName)] - Python $(python.version)'
+        condition: succeededOrFailed()
