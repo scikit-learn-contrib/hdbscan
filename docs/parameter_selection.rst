@@ -168,6 +168,21 @@ above, make the clustering progressively more conservative, culminating
 in the example above where ``min_samples`` was set to 60 and we had only
 two clusters with most points declared as noise.
 
+.. _epsilon_label:
+
+Selecting ``cluster_selection_epsilon``
+---------------------------------------
+
+In some cases, we want to choose a small ``min_cluster_size`` because even groups of few points might be of interest to us.
+However, if our data set also contains partitions with high concentrations of objects, this parameter setting can result in
+a large number of micro-clusters. Selecting a value for ``cluster_selection_epsilon`` helps us to merge clusters in these regions.
+Or in other words, it ensures that clusters below the given threshold are not split up any further.
+
+The choice of ``cluster_selection_epsilon`` depends on the given distances between your data points. For example, set the value to 0.5 if you don't want to
+separate clusters that are less than 0.5 units apart. This will basically extract DBSCAN* clusters for epsilon = 0.5 from the condensed cluster tree, but leave
+HDBSCAN* clusters that emerged at distances greater than 0.5 untouched. See :doc:`how_to_use_epsilon` for a more detailed demonstration of the effect this parameter
+has on the resulting clustering.
+
 .. _alpha_label:
 
 Selecting ``alpha``
@@ -176,8 +191,8 @@ Selecting ``alpha``
 A further parameter that effects the resulting clustering is ``alpha``.
 In practice it is best not to mess with this parameter -- ultimately it
 is part of the ``RobustSingleLinkage`` code, but flows naturally into
-HDBSCAN\*. If, for some reason, ``min_samples`` is not providing you
-what you need, stop, rethink things, and try again with ``min_samples``.
+HDBSCAN\*. If, for some reason, ``min_samples`` or ``cluster_selection_epsilon`` is not providing you
+what you need, stop, rethink things, and try again with ``min_samples`` or ``cluster_selection_epsilon``.
 If you still need to play with another parameter (and you shouldn't),
 then you can try setting ``alpha``. The ``alpha`` parameter provides a
 slightly different approach to determining how conservative the

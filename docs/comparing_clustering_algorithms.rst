@@ -22,7 +22,7 @@ So, what algorithm is good for exploratory data analysis?
 Some rules for EDA clustering
 -----------------------------
 
-To start, lets' lay down some ground rules of what we need a good EDA
+To start, let's lay down some ground rules of what we need a good EDA
 clustering algorithm to do, then we can set about seeing how the
 algorithms available stack up.
 
@@ -31,8 +31,8 @@ algorithms available stack up.
    no result at all than a result that is wrong. Bad results lead to
    false intuitions which in turn send you down completely the wrong
    path. Not only do you not understand your data, you *misunderstand*
-   your data. This means a good EDA clustering algorithm needs to
-   conservative in int's clustering; it should be willing to not assign
+   your data. This means a good EDA clustering algorithm needs to be
+   conservative in its clustering; it should be willing to not assign
    points to clusters; it should not group points together unless they
    really are in a cluster; this is true of far fewer algorithms than
    you might think.
@@ -173,7 +173,7 @@ in any individual clustering that may result.
 So, in summary, here's how K-Means seems to stack up against out
 desiderata: 
 - **Don't be wrong!**: K-means is going to throw points
-into clusters whether they belong or not; it also assumes you clusters
+into clusters whether they belong or not; it also assumes your clusters
 are globular. K-Means scores very poorly on this point.
 - **Intuitive parameters**: If you have a good intuition for how many clusters the
 dataset your exploring has then great, otherwise you might have a
@@ -291,9 +291,9 @@ parameter is then the bandwidth of the kernel used. This is easier to
 guess than the number of clusters, but may require some staring at, say,
 the distributions of pairwise distances between data points to choose
 successfully. The other issue (at least with the sklearn implementation)
-is that it is fairly slow depsite potentially having good scaling!
+is that it is fairly slow despite potentially having good scaling!
 
-How does Mean Shift fare against out criteria? In principle proming, but
+How does Mean Shift fare against out criteria? In principle promising, but
 in practice ...
 
 -  **Don't be wrong!**: Mean Shift doesn't cluster every point, but it
@@ -517,7 +517,7 @@ So, in summary:
    clustering algorithms can tackle datasets as large as DBSCAN can.
 
 So how does it cluster our test dataset? I played with a few epsilon
-values until I got somethign reasonable, but there was little science to
+values until I got something reasonable, but there was little science to
 this -- getting the parameters right can be hard.
 
 .. code:: python
@@ -543,7 +543,7 @@ HDBSCAN
 -------
 
 HDBSCAN is a recent algorithm developed by some of the same people who
-write the original DBSCAN paper. Their goal was to allow varying density
+wrote the original DBSCAN paper. Their goal was to allow varying density
 clusters. The algorithm starts off much the same as DBSCAN: we transform
 the space according to density, exactly as DBSCAN does, and perform
 single linkage clustering on the transformed space. Instead of taking an
@@ -568,7 +568,7 @@ So, in summary:
 -  **Don't be wrong!**: We inherited all the benefits of DBSCAN and
    removed the varying density clusters issue. HDBSCAN is easily the
    strongest option on the 'Don't be wrong!' front.
--  **Intuitive parameters**: Choosing a mimnimum cluster size is very
+-  **Intuitive parameters**: Choosing a minimum cluster size is very
    reasonable. The only remaining parameter is ``min_samples`` inherited
    from DBSCAN for the density based space transformation. Sadly
    ``min_samples`` is not that intuitive; HDBSCAN is not that sensitive
@@ -582,7 +582,7 @@ So, in summary:
    The current implementation has similar performance to
    ``fastcluster``'s agglomerative clustering (and will use
    ``fastcluster`` if it is available), but we expect future
-   implementations that take advantage of newer data structure such as
+   implementations that take advantage of newer data structures such as
    cover trees to scale significantly better.
 
 How does HDBSCAN perform on our test dataset? Unfortunately HDBSCAN is

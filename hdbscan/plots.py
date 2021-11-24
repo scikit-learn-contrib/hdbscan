@@ -435,7 +435,7 @@ class CondensedTree(object):
                 axis.add_artist(box)
 
         if colorbar:
-            cb = plt.colorbar(sm)
+            cb = plt.colorbar(sm, ax=axis)
             if log_size:
                 cb.ax.set_ylabel('log(Number of points)')
             else:
@@ -505,11 +505,32 @@ class CondensedTree(object):
         return result
 
 
-def _line_width(y, linkage):
-    if y == 0.0:
-        return 1.0
-    else:
-        return linkage[linkage.T[2] == y][0, 3]
+def _get_dendrogram_ordering(parent, linkage, root):
+
+    if parent < root:
+        return []
+
+    return _get_dendrogram_ordering(int(linkage[parent-root][0]), linkage, root) + \
+            _get_dendrogram_ordering(int(linkage[parent-root][1]), linkage, root) + [parent]
+
+def _calculate_linewidths(ordering, linkage, root):
+
+    linewidths = []
+
+    for x in ordering:
+        if linkage[x - root][0] >= root:
+            left_width = linkage[int(linkage[x - root][0]) - root][3]
+        else:
+            left_width = 1
+
+        if linkage[x - root][1] >= root:
+            right_width = linkage[int(linkage[x - root][1]) - root][3]
+        else:
+            right_width = 1
+
+        linewidths.append((left_width, right_width))
+
+    return linewidths
 
 
 class SingleLinkageTree(object):
@@ -586,9 +607,8 @@ class SingleLinkageTree(object):
             axis = plt.gca()
 
         if vary_line_width:
-            linewidths = [(_line_width(y[0], self._linkage),
-                           _line_width(y[1], self._linkage))
-                          for y in Y]
+            dendrogram_ordering = _get_dendrogram_ordering(2 * len(self._linkage), self._linkage, len(self._linkage) + 1)
+            linewidths = _calculate_linewidths(dendrogram_ordering, self._linkage, len(self._linkage) + 1)
         else:
             linewidths = [(1.0, 1.0)] * len(Y)
 
@@ -625,7 +645,7 @@ class SingleLinkageTree(object):
                       solid_joinstyle='miter', solid_capstyle='butt')
 
         if colorbar:
-            cb = plt.colorbar(sm)
+            cb = plt.colorbar(sm, ax=axis)
             cb.ax.set_ylabel('log(Number of points)')
 
         axis.set_xticks([])
@@ -829,7 +849,7 @@ class MinimumSpanningTree(object):
         axis.set_yticks([])
 
         if colorbar:
-            cb = plt.colorbar(line_collection)
+            cb = plt.colorbar(line_collection, ax=axis)
             cb.ax.set_ylabel('Mutual reachability distance')
 
         return axis
