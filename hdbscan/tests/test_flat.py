@@ -25,8 +25,9 @@ centers = [(0, 2),
 std = [0.5, 0.08, 0.06, 0.35, 0.35, 0.35]
 X0, y0 = make_blobs(n_samples=[70, 30, 80, 100, 40, 150],
                     centers=centers,
-                    cluster_std=std)
-X1, y1 = make_moons(n_samples=300, noise=0.07)
+                    cluster_std=std,
+                    random_state=1)
+X1, y1 = make_moons(n_samples=300, noise=0.07, random_state=42)
 X1 += 3.
 y1 += len(centers)
 X = np.vstack((X0, X1))

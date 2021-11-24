@@ -243,9 +243,10 @@ def _hdbscan_prims_kdtree(
     dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
     # Get distance to kth nearest neighbour
-    core_distances = tree.query(X, k=min_samples, dualtree=True, breadth_first=True)[0][
+    core_distances = tree.query(X, k=min_samples + 1, dualtree=True, breadth_first=True)[0][
         :, -1
     ].copy(order="C")
+
     # Mutual reachability distance is implicit in mst_linkage_core_vector
     min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric, alpha)
 
@@ -288,7 +289,7 @@ def _hdbscan_prims_balltree(
     dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
     # Get distance to kth nearest neighbour
-    core_distances = tree.query(X, k=min_samples, dualtree=True, breadth_first=True)[0][
+    core_distances = tree.query(X, k=min_samples + 1, dualtree=True, breadth_first=True)[0][
         :, -1
     ].copy(order="C")
 
