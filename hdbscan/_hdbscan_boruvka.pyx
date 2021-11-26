@@ -1283,8 +1283,6 @@ cdef class BallTreeBoruvkaAlgorithm (object):
         #       propagate the results up the tree.
         if node1_info.is_leaf and node2_info.is_leaf:
 
-            new_bound = 0.0
-
             new_upper_bound = 0.0
             new_lower_bound = DBL_MAX
 
