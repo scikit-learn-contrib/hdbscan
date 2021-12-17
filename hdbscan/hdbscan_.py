@@ -257,14 +257,9 @@ def _hdbscan_prims_kdtree(
     single_linkage_tree = label(min_spanning_tree)
 
     if gen_min_span_tree:
-        warn(
-            "Cannot generate Minimum Spanning Tree; "
-            "the implemented Prim's does not produce "
-            "the full minimum spanning tree ",
-            UserWarning,
-        )
-
-    return single_linkage_tree, None
+        return single_linkage_tree, min_spanning_tree
+    else:
+        return single_linkage_tree, None
 
 
 def _hdbscan_prims_balltree(
@@ -301,15 +296,9 @@ def _hdbscan_prims_balltree(
     single_linkage_tree = label(min_spanning_tree)
 
     if gen_min_span_tree:
-        warn(
-            "Cannot generate Minimum Spanning Tree; "
-            "the implemented Prim's does not produce "
-            "the full minimum spanning tree ",
-            UserWarning,
-        )
-
-    return single_linkage_tree, None
-
+        return single_linkage_tree, min_spanning_tree
+    else:
+        return single_linkage_tree, None
 
 def _hdbscan_boruvka_kdtree(
     X,
