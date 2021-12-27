@@ -11,7 +11,6 @@ from sklearn.metrics import pairwise_distances
 from scipy.sparse import issparse
 from sklearn.neighbors import KDTree, BallTree
 from joblib import Memory
-import six
 from warnings import warn
 from sklearn.utils import check_array
 from joblib.parallel import cpu_count
@@ -719,7 +718,7 @@ def hdbscan(
         check_precomputed_distance_matrix(X)
 
     # Python 2 and 3 compliant string_type checking
-    if isinstance(memory, six.string_types):
+    if isinstance(memory, str):
         memory = Memory(cachedir=memory, verbose=0)
 
     size = X.shape[0]
