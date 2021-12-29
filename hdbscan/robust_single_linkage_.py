@@ -9,7 +9,6 @@ from sklearn.metrics import pairwise_distances
 from scipy.sparse import issparse
 
 from joblib import Memory
-import six
 from sklearn.utils import check_array
 
 from ._hdbscan_linkage import mst_linkage_core, mst_linkage_core_vector, label
@@ -239,7 +238,7 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
                              ' defined!')
 
     X = check_array(X, accept_sparse='csr')
-    if isinstance(memory, six.string_types):
+    if isinstance(memory, str):
         memory = Memory(cachedir=memory, verbose=0)
 
     if algorithm != 'best':
