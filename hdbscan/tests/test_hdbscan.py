@@ -251,6 +251,11 @@ def test_hdbscan_generic():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_2 == n_clusters
 
+def test_hdbscan_dbscan_clustering():
+    clusterer = HDBSCAN().fit(X)
+    labels = clusterer.dbscan_clustering(0.3)
+    n_clusters_1 = len(set(labels)) - int(-1 in labels)
+    assert(n_clusters == n_clusters_1)
 
 def test_hdbscan_high_dimensional():
     H, y = make_blobs(n_samples=50, random_state=0, n_features=64)

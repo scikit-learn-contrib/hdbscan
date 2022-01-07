@@ -1322,6 +1322,39 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         medoid_index = np.argmin(dist_mat.sum(axis=1))
         return cluster_data[medoid_index]
 
+    def dbscan_clustering(self, cut_distance, min_cluster_size=5):
+        """Return clustering that would be equivalent to running DBSCAN* for a particular cut_distance (or epsilon)
+        DBSCAN* can be thought of as DBSCAN without the border points.  As such these results may differ slightly
+        from sklearns implementation of dbscan in the non-core points.
+
+        This can also be thought of as a flat clustering derived from constant height cut through the single
+        linkage tree.
+
+        This represents the result of selecting a cut value for robust single linkage
+        clustering. The `min_cluster_size` allows the flat clustering to declare noise
+        points (and cluster smaller than `min_cluster_size`).
+
+        Parameters
+        ----------
+
+        cut_distance : float
+            The mutual reachability distance cut value to use to generate a flat clustering.
+
+        min_cluster_size : int, optional
+            Clusters smaller than this value with be called 'noise' and remain unclustered
+            in the resulting flat clustering.
+
+        Returns
+        -------
+
+        labels : array [n_samples]
+            An array of cluster labels, one per datapoint. Unclustered points are assigned
+            the label -1.
+        """
+        return self.single_linkage_tree_.get_clusters(cut_distance=cut_distance,
+                                                      min_cluster_size=min_cluster_size,
+                                                      )
+
     @property
     def prediction_data_(self):
         if self._prediction_data is None:
