@@ -1,6 +1,6 @@
 
 Extracting DBSCAN* clustering from HDBSCAN*
-======================================
+===========================================
 
 There are a number of reasons that one might prefer `DBSCAN <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html>`__'s
 clustering over that of HDBSCAN*.  The biggest difficulty many folks have with
@@ -50,6 +50,7 @@ In order to extract a DBSCAN* clustering from an HDBSCAN run we must first train
 and HDBSCAN model on our data.
 
 .. code:: python
+
     import hdbscan
     h_cluster = hdbscan.HDBSCAN(min_samples=5,match_reference_implementation=True).fit(X)
 
@@ -60,6 +61,7 @@ threshold in DBSCAN and will be passed to our
 :py:meth:`~hdbscan.hdbscan_.dbscan_clustering` method.
 
 .. code:: python
+
     eps = 0.2
     labels = h_cluster.dbscan_clustering(cut_distance=eps, min_cluster_size=5)
     sns.scatterplot(x=X[:,0], y=X[:,1], hue=labels.astype(str));
@@ -77,6 +79,7 @@ this by only looking at the comparison of our clustering results based on the po
 by DBSCAN as core points.  We can see below that the differences between these two
 clusterings mostly occur in the boundaries of the clusters.  This matches our
 intuition of stability within the core points.
+
 .. image:: images/dbscan_from_hdbscan_comparision.png
     :align: center
 
@@ -110,7 +113,7 @@ In this small benchmark case of 50,000 two dimensional data points we have broke
 after having only had to try two epsilon parameters from DBSCAN, or only a single
 run with a large parameter selected.  This trend is only exacerbated for larger
 data sets in higher dimensional spaces.  For more detailed scaling experiments see
-`Accelearted Hierarchical Density Clustering<https://arxiv.org/abs/1705.07321>`__
+`Accelearted Hierarchical Density Clustering <https://arxiv.org/abs/1705.07321>`__
 by McInnes and Healy.
 
 .. image:: images/dbscan_from_hdbscan_timing.png
