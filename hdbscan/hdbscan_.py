@@ -242,9 +242,9 @@ def _hdbscan_prims_kdtree(
     dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
     # Get distance to kth nearest neighbour
-    core_distances = tree.query(X, k=min_samples + 1, dualtree=True, breadth_first=True)[0][
-        :, -1
-    ].copy(order="C")
+    core_distances = tree.query(
+        X, k=min_samples + 1, dualtree=True, breadth_first=True
+    )[0][:, -1].copy(order="C")
 
     # Mutual reachability distance is implicit in mst_linkage_core_vector
     min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric, alpha)
@@ -283,9 +283,9 @@ def _hdbscan_prims_balltree(
     dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
     # Get distance to kth nearest neighbour
-    core_distances = tree.query(X, k=min_samples + 1, dualtree=True, breadth_first=True)[0][
-        :, -1
-    ].copy(order="C")
+    core_distances = tree.query(
+        X, k=min_samples + 1, dualtree=True, breadth_first=True
+    )[0][:, -1].copy(order="C")
 
     # Mutual reachability distance is implicit in mst_linkage_core_vector
     min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric, alpha)
@@ -298,6 +298,7 @@ def _hdbscan_prims_balltree(
         return single_linkage_tree, min_spanning_tree
     else:
         return single_linkage_tree, None
+
 
 def _hdbscan_boruvka_kdtree(
     X,
@@ -423,12 +424,15 @@ def remap_condensed_tree(tree, internal_to_raw, outliers):
     for outlier in outliers:
         outlier_list.append((root, outlier, 0, 1))
 
-    outlier_tree = np.array(outlier_list, dtype=[
-                ("parent", np.intp),
-                ("child", np.intp),
-                ("lambda_val", float),
-                ("child_size", np.intp),
-            ],)
+    outlier_tree = np.array(
+        outlier_list,
+        dtype=[
+            ("parent", np.intp),
+            ("child", np.intp),
+            ("lambda_val", float),
+            ("child_size", np.intp),
+        ],
+    )
     tree = np.append(outlier_tree, tree)
     return tree
 
@@ -471,12 +475,14 @@ def remap_single_linkage_tree(tree, internal_to_raw, outliers):
     tree = np.vstack([tree, outlier_tree])
     return tree
 
+
 def is_finite(matrix):
     """Returns true only if all the values of a ndarray or sparse matrix are finite"""
     if issparse(matrix):
         return np.alltrue(np.isfinite(matrix.tocoo().data))
     else:
         return np.alltrue(np.isfinite(matrix))
+
 
 def get_finite_row_indices(matrix):
     """Returns the indices of the purely finite rows of a sparse matrix or dense ndarray"""
@@ -1146,7 +1152,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             self._raw_data = X
 
             self._all_finite = is_finite(X)
-            if(~self._all_finite):
+            if ~self._all_finite:
                 # Pass only the purely finite indices into hdbscan
                 # We will later assign all non-finite points to the background -1 cluster
                 finite_index = get_finite_row_indices(X)
@@ -1321,6 +1327,40 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         dist_mat = dist_mat * cluster_membership_strengths
         medoid_index = np.argmin(dist_mat.sum(axis=1))
         return cluster_data[medoid_index]
+
+    def dbscan_clustering(self, cut_distance, min_cluster_size=5):
+        """Return clustering that would be equivalent to running DBSCAN* for a particular cut_distance (or epsilon)
+        DBSCAN* can be thought of as DBSCAN without the border points.  As such these results may differ slightly
+        from sklearns implementation of dbscan in the non-core points.
+
+        This can also be thought of as a flat clustering derived from constant height cut through the single
+        linkage tree.
+
+        This represents the result of selecting a cut value for robust single linkage
+        clustering. The `min_cluster_size` allows the flat clustering to declare noise
+        points (and cluster smaller than `min_cluster_size`).
+
+        Parameters
+        ----------
+
+        cut_distance : float
+            The mutual reachability distance cut value to use to generate a flat clustering.
+
+        min_cluster_size : int, optional
+            Clusters smaller than this value with be called 'noise' and remain unclustered
+            in the resulting flat clustering.
+
+        Returns
+        -------
+
+        labels : array [n_samples]
+            An array of cluster labels, one per datapoint. Unclustered points are assigned
+            the label -1.
+        """
+        return self.single_linkage_tree_.get_clusters(
+            cut_distance=cut_distance,
+            min_cluster_size=min_cluster_size,
+        )
 
     @property
     def prediction_data_(self):
