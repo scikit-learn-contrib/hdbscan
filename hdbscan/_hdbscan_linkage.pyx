@@ -60,10 +60,12 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
 
     # Add a comment
     cdef np.ndarray[np.double_t, ndim=1] current_distances_arr
+    cdef np.ndarray[np.double_t, ndim=1] current_sources_arr
     cdef np.ndarray[np.int8_t, ndim=1] in_tree_arr
     cdef np.ndarray[np.double_t, ndim=2] result_arr
 
     cdef np.double_t * current_distances
+    cdef np.double_t * current_sources
     cdef np.double_t * current_core_distances
     cdef np.double_t * raw_data_ptr
     cdef np.int8_t * in_tree
@@ -73,6 +75,9 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
     cdef np.ndarray label_filter
 
     cdef np.intp_t current_node
+    cdef np.intp_t source_node
+    cdef np.intp_t right_node
+    cdef np.intp_t left_node
     cdef np.intp_t new_node
     cdef np.intp_t i
     cdef np.intp_t j
@@ -96,10 +101,12 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
     in_tree_arr = np.zeros(dim, dtype=np.int8)
     current_node = 0
     current_distances_arr = np.infty * np.ones(dim)
+    current_sources_arr = np.ones(dim)
 
     result = (<np.double_t[:dim - 1, :3:1]> (<np.double_t *> result_arr.data))
     in_tree = (<np.int8_t *> in_tree_arr.data)
     current_distances = (<np.double_t *> current_distances_arr.data)
+    current_sources = (<np.double_t *> current_sources_arr.data)
     current_core_distances = (<np.double_t *> core_distances.data)
 
     for i in range(1, dim):
@@ -109,6 +116,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
         current_node_core_distance = current_core_distances[current_node]
 
         new_distance = DBL_MAX
+        source_node = 0
         new_node = 0
 
         for j in range(dim):
@@ -116,10 +124,13 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
                 continue
 
             right_value = current_distances[j]
+            right_source = current_sources[j]
+
             left_value = dist_metric.dist(&raw_data_ptr[num_features *
                                                         current_node],
                                           &raw_data_ptr[num_features * j],
                                           num_features)
+            left_source = current_node
 
             if alpha != 1.0:
                 left_value /= alpha
@@ -130,6 +141,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
                     left_value > right_value):
                 if right_value < new_distance:
                     new_distance = right_value
+                    source_node = right_source
                     new_node = j
                 continue
 
@@ -142,15 +154,18 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
 
             if left_value < right_value:
                 current_distances[j] = left_value
+                current_sources[j] = left_source
                 if left_value < new_distance:
                     new_distance = left_value
+                    source_node = left_source
                     new_node = j
             else:
                 if right_value < new_distance:
                     new_distance = right_value
+                    source_node = right_source
                     new_node = j
 
-        result[i - 1, 0] = <double> current_node
+        result[i - 1, 0] = <double> source_node
         result[i - 1, 1] = <double> new_node
         result[i - 1, 2] = new_distance
         current_node = new_node
