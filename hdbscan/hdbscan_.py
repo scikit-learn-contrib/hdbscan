@@ -56,6 +56,7 @@ def _tree_to_labels(
     match_reference_implementation=False,
     cluster_selection_epsilon=0.0,
     max_cluster_size=0,
+    cluster_selection_epsilon_max=float('inf'),
 ):
     """Converts a pretrained tree and cluster size into a
     set of labels and probabilities.
@@ -70,6 +71,7 @@ def _tree_to_labels(
         match_reference_implementation,
         cluster_selection_epsilon,
         max_cluster_size,
+        cluster_selection_epsilon_max,
     )
 
     return (labels, probabilities, stabilities, condensed_tree, single_linkage_tree)
@@ -513,6 +515,7 @@ def hdbscan(
     cluster_selection_method="eom",
     allow_single_cluster=False,
     match_reference_implementation=False,
+    cluster_selection_epsilon_max=float('inf'),
     **kwargs
 ):
     """Perform HDBSCAN clustering from a vector array or distance matrix.
@@ -539,7 +542,7 @@ def hdbscan(
         See [3]_ for more information. Note that this should not be used
         if we want to predict the cluster labels for new points in future
         (e.g. using approximate_predict), as the approximate_predict function
-        is not aware of this argument.
+        is not aware of this argument. This is the minimum epsilon allowed.
 
     alpha : float, optional (default=1.0)
         A distance scaling parameter as used in robust single linkage.
@@ -624,6 +627,17 @@ def hdbscan(
         in clustering results. Setting this flag to True will, at a some
         performance cost, ensure that the clustering results match the
         reference implementation.
+
+    cluster_selection_epsilon_max: float, optional (default=inf)
+        A distance threshold. Clusters above this value will be split.
+        Has no effect when using leaf clustering (where clusters are
+        usually small regardless) and can also be overridden in rare
+        cases by a high value for cluster_selection_epsilon. Note that
+        this should not be used if we want to predict the cluster labels
+        for new points in future (e.g. using approximate_predict), as
+        the approximate_predict function is not aware of this argument.
+        This is the maximum epsilon allowed. The default value of
+        None corresponds to infinity.
 
     **kwargs : optional
         Arguments passed to the distance metric
@@ -874,6 +888,7 @@ def hdbscan(
             match_reference_implementation,
             cluster_selection_epsilon,
             max_cluster_size,
+            cluster_selection_epsilon_max,
         )
         + (result_min_span_tree,)
     )
@@ -917,6 +932,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
     cluster_selection_epsilon: float, optional (default=0.0)
                 A distance threshold. Clusters below this value will be merged.
+                This is the minimum epsilon allowed.
         See [5]_ for more information.
 
     algorithm : string, optional (default='best')
@@ -987,6 +1003,16 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         in clustering results. Setting this flag to True will, at a some
         performance cost, ensure that the clustering results match the
         reference implementation.
+
+    cluster_selection_epsilon_max: float, optional (default=inf)
+        A distance threshold. Clusters above this value will be split.
+        Has no effect when using leaf clustering (where clusters are
+        usually small regardless) and can also be overridden in rare
+        cases by a high value for cluster_selection_epsilon. Note that
+        this should not be used if we want to predict the cluster labels
+        for new points in future (e.g. using approximate_predict), as
+        the approximate_predict function is not aware of this argument.
+        This is the maximum epsilon allowed.
 
     **kwargs : optional
         Arguments passed to the distance metric
@@ -1100,6 +1126,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         allow_single_cluster=False,
         prediction_data=False,
         match_reference_implementation=False,
+        cluster_selection_epsilon_max=float('inf'),
         **kwargs
     ):
         self.min_cluster_size = min_cluster_size
@@ -1119,6 +1146,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self.allow_single_cluster = allow_single_cluster
         self.match_reference_implementation = match_reference_implementation
         self.prediction_data = prediction_data
+        self.cluster_selection_epsilon_max = cluster_selection_epsilon_max
 
         self._metric_kwargs = kwargs
 
