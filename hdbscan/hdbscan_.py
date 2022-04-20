@@ -96,6 +96,10 @@ def _hdbscan_generic(
         #   matrix to indicate missing distance information.
         # TODO: Check if copying is necessary
         distance_matrix = X.copy()
+    elif metric == "graph":
+        # takes the graph csr matrix and converts it directly into a min_span_tree
+        return _hdbscan_graph_to_tree(X, gen_min_span_tree)
+
     else:
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
 
@@ -149,6 +153,44 @@ def _hdbscan_generic(
     single_linkage_tree = label(min_spanning_tree)
 
     return single_linkage_tree, result_min_span_tree
+
+
+def _hdbscan_graph_to_tree(
+        graph,
+        gen_min_span_tree
+):
+    # Check the graph for multiple components.
+    # If more than one component it means that there exists points
+    # with less than `min_samples` neighbors
+    if (
+            csgraph.connected_components(graph)[0]
+            > 1
+    ):
+        raise ValueError(
+            (
+                "The passed graph has more than on component."
+                "Run hdbscan on each component."
+            )
+        )
+
+    # graph as an csr distance matrix object
+    sparse_min_spanning_tree = csgraph.minimum_spanning_tree(graph)
+
+    # Convert the graph to scipy cluster array format
+    nonzeros = sparse_min_spanning_tree.nonzero()
+    nonzero_vals = sparse_min_spanning_tree[nonzeros]
+    min_spanning_tree = np.vstack(nonzeros + (nonzero_vals,)).T
+
+    # Sort edges of the min_spanning_tree by weight
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :][0]
+
+    # Convert edge list into standard hierarchical clustering format
+    single_linkage_tree = label(min_spanning_tree)
+
+    if gen_min_span_tree:
+        return single_linkage_tree, min_spanning_tree
+    else:
+        return single_linkage_tree, None
 
 
 def _hdbscan_sparse_distance_matrix(
