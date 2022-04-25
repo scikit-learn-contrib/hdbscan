@@ -5,15 +5,7 @@ from scipy import sparse
 import igraph
 import networkx as nx
 import time
-from hdbscan import (
-    HDBSCAN,
-    hdbscan,
-    validity_index,
-    approximate_predict,
-    approximate_predict_scores,
-    membership_vector,
-    all_points_membership_vectors,
-)
+from hdbscan import HDBSCAN
 
 
 def create_distance_matrix(graph):
@@ -59,7 +51,7 @@ def hdbscan_graph():
     start_build_graph = time.time()
 
     # set parameters graph and edges
-    number_communities = 4
+    number_communities = np.random.randint(3, 20, 1)[0]
     edge_weight_in_community = 0.1
     edge_weight_out_community = 1
 

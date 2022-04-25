@@ -2,7 +2,6 @@
 Tests for HDBSCAN clustering algorithm
 Shamelessly based on (i.e. ripped off from) the DBSCAN test code
 """
-import matplotlib.pyplot as plt
 import numpy as np
 import networkx as nx
 import sklearn.metrics
@@ -645,32 +644,30 @@ def test_hdbscan_is_sklearn_estimator():
 
 
 def test_hdbscan_graph():
-    # create graph
-    graph = nx.barbell_graph(5, 5)
-    communities_generator = nx.community.louvain_partitions(graph)
-    next_level_communities = next(communities_generator)
+    # create a distance matrix, see test_hdbscan_distance_matrix
+    D = distance.squareform(distance.pdist(X))
+    D /= np.max(D)
 
-    print(sorted(map(sorted, next_level_communities)))
+    threshold = stats.scoreatpercentile(D.flatten(), 50)
 
+    D[D >= threshold] = 0.0
+    D = sparse.csr_matrix(D)
+    D.eliminate_zeros()
 
-    # create the adjacency matrix
-    adjacency = nx.adjacency_matrix(graph)
-
-    # create the distance matrix
-    distance_matrix = nx.floyd_warshall_numpy(graph)
-
-    # run HDBSCAN on the created distance matrix using the "precomputed" metric
-    clusterer = HDBSCAN(metric="precomputed").fit(sparse.csr_matrix(distance_matrix))
+    # create cluster labels using precomputed metric
+    clusterer = HDBSCAN(metric="precomputed").fit(D)
     labels_distance_matrix = clusterer.labels_
 
-    # run HDBSCAN on graph using the csr adjacency matrix with the "graph" metric
-    clusterer = HDBSCAN(metric="graph").fit(adjacency)
+    # create a graph from the distance matrix and transform the graph to a csr adjacency matrix
+    graph = nx.from_numpy_matrix(D)
+    adjacency_matrix = nx.adjacency_matrix(graph)
+
+    # create cluster labels using the graph metric
+    clusterer = HDBSCAN(metric="graph").fit(adjacency_matrix)
     labels_hdbscan_graph = clusterer.labels_
 
-    print(labels_hdbscan_graph)
-    print(labels_distance_matrix)
+    assert sklearn.metrics.accuracy_score(labels_distance_matrix, labels_hdbscan_graph) == 1
 
-    assert sklearn.metrics.adjusted_mutual_info_score(labels_distance_matrix, labels_hdbscan_graph) == 1
 
 
 # Probably not applicable now #
