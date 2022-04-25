@@ -659,7 +659,7 @@ def test_hdbscan_graph():
     labels_distance_matrix = clusterer.labels_
 
     # create a graph from the distance matrix and transform the graph to a csr adjacency matrix
-    graph = nx.from_numpy_matrix(D)
+    graph = nx.from_numpy_matrix(D.toarray())
     adjacency_matrix = nx.adjacency_matrix(graph)
 
     # create cluster labels using the graph metric

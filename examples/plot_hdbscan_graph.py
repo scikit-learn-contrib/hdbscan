@@ -15,10 +15,10 @@ def create_distance_matrix(graph):
     :return: Scipy csr matrix based on the graph.
     """
 
-    # create a distance matrix based of the graph
     # create variables
     path_weight, vertex_from_list, vertex_to_list, vertex_from = [], [], [], 0
 
+    # create a distance matrix based of the graph
     for vertex in graph.vs:
         list_edges_shortest_path = graph.get_shortest_paths(vertex, to=None, weights="weight", mode='out',
                                                             output="epath")
@@ -37,6 +37,7 @@ def create_distance_matrix(graph):
             vertex_to += 1
         vertex_from += 1
 
+    # transform lists into a csr matrix
     distance_matrix = sparse.csr_matrix((path_weight, (vertex_from_list, vertex_to_list)))
 
     return distance_matrix
@@ -70,7 +71,7 @@ def hdbscan_graph():
     graph.simplify()
     graph.vs.select(_degree=0).delete()
 
-    # run community detection to assign edge weights
+    # run community detection to assign edge weights, the function won't works on unweighted graphs
     community_detection = graph.community_multilevel()
 
     # add edge weights
