@@ -98,7 +98,21 @@ def _hdbscan_generic(
         distance_matrix = X.copy()
     elif metric == "graph":
         # takes the graph csr matrix and converts it directly into a min_span_tree
-        return _hdbscan_graph_to_tree(X, gen_min_span_tree)
+
+        # X should be the adjacency of the graph in csr sparse format
+        adjacency_matrix = X
+
+        # run the distance matrix function with metric "graph" creating a cs min spanning tree
+        return _hdbscan_sparse_distance_matrix(
+            adjacency_matrix,
+            min_samples,
+            alpha,
+            "graph",
+            p,
+            leaf_size,
+            gen_min_span_tree,
+            **kwargs
+        )
 
     else:
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
@@ -155,44 +169,6 @@ def _hdbscan_generic(
     return single_linkage_tree, result_min_span_tree
 
 
-def _hdbscan_graph_to_tree(
-        graph,
-        gen_min_span_tree
-):
-    # Check the graph for multiple components.
-    # If more than one component it means that there exists points
-    # with less than `min_samples` neighbors
-    if (
-            csgraph.connected_components(graph)[0]
-            > 1
-    ):
-        raise ValueError(
-            (
-                "The passed graph has more than on component."
-                "Run hdbscan on each component."
-            )
-        )
-
-    # graph as an csr distance matrix object
-    sparse_min_spanning_tree = csgraph.minimum_spanning_tree(graph)
-
-    # Convert the graph to scipy cluster array format
-    nonzeros = sparse_min_spanning_tree.nonzero()
-    nonzero_vals = sparse_min_spanning_tree[nonzeros]
-    min_spanning_tree = np.vstack(nonzeros + (nonzero_vals,)).T
-
-    # Sort edges of the min_spanning_tree by weight
-    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree.T[2]), :][0]
-
-    # Convert edge list into standard hierarchical clustering format
-    single_linkage_tree = label(min_spanning_tree)
-
-    if gen_min_span_tree:
-        return single_linkage_tree, min_spanning_tree
-    else:
-        return single_linkage_tree, None
-
-
 def _hdbscan_sparse_distance_matrix(
     X,
     min_samples=5,
@@ -204,42 +180,62 @@ def _hdbscan_sparse_distance_matrix(
     **kwargs
 ):
     assert issparse(X)
-    # Check for connected component on X
-    if csgraph.connected_components(X, directed=False, return_labels=False) > 1:
-        raise ValueError(
-            "Sparse distance matrix has multiple connected "
-            "components!\nThat is, there exist groups of points "
-            "that are completely disjoint -- there are no distance "
-            "relations connecting them\n"
-            "Run hdbscan on each component."
-        )
 
-    lil_matrix = X.tolil()
-
-    # Compute sparse mutual reachability graph
-    # if max_dist > 0, max distance to use when the reachability is infinite
-    max_dist = kwargs.get("max_dist", 0.0)
-    mutual_reachability_ = sparse_mutual_reachability(
-        lil_matrix, min_points=min_samples, max_dist=max_dist, alpha=alpha
-    )
-    # Check connected component on mutual reachability
-    # If more than one component, it means that even if the distance matrix X
-    # has one component, there exists with less than `min_samples` neighbors
-    if (
-        csgraph.connected_components(
-            mutual_reachability_, directed=False, return_labels=False
-        )
-        > 1
-    ):
-        raise ValueError(
-            (
-                "There exists points with less than %s neighbors. "
-                "Ensure your distance matrix has non zeros values for "
-                "at least `min_sample`=%s neighbors for each points (i.e. K-nn graph), "
-                "or specify a `max_dist` to use when distances are missing."
+    # if the metric is not graph, build a min spanning tree from the sparse matrix
+    if metric != "graph":
+        # Check for connected component on X
+        if csgraph.connected_components(X, directed=False, return_labels=False) > 1:
+            raise ValueError(
+                "Sparse distance matrix has multiple connected "
+                "components!\nThat is, there exist groups of points "
+                "that are completely disjoint -- there are no distance "
+                "relations connecting them\n"
+                "Run hdbscan on each component."
             )
-            % (min_samples, min_samples)
+
+        lil_matrix = X.tolil()
+
+        # Compute sparse mutual reachability graph
+        # if max_dist > 0, max distance to use when the reachability is infinite
+        max_dist = kwargs.get("max_dist", 0.0)
+        mutual_reachability_ = sparse_mutual_reachability(
+            lil_matrix, min_points=min_samples, max_dist=max_dist, alpha=alpha
         )
+        # Check connected component on mutual reachability
+        # If more than one component, it means that even if the distance matrix X
+        # has one component, there exists with less than `min_samples` neighbors
+        if (
+                csgraph.connected_components(
+                    mutual_reachability_, directed=False, return_labels=False
+                )
+                > 1
+        ):
+            raise ValueError(
+                (
+                    "There exists points with less than %s neighbors. "
+                    "Ensure your distance matrix has non zeros values for "
+                    "at least `min_sample`=%s neighbors for each points (i.e. K-nn graph), "
+                    "or specify a `max_dist` to use when distances are missing."
+                )
+                % (min_samples, min_samples)
+            )
+
+    # otherwise convert the csr adjacency matrix from the graph into a minimum spanning tree
+    else:
+        # check components of the graph
+        if (
+                csgraph.connected_components(X)[0]
+                > 1
+        ):
+            raise ValueError(
+                (
+                    "The passed graph has more than on component. \n"
+                    "Run hdbscan on each component."
+                )
+            )
+        # if one component set the mutual_reachability_ to the csr from the graph
+        else:
+            mutual_reachability_ = X
 
     # Compute the minimum spanning tree for the sparse graph
     sparse_min_spanning_tree = csgraph.minimum_spanning_tree(mutual_reachability_)
