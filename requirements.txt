@@ -3,11 +3,3 @@ numpy>=1.20
 scipy>= 1.0
 scikit-learn>=0.20
 joblib>=1.0
-
-pytest~=7.1.1
-hdbscan~=0.8.28
-networkx~=2.8
-matplotlib~=3.5.1
-igraph~=0.9.9
-pycairo~=1.21.0
-setuptools~=61.2.0
