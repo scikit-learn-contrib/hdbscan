@@ -674,7 +674,8 @@ def hdbscan(
     if min_samples is None:
         min_samples = min_cluster_size
 
-    if type(min_samples) is not int or type(min_cluster_size) is not int:
+    if not np.issubdtype(type(min_samples), np.integer) or \
+       not np.issubdtype(type(min_cluster_size), np.integer):
         raise ValueError("Min samples and min cluster size must be integers!")
 
     if min_samples <= 0 or min_cluster_size <= 0:
@@ -685,7 +686,7 @@ def hdbscan(
     if min_cluster_size == 1:
         raise ValueError("Min cluster size must be greater than one")
 
-    if type(cluster_selection_epsilon) is int:
+    if np.issubdtype(type(cluster_selection_epsilon), np.integer):
         cluster_selection_epsilon = float(cluster_selection_epsilon)
 
     if type(cluster_selection_epsilon) is not float or cluster_selection_epsilon < 0.0:
