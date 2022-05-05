@@ -655,16 +655,17 @@ def test_hdbscan_graph():
     D.eliminate_zeros()
 
     # create cluster labels using precomputed metric
-    clusterer = HDBSCAN(metric="precomputed").fit(D)
-    labels_distance_matrix = clusterer.labels_
+    dist_clusterer = HDBSCAN(metric="precomputed").fit(D)
+    labels_distance_matrix = dist_clusterer.labels_
 
     # create a graph from the distance matrix and transform the graph to a csr adjacency matrix
-    graph = nx.from_numpy_matrix(D.toarray())
-    adjacency_matrix = nx.adjacency_matrix(graph)
+    from hdbscan._hdbscan_reachability import sparse_mutual_reachability
+
+    graph = sparse_mutual_rechablility(D.tolil())
 
     # create cluster labels using the graph metric
-    clusterer = HDBSCAN(metric="graph").fit(adjacency_matrix)
-    labels_hdbscan_graph = clusterer.labels_
+    graph_clusterer = HDBSCAN(metric="graph").fit(graph)
+    labels_hdbscan_graph = graph_clusterer.labels_
 
     assert sklearn.metrics.accuracy_score(labels_distance_matrix, labels_hdbscan_graph) == 1
 
