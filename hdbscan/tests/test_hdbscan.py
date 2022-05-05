@@ -661,7 +661,7 @@ def test_hdbscan_graph():
     # create a graph from the distance matrix and transform the graph to a csr adjacency matrix
     from hdbscan._hdbscan_reachability import sparse_mutual_reachability
 
-    graph = sparse_mutual_rechablility(D.tolil())
+    graph = sparse_mutual_reachability(D.tolil())
 
     # create cluster labels using the graph metric
     graph_clusterer = HDBSCAN(metric="graph").fit(graph)
