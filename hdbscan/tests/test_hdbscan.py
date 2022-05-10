@@ -3,7 +3,6 @@ Tests for HDBSCAN clustering algorithm
 Shamelessly based on (i.e. ripped off from) the DBSCAN test code
 """
 import numpy as np
-import networkx as nx
 import sklearn.metrics
 from scipy.spatial import distance
 from scipy import sparse
