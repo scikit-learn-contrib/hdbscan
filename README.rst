@@ -32,7 +32,7 @@ About this fork
 
 While writing my Bachelor's Thesis which includes a comparison of clustering 
 validity metrics like the one presented in 
-`this paper <https://www.semanticscholar.org/paper/Relative-clustering-validity-criteria%3A-A-overview-Vendramin-Campello/ad93d3b55fb94827c4df45e9fc67c55a7d90d00b>` 
+`this paper <https://www.semanticscholar.org/paper/Relative-clustering-validity-criteria%3A-A-overview-Vendramin-Campello/ad93d3b55fb94827c4df45e9fc67c55a7d90d00b>`_ 
 (but focused on the application of metrics on non-spherical/density-based clusters) 
 I noticed that DBCV might actually perform better if it just used euclidean distances 
 instead of mutual reachablity distances when constructing the minimum spanning trees. 
