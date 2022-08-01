@@ -278,8 +278,7 @@ def density_separation(X, labels, cluster_id1, cluster_id2,
 
 
 def validity_index(X, labels, metric='euclidean',
-                    d=None, per_cluster_scores=False, print_validity_components=False,
-                    print_max_euclid_to_coredist_ratios=False, mst_euclid_only=False, **kwd_args):
+                    d=None, per_cluster_scores=False, mst_euclid_only=False, verbose=False,  **kwd_args):
     """
     Compute the density based cluster validity index for the
     clustering specified by `labels` and for each cluster in `labels`.
@@ -355,7 +354,7 @@ def validity_index(X, labels, metric='euclidean',
             metric,
             d,
             no_coredist=mst_euclid_only,
-            print_max_euclid_to_coredist_ratios=print_max_euclid_to_coredist_ratios,
+            print_max_euclid_to_coredist_ratios=verbose,
             **kwd_args
         )
 
@@ -398,7 +397,7 @@ def validity_index(X, labels, metric='euclidean',
             max(min_density_sep, density_sparseness[i])
         )
 
-        if print_validity_components:
+        if verbose:
             print("Minimum density separation: " + str(min_density_sep))
             print("Density sparseness: " + str(density_sparseness[i]))
 
