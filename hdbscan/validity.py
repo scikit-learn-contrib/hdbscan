@@ -278,7 +278,7 @@ def density_separation(X, labels, cluster_id1, cluster_id2,
 
 
 def validity_index(X, labels, metric='euclidean',
-                    d=None, per_cluster_scores=False, mst_euclid_only=False, verbose=False,  **kwd_args):
+                    d=None, per_cluster_scores=False, mst_raw_dist=False, verbose=False,  **kwd_args):
     """
     Compute the density based cluster validity index for the
     clustering specified by `labels` and for each cluster in `labels`.
@@ -309,6 +309,11 @@ def validity_index(X, labels, metric='euclidean',
         Whether to return the validity index for individual clusters.
         Defaults to False with the function returning a single float
         value for the whole clustering.
+
+    mst_raw_dist : optional, boolean (default False)
+        If True, the MST's are constructed solely via 'raw' distances (depending on the given metric, e.g. euclidean distances)
+        instead of using mutual reachability distances. Thus, setting this parameter to True, avoids using 'all-points-core-distances' at all.
+        This is advantageous specifically in the case of elongated clusters that lie in close proximity to each other <citation needed>.
 
     **kwd_args :
         Extra arguments to pass to the distance computation for other
@@ -353,7 +358,7 @@ def validity_index(X, labels, metric='euclidean',
             cluster_id,
             metric,
             d,
-            no_coredist=mst_euclid_only,
+            no_coredist=mst_raw_dist,
             print_max_euclid_to_coredist_ratios=verbose,
             **kwd_args
         )
@@ -378,7 +383,7 @@ def validity_index(X, labels, metric='euclidean',
                 X, labels, i, j,
                 internal_nodes_i, internal_nodes_j,
                 core_distances[i], core_distances[j],
-                metric=metric, no_coredist=mst_euclid_only,
+                metric=metric, no_coredist=mst_raw_dist,
                 **kwd_args
             )
             density_sep[j, i] = density_sep[i, j]
