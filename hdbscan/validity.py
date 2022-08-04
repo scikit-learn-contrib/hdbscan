@@ -312,7 +312,7 @@ def validity_index(X, labels, metric='euclidean',
 
     mst_raw_dist : optional, boolean (default False)
         If True, the MST's are constructed solely via 'raw' distances (depending on the given metric, e.g. euclidean distances)
-        instead of using mutual reachability distances. Thus, setting this parameter to True, avoids using 'all-points-core-distances' at all.
+        instead of using mutual reachability distances. Thus setting this parameter to True avoids using 'all-points-core-distances' at all.
         This is advantageous specifically in the case of elongated clusters that lie in close proximity to each other <citation needed>.
 
     **kwd_args :
