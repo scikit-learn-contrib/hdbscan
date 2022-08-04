@@ -36,7 +36,7 @@ def all_points_core_distance(distance_matrix, d=2.0):
     return result
 
 
-def print_max_ratio(stacked_distances):
+def max_ratio(stacked_distances):
     max_ratio = 0
     for i in range(stacked_distances.shape[0]):
         for j in range(stacked_distances.shape[1]):
@@ -46,12 +46,12 @@ def print_max_ratio(stacked_distances):
                 continue
             max_ratio = coredist/dist
 
-    print("Max euclidean distance to coredistance ratio: " + str(max_ratio))
+    return max_ratio
 
 
 def distances_between_points(X, labels, cluster_id,
                                     metric='euclidean', d=None, no_coredist=False,
-                                    print_max_euclid_to_coredist_ratios=False, **kwd_args):
+                                    print_max_raw_to_coredist_ratio=False, **kwd_args):
     """
     Compute pairwise distances for all the points of a cluster.
 
@@ -123,8 +123,8 @@ def distances_between_points(X, labels, cluster_id,
         stacked_distances = np.dstack(
             [distance_matrix, core_dist_matrix, core_dist_matrix.T])
 
-        if print_max_euclid_to_coredist_ratios:
-            print_max_ratio(stacked_distances)
+        if print_max_raw_to_coredist_ratio:
+            print("Max raw distance to coredistance ratio: " + str(max_ratio(stacked_distances)))
 
         return stacked_distances.max(axis=-1), core_distances
 
@@ -359,7 +359,7 @@ def validity_index(X, labels, metric='euclidean',
             metric,
             d,
             no_coredist=mst_raw_dist,
-            print_max_euclid_to_coredist_ratios=verbose,
+            print_max_raw_to_coredist_ratio=verbose,
             **kwd_args
         )
 
