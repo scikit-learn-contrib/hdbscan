@@ -31,7 +31,11 @@ def all_points_core_distance(distance_matrix, d=2.0):
         distance_matrix != 0]) ** d
     result = distance_matrix.sum(axis=1)
     result /= distance_matrix.shape[0] - 1
-    result **= (-1.0 / d)
+
+    if result.sum() == 0:
+        result = np.zeros(len(distance_matrix))
+    else:
+        result **= (-1.0 / d)
 
     return result
 
