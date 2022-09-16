@@ -135,7 +135,7 @@ def _rsl_boruvka_balltree(X, k=5, alpha=1.0,
 
 def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
                           gamma=5, metric='euclidean', algorithm='best',
-                          memory=Memory(cachedir=None, verbose=0), leaf_size=40,
+                          memory=Memory(None, verbose=0), leaf_size=40,
                           core_dist_n_jobs=4, **kwargs):
     """Perform robust single linkage clustering from a vector array
     or distance matrix.
@@ -239,7 +239,7 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
 
     X = check_array(X, accept_sparse='csr')
     if isinstance(memory, str):
-        memory = Memory(cachedir=memory, verbose=0)
+        memory = Memory(memory, verbose=0)
 
     if algorithm != 'best':
         if algorithm == 'generic':
