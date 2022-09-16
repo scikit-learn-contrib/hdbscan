@@ -506,7 +506,7 @@ def hdbscan(
     p=2,
     leaf_size=40,
     algorithm="best",
-    memory=Memory(cachedir=None, verbose=0),
+    memory=Memory(None, verbose=0),
     approx_min_span_tree=True,
     gen_min_span_tree=False,
     core_dist_n_jobs=4,
@@ -726,7 +726,7 @@ def hdbscan(
 
     # Python 2 and 3 compliant string_type checking
     if isinstance(memory, str):
-        memory = Memory(cachedir=memory, verbose=0)
+        memory = Memory(memory, verbose=0)
 
     size = X.shape[0]
     min_samples = min(size - 1, min_samples)
@@ -1093,7 +1093,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         p=None,
         algorithm="best",
         leaf_size=40,
-        memory=Memory(cachedir=None, verbose=0),
+        memory=Memory(None, verbose=0),
         approx_min_span_tree=True,
         gen_min_span_tree=False,
         core_dist_n_jobs=4,
