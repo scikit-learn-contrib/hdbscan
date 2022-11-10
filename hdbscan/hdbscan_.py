@@ -976,7 +976,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
     prediction_data : boolean, optional
         Whether to generate extra cached data for predicting labels or
-        membership vectors few new unseen points later. If you wish to
+        membership vectors for new unseen points later. If you wish to
         persist the clustering object for later re-use you probably want
         to set this to True.
         (default False)
