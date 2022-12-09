@@ -267,7 +267,7 @@ class CondensedTree(object):
     def plot(self, leaf_separation=1, cmap='viridis', select_clusters=False,
              label_clusters=False, selection_palette=None,
              axis=None, colorbar=True, log_size=False,
-             max_rectangles_per_icicle=20):
+             max_rectangles_per_icicle=20, plot_size=None):
         """Use matplotlib to plot an 'icicle plot' dendrogram of the condensed tree.
 
         Effectively this is a dendrogram where the width of each cluster bar is
@@ -284,7 +284,6 @@ class CondensedTree(object):
 
         cmap : string or matplotlib colormap, optional (default viridis)
                The matplotlib colormap to use to color the cluster bars.
-
 
         select_clusters : boolean, optional (default False)
                           Whether to draw ovals highlighting which cluster
@@ -306,7 +305,6 @@ class CondensedTree(object):
                The matplotlib axis to render to. If None then a new axis
                will be generated. The rendered axis will be returned.
 
-
         colorbar : boolean, optional (default True)
                    Whether to draw a matplotlib colorbar displaying the range
                    of cluster sizes as per the colormap.
@@ -315,12 +313,15 @@ class CondensedTree(object):
                    Use log scale for the 'size' of clusters (i.e. number of
                    points in the cluster at a given lambda value).
 
-
         max_rectangles_per_icicle : int, optional (default 20)
             To simplify the plot this method will only emit
             ``max_rectangles_per_icicle`` bars per branch of the dendrogram.
             This ensures that we don't suffer from massive overplotting in
             cases with a lot of data points.
+        
+        plot_size : tuple, optional (default None)
+            Manually specify figsize using call to matplotlib.figsize = plot_size
+
 
          Returns
         -------
@@ -333,6 +334,9 @@ class CondensedTree(object):
             raise ImportError(
                 'You must install the matplotlib library to plot the condensed tree.'
                 'Use get_plot_data to calculate the relevant data without plotting.')
+        
+        if plot_size:
+            plt.figsize = plot_size
 
         plot_data = self.get_plot_data(leaf_separation=leaf_separation,
                                        log_size=log_size,
