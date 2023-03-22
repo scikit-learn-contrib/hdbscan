@@ -144,7 +144,7 @@ def test_hdbscan_distance_matrix():
     D = distance.squareform(distance.pdist(X))
     D /= np.max(D)
 
-    labels, p, persist, ctree, ltree, mtree = hdbscan(D, metric="precomputed")
+    labels, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(D, metric="precomputed")
     # number of clusters, ignoring noise if present
     n_clusters_1 = len(set(labels)) - int(-1 in labels)  # ignore noise
     assert n_clusters_1 == n_clusters
@@ -167,7 +167,7 @@ def test_hdbscan_sparse_distance_matrix():
     D = sparse.csr_matrix(D)
     D.eliminate_zeros()
 
-    labels, p, persist, ctree, ltree, mtree = hdbscan(D, metric="precomputed")
+    labels, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(D, metric="precomputed")
     # number of clusters, ignoring noise if present
     n_clusters_1 = len(set(labels)) - int(-1 in labels)  # ignore noise
     assert n_clusters_1 == n_clusters
@@ -178,7 +178,7 @@ def test_hdbscan_sparse_distance_matrix():
 
 
 def test_hdbscan_feature_vector():
-    labels, p, persist, ctree, ltree, mtree = hdbscan(X)
+    labels, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(X)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_1 == n_clusters
 
@@ -191,7 +191,9 @@ def test_hdbscan_feature_vector():
 
 
 def test_hdbscan_prims_kdtree():
-    labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm="prims_kdtree")
+    labels, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(
+        X, algorithm="prims_kdtree"
+    )
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_1 == n_clusters
 
@@ -203,7 +205,9 @@ def test_hdbscan_prims_kdtree():
 
 
 def test_hdbscan_prims_balltree():
-    labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm="prims_balltree")
+    labels, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(
+        X, algorithm="prims_balltree"
+    )
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_1 == n_clusters
 
@@ -215,7 +219,9 @@ def test_hdbscan_prims_balltree():
 
 
 def test_hdbscan_boruvka_kdtree():
-    labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm="boruvka_kdtree")
+    labels, p, persist, ctree, ltree, selclstrs, mtree, = hdbscan(
+        X, algorithm="boruvka_kdtree"
+    )
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_1 == n_clusters
 
@@ -229,7 +235,9 @@ def test_hdbscan_boruvka_kdtree():
 
 
 def test_hdbscan_boruvka_balltree():
-    labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm="boruvka_balltree")
+    labels, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(
+        X, algorithm="boruvka_balltree"
+    )
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_1 == n_clusters
 
@@ -243,7 +251,7 @@ def test_hdbscan_boruvka_balltree():
 
 
 def test_hdbscan_generic():
-    labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm="generic")
+    labels, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(X, algorithm="generic")
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_1 == n_clusters
 
@@ -261,7 +269,7 @@ def test_hdbscan_high_dimensional():
     H, y = make_blobs(n_samples=50, random_state=0, n_features=64)
     # H, y = shuffle(X, y, random_state=7)
     H = StandardScaler().fit_transform(H)
-    labels, p, persist, ctree, ltree, mtree = hdbscan(H)
+    labels, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(H)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_1 == n_clusters
 
@@ -275,7 +283,7 @@ def test_hdbscan_high_dimensional():
 
 
 def test_hdbscan_best_balltree_metric():
-    labels, p, persist, ctree, ltree, mtree = hdbscan(
+    labels, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(
         X, metric="seuclidean", V=np.ones(X.shape[1])
     )
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
@@ -287,7 +295,9 @@ def test_hdbscan_best_balltree_metric():
 
 
 def test_hdbscan_no_clusters():
-    labels, p, persist, ctree, ltree, mtree = hdbscan(X, min_cluster_size=len(X) + 1)
+    labels, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(
+        X, min_cluster_size=len(X) + 1
+    )
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_1 == 0
 
@@ -298,7 +308,7 @@ def test_hdbscan_no_clusters():
 
 def test_hdbscan_min_cluster_size():
     for min_cluster_size in range(2, len(X) + 1, 1):
-        labels, p, persist, ctree, ltree, mtree = hdbscan(
+        labels, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(
             X, min_cluster_size=min_cluster_size
         )
         true_labels = [label for label in labels if label != -1]
@@ -315,7 +325,7 @@ def test_hdbscan_callable_metric():
     # metric is the function reference, not the string key.
     metric = distance.euclidean
 
-    labels, p, persist, ctree, ltree, mtree = hdbscan(X, metric=metric)
+    labels, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(X, metric=metric)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_1 == n_clusters
 
@@ -333,8 +343,10 @@ def test_hdbscan_boruvka_kdtree_matches():
 
     data = generate_noisy_data()
 
-    labels_prims, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm="generic")
-    labels_boruvka, p, persist, ctree, ltree, mtree = hdbscan(
+    labels_prims, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(
+        data, algorithm="generic"
+    )
+    labels_boruvka, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(
         data, algorithm="boruvka_kdtree"
     )
 
@@ -354,8 +366,10 @@ def test_hdbscan_boruvka_balltree_matches():
 
     data = generate_noisy_data()
 
-    labels_prims, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm="generic")
-    labels_boruvka, p, persist, ctree, ltree, mtree = hdbscan(
+    labels_prims, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(
+        data, algorithm="generic"
+    )
+    labels_boruvka, p, persist, ctree, ltree, selclstrs, mtree = hdbscan(
         data, algorithm="boruvka_balltree"
     )
 
