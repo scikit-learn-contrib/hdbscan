@@ -2,8 +2,10 @@
 """
 Robust Single Linkage: Density based single linkage clustering.
 """
+import sklearn
 import numpy as np
 
+from packaging.version import Version
 from sklearn.base import BaseEstimator, ClusterMixin
 from sklearn.metrics import pairwise_distances
 from scipy.sparse import issparse
@@ -24,7 +26,14 @@ from warnings import warn
 #
 # License: BSD 3 clause
 
-FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics
+if Version(sklearn.__version__) >= Version("1.3.0"):
+    kdtree_valid_metrics = KDTree.valid_metrics()
+    balltree_valid_metrics = BallTree.valid_metrics()
+else:
+    kdtree_valid_metrics = KDTree.valid_metrics
+    balltree_valid_metrics = BallTree.valid_metrics
+
+FAST_METRICS = kdtree_valid_metrics + balltree_valid_metrics
 
 
 def _rsl_generic(X, k=5, alpha=1.4142135623730951, metric='euclidean',
