@@ -275,7 +275,7 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
             # We can't do much with sparse matrices ...
             single_linkage_tree = memory.cache(_rsl_generic)(
                 X, k, alpha, metric, **kwargs)
-        elif metric in KDTree.valid_metrics:
+        elif metric in kdtree_valid_metrics:
             # Need heuristic to decide when to go to boruvka;
             # still debugging for now
             if X.shape[1] > 128:
