@@ -131,12 +131,18 @@ def homogeneity(labels1, labels2):
     num_missed = 0.0
     for label in set(labels1):
         matches = labels2[labels1 == label]
-        match_mode, mode_count = mode(matches)
+        try:
+            match_mode, mode_count = mode(matches, keepdims=True)
+        except:
+            match_mode, mode_count = mode(matches)
         num_missed += np.sum(matches != match_mode[0])
 
     for label in set(labels2):
         matches = labels1[labels2 == label]
-        match_mode, mode_count = mode(matches)
+        try:
+            match_mode, mode_count = mode(matches, keepdims=True)
+        except:
+            match_mode, mode_count = mode(matches)
         num_missed += np.sum(matches != match_mode[0])
 
     return num_missed / 2.0
