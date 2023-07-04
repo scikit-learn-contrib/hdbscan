@@ -37,7 +37,22 @@ from .dist_metrics import DistanceMetric
 from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 from .prediction import PredictionData
 
-FAST_METRICS = KDTree.valid_metrics + BallTree.valid_metrics + ["cosine", "arccos"]
+KDTREE_VALID_METRICS = ["euclidean", "l2", "minkowski", "p", "manhattan", "cityblock", "l1", "chebyshev", "infinity"]
+BALLTREE_VALID_METRICS = KDTREE_VALID_METRICS + [
+    "braycurtis",
+    "canberra",
+    "dice",
+    "hamming",
+    "haversine",
+    "jaccard",
+    "mahalanobis",
+    "rogerstanimoto",
+    "russellrao",
+    "seuclidean",
+    "sokalmichener",
+    "sokalsneath",
+]
+FAST_METRICS = KDTREE_VALID_METRICS + BALLTREE_VALID_METRICS + ["cosine", "arccos"]
 
 # Author: Leland McInnes <leland.mcinnes@gmail.com>
 #         Steve Astels <sastels@gmail.com>
@@ -742,19 +757,19 @@ def hdbscan(
                 _hdbscan_generic
             )(X, min_samples, alpha, metric, p, leaf_size, gen_min_span_tree, **kwargs)
         elif algorithm == "prims_kdtree":
-            if metric not in KDTree.valid_metrics:
+            if metric not in KDTREE_VALID_METRICS:
                 raise ValueError("Cannot use Prim's with KDTree for this" " metric!")
             (single_linkage_tree, result_min_span_tree) = memory.cache(
                 _hdbscan_prims_kdtree
             )(X, min_samples, alpha, metric, p, leaf_size, gen_min_span_tree, **kwargs)
         elif algorithm == "prims_balltree":
-            if metric not in BallTree.valid_metrics:
+            if metric not in BALLTREE_VALID_METRICS:
                 raise ValueError("Cannot use Prim's with BallTree for this" " metric!")
             (single_linkage_tree, result_min_span_tree) = memory.cache(
                 _hdbscan_prims_balltree
             )(X, min_samples, alpha, metric, p, leaf_size, gen_min_span_tree, **kwargs)
         elif algorithm == "boruvka_kdtree":
-            if metric not in BallTree.valid_metrics:
+            if metric not in BALLTREE_VALID_METRICS:
                 raise ValueError("Cannot use Boruvka with KDTree for this" " metric!")
             (single_linkage_tree, result_min_span_tree) = memory.cache(
                 _hdbscan_boruvka_kdtree
@@ -771,7 +786,7 @@ def hdbscan(
                 **kwargs
             )
         elif algorithm == "boruvka_balltree":
-            if metric not in BallTree.valid_metrics:
+            if metric not in BALLTREE_VALID_METRICS:
                 raise ValueError("Cannot use Boruvka with BallTree for this" " metric!")
             if (X.shape[0] // leaf_size) > 16000:
                 warn(
@@ -802,7 +817,7 @@ def hdbscan(
             (single_linkage_tree, result_min_span_tree) = memory.cache(
                 _hdbscan_generic
             )(X, min_samples, alpha, metric, p, leaf_size, gen_min_span_tree, **kwargs)
-        elif metric in KDTree.valid_metrics:
+        elif metric in KDTREE_VALID_METRICS:
             # TO DO: Need heuristic to decide when to go to boruvka;
             # still debugging for now
             if X.shape[1] > 60:
@@ -1237,9 +1252,9 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
         if self.metric in FAST_METRICS:
             min_samples = self.min_samples or self.min_cluster_size
-            if self.metric in KDTree.valid_metrics:
+            if self.metric in KDTREE_VALID_METRICS:
                 tree_type = "kdtree"
-            elif self.metric in BallTree.valid_metrics:
+            elif self.metric in BALLTREE_VALID_METRICS:
                 tree_type = "balltree"
             else:
                 warn("Metric {} not supported for prediction data!".format(self.metric))
