@@ -63,7 +63,15 @@ stages:
             windows_py310:
               imageName: 'windows-latest'
               python.version: '3.10'
-
+            mac_py311:
+              imageName: 'macOS-latest'
+              python.version: '3.11'
+            linux_py311:
+              imageName: 'ubuntu-latest'
+              python.version: '3.11'
+            windows_py311:
+              imageName: 'windows-latest'
+              python.version: '3.11'
         pool:
           vmImage: $(imageName)
 
@@ -121,6 +129,8 @@ stages:
               python.version: 'cp39-cp39'
             linux_py310:
               python.version: 'cp310-cp310'
+            linux_py311:
+              python.version: 'cp311-cp311'
         steps:
         - script: |
             "${PYBIN}/python" -m pip install --upgrade pip
@@ -180,7 +190,12 @@ stages:
             windows_py310:
               imageName: 'windows-latest'
               python.version: '3.10'
-
+            mac_py311:
+              imageName: 'macOS-latest'
+              python.version: '3.11'
+            windows_py311:
+              imageName: 'windows-latest'
+              python.version: '3.11'
         pool:
           vmImage: $(imageName) 
 
