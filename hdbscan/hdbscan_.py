@@ -494,9 +494,9 @@ def remap_single_linkage_tree(tree, internal_to_raw, outliers):
 def is_finite(matrix):
     """Returns true only if all the values of a ndarray or sparse matrix are finite"""
     if issparse(matrix):
-        return np.alltrue(np.isfinite(matrix.tocoo().data))
+        return np.all(np.isfinite(matrix.tocoo().data))
     else:
-        return np.alltrue(np.isfinite(matrix))
+        return np.all(np.isfinite(matrix))
 
 
 def get_finite_row_indices(matrix):
