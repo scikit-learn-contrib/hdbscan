@@ -5,5 +5,6 @@ from .prediction import (approximate_predict,
                          membership_vector,
                          all_points_membership_vectors,
                          approximate_predict_scores)
+from .version import VERSION
 
-
+__version__ = VERSION
