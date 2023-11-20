@@ -95,7 +95,7 @@ class PredictionData(object):
             return sum(
                 [recurse_leaf_dfs(self.cluster_tree, child) for child in children], [])
 
-    def __init__(self, data, condensed_tree, min_samples,
+    def __init__(self, data, condensed_tree, selected_clusters, min_samples,
                  tree_type='kdtree', metric='euclidean', **kwargs):
         self.raw_data = data.astype(np.float64)
         self.tree = self._tree_type_map[tree_type](self.raw_data,
@@ -103,7 +103,6 @@ class PredictionData(object):
         self.core_distances = self.tree.query(data, k=min_samples)[0][:, -1]
         self.dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
-        selected_clusters = sorted(condensed_tree._select_clusters())
         # raw_condensed_tree = condensed_tree.to_numpy()
         raw_condensed_tree = condensed_tree._raw_tree
 
