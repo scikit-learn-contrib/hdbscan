@@ -193,19 +193,20 @@ cdef class UnionFind (object):
         self.size[self.next_label] = self.size[m] + self.size[n]
         self.parent[m] = self.next_label
         self.parent[n] = self.next_label
-        self.size[self.next_label] = self.size[m] + self.size[n]
         self.next_label += 1
-
         return
 
     cdef np.intp_t fast_find(self, np.intp_t n):
-        cdef np.intp_t p
+        cdef np.intp_t p, tmp
         p = n
-        while self.parent_arr[n] != -1:
-            n = self.parent_arr[n]
-        # label up to the root
-        while self.parent_arr[p] != n:
-            p, self.parent_arr[p] = self.parent_arr[p], n
+        while self.parent[n] != -1:
+            n = self.parent[n]
+        # label up to the root if this is not the root already
+        if p != n:
+            while self.parent[p] != n:
+                tmp = self.parent[p]
+                self.parent[p] = n
+                p = tmp
         return n
 
 
