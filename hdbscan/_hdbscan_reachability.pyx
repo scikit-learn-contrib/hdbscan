@@ -99,6 +99,61 @@ cpdef sparse_mutual_reachability(object lil_matrix, np.intp_t min_points=5,
     return result.tocsr()
 
 
+def sparse_mutual_reachability_old(lil_matrix, min_points=5):
+    """Added by codingafuture for performance comparation.
+       Func sparse_mutual_reachability_old is a pure python realisation of above func sparse_mutual_reachability.
+    """
+    from scipy.sparse import lil_matrix as sparse_matrix
+    result = sparse_matrix(lil_matrix.shape)
+    core_distance = np.empty(lil_matrix.shape[0], dtype=np.double)
+
+    for i in range(lil_matrix.shape[0]):  # 5w
+        sorted_row_data = sorted(lil_matrix.data[i])
+        if min_points < len(sorted_row_data):
+            core_distance[i] = sorted_row_data[min_points]
+        else:
+            core_distance[i] = np.infty
+
+    nz_row_data, nz_col_data = lil_matrix.nonzero()
+
+    for n in range(nz_row_data.shape[0]):
+        i = nz_row_data[n]
+        j = nz_col_data[n]
+
+        mr_dist = max(core_distance[i], core_distance[j], lil_matrix[i, j])
+        if np.isfinite(mr_dist):
+            result[i, j] = mr_dist
+
+    return result.tocsr()
+
+
+def sparse_mutual_reachability_new(lil_mat, min_points=5):
+    """Added by codingafuture for performance comparation.
+       Compared to sparse_mutual_reachability_old, sparse_mutual_reachability_new speed up 20+ times.
+    """
+    from scipy.sparse import csr_matrix
+    core_distance = np.empty(lil_mat.shape[0], dtype=np.double)
+
+    for i in range(lil_mat.shape[0]):  # 5w
+        sorted_row_data = sorted(lil_mat.data[i])
+        if min_points < len(sorted_row_data):
+            core_distance[i] = sorted_row_data[min_points]
+        else:
+            core_distance[i] = np.infty
+
+    csr_mat = lil_mat.tocsr()
+    csr_mat.eliminate_zeros()
+    row, col = csr_mat.nonzero()
+    data = csr_mat.data
+#         print len(row), len(col), len(data)
+    data_core_dis_i = core_distance[row]
+    data_core_dis_j = core_distance[col]
+
+    stage1 = np.where(data_core_dis_i > data, data_core_dis_i, data)
+    result = np.where(stage1 > data_core_dis_j, stage1, data_core_dis_j)
+    x = csr_matrix((result, (row, col)), shape=(lil_mat.shape[0], lil_mat.shape[1]))
+    return x
+
 def kdtree_mutual_reachability(X, distance_matrix, metric, p=2, min_points=5,
                                alpha=1.0, **kwargs):
     dim = distance_matrix.shape[0]
