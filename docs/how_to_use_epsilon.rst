@@ -43,7 +43,7 @@ In our example, we choose to merge nested clusters below 5 meters (0.005 kilomet
 
 	X = np.radians(coordinates) #convert the list of lat/lon coordinates to radians
 	earth_radius_km = 6371
-	epsilon = 0.005 / earth_radius #calculate 5 meter epsilon threshold
+	epsilon = 0.005 / earth_radius_km #calculate 5 meter epsilon threshold
 	
 	clusterer = hdbscan.HDBSCAN(min_cluster_size=4, metric='haversine', 
 	cluster_selection_epsilon=epsilon, cluster_selection_method = 'eom')
