@@ -91,7 +91,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     relabel = np.empty(root + 1, dtype=np.intp)
     relabel[root] = num_points
     result_list = []
-    ignore = np.zeros(len(node_list), dtype=int)
+    ignore = np.zeros(len(node_list), dtype=np.int8)
 
     for node in node_list:
         if ignore[node] or node < num_points:
