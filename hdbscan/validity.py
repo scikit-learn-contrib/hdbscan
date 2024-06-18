@@ -31,16 +31,33 @@ def all_points_core_distance(distance_matrix, d=2.0):
         distance_matrix != 0]) ** d
     result = distance_matrix.sum(axis=1)
     result /= distance_matrix.shape[0] - 1
-    result **= (-1.0 / d)
+
+    if result.sum() == 0:
+        result = np.zeros(len(distance_matrix))
+    else:
+        result **= (-1.0 / d)
 
     return result
 
 
-def all_points_mutual_reachability(X, labels, cluster_id,
-                                   metric='euclidean', d=None, **kwd_args):
+def max_ratio(stacked_distances):
+    max_ratio = 0
+    for i in range(stacked_distances.shape[0]):
+        for j in range(stacked_distances.shape[1]):
+            dist = stacked_distances[i][j][0]
+            coredist = stacked_distances[i][j][1]
+            if dist == 0 or coredist/dist <= max_ratio:
+                continue
+            max_ratio = coredist/dist
+
+    return max_ratio
+
+
+def distances_between_points(X, labels, cluster_id,
+                                    metric='euclidean', d=None, no_coredist=False,
+                                    print_max_raw_to_coredist_ratio=False, **kwd_args):
     """
-    Compute the all-points-mutual-reachability distances for all the points of
-    a cluster.
+    Compute pairwise distances for all the points of a cluster.
 
     If metric is 'precomputed' then assume X is a distance matrix for the full
     dataset. Note that in this case you must pass in 'd' the dimension of the
@@ -58,9 +75,7 @@ def all_points_mutual_reachability(X, labels, cluster_id,
         cluster label to each data point, with -1 for noise points.
 
     cluster_id : integer
-        The cluster label for which to compute the all-points
-        mutual-reachability (which should be done on a cluster
-        by cluster basis).
+        The cluster label for which to compute the distances
 
     metric : string
         The metric used to compute distances for the clustering (and
@@ -80,9 +95,8 @@ def all_points_mutual_reachability(X, labels, cluster_id,
     Returns
     -------
 
-    mutual_reachaibility : array (n_samples, n_samples)
-        The pairwise mutual reachability distances between all points in `X`
-        with `label` equal to `cluster_id`.
+    distances : array (n_samples, n_samples)
+        The distances between all points in `X` with `label` equal to `cluster_id`.
 
     core_distances : array (n_samples,)
         The all-points-core_distance of all points in `X` with `label` equal
@@ -104,13 +118,19 @@ def all_points_mutual_reachability(X, labels, cluster_id,
                                              **kwd_args)
         d = X.shape[1]
 
-    core_distances = all_points_core_distance(distance_matrix.copy(), d=d)
-    core_dist_matrix = np.tile(core_distances, (core_distances.shape[0], 1))
+    if no_coredist:
+        return distance_matrix, None
 
-    result = np.dstack(
-        [distance_matrix, core_dist_matrix, core_dist_matrix.T]).max(axis=-1)
+    else:
+        core_distances = all_points_core_distance(distance_matrix.copy(), d=d)
+        core_dist_matrix = np.tile(core_distances, (core_distances.shape[0], 1))
+        stacked_distances = np.dstack(
+            [distance_matrix, core_dist_matrix, core_dist_matrix.T])
 
-    return result, core_distances
+        if print_max_raw_to_coredist_ratio:
+            print("Max raw distance to coredistance ratio: " + str(max_ratio(stacked_distances)))
+
+        return stacked_distances.max(axis=-1), core_distances
 
 
 def internal_minimum_spanning_tree(mr_distances):
@@ -155,6 +175,8 @@ def internal_minimum_spanning_tree(mr_distances):
 
     vertices = np.arange(mr_distances.shape[0])[
         np.bincount(min_span_tree.T[:2].flatten().astype(np.intp)) > 1]
+    if not len(vertices):
+        vertices = [0]
     # A little "fancy" we select from the flattened array reshape back
     # (Fortran format to get indexing right) and take the product to do an and
     # then convert back to boolean type.
@@ -181,11 +203,10 @@ def internal_minimum_spanning_tree(mr_distances):
 def density_separation(X, labels, cluster_id1, cluster_id2,
                        internal_nodes1, internal_nodes2,
                        core_distances1, core_distances2,
-                       metric='euclidean', **kwd_args):
+                       metric='euclidean', no_coredist=False, **kwd_args):
     """
     Compute the density separation between two clusters. This is the minimum
-    all-points mutual reachability distance between pairs of points, one from
-    internal nodes of MSTs of each cluster.
+    distance between pairs of points, one from internal nodes of MSTs of each cluster.
 
     Parameters
     ----------
@@ -246,20 +267,24 @@ def density_separation(X, labels, cluster_id1, cluster_id2,
         cluster2 = X[labels == cluster_id2][internal_nodes2]
         distance_matrix = cdist(cluster1, cluster2, metric, **kwd_args)
 
-    core_dist_matrix1 = np.tile(core_distances1[internal_nodes1],
-                                (distance_matrix.shape[1], 1)).T
-    core_dist_matrix2 = np.tile(core_distances2[internal_nodes2],
-                                (distance_matrix.shape[0], 1))
+    if no_coredist:
+        return distance_matrix.min()
 
-    mr_dist_matrix = np.dstack([distance_matrix,
-                                core_dist_matrix1,
-                                core_dist_matrix2]).max(axis=-1)
+    else:
+        core_dist_matrix1 = np.tile(core_distances1[internal_nodes1],
+                                    (distance_matrix.shape[1], 1)).T
+        core_dist_matrix2 = np.tile(core_distances2[internal_nodes2],
+                                    (distance_matrix.shape[0], 1))
 
-    return mr_dist_matrix.min()
+        mr_dist_matrix = np.dstack([distance_matrix,
+                                    core_dist_matrix1,
+                                    core_dist_matrix2]).max(axis=-1)
+
+        return mr_dist_matrix.min()
 
 
 def validity_index(X, labels, metric='euclidean',
-                   d=None, per_cluster_scores=False, **kwd_args):
+                    d=None, per_cluster_scores=False, mst_raw_dist=False, verbose=False,  **kwd_args):
     """
     Compute the density based cluster validity index for the
     clustering specified by `labels` and for each cluster in `labels`.
@@ -290,6 +315,11 @@ def validity_index(X, labels, metric='euclidean',
         Whether to return the validity index for individual clusters.
         Defaults to False with the function returning a single float
         value for the whole clustering.
+
+    mst_raw_dist : optional, boolean (default False)
+        If True, the MST's are constructed solely via 'raw' distances (depending on the given metric, e.g. euclidean distances)
+        instead of using mutual reachability distances. Thus setting this parameter to True avoids using 'all-points-core-distances' at all.
+        This is advantageous specifically in the case of elongated clusters that lie in close proximity to each other <citation needed>.
 
     **kwd_args :
         Extra arguments to pass to the distance computation for other
@@ -327,18 +357,20 @@ def validity_index(X, labels, metric='euclidean',
         if np.sum(labels == cluster_id) == 0:
             continue
 
-        mr_distances, core_distances[
-            cluster_id] = all_points_mutual_reachability(
+        distances_for_mst, core_distances[
+            cluster_id] = distances_between_points(
             X,
             labels,
             cluster_id,
             metric,
             d,
+            no_coredist=mst_raw_dist,
+            print_max_raw_to_coredist_ratio=verbose,
             **kwd_args
         )
 
         mst_nodes[cluster_id], mst_edges[cluster_id] = \
-            internal_minimum_spanning_tree(mr_distances)
+            internal_minimum_spanning_tree(distances_for_mst)
         density_sparseness[cluster_id] = mst_edges[cluster_id].T[2].max()
 
     for i in range(max_cluster_id):
@@ -357,7 +389,8 @@ def validity_index(X, labels, metric='euclidean',
                 X, labels, i, j,
                 internal_nodes_i, internal_nodes_j,
                 core_distances[i], core_distances[j],
-                metric=metric, **kwd_args
+                metric=metric, no_coredist=mst_raw_dist,
+                **kwd_args
             )
             density_sep[j, i] = density_sep[i, j]
 
@@ -374,6 +407,11 @@ def validity_index(X, labels, metric='euclidean',
             (min_density_sep - density_sparseness[i]) /
             max(min_density_sep, density_sparseness[i])
         )
+
+        if verbose:
+            print("Minimum density separation: " + str(min_density_sep))
+            print("Density sparseness: " + str(density_sparseness[i]))
+
         cluster_size = np.sum(labels == i)
         result += (cluster_size / n_samples) * cluster_validity_indices[i]
 

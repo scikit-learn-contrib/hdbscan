@@ -1,0 +1,64 @@
+name: Upload Python Wheels
+
+on:
+  workflow_dispatch:
+    inputs:
+      checkout_ref:
+        description: "The branch, tag or SHA to checkout."
+        required: true
+        default: "master"
+
+jobs:
+  linux-deploy:
+    runs-on: ubuntu-latest
+    container: quay.io/pypa/manylinux2014_x86_64
+    strategy:
+      matrix:
+        python: ["cp38-cp38", "cp39-cp39", "cp310-cp310", "cp311-cp311"]
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          ref: ${{ inputs.checkout_ref }}
+      - name: Build wheel
+        env:
+          PYTHON: /opt/python/${{ matrix.python }}/bin/python
+        run: |
+          $PYTHON -m pip install "cython<3" oldest-supported-numpy
+          $PYTHON -m build --no-isolation
+          auditwheel repair dist/*linux_x86_64.whl
+      - name: Publish to pypi
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          pipx install twine
+          twine upload dist/*.tar.gz --skip-existing
+          twine upload wheelhouse/*.whl --skip-existing
+  other-deploy:
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11"]
+        os: [windows-2019, macos-11]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          ref: ${{ inputs.checkout_ref }}
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools build wheel twine
+          pip install "cython<3" oldest-supported-numpy
+      - name: Build wheel
+        run: |
+          python -m build --no-isolation
+      - name: Publish to pypi
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          twine upload dist/*.whl --skip-existing

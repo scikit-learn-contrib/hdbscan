@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-2019
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python
@@ -25,6 +25,4 @@ jobs:
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
         python setup.py sdist bdist_wheel
-        twine upload dist/*.tar.gz
-        auditwheel repair dist/*linux_x86_64.whl
-        twine upload wheelhouse/*.whl
+        twine upload dist/*

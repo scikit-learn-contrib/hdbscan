@@ -118,10 +118,12 @@ def if_networkx(func):
 
 def generate_noisy_data():
     blobs, _ = datasets.make_blobs(
-        n_samples=200, centers=[(-0.75, 2.25), (1.0, 2.0)], cluster_std=0.25
+        n_samples=200, centers=[(-0.75, 2.25), (1.0, 2.0)], cluster_std=0.25, random_state=42
     )
-    moons, _ = datasets.make_moons(n_samples=200, noise=0.05)
-    noise = np.random.uniform(-1.0, 3.0, (50, 2))
+    moons, _ = datasets.make_moons(n_samples=200, noise=0.05, random_state=42)
+    rng = np.random.default_rng(seed=42)
+    noise = rng.uniform(-1.0, 3.0, (50, 2))
+    
     return np.vstack([blobs, moons, noise])
 
 
@@ -129,13 +131,19 @@ def homogeneity(labels1, labels2):
     num_missed = 0.0
     for label in set(labels1):
         matches = labels2[labels1 == label]
-        match_mode = mode(matches)[0][0]
-        num_missed += np.sum(matches != match_mode)
+        try:
+            match_mode, mode_count = mode(matches, keepdims=True)
+        except:
+            match_mode, mode_count = mode(matches)
+        num_missed += np.sum(matches != match_mode[0])
 
     for label in set(labels2):
         matches = labels1[labels2 == label]
-        match_mode = mode(matches)[0][0]
-        num_missed += np.sum(matches != match_mode)
+        try:
+            match_mode, mode_count = mode(matches, keepdims=True)
+        except:
+            match_mode, mode_count = mode(matches)
+        num_missed += np.sum(matches != match_mode[0])
 
     return num_missed / 2.0
 

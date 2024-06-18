@@ -146,7 +146,7 @@ want do some method chaining.
 .. parsed-literal::
 
     HDBSCAN(algorithm='best', alpha=1.0, approx_min_span_tree=True,
-        gen_min_span_tree=False, leaf_size=40, memory=Memory(cachedir=None),
+        gen_min_span_tree=False, leaf_size=40, memory=Memory(None),
         metric='euclidean', min_cluster_size=5, min_samples=None, p=None)
 
 

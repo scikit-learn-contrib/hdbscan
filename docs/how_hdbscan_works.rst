@@ -71,7 +71,7 @@ library <https://github.com/scikit-learn-contrib/hdbscan>`__ and get to work.
 .. parsed-literal::
 
     HDBSCAN(algorithm='best', alpha=1.0, approx_min_span_tree=True,
-        gen_min_span_tree=True, leaf_size=40, memory=Memory(cachedir=None),
+        gen_min_span_tree=True, leaf_size=40, memory=Memory(None),
         metric='euclidean', min_cluster_size=5, min_samples=None, p=None)
 
 
