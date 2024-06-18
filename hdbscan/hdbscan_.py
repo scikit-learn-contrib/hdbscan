@@ -913,8 +913,8 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         cluster rather than a cluster splitting into two new clusters.
 
     min_samples : int, optional (default=None)
-        The number of samples in a neighbourhood for a point to be
-        considered a core point.
+        The number of samples in a neighborhood for a point to be considered as a core point.
+	This includes the point itself. When None, defaults to min_cluster_size.
 
     metric : string, or callable, optional (default='euclidean')
         The metric to use when calculating distance between instances in a
