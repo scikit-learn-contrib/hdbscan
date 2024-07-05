@@ -180,8 +180,8 @@ def internal_minimum_spanning_tree(mr_distances):
     # A little "fancy" we select from the flattened array reshape back
     # (Fortran format to get indexing right) and take the product to do an and
     # then convert back to boolean type.
-    edge_selection = np.prod(np.in1d(min_span_tree.T[:2], vertices).reshape(
-        (min_span_tree.shape[0], 2), order='F'), axis=1).astype(bool)
+    edge_selection = np.prod(
+        np.isin(min_span_tree.T[:2], vertices), axis=0).astype(bool)
 
     # Density sparseness is not well defined if there are no
     # internal edges (as per the referenced paper). However

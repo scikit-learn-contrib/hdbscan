@@ -251,7 +251,7 @@ cdef list bfs_from_cluster_tree(np.ndarray tree, np.intp_t bfs_root):
 
     while to_process.shape[0] > 0:
         result.extend(to_process.tolist())
-        to_process = tree['child'][np.in1d(tree['parent'], to_process)]
+        to_process = tree['child'][np.isin(tree['parent'], to_process)]
 
     return result
 
@@ -725,8 +725,10 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
     # if you do, change this accordingly!
     if allow_single_cluster:
         node_list = sorted(stability.keys(), reverse=True)
+        node_list = [int(n) for n in node_list]
     else:
         node_list = sorted(stability.keys(), reverse=True)[:-1]
+        node_list = [int(n) for n in node_list]
         # (exclude root)
 
     cluster_tree = tree[tree['child_size'] > 1]
