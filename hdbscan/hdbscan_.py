@@ -77,7 +77,7 @@ def _tree_to_labels(
     """
     condensed_tree = condense_tree(single_linkage_tree, min_cluster_size)
     stability_dict = compute_stability(condensed_tree)
-    labels, probabilities, stabilities = get_clusters(
+    labels, probabilities, stabilities, selected_clusters = get_clusters(
         condensed_tree,
         stability_dict,
         cluster_selection_method,
@@ -87,7 +87,8 @@ def _tree_to_labels(
         max_cluster_size,
     )
 
-    return (labels, probabilities, stabilities, condensed_tree, single_linkage_tree)
+    return (labels, probabilities, stabilities, condensed_tree, single_linkage_tree,
+            selected_clusters)
 
 
 def _hdbscan_generic(
@@ -1145,6 +1146,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self._outlier_scores = None
         self._prediction_data = None
         self._relative_validity = None
+        self._selected_clusters = None
 
     def fit(self, X, y=None):
         """Perform HDBSCAN clustering from features or distance matrix.
@@ -1201,6 +1203,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             self.cluster_persistence_,
             self._condensed_tree,
             self._single_linkage_tree,
+            self._selected_clusters,
             self._min_spanning_tree,
         ) = hdbscan(clean_data, **kwargs)
 
@@ -1263,6 +1266,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             self._prediction_data = PredictionData(
                 self._raw_data,
                 self.condensed_tree_,
+                self._selected_clusters,
                 min_samples,
                 tree_type=tree_type,
                 metric=self.metric,

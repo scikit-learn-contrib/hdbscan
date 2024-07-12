@@ -705,6 +705,9 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
 
     stabilities : ndarray (n_clusters,)
         The cluster coherence strengths of each cluster.
+    
+    selected clusters : ndarray (n_clusters,)
+        The ids of the selected clusters
     """
     cdef list node_list
     cdef np.ndarray cluster_tree
@@ -805,4 +808,4 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
     probs = get_probabilities(tree, reverse_cluster_map, labels)
     stabilities = get_stability_scores(labels, clusters, stability, max_lambda)
 
-    return (labels, probs, stabilities)
+    return (labels, probs, stabilities, np.array(sorted(clusters)))

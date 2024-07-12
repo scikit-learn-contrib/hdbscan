@@ -184,7 +184,8 @@ def HDBSCAN_flat(X, n_clusters=None,
      new_clusterer.probabilities_,
      new_clusterer.cluster_persistence_,
      new_clusterer._condensed_tree,
-     new_clusterer._single_linkage_tree) = output
+     new_clusterer._single_linkage_tree,
+     new_clusterer._selected_clusters) = output
 
     # PredictionData attached to HDBSCAN should also change.
     # A function re_init is defined in this module to handle this.
