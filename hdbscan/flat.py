@@ -851,19 +851,9 @@ def _new_select_clusters(condensed_tree,
                     is_cluster[c] = False
 
     elif cluster_selection_method == 'leaf':
-        leaves = set(get_cluster_tree_leaves(cluster_tree))
-        if len(leaves) == 0:
-            for c in is_cluster:
-                is_cluster[c] = False
-            is_cluster[tree['parent'].min()] = True
-
-        if cluster_selection_epsilon != 0.0:
-            selected_clusters = epsilon_search(leaves, cluster_tree,
-                                               cluster_selection_epsilon,
-                                               allow_single_cluster)
-        else:
-            selected_clusters = leaves
-
+        selected_clusters = set(get_cluster_tree_leaves(cluster_tree,
+                                                        cluster_selection_epsilon,
+                                                        allow_single_cluster))
         for c in is_cluster:
             if c in selected_clusters:
                 is_cluster[c] = True
