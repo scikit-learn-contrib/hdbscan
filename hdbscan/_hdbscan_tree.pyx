@@ -71,7 +71,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     cdef list result_list
 
     cdef np.ndarray[np.intp_t, ndim=1] relabel
-    cdef np.ndarray[np.int_t, ndim=1] ignore
+    cdef np.ndarray[np.int8_t, ndim=1] ignore
     cdef np.ndarray[np.double_t, ndim=1] children
 
     cdef np.intp_t node
@@ -91,7 +91,7 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     relabel = np.empty(root + 1, dtype=np.intp)
     relabel[root] = num_points
     result_list = []
-    ignore = np.zeros(len(node_list), dtype=int)
+    ignore = np.zeros(len(node_list), dtype=np.int8)
 
     for node in node_list:
         if ignore[node] or node < num_points:
@@ -251,7 +251,7 @@ cdef list bfs_from_cluster_tree(np.ndarray tree, np.intp_t bfs_root):
 
     while to_process.shape[0] > 0:
         result.extend(to_process.tolist())
-        to_process = tree['child'][np.in1d(tree['parent'], to_process)]
+        to_process = tree['child'][np.isin(tree['parent'], to_process)]
 
     return result
 
@@ -725,8 +725,10 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
     # if you do, change this accordingly!
     if allow_single_cluster:
         node_list = sorted(stability.keys(), reverse=True)
+        node_list = [int(n) for n in node_list]
     else:
         node_list = sorted(stability.keys(), reverse=True)[:-1]
+        node_list = [int(n) for n in node_list]
         # (exclude root)
 
     cluster_tree = tree[tree['child_size'] > 1]

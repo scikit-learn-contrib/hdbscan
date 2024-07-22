@@ -79,7 +79,7 @@ cpdef sparse_mutual_reachability(object lil_matrix, np.intp_t min_points=5,
         if min_points - 1 < len(sorted_row_data):
             core_distance[i] = sorted_row_data[min_points - 1]
         else:
-            core_distance[i] = np.infty
+            core_distance[i] = np.inf
 
     if alpha != 1.0:
         lil_matrix = lil_matrix / alpha

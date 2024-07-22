@@ -33,7 +33,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core(
     result = np.zeros((distance_matrix.shape[0] - 1, 3))
     node_labels = np.arange(distance_matrix.shape[0], dtype=np.intp)
     current_node = 0
-    current_distances = np.infty * np.ones(distance_matrix.shape[0])
+    current_distances = np.inf * np.ones(distance_matrix.shape[0])
     current_labels = node_labels
     for i in range(1, node_labels.shape[0]):
         label_filter = current_labels != current_node
@@ -100,7 +100,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
     result_arr = np.zeros((dim - 1, 3))
     in_tree_arr = np.zeros(dim, dtype=np.int8)
     current_node = 0
-    current_distances_arr = np.infty * np.ones(dim)
+    current_distances_arr = np.inf * np.ones(dim)
     current_sources_arr = np.ones(dim)
 
     result = (<np.double_t[:dim - 1, :3:1]> (<np.double_t *> result_arr.data))

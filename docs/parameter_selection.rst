@@ -128,7 +128,7 @@ Selecting ``min_samples``
 Since we have seen that ``min_samples`` clearly has a dramatic effect on
 clustering, the question becomes: how do we select this parameter? The
 simplest intuition for what ``min_samples`` does is provide a measure of
-how conservative you want you clustering to be. The larger the value of
+how conservative you want your clustering to be. The larger the value of
 ``min_samples`` you provide, the more conservative the clustering --
 more points will be declared as noise, and clusters will be restricted
 to progressively more dense areas. We can see this in practice by

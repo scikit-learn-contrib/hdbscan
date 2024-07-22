@@ -81,7 +81,7 @@ class PredictionData(object):
         while to_process:
             result.extend(to_process)
             to_process = \
-                self.cluster_tree['child'][np.in1d(self.cluster_tree['parent'],
+                self.cluster_tree['child'][np.isin(self.cluster_tree['parent'],
                                                    to_process)]
             to_process = to_process.tolist()
 
