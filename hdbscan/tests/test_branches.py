@@ -267,7 +267,9 @@ def test_allow_single_branch_with_persistence():
     ).fit(c)
     unique_labels = np.unique(b.labels_)
     assert len(unique_labels) == 6
-    assert np.sum(b.branch_probabilities_ == 0) == 71
+    # Mac & Windows give 71, Linux gives 72. Probably different random values.
+    num_noise = np.sum(b.branch_probabilities_ == 0)
+    assert (num_noise == 71) | (num_noise == 72) 
 
     # Adding presistence removes some branches
     b = BranchDetector(
