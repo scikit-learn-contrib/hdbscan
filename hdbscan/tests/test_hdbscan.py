@@ -581,6 +581,7 @@ def test_hdbscan_badargs():
     assert_raises(Exception, hdbscan, X, algorithm="something_else")
     assert_raises(TypeError, hdbscan, X, metric="minkowski", p=None)
     assert_raises(ValueError, hdbscan, X, leaf_size=0)
+    assert_raises(ValueError, hdbscan, X, cluster_selection_epsilon_max=-1)
 
 
 def test_hdbscan_sparse():
