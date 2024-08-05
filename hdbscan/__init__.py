@@ -5,5 +5,8 @@ from .prediction import (approximate_predict,
                          membership_vector,
                          all_points_membership_vectors,
                          approximate_predict_scores)
+from .branches import (BranchDetector, 
+                       detect_branches_in_clusters, 
+                       approximate_predict_branch)
 
 

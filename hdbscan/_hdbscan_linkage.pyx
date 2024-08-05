@@ -76,8 +76,8 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
 
     cdef np.intp_t current_node
     cdef np.intp_t source_node
-    cdef np.intp_t right_node
-    cdef np.intp_t left_node
+    cdef np.intp_t right_node, right_source
+    cdef np.intp_t left_node, left_source
     cdef np.intp_t new_node
     cdef np.intp_t i
     cdef np.intp_t j
@@ -124,7 +124,7 @@ cpdef np.ndarray[np.double_t, ndim=2] mst_linkage_core_vector(
                 continue
 
             right_value = current_distances[j]
-            right_source = current_sources[j]
+            right_source = <np.intp_t> current_sources[j]
 
             left_value = dist_metric.dist(&raw_data_ptr[num_features *
                                                         current_node],
