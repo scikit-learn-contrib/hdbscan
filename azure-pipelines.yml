@@ -127,6 +127,7 @@ stages:
             "${PYBIN}/python" -m pip install --upgrade pip
             "${PYBIN}/python" -m pip install wheel
             "${PYBIN}/python" -m pip install -r requirements.txt
+            "${PYBIN}/python" -m pip install cython
           displayName: 'Install dependencies and build tools'
           env:
             PYBIN: /opt/python/$(python.version)/bin
@@ -200,6 +201,7 @@ stages:
             python -m pip install --upgrade pip
             pip install wheel
             pip install -r requirements.txt
+            pip install cython
           displayName: 'Install dependencies'
 
         - script: |
