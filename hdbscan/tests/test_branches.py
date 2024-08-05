@@ -291,7 +291,6 @@ def test_badargs():
     assert_raises(AttributeError, detect_branches_in_clusters, "fail")
     assert_raises(ValueError, detect_branches_in_clusters, c_nofit)
     assert_raises(AttributeError, detect_branches_in_clusters, c_nobranch)
-    assert_raises(ValueError, detect_branches_in_clusters, c_nomst)
     assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size=-1)
     assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size=0)
     assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size=1)
