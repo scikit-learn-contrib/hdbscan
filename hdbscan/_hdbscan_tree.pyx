@@ -623,7 +623,7 @@ cpdef list get_cluster_tree_leaves(np.ndarray cluster_tree):
 cpdef np.intp_t traverse_upwards(np.ndarray cluster_tree, np.double_t cluster_selection_epsilon, np.intp_t leaf, np.intp_t allow_single_cluster):
 
     root = cluster_tree['parent'].min()
-    parent = cluster_tree[cluster_tree['child'] == leaf]['parent']
+    parent = cluster_tree[cluster_tree['child'] == leaf]['parent'][0]
     if parent == root:
         if allow_single_cluster:
             return parent
