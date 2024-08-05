@@ -184,9 +184,7 @@ def test_branch_detection_data_with_unsupported_input():
 def test_generate_branch_detection_data():
     """Generate branch detection data function does not re-generate MST."""
     c = HDBSCAN(min_cluster_size=5).fit(X)
-    c.generate_branch_detection_data()
-    assert c.branch_detection_data_ is not None
-    assert_raises(AttributeError, lambda: c.minimum_spanning_tree_)
+    assert_raises(ValueError, c.generate_branch_detection_data)
 
 
 # --- Detecting Branches
@@ -287,8 +285,6 @@ def test_badargs():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     c_nofit = HDBSCAN(min_cluster_size=5, branch_detection_data=True)
     c_nobranch = HDBSCAN(min_cluster_size=5, gen_min_span_tree=True).fit(X)
-    c_nomst = HDBSCAN(min_cluster_size=5).fit(X)
-    c_nomst.generate_branch_detection_data()
 
     assert_raises(AttributeError, detect_branches_in_clusters, "fail")
     assert_raises(AttributeError, detect_branches_in_clusters, None)
