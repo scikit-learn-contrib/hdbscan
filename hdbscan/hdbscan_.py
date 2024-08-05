@@ -1303,7 +1303,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             raise ValueError("Branch prediction requires a minimum spanning tree; please re-run "
                              "with `branch_repdiction_data=True` or at least `gen_min_spanning_tree=True` "
                              "and this this function to generate the required information for branch "
-                             "branch detection.
+                             "branch detection."
             )
         if self.metric in FAST_METRICS:
             min_samples = self.min_samples or self.min_cluster_size
