@@ -1,4 +1,4 @@
-How to detect banches in clusters
+How to detect branches in clusters
 =================================
 
 HDBSCAN\* is often used to find subpopulations in exploratory data
@@ -14,7 +14,7 @@ does not inform us of the branching structure:
 .. image:: images/how_to_detect_branches_3_0.png
 
 Alternatively, HDBSCAN\*’s leaf clusters provide more detail. They
-segment the points of different branches into distint clusters. However,
+segment the points of different branches into distinct clusters. However,
 the partitioning and cluster hierarchy does not (necessarily) tell us how
 those clusters combine into a larger shape.
 
@@ -22,12 +22,13 @@ those clusters combine into a larger shape.
 
 This is where the branch detection post-processing step comes into play.
 The functionality is described in detail by `Bot et
-al <https://arxiv.org/abs/2311.15887>`__. It operates on the detected
-clusters and extracts a branch-hierarchy analogous to HDBSCAN\*’s
-condensed cluster hierarchy. The process is very similar to HDBSCAN\*
-clustering, except that it operates on an in-cluster eccentricity rather
-than a density measure. Where peaks in a density profile correspond to
-clusters, the peaks in an eccentricity profile correspond to branches:
+al <https://arxiv.org/abs/2311.15887>`__ (please reference this paper when using
+this functionality). It operates on the detected clusters and extracts a
+branch-hierarchy analogous to HDBSCAN\*'s condensed cluster hierarchy. The
+process is very similar to HDBSCAN\* clustering, except that it operates on an
+in-cluster eccentricity rather than a density measure. Where peaks in a density
+profile correspond to clusters, the peaks in an eccentricity profile correspond
+to branches:
 
 .. image:: images/how_to_detect_branches_7_0.png
 
@@ -41,11 +42,18 @@ The resulting partitioning reflects subgroups for clusters and their
 branches:
 
 .. code:: python
+    
     from hdbscan import HDBSCAN, BranchDetector
 
     clusterer = HDBSCAN(min_cluster_size=15, branch_detection_data=True).fit(data)
     branch_detector = BranchDetector(min_branch_size=15).fit(clusterer)
-    plot(branch_detector.labels_)
+    
+    # Plot labels
+    plt.scatter(data[:, 0], data[:, 1], 1, color=[
+        "silver" if l < 0 else f"C{l % 10}" for l in branch_detector.labels_
+    ])
+    plt.axis("off")
+    plt.show()
 
 .. image:: images/how_to_detect_branches_9_0.png
 
@@ -75,7 +83,7 @@ Most guidelines for tuning HDBSCAN\* also apply for the branch detector:
    ``allow_single_cluster`` and mostly affects the EOM selection
    strategy. When enabled, clusters with bifurcations will be given a
    single label if the root segment contains most eccentricity mass
-   (i.e., branches already merge far from the center and most poinst are
+   (i.e., branches already merge far from the center and most points are
    central).
 -  ``max_branch_size`` behaves like HDBSCAN\*’s ``max_cluster_size`` and
    mostly affects the EOM selection strategy. Branches with more than
@@ -99,7 +107,7 @@ Two parameters are unique to the ``BranchDetector`` class:
       all ``min_samples``-nearest neighbours.
    -  The ``"full"`` method connects all points with a mutual
       reachability lower than the maximum distance in the cluster’s MST.
-      It represents all connectity at the moment the last point joins
+      It represents all connectivity at the moment the last point joins
       the cluster. 
     
    These methods differ in their sensitivity, noise robustness, and 
@@ -143,7 +151,7 @@ cluster.
 
 The length of the branches also says something about the compactness /
 elongatedness of clusters. For example, the branch hierarchy for the
-orange ~-shaped cluster is quite different from the same hierarcy for
+orange ~-shaped cluster is quite different from the same hierarchy for
 the central o-shaped cluster.
 
 .. code:: python
