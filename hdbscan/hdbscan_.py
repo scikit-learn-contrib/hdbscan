@@ -36,6 +36,7 @@ from .dist_metrics import DistanceMetric
 
 from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 from .prediction import PredictionData
+from .branches import BranchDetectionData
 
 KDTREE_VALID_METRICS = ["euclidean", "l2", "minkowski", "p", "manhattan", "cityblock", "l1", "chebyshev", "infinity"]
 BALLTREE_VALID_METRICS = KDTREE_VALID_METRICS + [
@@ -928,8 +929,8 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         cluster rather than a cluster splitting into two new clusters.
 
     min_samples : int, optional (default=None)
-        The number of samples in a neighbourhood for a point to be
-        considered a core point.
+        The number of samples in a neighborhood for a point to be considered as a core point.
+	This includes the point itself. When None, defaults to min_cluster_size.
 
     metric : string, or callable, optional (default='euclidean')
         The metric to use when calculating distance between instances in a
@@ -1012,6 +1013,11 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         to set this to True.
         (default False)
 
+    branch_detection_data : boolean, optional
+        Whether to generated extra cached data for detecting branch-
+        hierarchies within clusters. If you wish to use functions from
+        ``hdbscan.branches`` set this to True. (default False)
+
     match_reference_implementation : bool, optional (default=False)
         There exist some interpretational differences between this
         HDBSCAN* implementation and the original authors reference
@@ -1079,6 +1085,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         :func:`~hdbscan.prediction.membership_vector`,
         and :func:`~hdbscan.prediction.all_points_membership_vectors`).
 
+    branch_detection_data_ : BranchDetectionData object
+        Cached data used for detecting branch-hierarchies within clusters.
+        Neccessary only if you are using funcotin from ``hdbscan.branches``.
+
     exemplars_ : list
         A list of exemplar points for clusters. Since HDBSCAN supports
         arbitrary shapes for clusters we cannot provide a single cluster
@@ -1141,6 +1151,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         cluster_selection_method="eom",
         allow_single_cluster=False,
         prediction_data=False,
+        branch_detection_data=False,
         match_reference_implementation=False,
         cluster_selection_epsilon_max=float('inf'),
         **kwargs
@@ -1162,6 +1173,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self.allow_single_cluster = allow_single_cluster
         self.match_reference_implementation = match_reference_implementation
         self.prediction_data = prediction_data
+        self.branch_detection_data = branch_detection_data
         self.cluster_selection_epsilon_max = cluster_selection_epsilon_max
 
         self._metric_kwargs = kwargs
@@ -1172,6 +1184,8 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self._raw_data = None
         self._outlier_scores = None
         self._prediction_data = None
+        self._finite_index = None
+        self._branch_detection_data = None
         self._relative_validity = None
 
     def fit(self, X, y=None):
@@ -1199,12 +1213,12 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             if ~self._all_finite:
                 # Pass only the purely finite indices into hdbscan
                 # We will later assign all non-finite points to the background -1 cluster
-                finite_index = get_finite_row_indices(X)
-                clean_data = X[finite_index]
+                self._finite_index = get_finite_row_indices(X)
+                clean_data = X[self._finite_index]
                 internal_to_raw = {
-                    x: y for x, y in zip(range(len(finite_index)), finite_index)
+                    x: y for x, y in zip(range(len(self._finite_index)), self._finite_index)
                 }
-                outliers = list(set(range(X.shape[0])) - set(finite_index))
+                outliers = list(set(range(X.shape[0])) - set(self._finite_index))
             else:
                 clean_data = X
         elif issparse(X):
@@ -1221,7 +1235,9 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         # prediction data only applies to the persistent model, so remove
         # it from the keyword args we pass on the the function
         kwargs.pop("prediction_data", None)
+        kwargs.pop("branch_detection_data", None)
         kwargs.update(self._metric_kwargs)
+        kwargs['gen_min_span_tree'] |= self.branch_detection_data
 
         (
             self.labels_,
@@ -1241,15 +1257,17 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                 self._single_linkage_tree, internal_to_raw, outliers
             )
             new_labels = np.full(X.shape[0], -1)
-            new_labels[finite_index] = self.labels_
+            new_labels[self._finite_index] = self.labels_
             self.labels_ = new_labels
 
             new_probabilities = np.zeros(X.shape[0])
-            new_probabilities[finite_index] = self.probabilities_
+            new_probabilities[self._finite_index] = self.probabilities_
             self.probabilities_ = new_probabilities
 
         if self.prediction_data:
             self.generate_prediction_data()
+        if self.branch_detection_data:
+            self.generate_branch_detection_data()
 
         return self
 
@@ -1301,6 +1319,38 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                 "Cannot generate prediction data for non-vector"
                 "space inputs -- access to the source data rather"
                 "than mere distances is required!"
+            )
+
+    def generate_branch_detection_data(self):
+        """
+        Create data that caches intermediate results used for detecting
+        branches within clusters. This data is only useful if you are
+        intending to use functions from ``hdbscan.branches``.
+        """
+        if self.metric in FAST_METRICS:
+            min_samples = self.min_samples or self.min_cluster_size
+            if self.metric in KDTREE_VALID_METRICS:
+                tree_type = "kdtree"
+            elif self.metric in BALLTREE_VALID_METRICS:
+                tree_type = "balltree"
+            else:
+                warn("Metric {} not supported for branch detection!".format(self.metric))
+                return
+
+            self._branch_detection_data = BranchDetectionData(
+                self._raw_data,
+                self._all_finite,
+                None if self._all_finite else self._finite_index,
+                self.labels_,
+                min_samples,
+                tree_type=tree_type,
+                metric=self.metric,
+                **self._metric_kwargs
+            )
+        else:
+            warn(
+                "Branch detection for non-vector space inputs is not (yet)"
+                " implemented."
             )
 
     def weighted_cluster_centroid(self, cluster_id):
@@ -1412,6 +1462,13 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             raise AttributeError("No prediction data was generated")
         else:
             return self._prediction_data
+
+    @property
+    def branch_detection_data_(self):
+        if self._branch_detection_data is None:
+            raise AttributeError("No branch detection data was generated")
+        else:
+            return self._branch_detection_data
 
     @property
     def outlier_scores_(self):

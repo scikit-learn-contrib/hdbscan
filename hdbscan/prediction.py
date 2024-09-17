@@ -81,7 +81,7 @@ class PredictionData(object):
         while to_process:
             result.extend(to_process)
             to_process = \
-                self.cluster_tree['child'][np.in1d(self.cluster_tree['parent'],
+                self.cluster_tree['child'][np.isin(self.cluster_tree['parent'],
                                                    to_process)]
             to_process = to_process.tolist()
 
@@ -325,10 +325,10 @@ def _find_cluster_and_probability(tree, cluster_tree, neighbor_indices,
     else:
         prob = 0.0
 
-    return cluster_label, prob
+    return cluster_label, prob, nearest_neighbor
 
 
-def approximate_predict(clusterer, points_to_predict):
+def approximate_predict(clusterer, points_to_predict, return_connecting_points=False):
     """Predict the cluster label of new points. The returned labels
     will be those of the original clustering found by ``clusterer``,
     and therefore are not (necessarily) the cluster labels that would
@@ -352,6 +352,10 @@ def approximate_predict(clusterer, points_to_predict):
         The new data points to predict cluster labels for. They should
         have the same dimensionality as the original dataset over which
         clusterer was fit.
+    
+    return_connecting_points : bool, optional
+        Whether to return the index of the nearest neighbor in the original
+        dataset for each of the ``points_to_predict``. Default is False
 
     Returns
     -------
@@ -360,6 +364,11 @@ def approximate_predict(clusterer, points_to_predict):
 
     probabilities : array (n_samples,)
         The soft cluster scores for each of the ``points_to_predict``
+
+    neighbors : array (n_samples,)
+        The index of the nearest neighbor in the original dataset for each
+        of the ``points_to_predict``. Only returned if 
+        ``return_connecting_points=True``.
 
     See Also
     --------
@@ -383,10 +392,15 @@ def approximate_predict(clusterer, points_to_predict):
              ' will be automatically predicted as noise.')
         labels = -1 * np.ones(points_to_predict.shape[0], dtype=np.int32)
         probabilities = np.zeros(points_to_predict.shape[0], dtype=np.float32)
+        if return_connecting_points:
+            neighbors = -1 * np.ones(points_to_predict.shape[0], dtype=np.int32)
+            return labels, probabilities, neighbors
         return labels, probabilities
 
     labels = np.empty(points_to_predict.shape[0], dtype=np.int32)
     probabilities = np.empty(points_to_predict.shape[0], dtype=np.float64)
+    if return_connecting_points:
+        neighbors = np.empty(points_to_predict.shape[0], dtype=np.int32)
 
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
     neighbor_distances, neighbor_indices = \
@@ -394,7 +408,7 @@ def approximate_predict(clusterer, points_to_predict):
                                               k=2 * min_samples)
 
     for i in range(points_to_predict.shape[0]):
-        label, prob = _find_cluster_and_probability(
+        label, prob, neighbor = _find_cluster_and_probability(
             clusterer.condensed_tree_,
             clusterer.prediction_data_.cluster_tree,
             neighbor_indices[i],
@@ -406,7 +420,11 @@ def approximate_predict(clusterer, points_to_predict):
         )
         labels[i] = label
         probabilities[i] = prob
+        if return_connecting_points:
+            neighbors[i] = neighbor
 
+    if return_connecting_points:
+        return labels, probabilities, neighbors
     return labels, probabilities
 
 

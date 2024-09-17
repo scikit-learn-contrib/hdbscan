@@ -340,7 +340,7 @@ def approximate_predict_flat(clusterer,
                                               k=2 * min_samples)
 
     for i in range(points_to_predict.shape[0]):
-        label, prob = _find_cluster_and_probability(
+        label, prob, neighbors = _find_cluster_and_probability(
             condensed_tree,
             prediction_data.cluster_tree,
             neighbor_indices[i],
