@@ -736,6 +736,9 @@ def hdbscan(
                 "Minkowski metric with negative p value is not" " defined!"
             )
 
+    if cluster_selection_epsilon_max <= 0:
+        raise ValueError("Cluster selection epsilon max must be a positive value!")
+
     if match_reference_implementation:
         min_samples = min_samples - 1
         min_cluster_size = min_cluster_size + 1
