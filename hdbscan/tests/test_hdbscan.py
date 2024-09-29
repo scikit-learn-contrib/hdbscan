@@ -675,9 +675,20 @@ def test_hdbscan_parameters_do_not_trigger_errors():
                           centers=[(1, 0), (-1, 0), (-1, 1), (1, 1)],
                           cluster_std=0.2,
                           random_state=42)
-    clusterer = HDBSCAN(max_cluster_size=1,
+    clusterer = HDBSCAN(max_cluster_size=10,
                         allow_single_cluster=True)
+
+    # If the following line does not raise an error, the test passes
     clusterer.fit(blobs)
+    assert True
+
+    clusterer = HDBSCAN(cluster_selection_epsilon_max=0.41,
+                        cluster_selection_epsilon=0.4,
+                        allow_single_cluster=True)
+
+    # If the following line does not raise an error, the test passes
+    clusterer.fit(blobs)
+    assert True
 
 # Disable for now -- need to refactor to meet newer standards
 @pytest.mark.skip(reason="need to refactor to meet newer standards")
