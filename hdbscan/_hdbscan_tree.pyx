@@ -517,7 +517,10 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(
         elif cluster == root_cluster:
             if len(clusters) == 1 and allow_single_cluster:
                 if cluster_selection_epsilon != 0.0:
-                    if tree['lambda_val'][tree['child'] == n] >= 1 / cluster_selection_epsilon :
+                    if (tree['lambda_val'][tree['child'] == n] >= 1 / cluster_selection_epsilon) \
+                        and cluster in cluster_label_map:
+                        # check if cluster was not pruned by max_cluster_size or
+                        # cluster_selection_epsilon_max before executing this
                         result[n] = cluster_label_map[cluster]
                     else:
                         result[n] = -1
@@ -885,7 +888,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
         # Compute cluster size for the root node
         cluster_sizes[node_list[-1]] = np.sum(
             cluster_tree[cluster_tree['parent'] == node_list[-1]]['child_size'])
-        node_eps[node_list[-1]] = float('inf')
+        node_eps[node_list[-1]] = np.max(tree['lambda_val'])
 
     if cluster_selection_method == 'eom':
         for node in node_list:

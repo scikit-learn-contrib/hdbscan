@@ -652,8 +652,7 @@ def hdbscan(
         this should not be used if we want to predict the cluster labels
         for new points in future (e.g. using approximate_predict), as
         the approximate_predict function is not aware of this argument.
-        This is the maximum epsilon allowed. The default value of
-        None corresponds to infinity.
+        This is the maximum epsilon allowed.
 
     **kwargs : optional
         Arguments passed to the distance metric
