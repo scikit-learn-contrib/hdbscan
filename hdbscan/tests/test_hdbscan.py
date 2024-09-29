@@ -649,6 +649,36 @@ def test_hdbscan_allow_single_cluster_with_epsilon():
     assert counts[unique_labels == -1] == 2
 
 
+def test_hdbscan_cluster_selection_epsilon_max():
+    """Test that reducing the cluster_selection_epsilon_max parameter
+    results in more clusters with smaller sizes being found."""
+    blobs, _ = make_blobs(n_samples=50,
+                          centers=[(1, 0), (-1, 0), (-1, 1), (1, 1)],
+                          cluster_std=0.2,
+                          random_state=42)
+
+    clusterer = HDBSCAN(cluster_selection_epsilon_max=2.0,
+                        allow_single_cluster=True)
+    clusterer.fit(blobs)
+
+    assert_array_equal(np.unique(clusterer.labels_), np.array([0, 1]))
+
+    clusterer = HDBSCAN(cluster_selection_epsilon_max=1.0,
+                        allow_single_cluster=True)
+    clusterer.fit(blobs)
+
+    assert_array_equal(np.unique(clusterer.labels_), np.array([-1, 0, 1, 2, 3]))
+
+
+def test_hdbscan_parameters_do_not_trigger_errors():
+    blobs, _ = make_blobs(n_samples=50,
+                          centers=[(1, 0), (-1, 0), (-1, 1), (1, 1)],
+                          cluster_std=0.2,
+                          random_state=42)
+    clusterer = HDBSCAN(max_cluster_size=1,
+                        allow_single_cluster=True)
+    clusterer.fit(blobs)
+
 # Disable for now -- need to refactor to meet newer standards
 @pytest.mark.skip(reason="need to refactor to meet newer standards")
 def test_hdbscan_is_sklearn_estimator():
