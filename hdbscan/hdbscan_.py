@@ -1464,6 +1464,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             raise AttributeError("No prediction data was generated")
         else:
             return self._prediction_data
+        
+    @prediction_data_.setter
+    def prediction_data_(self, value):
+        self._prediction_data = value
 
     @property
     def branch_detection_data_(self):
@@ -1471,6 +1475,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             raise AttributeError("No branch detection data was generated")
         else:
             return self._branch_detection_data
+        
+    @branch_detection_data_.setter
+    def branch_detection_data_(self, value):
+        self._branch_detection_data = value
 
     @property
     def outlier_scores_(self):
@@ -1484,6 +1492,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                 raise AttributeError(
                     "No condensed tree was generated; try running fit first."
                 )
+            
+    @outlier_scores_.setter
+    def outlier_scores_(self, value):
+        self._outlier_scores = value
 
     @property
     def condensed_tree_(self):
@@ -1497,6 +1509,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             raise AttributeError(
                 "No condensed tree was generated; try running fit first."
             )
+        
+    @condensed_tree_.setter
+    def condensed_tree_(self, value):
+        self._condensed_tree = value
 
     @property
     def single_linkage_tree_(self):
@@ -1506,6 +1522,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             raise AttributeError(
                 "No single linkage tree was generated; try running fit" " first."
             )
+        
+    @single_linkage_tree_.setter
+    def single_linkage_tree_(self, value):
+        self._single_linkage_tree = value
 
     @property
     def minimum_spanning_tree_(self):
@@ -1525,6 +1545,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                 "This may be due to optimized algorithm variations that skip"
                 " explicit generation of the spanning tree."
             )
+    
+    @minimum_spanning_tree_.setter
+    def minimum_spanning_tree_(self, value):
+        self._min_spanning_tree = value
 
     @property
     def exemplars_(self):
@@ -1539,6 +1563,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                 "with a suitable metric. This will likely change in the "
                 "future, but for now no exemplars can be provided"
             )
+
+    @exemplars_.setter
+    def exemplars_(self, value):
+        self._exemplars = value
 
     @property
     def relative_validity_(self):
@@ -1625,3 +1653,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         )
         self._relative_validity = score
         return self._relative_validity
+    
+    @relative_validity_.setter
+    def relative_validity_(self, value):
+        self._relative_validity = value

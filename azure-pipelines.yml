@@ -112,8 +112,6 @@ stages:
         container: quay.io/pypa/manylinux2014_x86_64:latest
         strategy:
           matrix:
-            linux_py37:
-              python.version: 'cp37-cp37m'
             linux_py38:
               python.version: 'cp38-cp38'
             linux_py39:
@@ -122,6 +120,8 @@ stages:
               python.version: 'cp310-cp310'
             linux_py311:
               python.version: 'cp311-cp311'
+            linux_py312:
+              python.version: 'cp312-cp312'
         steps:
         - script: |
             "${PYBIN}/python" -m pip install --upgrade pip
@@ -157,13 +157,7 @@ stages:
       - job: BuildWindowsAndMacOSArtifacts
         displayName: Build source dists and wheels for windows and macOS
         strategy:
-          matrix:
-            mac_py37:
-              imageName: 'macOS-latest'
-              python.version: '3.7'
-            windows_py37:
-              imageName: 'windows-latest'
-              python.version: '3.7'            
+          matrix:        
             mac_py38:
               imageName: 'macOS-latest'
               python.version: '3.8'
@@ -188,6 +182,12 @@ stages:
             windows_py311:
               imageName: 'windows-latest'
               python.version: '3.11'
+            mac_py312:
+              imageName: 'macOS-latest'
+              python.version: '3.12'
+            windows_py312:
+              imageName: 'windows-latest'
+              python.version: '3.12'
         pool:
           vmImage: $(imageName) 
 
@@ -202,6 +202,7 @@ stages:
             pip install wheel
             pip install -r requirements.txt
             pip install cython
+            pip install setuptools
           displayName: 'Install dependencies'
 
         - script: |

@@ -1,8 +1,10 @@
 import warnings
 
 try:
-    from Cython.Distutils import build_ext
+    # from Cython.Distutils import build_ext
+    from Cython.Build import cythonize
     from setuptools import setup, Extension
+    from setuptools.command.build_ext import build_ext
     HAVE_CYTHON = True
 except ImportError as e:
     warnings.warn(e.args[0])
@@ -51,7 +53,7 @@ def requirements():
 
 configuration = {
     'name': 'hdbscan',
-    'version': '0.8.38-1',
+    'version': '0.8.39',
     'description': 'Clustering based on density with variable density clusters',
     'long_description': readme(),
     'classifiers': [
