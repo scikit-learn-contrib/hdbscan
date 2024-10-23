@@ -8,6 +8,7 @@ try:
     HAVE_CYTHON = True
 except ImportError as e:
     warnings.warn(e.args[0])
+    cythonize = lambda ext: ext
     from setuptools import setup, Extension
     from setuptools.command.build_ext import build_ext
     HAVE_CYTHON = False
@@ -40,6 +41,7 @@ _prediction_utils = Extension('hdbscan._prediction_utils',
                               sources=['hdbscan/_prediction_utils.pyx'])
 dist_metrics = Extension('hdbscan.dist_metrics',
                          sources=['hdbscan/dist_metrics.pyx'])
+
 
 
 def readme():
@@ -78,12 +80,13 @@ configuration = {
     'license': 'BSD',
     'packages': ['hdbscan', 'hdbscan.tests'],
     'install_requires': requirements(),
-    'ext_modules': [_hdbscan_tree,
+    'ext_modules': cythonize([
+                    _hdbscan_tree,
                     _hdbscan_linkage,
                     _hdbscan_boruvka,
                     _hdbscan_reachability,
                     _prediction_utils,
-                    dist_metrics],
+                    dist_metrics]),
     'cmdclass': {'build_ext': CustomBuildExtCommand},
     'test_suite': 'nose.collector',
     'tests_require': ['nose'],
