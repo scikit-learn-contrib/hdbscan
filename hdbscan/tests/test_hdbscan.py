@@ -581,6 +581,7 @@ def test_hdbscan_badargs():
     assert_raises(Exception, hdbscan, X, algorithm="something_else")
     assert_raises(TypeError, hdbscan, X, metric="minkowski", p=None)
     assert_raises(ValueError, hdbscan, X, leaf_size=0)
+    assert_raises(ValueError, hdbscan, X, cluster_selection_epsilon_max=-1)
 
 
 def test_hdbscan_sparse():
@@ -647,6 +648,47 @@ def test_hdbscan_allow_single_cluster_with_epsilon():
     assert len(unique_labels) == 2
     assert counts[unique_labels == -1] == 2
 
+
+def test_hdbscan_cluster_selection_epsilon_max():
+    """Test that reducing the cluster_selection_epsilon_max parameter
+    results in more clusters with smaller sizes being found."""
+    blobs, _ = make_blobs(n_samples=50,
+                          centers=[(1, 0), (-1, 0), (-1, 1), (1, 1)],
+                          cluster_std=0.2,
+                          random_state=42)
+
+    clusterer = HDBSCAN(cluster_selection_epsilon_max=2.0,
+                        allow_single_cluster=True)
+    clusterer.fit(blobs)
+
+    assert_array_equal(np.unique(clusterer.labels_), np.array([0, 1]))
+
+    clusterer = HDBSCAN(cluster_selection_epsilon_max=1.0,
+                        allow_single_cluster=True)
+    clusterer.fit(blobs)
+
+    assert_array_equal(np.unique(clusterer.labels_), np.array([-1, 0, 1, 2, 3]))
+
+
+def test_hdbscan_parameters_do_not_trigger_errors():
+    blobs, _ = make_blobs(n_samples=50,
+                          centers=[(1, 0), (-1, 0), (-1, 1), (1, 1)],
+                          cluster_std=0.2,
+                          random_state=42)
+    clusterer = HDBSCAN(max_cluster_size=10,
+                        allow_single_cluster=True)
+
+    # If the following line does not raise an error, the test passes
+    clusterer.fit(blobs)
+    assert True
+
+    clusterer = HDBSCAN(cluster_selection_epsilon_max=0.41,
+                        cluster_selection_epsilon=0.4,
+                        allow_single_cluster=True)
+
+    # If the following line does not raise an error, the test passes
+    clusterer.fit(blobs)
+    assert True
 
 # Disable for now -- need to refactor to meet newer standards
 @pytest.mark.skip(reason="need to refactor to meet newer standards")
