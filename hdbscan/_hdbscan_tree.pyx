@@ -515,9 +515,11 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(
         if cluster < root_cluster:
             result[n] = -1
         elif cluster == root_cluster:
-            if len(clusters) == 1 and allow_single_cluster:
+            if len(clusters) == 1 and allow_single_cluster and cluster in cluster_label_map:
+                # check if `cluster` still exists in `cluster_label_map` and that it was not pruned
+                # by `max_cluster_size` or `cluster_selection_epsilon_max` before executing this
                 if cluster_selection_epsilon != 0.0:
-                    if tree['lambda_val'][tree['child'] == n] >= 1 / cluster_selection_epsilon :
+                    if tree['lambda_val'][tree['child'] == n] >= 1 / cluster_selection_epsilon:
                         result[n] = cluster_label_map[cluster]
                     else:
                         result[n] = -1
@@ -792,7 +794,8 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                          allow_single_cluster=False,
                          match_reference_implementation=False,
                          cluster_selection_epsilon=0.0,
-                         max_cluster_size=0):
+                         max_cluster_size=0,
+                         cluster_selection_epsilon_max=float('inf')):
     """Given a tree and stability dict, produce the cluster labels
     (and probabilities) for a flat clustering based on the chosen
     cluster selection method.
@@ -819,12 +822,17 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
         certain edge cases.
 
     cluster_selection_epsilon: float, optional (default 0.0)
-        A distance threshold for cluster splits.
-        
+        A distance threshold for cluster splits. This is the minimum
+        epsilon allowed.
+
     max_cluster_size: int, optional (default 0)
         The maximum size for clusters located by the EOM clusterer. Can
         be overridden by the cluster_selection_epsilon parameter in
         rare cases.
+
+    cluster_selection_epsilon_max: float, optional (default inf)
+        A distance threshold for cluster splits. This is the maximum
+        epsilon allowed.
 
     Returns
     -------
@@ -842,6 +850,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
     cdef np.ndarray child_selection
     cdef dict is_cluster
     cdef dict cluster_sizes
+    cdef dict node_eps
     cdef float subtree_stability
     cdef np.intp_t node
     cdef np.intp_t sub_node
@@ -872,10 +881,13 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
         max_cluster_size = num_points + 1  # Set to a value that will never be triggered
     cluster_sizes = {child: child_size for child, child_size
                  in zip(cluster_tree['child'], cluster_tree['child_size'])}
+    node_eps = {child: 1/l for child, l
+                 in zip(cluster_tree['child'], cluster_tree['lambda_val'])}
     if allow_single_cluster:
         # Compute cluster size for the root node
         cluster_sizes[node_list[-1]] = np.sum(
             cluster_tree[cluster_tree['parent'] == node_list[-1]]['child_size'])
+        node_eps[node_list[-1]] = np.max(1.0 / tree['lambda_val'])
 
     if cluster_selection_method == 'eom':
         for node in node_list:
@@ -883,7 +895,7 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
             subtree_stability = np.sum([
                 stability[child] for
                 child in cluster_tree['child'][child_selection]])
-            if subtree_stability > stability[node] or cluster_sizes[node] > max_cluster_size:
+            if subtree_stability > stability[node] or cluster_sizes[node] > max_cluster_size or node_eps[node] > cluster_selection_epsilon_max:
                 is_cluster[node] = False
                 stability[node] = subtree_stability
             else:
