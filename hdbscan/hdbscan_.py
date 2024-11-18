@@ -1008,17 +1008,16 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         to True will override this and allow single cluster results in
         the case that you feel this is a valid result for your dataset.
 
-    prediction_data : boolean, optional
+    prediction_data : boolean, optional (default=False)
         Whether to generate extra cached data for predicting labels or
         membership vectors for new unseen points later. If you wish to
         persist the clustering object for later re-use you probably want
         to set this to True.
-        (default False)
 
-    branch_detection_data : boolean, optional
-        Whether to generated extra cached data for detecting branch-
+    branch_detection_data : boolean, optional (default=False)
+        Whether to generate extra cached data for detecting branch-
         hierarchies within clusters. If you wish to use functions from
-        ``hdbscan.branches`` set this to True. (default False)
+        ``hdbscan.branches`` set this to True.
 
     match_reference_implementation : bool, optional (default=False)
         There exist some interpretational differences between this
@@ -1089,7 +1088,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
     branch_detection_data_ : BranchDetectionData object
         Cached data used for detecting branch-hierarchies within clusters.
-        Neccessary only if you are using funcotin from ``hdbscan.branches``.
+        Neccessary only if you are using function from ``hdbscan.branches``.
 
     exemplars_ : list
         A list of exemplar points for clusters. Since HDBSCAN supports
