@@ -1329,6 +1329,12 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         branches within clusters. This data is only useful if you are
         intending to use functions from ``hdbscan.branches``.
         """
+        if self._min_spanning_tree is None:
+            raise ValueError("Branch prediction requires a minimum spanning tree; please re-run "
+                             "with `branch_repdiction_data=True` or at least `gen_min_spanning_tree=True` "
+                             "and this this function to generate the required information for branch "
+                             "branch detection."
+            )
         if self.metric in FAST_METRICS:
             min_samples = self.min_samples or self.min_cluster_size
             if self.metric in KDTREE_VALID_METRICS:
