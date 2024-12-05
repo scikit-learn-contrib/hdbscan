@@ -103,7 +103,7 @@ stages:
 
   - stage: BuildPublishArtifact
     dependsOn: RunAllTests
-    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/release-'), eq(variables.triggeredByPullRequest, false))
+    condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/tags/release-'), startsWith(variables['Build.SourceBranch'], 'refs/tags/fix/python-3.12')), eq(variables.triggeredByPullRequest, false))
     jobs:
       # Need to use manylinux as ubuntu-latest is too new
       - job: Manylinux2014Build
@@ -128,6 +128,7 @@ stages:
             "${PYBIN}/python" -m pip install wheel
             "${PYBIN}/python" -m pip install -r requirements.txt
             "${PYBIN}/python" -m pip install cython
+            "${PYBIN}/python" -m pip install setuptools
           displayName: 'Install dependencies and build tools'
           env:
             PYBIN: /opt/python/$(python.version)/bin
