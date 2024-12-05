@@ -103,7 +103,8 @@ stages:
 
   - stage: BuildPublishArtifact
     dependsOn: RunAllTests
-    condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/tags/release-'), startsWith(variables['Build.SourceBranch'], 'refs/tags/fix/python-3.12')), eq(variables.triggeredByPullRequest, false))
+    # condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/release-'), eq(variables.triggeredByPullRequest, false))
+    condition: succeeded()
     jobs:
       # Need to use manylinux as ubuntu-latest is too new
       - job: Manylinux2014Build
