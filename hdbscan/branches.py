@@ -1039,8 +1039,19 @@ class BranchDetector(BaseEstimator, ClusterMixin):
                 "No cluster condensed trees were generated; try running fit first."
             )
         return [
-            CondensedTree(tree, self.branch_selection_method, self.allow_single_branch)
-            for tree in self._cluster_condensed_trees
+            CondensedTree(
+                tree, 
+                np.where(
+                    self.branch_labels_[points] == len(persistences), 
+                    -1, 
+                    self.branch_labels_[points]
+                )
+            )
+            for tree, persistences, points in zip(
+                self._cluster_condensed_trees, 
+                self.branch_persistences_,
+                self.cluster_points_
+            )
         ]
 
     @property
