@@ -1076,19 +1076,9 @@ class BranchDetector(BaseEstimator, ClusterMixin):
                 "No condensed trees were generated; try running fit first."
             )
 
-        method = (
-            self._clusterer.cluster_selection_method
-            if self.cluster_selection_method is None
-            else self.cluster_selection_method
-        )
-        single = (
-            self._clusterer.allow_single_cluster
-            if self.allow_single_cluster is None
-            else self.allow_single_cluster
-        )
         return [
-            (CondensedTree(tree, method, single) if tree is not None else None)
-            for tree in self._condensed_trees
+            CondensedTree(tree, self.branch_labels_) if tree is not None else None
+            for tree in self._cluster_condensed_trees
         ]
 
     @property
