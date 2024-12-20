@@ -192,15 +192,18 @@ def test_generate_branch_detection_data():
 # --- Detecting Branches
 
 
-def check_detected_groups(c, n_clusters=3, n_branches=6):
+def check_detected_groups(c, n_clusters=3, n_branches=6, overridden=False):
     """Checks branch_detector output for main invariants."""
     assert len(np.unique(c.labels_)) - int(-1 in c.labels_) == n_branches
+    assert len(np.unique(c.cluster_labels_)) - int(-1 in c.cluster_labels_) == n_clusters
     noise_mask = c.labels_ == -1
     assert (c.branch_labels_[noise_mask] == 0).all()
     assert (c.branch_probabilities_[noise_mask] == 1.0).all()
-    assert (c.probabilities_[noise_mask] == 0).all()
-    assert len(c.cluster_points_) == n_clusters
-    assert len(c.branch_persistences_) == n_clusters
+    assert (c.probabilities_[noise_mask] == 0.0).all()
+    assert (c.cluster_probabilities_[noise_mask] == 0.0).all()
+    if not overridden:
+        assert len(c.cluster_points_) == n_clusters
+        assert len(c.branch_persistences_) == n_clusters
     assert sum(len(ps) for ps in c.branch_persistences_) >= (n_branches - n_clusters)
 
 
@@ -248,7 +251,16 @@ def test_max_branch_size():
     check_detected_groups(b, n_branches=7)
 
 
-def test_allow_single_branch_with_persistence():
+def test_override_cluster_labels():
+    split_y = np.full_like(y, -1)
+    split_y[y == 0] = 0
+    split_y[y == 1] = 0
+    c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
+    b = BranchDetector(label_sides_as_branches=True).fit(c, split_y)
+    check_detected_groups(b, n_clusters=1, n_branches=2, overridden=True)
+
+
+def test_allow_single_branch_with_filters():
     # Generate single-cluster data
     np.random.seed(0)
     no_structure = np.random.rand(150, 2)
@@ -269,14 +281,25 @@ def test_allow_single_branch_with_persistence():
     assert len(unique_labels) == 6
     # Mac & Windows give 71, Linux gives 72. Probably different random values.
     num_noise = np.sum(b.branch_probabilities_ == 0)
-    assert (num_noise == 71) | (num_noise == 72) 
+    assert (num_noise == 71) | (num_noise == 72)
 
-    # Adding presistence removes some branches
+    # Adding persistence removes some branches
     b = BranchDetector(
         min_branch_size=5,
         branch_detection_method="core",
         branch_selection_method="leaf",
         branch_selection_persistence=0.1,
+    ).fit(c)
+    unique_labels = np.unique(b.labels_)
+    assert len(unique_labels) == 1
+    assert np.sum(b.branch_probabilities_ == 0) == 0
+
+    # Adding epsilon removes some branches
+    b = BranchDetector(
+        min_branch_size=5,
+        branch_detection_method="core",
+        branch_selection_epsilon=1/0.39,
+        allow_single_branch=True,
     ).fit(c)
     unique_labels = np.unique(b.labels_)
     assert len(unique_labels) == 1
@@ -302,10 +325,10 @@ def test_badargs():
     assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size=2.0)
     assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size="fail")
     assert_raises(
-        ValueError, detect_branches_in_clusters, c, branch_selection_persistence=-1
+        ValueError, detect_branches_in_clusters, c, branch_selection_persistence=-0.1
     )
     assert_raises(
-        ValueError, detect_branches_in_clusters, c, branch_selection_persistence=-0.1
+        ValueError, detect_branches_in_clusters, c, branch_selection_epsilon=-0.1
     )
     assert_raises(
         ValueError,
@@ -471,4 +494,3 @@ def test_cluster_approximation_graph_plot():
 @pytest.mark.skip(reason="need to refactor to meet newer standards")
 def test_branch_detector_is_sklearn_estimator():
     check_estimator(BranchDetector)
-

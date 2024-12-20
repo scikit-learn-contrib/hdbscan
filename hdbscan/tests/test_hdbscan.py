@@ -581,6 +581,8 @@ def test_hdbscan_badargs():
     assert_raises(Exception, hdbscan, X, algorithm="something_else")
     assert_raises(TypeError, hdbscan, X, metric="minkowski", p=None)
     assert_raises(ValueError, hdbscan, X, leaf_size=0)
+    assert_raises(ValueError, hdbscan, X, cluster_selection_epsilon=-1)
+    assert_raises(ValueError, hdbscan, X, cluster_selection_persistence=-1)
     assert_raises(ValueError, hdbscan, X, cluster_selection_epsilon_max=-1)
 
 
@@ -647,6 +649,18 @@ def test_hdbscan_allow_single_cluster_with_epsilon():
     unique_labels, counts = np.unique(labels, return_counts=True)
     assert len(unique_labels) == 2
     assert counts[unique_labels == -1] == 2
+
+
+def test_hdbscan_persistence_threshold():
+    np.random.seed(0)
+    no_structure = np.random.rand(150, 2)
+    labels = HDBSCAN(
+        min_cluster_size=5,
+        cluster_selection_persistence=0.5,
+        cluster_selection_method="eom",
+    ).fit_predict(no_structure)
+    unique_labels = np.unique(labels)
+    assert len(unique_labels) == 7
 
 
 def test_hdbscan_cluster_selection_epsilon_max():
