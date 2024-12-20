@@ -2,7 +2,6 @@ import numpy as np
 from scipy import stats
 from scipy import sparse
 from scipy.spatial import distance
-from sklearn.utils._testing import assert_raises
 from sklearn.utils.estimator_checks import check_estimator
 from hdbscan import (
     HDBSCAN,
@@ -149,7 +148,8 @@ def test_branch_detection_data_with_non_tree_metric():
         ).fit(X)
         assert "Metric cosine not supported for branch detection!" in str(w[-1].message)
         assert c.minimum_spanning_tree_ is not None
-        assert_raises(AttributeError, lambda: c.branch_detection_data)
+        with pytest.raises(AttributeError):
+            c.branch_detection_data
 
 
 def test_branch_detection_data_with_unsupported_input():
@@ -186,7 +186,8 @@ def test_generate_branch_detection_data():
     c = HDBSCAN(min_cluster_size=5).fit(X)
     c.generate_branch_detection_data()
     assert c.branch_detection_data_ is not None
-    assert_raises(AttributeError, lambda: c.minimum_spanning_tree_)
+    with pytest.raises(AttributeError):
+        c.minimum_spanning_tree_
 
 
 # --- Detecting Branches
@@ -195,7 +196,9 @@ def test_generate_branch_detection_data():
 def check_detected_groups(c, n_clusters=3, n_branches=6, overridden=False):
     """Checks branch_detector output for main invariants."""
     assert len(np.unique(c.labels_)) - int(-1 in c.labels_) == n_branches
-    assert len(np.unique(c.cluster_labels_)) - int(-1 in c.cluster_labels_) == n_clusters
+    assert (
+        len(np.unique(c.cluster_labels_)) - int(-1 in c.cluster_labels_) == n_clusters
+    )
     noise_mask = c.labels_ == -1
     assert (c.branch_labels_[noise_mask] == 0).all()
     assert (c.branch_probabilities_[noise_mask] == 1.0).all()
@@ -298,7 +301,7 @@ def test_allow_single_branch_with_filters():
     b = BranchDetector(
         min_branch_size=5,
         branch_detection_method="core",
-        branch_selection_epsilon=1/0.39,
+        branch_selection_epsilon=1 / 0.39,
         allow_single_branch=True,
     ).fit(c)
     unique_labels = np.unique(b.labels_)
@@ -313,35 +316,42 @@ def test_badargs():
     c_nomst = HDBSCAN(min_cluster_size=5).fit(X)
     c_nomst.generate_branch_detection_data()
 
-    assert_raises(AttributeError, detect_branches_in_clusters, "fail")
-    assert_raises(AttributeError, detect_branches_in_clusters, None)
-    assert_raises(AttributeError, detect_branches_in_clusters, "fail")
-    assert_raises(ValueError, detect_branches_in_clusters, c_nofit)
-    assert_raises(AttributeError, detect_branches_in_clusters, c_nobranch)
-    assert_raises(ValueError, detect_branches_in_clusters, c_nomst)
-    assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size=-1)
-    assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size=0)
-    assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size=1)
-    assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size=2.0)
-    assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size="fail")
-    assert_raises(
-        ValueError, detect_branches_in_clusters, c, branch_selection_persistence=-0.1
-    )
-    assert_raises(
-        ValueError, detect_branches_in_clusters, c, branch_selection_epsilon=-0.1
-    )
-    assert_raises(
-        ValueError,
-        detect_branches_in_clusters,
-        c,
-        branch_selection_method="something_else",
-    )
-    assert_raises(
-        ValueError,
-        detect_branches_in_clusters,
-        c,
-        branch_detection_method="something_else",
-    )
+    with pytest.raises(AttributeError):
+        detect_branches_in_clusters("fail")
+    with pytest.raises(AttributeError):
+        detect_branches_in_clusters(None)
+    with pytest.raises(AttributeError):
+        detect_branches_in_clusters("fail")
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c_nofit)
+    with pytest.raises(AttributeError):
+        detect_branches_in_clusters(c_nobranch)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c_nomst)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, min_branch_size=-1)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, min_branch_size=0)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, min_branch_size=1)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, min_branch_size=2.0)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, min_branch_size="fail")
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, branch_selection_persistence=-0.1)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, branch_selection_epsilon=-0.1)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(
+            c,
+            branch_selection_method="something_else",
+        )
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(
+            c,
+            branch_detection_method="something_else",
+        )
 
 
 # --- Branch Detector Functionality
