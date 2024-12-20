@@ -145,7 +145,7 @@ def HDBSCAN_flat(X, n_clusters=None,
 
     if new_clusterer.cluster_selection_method == 'eom':
         max_eom_clusters = len(
-            _select_clusters(
+            _new_select_clusters(
                 new_clusterer.condensed_tree_,
                 new_clusterer.cluster_selection_method,
                 new_clusterer.allow_single_cluster
@@ -678,7 +678,7 @@ def select_epsilon_eom(condensed_tree, n_clusters):
     """
     # With method 'eom', max clusters are produced for epsilon=0,
     #   as computed by
-    eom_base_clusters = _select_clusters(condensed_tree, 'eom', False)
+    eom_base_clusters = _new_select_clusters(condensed_tree, 'eom', False)
     max_clusters = len(eom_base_clusters)
     
     # Increasing epsilon can only reduce the number of output clusters.
@@ -831,42 +831,6 @@ def re_init(predData, condensed_tree,
         # Add exemplars for each leaf of each selected cluster.
         predData.exemplars.append(predData.raw_data[cluster_exemplars])
     return
-
-
-def _select_clusters(condensed_tree, 
-                     cluster_selection_method, 
-                     allow_single_cluster=False):
-    if cluster_selection_method == 'eom':
-        stability = compute_stability(condensed_tree._raw_tree)
-        if allow_single_cluster:
-            node_list = sorted(stability.keys(), reverse=True)
-        else:
-            node_list = sorted(stability.keys(), reverse=True)[:-1]
-        cluster_tree = condensed_tree._raw_tree[condensed_tree._raw_tree['child_size'] > 1]
-        is_cluster = {cluster: True for cluster in node_list}
-
-        for node in node_list:
-            child_selection = (cluster_tree['parent'] == node)
-            subtree_stability = np.sum([stability[child] for
-                                        child in cluster_tree['child'][child_selection]])
-
-            if subtree_stability > stability[node]:
-                is_cluster[node] = False
-                stability[node] = subtree_stability
-            else:
-                for sub_node in _bfs_from_cluster_tree(cluster_tree, node):
-                    if sub_node != node:
-                        is_cluster[sub_node] = False
-
-        return sorted([cluster
-                        for cluster in is_cluster
-                        if is_cluster[cluster]])
-
-    elif cluster_selection_method == 'leaf':
-        return _get_leaves(condensed_tree._raw_tree)
-    else:
-        raise ValueError('Invalid Cluster Selection Method: %s\n'
-                            'Should be one of: "eom", "leaf"\n')
 
 
 def _new_select_clusters(condensed_tree,
