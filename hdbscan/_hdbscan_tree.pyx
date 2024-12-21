@@ -725,7 +725,7 @@ cpdef np.ndarray simplify_hierarchy(np.ndarray condensed_tree,
 
 
 cdef np.ndarray remap_cluster_ids(np.ndarray condensed_tree, np.intp_t num_points):
-    """Ensures segments are numbered consequetively from 0 to n_clusters-1.""" 
+    """Ensures segments are numbered consecutively from 0 to n_clusters-1.""" 
     cdef np.intp_t n_nodes = condensed_tree['parent'].max() + 1
     cdef np.ndarray[np.intp_t, ndim=1] remaining_parents = np.unique(condensed_tree['parent'])
     cdef np.ndarray[np.intp_t, ndim=1] id_map = np.empty(n_nodes, dtype=np.intp)
