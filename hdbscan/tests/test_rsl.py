@@ -6,7 +6,6 @@ import numpy as np
 from scipy.spatial import distance
 from scipy import sparse
 from sklearn.utils.estimator_checks import check_estimator
-from sklearn.utils._testing import assert_array_equal, assert_raises
 from hdbscan import RobustSingleLinkage, robust_single_linkage
 
 # from sklearn.cluster.tests.common import generate_clustered_data
@@ -128,67 +127,46 @@ def test_rsl_high_dimensional():
 
 
 def test_rsl_badargs():
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  'fail', 0.4)
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  None, 0.4)
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, k='fail')
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, k=-1)
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, metric='imperial')
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, metric=None)
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, metric='minkowski', p=-1)
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, metric='minkowski', p=-1, algorithm='prims_kdtree')
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, metric='minkowski', p=-1, algorithm='prims_balltree')
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, metric='minkowski', p=-1,
-                  algorithm='boruvka_balltree')
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, metric='precomputed', algorithm='boruvka_kdtree')
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, metric='precomputed', algorithm='prims_kdtree')
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, metric='precomputed', algorithm='prims_balltree')
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, metric='precomputed', algorithm='boruvka_balltree')
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, alpha=-1)
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, alpha='fail')
-    assert_raises(Exception,
-                  robust_single_linkage,
-                  X, 0.4, algorithm='something_else')
-    assert_raises(TypeError,
-                  robust_single_linkage,
-                  X, 0.4, metric='minkowski', p=None)
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, leaf_size=0)
-    assert_raises(ValueError,
-                  robust_single_linkage,
-                  X, 0.4, gamma=0)
+    with pytest.raises(ValueError):
+        robust_single_linkage('fail', 0.4)
+    with pytest.raises(ValueError):
+        robust_single_linkage(None, 0.4)
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, k='fail')
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, k=-1)
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, metric='imperial')
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, metric=None)
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, metric='minkowski', p=-1)
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, metric='minkowski', p=-1, algorithm='prims_kdtree')
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, metric='minkowski', p=-1, algorithm='prims_balltree')
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, metric='minkowski', p=-1, algorithm='boruvka_balltree')
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, metric='precomputed', algorithm='boruvka_kdtree')
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, metric='precomputed', algorithm='prims_kdtree')
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, metric='precomputed', algorithm='prims_balltree')
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, metric='precomputed', algorithm='boruvka_balltree')
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, alpha=-1)
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, alpha='fail')
+    with pytest.raises(Exception):
+        robust_single_linkage(X, 0.4, algorithm='something_else')
+    with pytest.raises(TypeError):
+        robust_single_linkage(X, 0.4, metric='minkowski', p=None)
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, leaf_size=0)
+    with pytest.raises(ValueError):
+        robust_single_linkage(X, 0.4, gamma=0)
 
 
 # Disable for now -- need to refactor to meet newer standards
