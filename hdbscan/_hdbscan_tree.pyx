@@ -711,9 +711,9 @@ cpdef np.ndarray simplify_hierarchy(np.ndarray condensed_tree,
             # Mark visited rows
             processed.add(leaf)
             processed.add(sibling)
+            cluster_mask[leaf_idx] = False
+            cluster_mask[sibling_idx] = False        
             for point in [leaf, sibling]:
-                cluster_mask[leaf_idx] = False
-                cluster_mask[sibling_idx] = False        
                 keep_mask[condensed_tree['child'] == point] = False
         
         # Remove marked rows
