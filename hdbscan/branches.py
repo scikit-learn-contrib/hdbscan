@@ -489,7 +489,7 @@ def compute_branch_linkage_from_graph(
     # Stop if the graph is disconnected, return component labels in
     # place of linkage tree, which is detected later on!
     if overridden_labels:
-        num_components, labels = connected_components(centrality_mst)
+        num_components, labels = connected_components(centrality_mst, directed=False)
         if num_components > 1:
             return cluster_points, centralities, labels, edges
 
