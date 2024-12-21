@@ -141,7 +141,7 @@ def detect_branches_in_clusters(
     branch_persistences : tuple (n_clusters)
         A branch persistence (eccentricity range) for each detected branch.
 
-    cluster_approximation_graphs : tuple (n_clusters)
+    approximation_graphs : tuple (n_clusters)
         The graphs used to detect branches in each cluster stored as a numpy
         array with four columns: source, target, centrality, mutual reachability
         distance. Points are labelled by their row-index into the input data.
@@ -158,17 +158,17 @@ def detect_branches_in_clusters(
           0-dimensional simplicial complex of each cluster at the first point in
           the filtration where they contain all their points.
 
-    cluster_condensed_trees : tuple (n_clusters)
+    condensed_trees : tuple (n_clusters)
         A condensed branch hierarchy for each cluster produced during the
         branch detection step. Data points are numbered with in-cluster ids.
 
-    cluster_linkage_trees : tuple (n_clusters)
+    linkage_trees : tuple (n_clusters)
         A single linkage tree for each cluster produced during the branch
         detection step, in the scipy hierarchical clustering format.
         (see http://docs.scipy.org/doc/scipy/reference/cluster.hierarchy.html).
         Data points are numbered with in-cluster ids.
 
-    cluster_centralities : np.ndarray, shape (n_samples, )
+    centralities : np.ndarray, shape (n_samples, )
         Centrality values for each point in a cluster. Overemphasizes points'
         eccentricity within the cluster as the values are based on minimum
         spanning trees that do not contain the equally distanced edges resulting
@@ -845,7 +845,7 @@ class BranchDetector(BaseEstimator, ClusterMixin):
     branch_persistences_ : tuple (n_clusters)
         A branch persistence (eccentricity range) for each detected branch.
 
-    cluster_approximation_graphs_ : tuple (n_clusters)
+    approximation_graph_ : ApproximationGraph
         The graphs used to detect branches in each cluster stored as a numpy
         array with four columns: source, target, centrality, mutual reachability
         distance. Points are labelled by their row-index into the input data.
@@ -862,17 +862,17 @@ class BranchDetector(BaseEstimator, ClusterMixin):
           0-dimensional simplicial complex of each cluster at the first point in
           the filtration where they contain all their points.
 
-    cluster_condensed_trees_ : tuple (n_clusters)
+    condensed_trees_ : tuple (n_clusters)
         A condensed branch hierarchy for each cluster produced during the
         branch detection step. Data points are numbered with in-cluster ids.
 
-    cluster_linkage_trees_ : tuple (n_clusters)
+    linkage_trees_ : tuple (n_clusters)
         A single linkage tree for each cluster produced during the branch
         detection step, in the scipy hierarchical clustering format.
         (see http://docs.scipy.org/doc/scipy/reference/cluster.hierarchy.html).
         Data points are numbered with in-cluster ids.
 
-    cluster_centralities_ : np.ndarray, shape (n_samples, )
+    centralities_ : np.ndarray, shape (n_samples, )
         Centrality values for each point in a cluster. Overemphasizes points'
         eccentricity within the cluster as the values are based on minimum
         spanning trees that do not contain the equally distanced edges resulting
@@ -908,8 +908,8 @@ class BranchDetector(BaseEstimator, ClusterMixin):
         self.branch_selection_persistence = branch_selection_persistence
         self.label_sides_as_branches = label_sides_as_branches
 
-        self._cluster_approximation_graphs = None
-        self._cluster_condensed_trees = None
+        self._approximation_graphs = None
+        self._condensed_trees = None
         self._cluster_linkage_trees = None
         self._branch_exemplars = None
 
@@ -947,10 +947,10 @@ class BranchDetector(BaseEstimator, ClusterMixin):
             self.branch_labels_,
             self.branch_probabilities_,
             self.branch_persistences_,
-            self._cluster_approximation_graphs,
-            self._cluster_condensed_trees,
-            self._cluster_linkage_trees,
-            self.cluster_centralities_,
+            self._approximation_graphs,
+            self._condensed_trees,
+            self._linkage_trees,
+            self.centralities_,
             self.cluster_points_,
         ) = detect_branches_in_clusters(clusterer, labels, probabilities, **kwargs)
 
@@ -1060,30 +1060,30 @@ class BranchDetector(BaseEstimator, ClusterMixin):
         return cluster_data[medoid_index]
 
     @property
-    def cluster_approximation_graph_(self):
+    def approximation_graph_(self):
         """See :class:`~hdbscan.branches.BranchDetector` for documentation."""
-        if self._cluster_approximation_graphs is None:
+        if self._approximation_graphs is None:
             raise AttributeError(
-                "No cluster approximation graph was generated; try running fit first."
+                "No approximation graph was generated; try running fit first."
             )
         return ApproximationGraph(
-            self._cluster_approximation_graphs,
+            self._approximation_graphs,
             self.labels_,
             self.probabilities_,
             self.cluster_labels_,
             self.cluster_probabilities_,
-            self.cluster_centralities_,
+            self.centralities_,
             self.branch_labels_,
             self.branch_probabilities_,
             self._clusterer._raw_data,
         )
 
     @property
-    def cluster_condensed_trees_(self):
+    def condensed_trees_(self):
         """See :class:`~hdbscan.branches.BranchDetector` for documentation."""
-        if self._cluster_condensed_trees is None:
+        if self._condensed_trees is None:
             raise AttributeError(
-                "No cluster condensed trees were generated; try running fit first."
+                "No condensed trees were generated; try running fit first."
             )
         return [
             (
@@ -1093,23 +1093,23 @@ class BranchDetector(BaseEstimator, ClusterMixin):
                 if tree is not None
                 else None
             )
-            for tree in self._cluster_condensed_trees
+            for tree in self._condensed_trees
         ]
 
     @property
-    def cluster_linkage_trees_(self):
+    def linkage_trees_(self):
         """See :class:`~hdbscan.branches.BranchDetector` for documentation."""
-        if self._cluster_linkage_trees is None:
+        if self._linkage_trees is None:
             raise AttributeError(
-                "No cluster linkage trees were generated; try running fit first."
+                "No linkage trees were generated; try running fit first."
             )
         return [
             SingleLinkageTree(tree) if tree is not None else None
-            for tree in self._cluster_linkage_trees
+            for tree in self._linkage_trees
         ]
 
     @property
-    def branch_exemplars_(self):
+    def exemplars_(self):
         """See :class:`~hdbscan.branches.BranchDetector` for documentation."""
         if self._branch_exemplars is not None:
             return self._branch_exemplars
@@ -1117,17 +1117,17 @@ class BranchDetector(BaseEstimator, ClusterMixin):
             raise AttributeError(
                 "Branch exemplars not available with precomputed " "distances."
             )
-        if self._cluster_condensed_trees is None:
+        if self._condensed_trees is None:
             raise AttributeError("No branches detected; try running fit first.")
 
-        num_clusters = len(self._cluster_condensed_trees)
+        num_clusters = len(self._condensed_trees)
         branch_cluster_trees = [
             branch_tree[branch_tree["child_size"] > 1]
-            for branch_tree in self._cluster_condensed_trees
+            for branch_tree in self._condensed_trees
         ]
         selected_branch_ids = [
             sorted(branch_tree._select_clusters())
-            for branch_tree in self.cluster_condensed_trees_
+            for branch_tree in self.condensed_trees_
         ]
 
         self._branch_exemplars = [None] * num_clusters
@@ -1138,7 +1138,7 @@ class BranchDetector(BaseEstimator, ClusterMixin):
                 continue
 
             self._branch_exemplars[i] = []
-            raw_condensed_tree = self._cluster_condensed_trees[i]
+            raw_condensed_tree = self._condensed_trees[i]
 
             for branch in selected_branches:
                 _branch_exemplars = np.array([], dtype=np.intp)

@@ -90,7 +90,7 @@ class BranchDetectionData(object):
             labels = labels[self.finite_index]
             clean_data = clean_data[self.finite_index]
             self.internal_to_raw = {
-                x: y for x, y in zip(range(len(self.finite_index)), self.finite_index)
+                x: y for x, y in enumerate(self.finite_index)
             }
 
         # Construct tree

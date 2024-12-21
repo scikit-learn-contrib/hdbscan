@@ -390,11 +390,11 @@ def test_exemplars():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
 
-    branch_exemplars = b.branch_exemplars_
+    branch_exemplars = b.exemplars_
     assert branch_exemplars[0] is None
     assert branch_exemplars[1] is None
     assert len(branch_exemplars[2]) == 3
-    assert len(b.branch_exemplars_) == 3
+    assert len(b.exemplars_) == 3
 
 
 def test_approximate_predict():
@@ -430,31 +430,31 @@ def test_approximate_predict():
 def test_trees_numpy_output_formats():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
-    points, edges = b.cluster_approximation_graph_.to_numpy()
+    points, edges = b.approximation_graph_.to_numpy()
     assert points.shape[0] <= X.shape[0]  # Excludes noise points
-    for t in b.cluster_condensed_trees_:
+    for t in b.condensed_trees_:
         t.to_numpy()
-    for t in b.cluster_linkage_trees_:
+    for t in b.linkage_trees_:
         t.to_numpy()
 
 
 def test_trees_pandas_output_formats():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
-    if_pandas(b.cluster_approximation_graph_.to_pandas)()
-    for t in b.cluster_condensed_trees_:
+    if_pandas(b.approximation_graph_.to_pandas)()
+    for t in b.condensed_trees_:
         if_pandas(t.to_pandas)()
-    for t in b.cluster_linkage_trees_:
+    for t in b.linkage_trees_:
         if_pandas(t.to_pandas)()
 
 
 def test_trees_networkx_output_formats():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
-    if_networkx(b.cluster_approximation_graph_.to_networkx)()
-    for t in b.cluster_condensed_trees_:
+    if_networkx(b.approximation_graph_.to_networkx)()
+    for t in b.condensed_trees_:
         if_networkx(t.to_networkx)()
-    for t in b.cluster_linkage_trees_:
+    for t in b.linkage_trees_:
         if_networkx(t.to_networkx)()
 
 
@@ -464,7 +464,7 @@ def test_trees_networkx_output_formats():
 def test_condensed_tree_plot():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
-    for t in b.cluster_condensed_trees_:
+    for t in b.condensed_trees_:
         if_matplotlib(t.plot)(
             select_clusters=True,
             label_clusters=True,
@@ -477,7 +477,7 @@ def test_condensed_tree_plot():
 def test_single_linkage_tree_plot():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
-    for t in b.cluster_linkage_trees_:
+    for t in b.linkage_trees_:
         if_matplotlib(t.plot)(cmap="Reds")
         if_matplotlib(t.plot)(
             vary_line_width=False,
@@ -488,10 +488,10 @@ def test_single_linkage_tree_plot():
         )
 
 
-def test_cluster_approximation_graph_plot():
+def test_approximation_graph_plot():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
-    g = b.cluster_approximation_graph_
+    g = b.approximation_graph_
     if_matplotlib(g.plot)(positions=X)
     if_pygraphviz(if_matplotlib(g.plot))(node_color="x", feature_names=["x", "y"])
     if_pygraphviz(if_matplotlib(g.plot))(node_color=X[:, 0])

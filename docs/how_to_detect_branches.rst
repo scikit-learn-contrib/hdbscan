@@ -231,7 +231,7 @@ cluster.
 .. code:: ipython3
 
     idx = np.argmax([len(x) for x in branch_detector.branch_persistences_])
-    branch_detector.cluster_condensed_trees_[idx].plot(
+    branch_detector.condensed_trees_[idx].plot(
         select_clusters=True, selection_palette=["C3", "C4", "C5"]
     )
     plt.ylabel("Eccentricity")
@@ -253,14 +253,14 @@ the central o-shaped cluster.
     plt.figure(figsize=(6, 3))
     plt.subplot(1, 2, 1)
     idx = np.argmin([min(*x) for x in branch_detector.branch_persistences_])
-    branch_detector.cluster_condensed_trees_[idx].plot(colorbar=False)
+    branch_detector.condensed_trees_[idx].plot(colorbar=False)
     plt.ylim([0.3, 0])
     plt.ylabel("Eccentricity")
     plt.title(f"Cluster {idx} (spherical)")
     
     plt.subplot(1, 2, 2)
     idx = np.argmax([max(*x) for x in branch_detector.branch_persistences_])
-    branch_detector.cluster_condensed_trees_[idx].plot(colorbar=False)
+    branch_detector.condensed_trees_[idx].plot(colorbar=False)
     plt.ylim([0.3, 0])
     plt.ylabel("Eccentricity")
     plt.title(f"Cluster {idx} (elongated)")
@@ -287,7 +287,7 @@ For example, a figure with points coloured by the final labelling:
 
 .. code:: ipython3
 
-    g = branch_detector.cluster_approximation_graph_
+    g = branch_detector.approximation_graph_
     g.plot(positions=data, node_size=5, edge_width=0.2, edge_alpha=0.2)
     plt.show()
 
@@ -387,8 +387,7 @@ branches!!
 
     # Invalid labels cannot find branches!
     custom_labels = clusterer.labels_.copy()
-    custom_labels[clusterer.labels_ == 2] = 0
-    custom_labels[clusterer.labels_ == 3] = 2
+    custom_labels[clusterer.labels_ == 3] = 0
     branch_detector.fit(clusterer, custom_labels)
     plot(branch_detector.labels_)
 
