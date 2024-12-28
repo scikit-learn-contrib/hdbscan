@@ -2,123 +2,16 @@
 import numpy as np
 
 from sklearn.base import BaseEstimator, ClusterMixin
-from sklearn.neighbors import KDTree, BallTree
 from scipy.sparse import coo_array
-from scipy.sparse.csgraph import minimum_spanning_tree
+from scipy.sparse.csgraph import minimum_spanning_tree, connected_components
 from joblib import Memory
 from joblib import Parallel, delayed
 from joblib.parallel import cpu_count
-from .dist_metrics import DistanceMetric
 from ._hdbscan_linkage import label
 from .plots import CondensedTree, SingleLinkageTree, ApproximationGraph
 from .prediction import approximate_predict
-from ._hdbscan_tree import (
-    get_branches,
-    condense_tree,
-    recurse_leaf_dfs,
-    compute_stability,
-    simplify_branch_hierarchy,
-)
-
-
-class BranchDetectionData(object):
-    """Input data for branch detection functionality.
-
-    Recreates and caches internal data structures from the clustering stage.
-
-    Parameters
-    ----------
-
-    data : array (n_samples, n_features)
-        The original data set that was clustered.
-
-    labels : array (n_samples)
-        The cluster labels for every point in the data set.
-
-    min_samples : int
-        The min_samples value used in clustering.
-
-    tree_type : string, optional
-        Which type of space tree to use for core distance computation.
-        One of:
-            * ``kdtree``
-            * ``balltree``
-
-    metric : string, optional
-        The metric used to determine distance for the clustering.
-        This is the metric that will be used for the space tree to determine
-        core distances etc.
-
-    **kwargs :
-        Any further arguments to the metric.
-
-    Attributes
-    ----------
-
-    all_finite : bool
-        Whether the data set contains any infinite or NaN values.
-
-    finite_index : array (n_samples)
-        The indices of the finite data points in the original data set.
-
-    internal_to_raw : dict
-        A mapping from the finite data set indices to the original data set.
-
-    tree : KDTree or BallTree
-        A space partitioning tree that can be queried for nearest neighbors if
-        the metric is supported by a KDTree or BallTree.
-
-    neighbors : array (n_samples, min_samples)
-        The nearest neighbor for every non-noise point in the original data set.
-
-    core_distances : array (n_samples)
-        The core distance for every non-noise point in the original data set.
-
-    dist_metric : callable
-        Accelerated distance metric function.
-    """
-
-    _tree_type_map = {"kdtree": KDTree, "balltree": BallTree}
-
-    def __init__(
-        self,
-        data,
-        all_finite,
-        finite_index,
-        labels,
-        min_samples,
-        tree_type="kdtree",
-        metric="euclidean",
-        **kwargs,
-    ):
-        # Select finite data points
-        self.all_finite = all_finite
-        self.finite_index = finite_index
-        clean_data = data.astype(np.float64)
-        if not all_finite:
-            labels = labels[finite_index]
-            clean_data = clean_data[finite_index]
-            self.internal_to_raw = {
-                x: y for x, y in zip(range(len(finite_index)), finite_index)
-            }
-        else:
-            self.internal_to_raw = None
-
-        # Construct tree
-        self.tree = self._tree_type_map[tree_type](clean_data, metric=metric, **kwargs)
-        self.dist_metric = DistanceMetric.get_metric(metric, **kwargs)
-
-        # Allocate to maintain data point indices
-        self.core_distances = np.full(clean_data.shape[0], np.nan)
-        self.neighbors = np.full((clean_data.shape[0], min_samples), -1, dtype=np.int64)
-
-        # Find neighbours for non-noise points
-        noise_mask = labels != -1
-        if noise_mask.any():
-            distances, self.neighbors[noise_mask, :] = self.tree.query(
-                clean_data[noise_mask], k=min_samples
-            )
-            self.core_distances[noise_mask] = distances[:, -1]
+from ._hdbscan_tree import recurse_leaf_dfs
+from .hdbscan_ import _tree_to_labels
 
 
 def detect_branches_in_clusters(

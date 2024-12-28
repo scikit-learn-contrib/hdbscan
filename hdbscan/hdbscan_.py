@@ -37,7 +37,7 @@ from .dist_metrics import DistanceMetric
 
 from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 from .prediction import PredictionData
-from .branches import BranchDetectionData
+from .branch_data import BranchDetectionData
 
 KDTREE_VALID_METRICS = ["euclidean", "l2", "minkowski", "p", "manhattan", "cityblock", "l1", "chebyshev", "infinity"]
 BALLTREE_VALID_METRICS = KDTREE_VALID_METRICS + [
@@ -598,10 +598,10 @@ def hdbscan(
 
     leaf_size : int, optional (default=40)
         Leaf size for trees responsible for fast nearest
-        neighbour queries.
+        neighbor queries.
 
     algorithm : string, optional (default='best')
-        Exactly which algorithm to use; hdbscan has variants specialised
+        Exactly which algorithm to use; hdbscan has variants specialized
         for different characteristics of the data. By default this is set
         to ``best`` which chooses the "best" algorithm given the nature of
         the data. You can force other options if you believe you know
@@ -1237,12 +1237,12 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             if ~self._all_finite:
                 # Pass only the purely finite indices into hdbscan
                 # We will later assign all non-finite points to the background -1 cluster
-                self._finite_index = get_finite_row_indices(X)
-                clean_data = X[self._finite_index]
+                finite_index = get_finite_row_indices(X)
+                clean_data = X[finite_index]
                 internal_to_raw = {
-                    x: y for x, y in zip(range(len(self._finite_index)), self._finite_index)
+                    x: y for x, y in zip(range(len(finite_index)), finite_index)
                 }
-                outliers = list(set(range(X.shape[0])) - set(self._finite_index))
+                outliers = list(set(range(X.shape[0])) - set(finite_index))
             else:
                 clean_data = X
         elif issparse(X):
@@ -1281,11 +1281,11 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                 self._single_linkage_tree, internal_to_raw, outliers
             )
             new_labels = np.full(X.shape[0], -1)
-            new_labels[self._finite_index] = self.labels_
+            new_labels[finite_index] = self.labels_
             self.labels_ = new_labels
 
             new_probabilities = np.zeros(X.shape[0])
-            new_probabilities[self._finite_index] = self.probabilities_
+            new_probabilities[finite_index] = self.probabilities_
             self.probabilities_ = new_probabilities
 
         if self.prediction_data:
@@ -1363,9 +1363,8 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
             self._branch_detection_data = BranchDetectionData(
                 self._raw_data,
-                self._all_finite,
-                None if self._all_finite else self._finite_index,
                 self.labels_,
+                self._condensed_tree,
                 min_samples,
                 tree_type=tree_type,
                 metric=self.metric,
