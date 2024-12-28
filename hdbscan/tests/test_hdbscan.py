@@ -9,8 +9,7 @@ from scipy import stats
 from sklearn.utils.estimator_checks import check_estimator
 from sklearn.utils._testing import (
     assert_array_equal,
-    assert_array_almost_equal,
-    assert_raises,
+    assert_array_almost_equal
 )
 from hdbscan import (
     HDBSCAN,
@@ -207,7 +206,8 @@ def test_hdbscan_prims_kdtree():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_2 == n_clusters
 
-    assert_raises(ValueError, hdbscan, X, algorithm="prims_kdtree", metric="russelrao")
+    with pytest.raises(ValueError):
+        hdbscan(X, algorithm="prims_kdtree", metric="russelrao")
 
 
 def test_hdbscan_prims_balltree():
@@ -219,7 +219,8 @@ def test_hdbscan_prims_balltree():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_2 == n_clusters
 
-    assert_raises(ValueError, hdbscan, X, algorithm="prims_balltree", metric="cosine")
+    with pytest.raises(ValueError):
+        hdbscan(X, algorithm="prims_balltree", metric="cosine")
 
 
 def test_hdbscan_boruvka_kdtree():
@@ -231,9 +232,8 @@ def test_hdbscan_boruvka_kdtree():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_2 == n_clusters
 
-    assert_raises(
-        ValueError, hdbscan, X, algorithm="boruvka_kdtree", metric="russelrao"
-    )
+    with pytest.raises(ValueError):
+        hdbscan(X, algorithm="boruvka_kdtree", metric="russelrao")
 
 
 def test_hdbscan_boruvka_balltree():
@@ -247,7 +247,8 @@ def test_hdbscan_boruvka_balltree():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_2 == n_clusters
 
-    assert_raises(ValueError, hdbscan, X, algorithm="boruvka_balltree", metric="cosine")
+    with pytest.raises(ValueError):
+        hdbscan(X, algorithm="boruvka_balltree", metric="cosine")
 
 
 def test_hdbscan_generic():
@@ -496,12 +497,12 @@ def test_hdbscan_approximate_predict():
 def test_hdbscan_approximate_predict_score():
     clusterer = HDBSCAN(min_cluster_size=200).fit(X)
     # no prediction data error
-    assert_raises(ValueError, approximate_predict_scores, clusterer, X)
+    with pytest.raises(ValueError):
+        approximate_predict_scores(clusterer, X)
     clusterer.generate_prediction_data()
     # wrong dimensions error
-    assert_raises(
-        ValueError, approximate_predict_scores, clusterer, np.array([[1, 2, 3]])
-    )
+    with pytest.raises(ValueError):
+        approximate_predict_scores(clusterer, np.array([[1, 2, 3]]))
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
         approximate_predict_scores(clusterer, np.array([[1.5, -1.0]]))
@@ -547,41 +548,52 @@ def test_hdbscan_all_points_membership_vectors():
 
 
 def test_hdbscan_badargs():
-    assert_raises(ValueError, hdbscan, X="fail")
-    assert_raises(ValueError, hdbscan, X=None)
-    assert_raises(ValueError, hdbscan, X, min_cluster_size="fail")
-    assert_raises(ValueError, hdbscan, X, min_samples="fail")
-    assert_raises(ValueError, hdbscan, X, min_samples=-1)
-    assert_raises(ValueError, hdbscan, X, metric="imperial")
-    assert_raises(ValueError, hdbscan, X, metric=None)
-    assert_raises(ValueError, hdbscan, X, metric="minkowski", p=-1)
-    assert_raises(
-        ValueError, hdbscan, X, metric="minkowski", p=-1, algorithm="prims_kdtree"
-    )
-    assert_raises(
-        ValueError, hdbscan, X, metric="minkowski", p=-1, algorithm="prims_balltree"
-    )
-    assert_raises(
-        ValueError, hdbscan, X, metric="minkowski", p=-1, algorithm="boruvka_balltree"
-    )
-    assert_raises(
-        ValueError, hdbscan, X, metric="precomputed", algorithm="boruvka_kdtree"
-    )
-    assert_raises(
-        ValueError, hdbscan, X, metric="precomputed", algorithm="prims_kdtree"
-    )
-    assert_raises(
-        ValueError, hdbscan, X, metric="precomputed", algorithm="prims_balltree"
-    )
-    assert_raises(
-        ValueError, hdbscan, X, metric="precomputed", algorithm="boruvka_balltree"
-    )
-    assert_raises(ValueError, hdbscan, X, alpha=-1)
-    assert_raises(ValueError, hdbscan, X, alpha="fail")
-    assert_raises(Exception, hdbscan, X, algorithm="something_else")
-    assert_raises(TypeError, hdbscan, X, metric="minkowski", p=None)
-    assert_raises(ValueError, hdbscan, X, leaf_size=0)
-    assert_raises(ValueError, hdbscan, X, cluster_selection_epsilon_max=-1)
+    with pytest.raises(ValueError):
+        hdbscan(X="fail")
+    with pytest.raises(ValueError):
+        hdbscan(X=None)
+    with pytest.raises(ValueError):
+        hdbscan(X, min_cluster_size="fail")
+    with pytest.raises(ValueError):
+        hdbscan(X, min_samples="fail")
+    with pytest.raises(ValueError):
+        hdbscan(X, min_samples=-1)
+    with pytest.raises(ValueError):
+        hdbscan(X, metric="imperial")
+    with pytest.raises(ValueError):
+        hdbscan(X, metric=None)
+    with pytest.raises(ValueError):
+        hdbscan(X, metric="minkowski", p=-1)
+    with pytest.raises(ValueError):
+        hdbscan(X, metric="minkowski", p=-1, algorithm="prims_kdtree")
+    with pytest.raises(ValueError):
+        hdbscan(X, metric="minkowski", p=-1, algorithm="prims_balltree")
+    with pytest.raises(ValueError):
+        hdbscan(X, metric="minkowski", p=-1, algorithm="boruvka_balltree")
+    with pytest.raises(ValueError):
+        hdbscan(X, metric="precomputed", algorithm="boruvka_kdtree")
+    with pytest.raises(ValueError):
+        hdbscan(X, metric="precomputed", algorithm="prims_kdtree")
+    with pytest.raises(ValueError):
+        hdbscan(X, metric="precomputed", algorithm="prims_balltree")
+    with pytest.raises(ValueError):
+        hdbscan(X, metric="precomputed", algorithm="boruvka_balltree")
+    with pytest.raises(ValueError):
+        hdbscan(X, alpha=-1)
+    with pytest.raises(ValueError):
+        hdbscan(X, alpha="fail")
+    with pytest.raises(Exception):
+        hdbscan(X, algorithm="something_else")
+    with pytest.raises(TypeError):
+        hdbscan(X, metric="minkowski", p=None)
+    with pytest.raises(ValueError):
+        hdbscan(X, leaf_size=0)
+    with pytest.raises(ValueError):
+        hdbscan(X, cluster_selection_epsilon=-1)
+    with pytest.raises(ValueError):
+        hdbscan(X, cluster_selection_persistence=-1)
+    with pytest.raises(ValueError):
+        hdbscan(X, cluster_selection_epsilon_max=-1)
 
 
 def test_hdbscan_sparse():
@@ -618,8 +630,10 @@ def test_hdbscan_centroids_medoids():
 
 def test_hdbscan_no_centroid_medoid_for_noise():
     clusterer = HDBSCAN().fit(X)
-    assert_raises(ValueError, clusterer.weighted_cluster_centroid, -1)
-    assert_raises(ValueError, clusterer.weighted_cluster_medoid, -1)
+    with pytest.raises(ValueError):
+        clusterer.weighted_cluster_centroid(-1)
+    with pytest.raises(ValueError):
+        clusterer.weighted_cluster_medoid(-1)
 
 
 def test_hdbscan_allow_single_cluster_with_epsilon():
