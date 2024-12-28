@@ -1070,12 +1070,14 @@ class BranchDetector(BaseEstimator, ClusterMixin):
             self._approximation_graphs,
             self.labels_,
             self.probabilities_,
-            self._clusterer.labels_,
-            self._clusterer.probabilities_,
-            self.cluster_centralities_,
+            self.centralities_,
+            self.cluster_labels_,
+            self.cluster_probabilities_,
             self.branch_labels_,
             self.branch_probabilities_,
-            self._clusterer._raw_data,
+            lens_name='centrality',
+            sub_cluster_name='branch',
+            raw_data=self._clusterer._raw_data,
         )
 
     @property
