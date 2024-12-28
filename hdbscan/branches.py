@@ -16,10 +16,13 @@ from .hdbscan_ import _tree_to_labels
 
 def detect_branches_in_clusters(
     clusterer,
+    cluster_labels=None,
+    cluster_probabilities=None,
     min_branch_size=None,
     allow_single_branch=False,
     branch_detection_method="full",
     branch_selection_method="eom",
+    branch_selection_epsilon=0.0,
     branch_selection_persistence=0.0,
     max_branch_size=0,
     label_sides_as_branches=False,
@@ -41,6 +44,15 @@ def detect_branches_in_clusters(
         The clusterer object that has been fit to the data with branch detection
         data generated.
 
+    cluster_labels : np.ndarray, shape (n_samples, ), optional (default=None)
+        The cluster labels for each point in the data set. If not provided, the
+        clusterer's labels will be used.
+
+    cluster_probabilities : np.ndarray, shape (n_samples, ), optional (default=None)
+        The cluster probabilities for each point in the data set. If not provided,
+        the clusterer's probabilities will be used, or all points will be given
+        1.0 probability if labels are overridden.
+
     min_branch_size : int, optional (default=None)
         The minimum number of samples in a group for that group to be
         considered a branch; groupings smaller than this size will seen as
@@ -50,7 +62,7 @@ def detect_branches_in_clusters(
         Analogous to ``allow_single_cluster``.
 
     branch_detection_method : str, optional (default=``full``)
-        Deteremines which graph is conctructed to detect branches with. Valid
+        Determines which graph is constructed to detect branches with. Valid
         values are, ordered by increasing computation cost and decreasing
         sensitivity to noise:
         - ``core``: Contains the edges that connect each point to all other
@@ -110,6 +122,14 @@ def detect_branches_in_clusters(
     probabilities : np.ndarray, shape (n_samples, )
         Probabilities considering both cluster and branch membership. Noisy
         samples are assigned 0.
+
+    cluster_labels : np.ndarray, shape (n_samples, )
+        The cluster labels for each point in the data set. Noisy samples are
+        given the label -1.
+
+    cluster_probabilities : np.ndarray, shape (n_samples, )
+        The cluster probabilities for each point in the data set. Noisy samples
+        are assigned 1.0.
 
     branch_labels : np.ndarray, shape (n_samples, )
         Branch labels for each point. Noisy samples are given the label -1.
@@ -218,13 +238,30 @@ def detect_branches_in_clusters(
     memory = clusterer.memory
     if isinstance(memory, str):
         memory = Memory(memory, verbose=0)
-    num_clusters = len(clusterer.cluster_persistence_)
-    labels = clusterer.labels_
-    probabilities = clusterer.probabilities_
+
+    if cluster_labels is None:
+        overridden_labels = False
+        num_clusters = len(clusterer.cluster_persistence_)
+        cluster_labels, _cluster_probabilities = update_single_cluster_labels(
+            clusterer._condensed_tree,
+            clusterer.labels_,
+            clusterer.probabilities_,
+            clusterer.cluster_persistence_,
+            allow_single_cluster=clusterer.allow_single_cluster,
+            cluster_selection_epsilon=clusterer.cluster_selection_epsilon,
+        )
+        if cluster_probabilities is None:
+            cluster_probabilities = _cluster_probabilities
+    else:
+        overridden_labels = True
+        num_clusters = cluster_labels.max() + 1
+        if cluster_probabilities is None:
+            cluster_probabilities = np.where(cluster_labels == -1, 0.0, 1.0)
+
     if not clusterer.branch_detection_data_.all_finite:
         finite_index = clusterer.branch_detection_data_.finite_index
-        labels = labels[finite_index]
-        probabilities = probabilities[finite_index]
+        cluster_labels = cluster_labels[finite_index]
+        cluster_probabilities = cluster_probabilities[finite_index]
 
     # Configure parallelization
     run_core = branch_detection_method == "core"
@@ -237,13 +274,13 @@ def detect_branches_in_clusters(
 
     # Detect branches
     (
-        cluster_points,
-        cluster_centralities,
-        cluster_linkage_trees,
-        cluster_approximation_graphs,
-    ) = memory.cache(_compute_branch_linkage, ignore=["thread_pool"])(
-        labels,
-        probabilities,
+        points,
+        centralities,
+        linkage_trees,
+        approximation_graphs,
+    ) = memory.cache(compute_branch_linkage, ignore=["thread_pool"])(
+        cluster_labels,
+        cluster_probabilities,
         clusterer._min_spanning_tree,
         clusterer.branch_detection_data_.tree,
         clusterer.branch_detection_data_.neighbors,
@@ -252,6 +289,7 @@ def detect_branches_in_clusters(
         num_clusters,
         thread_pool,
         run_core=run_core,
+        overridden_labels=overridden_labels
     )
     (
         branch_labels,
@@ -354,6 +392,7 @@ def compute_branch_linkage(
     num_clusters,
     thread_pool,
     run_core=False,
+    overridden_labels=False,
 ):
     result = thread_pool(
         delayed(_compute_branch_linkage_of_cluster)(
@@ -365,6 +404,7 @@ def compute_branch_linkage(
             core_distances,
             dist_metric,
             run_core,
+            overridden_labels,
             cluster_id,
         )
         for cluster_id in range(num_clusters)
@@ -383,6 +423,7 @@ def _compute_branch_linkage_of_cluster(
     core_distances,
     dist_metric,
     run_core,
+    overridden_labels,
     cluster_id,
 ):
     """Detect branches within one cluster."""
@@ -437,17 +478,28 @@ def compute_branch_linkage_from_graph(
         coo_array(
             (edges[:, 2], (edges[:, 0].astype(np.int32), edges[:, 1].astype(np.int32))),
             shape=(len(cluster_points), len(cluster_points)),
-        )
-    ).tocoo()
-    centrality_mst = np.column_stack(
-        (centrality_mst.row, centrality_mst.col, centrality_mst.data)
+        ),
+        overwrite=True,
     )
-    centrality_mst = centrality_mst[np.argsort(centrality_mst.T[2]), :]
-    linkage_tree = label(centrality_mst)
 
     # Re-label edges with data ids
     edges[:, 0] = cluster_points[edges[:, 0].astype(np.intp)]
     edges[:, 1] = cluster_points[edges[:, 1].astype(np.intp)]
+
+    # Stop if the graph is disconnected, return component labels in
+    # place of linkage tree, which is detected later on!
+    if overridden_labels:
+        num_components, labels = connected_components(centrality_mst, directed=False)
+        if num_components > 1:
+            return cluster_points, centralities, labels, edges
+
+    # Compute linkage tree
+    centrality_mst = centrality_mst.tocoo()
+    centrality_mst = np.column_stack(
+        (centrality_mst.row, centrality_mst.col, centrality_mst.data)
+    )
+    centrality_mst = centrality_mst[np.argsort(centrality_mst[:, 2]), :]
+    linkage_tree = label(centrality_mst)
 
     # Return values
     return cluster_points, centralities, linkage_tree, edges
@@ -569,6 +621,16 @@ def _segment_branch_linkage_hierarchy(
     branch_selection_persistence=0.0,
 ):
     """Select branches within one cluster."""
+    # Return component labels if the graph is disconnected
+    if len(single_linkage_tree.shape) == 1:
+        return (
+            single_linkage_tree,
+            np.ones(single_linkage_tree.shape[0], dtype=np.double),
+            [0 for _ in range(single_linkage_tree.max() + 1)],
+            None,
+            None,
+        )
+    
     # Run normal branch detection
     (labels, probabilities, stabilities, condensed_tree, linkage_tree) = (
         _tree_to_labels(
@@ -765,6 +827,14 @@ class BranchDetector(BaseEstimator, ClusterMixin):
         Probabilities considering both cluster and branch membership. Noisy
         samples are assigned 0.
 
+    cluster_labels_ : np.ndarray, shape (n_samples, )
+        The cluster labels for each point in the data set. Noisy samples are
+        given the label -1.
+
+    cluster_probabilities_ : np.ndarray, shape (n_samples, )
+        The cluster probabilities for each point in the data set. Noisy samples
+        are assigned 1.0.
+
     branch_labels_ : np.ndarray, shape (n_samples, )
         Branch labels for each point. Noisy samples are given the label -1.
 
@@ -843,26 +913,37 @@ class BranchDetector(BaseEstimator, ClusterMixin):
         self._cluster_linkage_trees = None
         self._branch_exemplars = None
 
-    def fit(self, clusterer):
+    def fit(self, clusterer, labels=None, probabilities=None):
         """
         Perform a flare-detection post-processing step to detect branches within
         clusters.
 
         Parameters
         ----------
-        X : HDBSCAN
+        clusterer : HDBSCAN
             A fitted HDBSCAN object with branch detection data generated.
+
+        labels : np.ndarray, shape (n_samples, ), optional (default=None)
+            The cluster labels for each point in the data set. If not provided, the
+            clusterer's labels will be used.
+
+        probabilities : np.ndarray, shape (n_samples, ), optional (default=None)
+            The cluster probabilities for each point in the data set. If not provided,
+            the clusterer's probabilities will be used, or all points will be given
+            1.0 probability if labels are overridden.
 
         Returns
         -------
         self : object
             Returns self.
         """
-        self._clusterer = X
+        self._clusterer = clusterer
         kwargs = self.get_params()
         (
             self.labels_,
             self.probabilities_,
+            self.cluster_labels_,
+            self.cluster_probabilities_,
             self.branch_labels_,
             self.branch_probabilities_,
             self.branch_persistences_,
@@ -871,26 +952,35 @@ class BranchDetector(BaseEstimator, ClusterMixin):
             self._linkage_trees,
             self.centralities_,
             self.cluster_points_,
-        ) = detect_branches_in_clusters(X, **kwargs)
+        ) = detect_branches_in_clusters(clusterer, labels, probabilities, **kwargs)
 
         return self
 
-    def fit_predict(self, X, y=None):
+    def fit_predict(self, clusterer, labels=None, probabilities=None):
         """
         Perform a flare-detection post-processing step to detect branches within
         clusters [1]_.
 
         Parameters
         ----------
-        X : HDBSCAN
+        clusterer : HDBSCAN
             A fitted HDBSCAN object with branch detection data generated.
+
+        labels : np.ndarray, shape (n_samples, ), optional (default=None)
+            The cluster labels for each point in the data set. If not provided, the
+            clusterer's labels will be used.
+
+        probabilities : np.ndarray, shape (n_samples, ), optional (default=None)
+            The cluster probabilities for each point in the data set. If not provided,
+            the clusterer's probabilities will be used, or all points will be given
+            1.0 probability if labels are overridden.
 
         Returns
         -------
         labels : ndarray, shape (n_samples, )
             subgroup labels differentiated by cluster and branch.
         """
-        self.fit(X, y)
+        self.fit(clusterer, labels, probabilities)
         return self.labels_
 
     def weighted_centroid(self, label_id, data=None):

@@ -193,15 +193,20 @@ def test_generate_branch_detection_data():
 # --- Detecting Branches
 
 
-def check_detected_groups(c, n_clusters=3, n_branches=6):
+def check_detected_groups(c, n_clusters=3, n_branches=6, overridden=False):
     """Checks branch_detector output for main invariants."""
     assert len(np.unique(c.labels_)) - int(-1 in c.labels_) == n_branches
+    assert (
+        len(np.unique(c.cluster_labels_)) - int(-1 in c.cluster_labels_) == n_clusters
+    )
     noise_mask = c.labels_ == -1
     assert (c.branch_labels_[noise_mask] == 0).all()
     assert (c.branch_probabilities_[noise_mask] == 1.0).all()
-    assert (c.probabilities_[noise_mask] == 0).all()
-    assert len(c.cluster_points_) == n_clusters
-    assert len(c.branch_persistences_) == n_clusters
+    assert (c.probabilities_[noise_mask] == 0.0).all()
+    assert (c.cluster_probabilities_[noise_mask] == 0.0).all()
+    if not overridden:
+        assert len(c.cluster_points_) == n_clusters
+        assert len(c.branch_persistences_) == n_clusters
     assert sum(len(ps) for ps in c.branch_persistences_) >= (n_branches - n_clusters)
 
 
@@ -249,7 +254,16 @@ def test_max_branch_size():
     check_detected_groups(b, n_branches=7)
 
 
-def test_allow_single_branch_with_persistence():
+def test_override_cluster_labels():
+    split_y = np.full_like(y, -1)
+    split_y[y == 0] = 0
+    split_y[y == 1] = 0
+    c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
+    b = BranchDetector(label_sides_as_branches=True).fit(c, split_y)
+    check_detected_groups(b, n_clusters=1, n_branches=2, overridden=True)
+
+
+def test_allow_single_branch_with_filters():
     # Generate single-cluster data
     np.random.seed(0)
     no_structure = np.random.rand(150, 2)
