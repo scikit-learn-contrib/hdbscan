@@ -718,74 +718,76 @@ cpdef set epsilon_search(set leaves, np.ndarray cluster_tree, np.double_t cluste
     return set(selected_clusters)
 
 
-cpdef np.ndarray simplify_branch_hierarchy(np.ndarray condensed_tree, 
+cpdef np.ndarray simplify_hierarchy(np.ndarray condensed_tree, 
                                            np.double_t persistence_threshold): 
-    """Iteratively remove branches with persistence below threshold.
-    
-    Takes the place of epsilon_search which cannot deal with non-zero births.
-    """
-    cdef bint flag
-    cdef np.intp_t leaf, sibling, parent, leaf_idx, sibling_idx
-    cdef np.double_t persistence
-    cdef np.ndarray cluster_tree, child_ids
-    cdef list leaves, persistences
-    cdef set processed
+    """Iteratively remove branches with persistence below threshold."""
+    cdef np.double_t merge_lambda
+    cdef np.intp_t point, leaf, sibling, parent, leaf_idx, sibling_idx
+    cdef set[np.intp] processed, leaves
+    cdef dict[np.double_] deaths
     cdef np.intp_t num_points = condensed_tree['parent'].min()
+    cdef np.ndarray[np.double_t, ndim=1] births
 
-    cdef np.ndarray[np.double_t, ndim=1] births_arr = max_eccentricities(condensed_tree, num_points)
-    cdef np.double_t[::1] births = births_arr
-
-    while True:
+    cdef np.ndarray cluster_tree = condensed_tree[condensed_tree['child_size'] > 1]
+    cdef np.ndarray cluster_mask, keep_mask, update_mask
+    keep_mask = np.ones(condensed_tree.shape[0], dtype=np.bool_)
         processed = set()
-        cluster_tree = condensed_tree[condensed_tree['child_size'] > 1]
-        leaves = get_cluster_tree_leaves(cluster_tree)
-        persistences = [
-            births[leaf] - cluster_tree['lambda_val'][cluster_tree['child'] == leaf][0]
-            for leaf in leaves
-        ]
-        flag = True
-        for leaf, persistence in zip(leaves, persistences):
-            if leaf in processed:
+    while cluster_tree.shape[0] > 0:
+        leaves = set(get_cluster_tree_leaves(cluster_tree))
+        births = max_lambdas(condensed_tree)
+        deaths = min_lambdas(cluster_tree, leaves)
+        
+        cluster_mask = np.ones(cluster_tree.shape[0], dtype=np.bool_)
+        for leaf in sorted(leaves, reverse=True):
+            if leaf in processed or (births[leaf] - deaths[leaf]) >= persistence_threshold:
                 continue
-            if persistence < persistence_threshold:
-                flag = False
-                # Find parent and sibling
-                leaf_idx = np.argmax(condensed_tree['child'] == leaf)
-                parent = condensed_tree['parent'][leaf_idx]
-                child_ids = np.where((condensed_tree['parent'] == parent) & (condensed_tree['child_size'] > 1))[0]
-                sibling_idx = child_ids[1] if child_ids[0] == leaf_idx else child_ids[0]
-                sibling = condensed_tree['child'][sibling_idx]
+            # Find rows for leaf and sibling
+            leaf_idx = np.searchsorted(cluster_tree['child'], leaf)
+            parent = cluster_tree['parent'][leaf_idx]
+            if leaf_idx > 0 and cluster_tree['parent'][leaf_idx - 1] == parent:
+                sibling_idx = leaf_idx - 1 
+            else:
+                sibling_idx = leaf_idx + 1
+            sibling = cluster_tree['child'][sibling_idx]
 
-                # Reset leaf and sibling rows
-                condensed_tree['child'][leaf_idx] = -999
-                condensed_tree['child'][sibling_idx] = -999
-                condensed_tree['parent'][leaf_idx] = -999
-                condensed_tree['parent'][sibling_idx] = -999
-                
-                # Update parent-values to reflect the merge
-                condensed_tree['parent'][(condensed_tree['parent'] == leaf)] = parent
-                condensed_tree['parent'][(condensed_tree['parent'] == sibling)] = parent
-                
+            # Update parent values to the new parent
+            cluster_tree['parent'][cluster_tree['parent'] == leaf] = parent
+            cluster_tree['parent'][cluster_tree['parent'] == sibling] = parent
+            update_mask = condensed_tree['parent'] == leaf
+            condensed_tree['parent'][update_mask] = parent
+            condensed_tree['lambda_val'][update_mask] = deaths[leaf]
+            update_mask = condensed_tree['parent'] == sibling
+            condensed_tree['parent'][update_mask] = parent
+            condensed_tree['lambda_val'][update_mask] = deaths[leaf]
+
+            # Mark visited rows
                 processed.add(leaf)
                 processed.add(sibling)
+            cluster_mask[leaf_idx] = False
+            cluster_mask[sibling_idx] = False        
+            for point in [leaf, sibling]:
+                keep_mask[condensed_tree['child'] == point] = False
         
         # Remove marked rows
-        condensed_tree = condensed_tree[condensed_tree['parent'] != -999]
-        if flag:
+        if np.all(cluster_mask):
             break
-
+        cluster_tree = cluster_tree[cluster_mask]
+    condensed_tree = condensed_tree[keep_mask]
     return remap_cluster_ids(condensed_tree, num_points)
 
 
 cdef np.ndarray remap_cluster_ids(np.ndarray condensed_tree, np.intp_t num_points):
-    """Ensures segments are numbered consequetively from 0 to n_clusters-1.""" 
-    max_parent = condensed_tree['parent'].max()
-    id_map = np.empty(max_parent + 1)
-    id_map[:num_points] = np.arange(num_points)
-    remaining_parents = np.unique(condensed_tree['parent'])
-    id_map[remaining_parents] = num_points + np.arange(remaining_parents.shape[0])
-    condensed_tree['parent'] = id_map[condensed_tree['parent']]
-    condensed_tree['child'] = id_map[condensed_tree['child']]
+    """Ensures segments are numbered consecutively from 0 to n_clusters-1.""" 
+    cdef np.intp_t n_nodes = condensed_tree['parent'].max() + 1
+    cdef np.ndarray[np.intp_t, ndim=1] remaining_parents = np.unique(condensed_tree['parent'])
+    cdef np.ndarray[np.intp_t, ndim=1] id_map = np.empty(n_nodes, dtype=np.intp)
+    id_map[remaining_parents - num_points] = np.arange(
+        num_points, num_points + remaining_parents.shape[0]
+    )
+    cdef np.ndarray mask = condensed_tree['parent'] > num_points
+    condensed_tree['parent'][mask] = id_map[condensed_tree['parent'][mask] - num_points]
+    mask = condensed_tree['child'] > num_points
+    condensed_tree['child'][mask] = id_map[condensed_tree['child'][mask] - num_points]
     return condensed_tree
 
 

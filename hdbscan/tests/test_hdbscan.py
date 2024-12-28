@@ -663,6 +663,18 @@ def test_hdbscan_allow_single_cluster_with_epsilon():
     assert counts[unique_labels == -1] == 2
 
 
+def test_hdbscan_persistence_threshold():
+    np.random.seed(0)
+    no_structure = np.random.rand(150, 2)
+    labels = HDBSCAN(
+        min_cluster_size=5,
+        cluster_selection_persistence=0.5,
+        cluster_selection_method="eom",
+    ).fit_predict(no_structure)
+    unique_labels = np.unique(labels)
+    assert len(unique_labels) == 7
+
+
 def test_hdbscan_cluster_selection_epsilon_max():
     """Test that reducing the cluster_selection_epsilon_max parameter
     results in more clusters with smaller sizes being found."""
