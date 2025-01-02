@@ -18,14 +18,14 @@ def detect_branches_in_clusters(
     clusterer,
     cluster_labels=None,
     cluster_probabilities=None,
-    min_branch_size=None,
-    allow_single_branch=False,
     branch_detection_method="full",
-    branch_selection_method="eom",
-    branch_selection_epsilon=0.0,
-    branch_selection_persistence=0.0,
-    max_branch_size=0,
     label_sides_as_branches=False,
+    min_cluster_size=None,
+    max_cluster_size=None,
+    allow_single_cluster=None,
+    cluster_selection_method=None,
+    cluster_selection_epsilon=0.0,
+    cluster_selection_persistence=0.0,
 ):
     """
     Performs a flare-detection post-processing step to detect branches within
@@ -53,14 +53,6 @@ def detect_branches_in_clusters(
         the clusterer's probabilities will be used, or all points will be given
         1.0 probability if labels are overridden.
 
-    min_branch_size : int, optional (default=None)
-        The minimum number of samples in a group for that group to be
-        considered a branch; groupings smaller than this size will seen as
-        points falling out of a branch. Defaults to the clusterer's min_cluster_size.
-
-    allow_single_branch : bool, optional (default=False)
-        Analogous to ``allow_single_cluster``.
-
     branch_detection_method : str, optional (default=``full``)
         Determines which graph is constructed to detect branches with. Valid
         values are, ordered by increasing computation cost and decreasing
@@ -75,14 +67,29 @@ def detect_branches_in_clusters(
           0-dimensional simplicial complex of each cluster at the first point in
           the filtration where they contain all their points.
 
-    branch_selection_method : str, optional (default='eom')
+    label_sides_as_branches : bool, optional (default=False),
+        When this flag is False, branches are only labelled for clusters with at
+        least three branches (i.e., at least y-shapes). Clusters with only two
+        branches represent l-shapes. The two branches describe the cluster's
+        outsides growing towards each other. Enabling this flag separates these
+        branches from each other in the produced labelling.
+
+    min_cluster_size : int, optional (default=None)
+        The minimum number of samples in a group for that group to be
+        considered a branch; groupings smaller than this size will seen as
+        points falling out of a branch. Defaults to the clusterer's min_cluster_size.
+
+    allow_single_cluster : bool, optional (default=None)
+        Analogous to HDBSCAN's ``allow_single_cluster``.
+
+    cluster_selection_method : str, optional (default=None)
         The method used to select branches from the cluster's condensed tree.
         The standard approach for FLASC is to use the ``eom`` approach.
         Options are:
           * ``eom``
           * ``leaf``
 
-    branch_selection_epsilon: float, optional (default=0.0)
+    cluster_selection_epsilon: float, optional (default=0.0)
         A lower epsilon threshold. Only branches with a death above this value
         will be considered. See [3]_ for more information. Note that this
         should not be used if we want to predict the cluster labels for new
@@ -90,7 +97,7 @@ def detect_branches_in_clusters(
         :func:`~hdbscan.branches.approximate_predict` function is not aware of
         this argument.
 
-    branch_selection_persistence: float, optional (default=0.0)
+    cluster_selection_persistence: float, optional (default=0.0)
         An eccentricity persistence threshold. Branches with a persistence below
         this value will be merged. See [3]_ for more information. Note that this
         should not be used if we want to predict the cluster labels for new
@@ -98,20 +105,13 @@ def detect_branches_in_clusters(
         :func:`~hdbscan.branches.approximate_predict` function is not aware of
         this argument.
 
-    max_branch_size : int, optional (default=0)
+    max_cluster_size : int, optional (default=0)
         A limit to the size of clusters returned by the ``eom`` algorithm.
         Has no effect when using ``leaf`` clustering (where clusters are
         usually small regardless). Note that this should not be used if we
         want to predict the cluster labels for new points in future (e.g. using
         :func:`~hdbscan.branches.approximate_predict`), as that function is
         not aware of this argument.
-
-    label_sides_as_branches : bool, optional (default=False),
-        When this flag is False, branches are only labelled for clusters with at
-        least three branches (i.e., at least y-shapes). Clusters with only two
-        branches represent l-shapes. The two branches describe the cluster's
-        outsides growing towards each other. Enabling this flag separates these
-        branches from each other in the produced labelling.
 
     Returns
     -------
@@ -198,34 +198,42 @@ def detect_branches_in_clusters(
         )
 
     # Validate parameters
-    if min_branch_size is None:
-        min_branch_size = clusterer.min_cluster_size
-    branch_selection_epsilon = float(branch_selection_epsilon)
-    branch_selection_persistence = float(branch_selection_persistence)
-    if not (np.issubdtype(type(min_branch_size), np.integer) and min_branch_size >= 2):
-        raise ValueError(
-            f"min_branch_size must be an integer greater or equal "
-            f"to 2,  {min_branch_size} given."
-        )
+    if min_cluster_size is None:
+        min_cluster_size = clusterer.min_cluster_size
+    if max_cluster_size is None:
+        max_cluster_size = clusterer.max_cluster_size
+    if allow_single_cluster is None:
+        allow_single_cluster = clusterer.allow_single_cluster
+    if cluster_selection_method is None:
+        cluster_selection_method = clusterer.cluster_selection_method
+    cluster_selection_epsilon = float(cluster_selection_epsilon)
+    cluster_selection_persistence = float(cluster_selection_persistence)
     if not (
-        np.issubdtype(type(branch_selection_persistence), np.floating)
-        and branch_selection_persistence >= 0.0
+        np.issubdtype(type(min_cluster_size), np.integer) and min_cluster_size >= 2
     ):
         raise ValueError(
-            f"branch_selection_persistence must be a float greater or equal to "
-            f"0.0, {branch_selection_persistence} given."
+            f"min_cluster_size must be an integer greater or equal "
+            f"to 2,  {min_cluster_size} given."
         )
     if not (
-        np.issubdtype(type(branch_selection_epsilon), np.floating)
-        and branch_selection_epsilon >= 0.0
+        np.issubdtype(type(cluster_selection_persistence), np.floating)
+        and cluster_selection_persistence >= 0.0
     ):
         raise ValueError(
-            f"branch_selection_epsilon must be a float greater or equal to "
-            f"0.0, {branch_selection_epsilon} given."
+            f"cluster_selection_persistence must be a float greater or equal to "
+            f"0.0, {cluster_selection_persistence} given."
         )
-    if branch_selection_method not in ("eom", "leaf"):
+    if not (
+        np.issubdtype(type(cluster_selection_epsilon), np.floating)
+        and cluster_selection_epsilon >= 0.0
+    ):
         raise ValueError(
-            f"Invalid branch_selection_method: {branch_selection_method}\n"
+            f"cluster_selection_epsilon must be a float greater or equal to "
+            f"0.0, {cluster_selection_epsilon} given."
+        )
+    if cluster_selection_method not in ("eom", "leaf"):
+        raise ValueError(
+            f"Invalid cluster_selection_method: {cluster_selection_method}\n"
             f'Should be one of: "eom", "leaf"\n'
         )
     if branch_detection_method not in ("core", "full"):
@@ -289,7 +297,7 @@ def detect_branches_in_clusters(
         num_clusters,
         thread_pool,
         run_core=run_core,
-        overridden_labels=overridden_labels
+        overridden_labels=overridden_labels,
     )
     (
         branch_labels,
@@ -300,12 +308,12 @@ def detect_branches_in_clusters(
     ) = memory.cache(compute_branch_segmentation, ignore=["thread_pool"])(
         linkage_trees,
         thread_pool,
-        min_branch_size=min_branch_size,
-        allow_single_branch=allow_single_branch,
-        branch_selection_method=branch_selection_method,
-        branch_selection_epsilon=branch_selection_epsilon,
-        branch_selection_persistence=branch_selection_persistence,
-        max_branch_size=max_branch_size,
+        min_cluster_size=min_cluster_size,
+        allow_single_cluster=allow_single_cluster,
+        cluster_selection_method=cluster_selection_method,
+        cluster_selection_epsilon=cluster_selection_epsilon,
+        cluster_selection_persistence=cluster_selection_persistence,
+        max_cluster_size=max_cluster_size,
     )
     (
         labels,
@@ -583,27 +591,10 @@ def extract_full_cluster_graph(
     return edges
 
 
-def compute_branch_segmentation(
-    cluster_linkage_trees,
-    thread_pool,
-    min_branch_size=5,
-    max_branch_size=0,
-    allow_single_branch=False,
-    branch_selection_method="eom",
-    branch_selection_epsilon=0.0,
-    branch_selection_persistence=0.0,
-):
+def compute_branch_segmentation(cluster_linkage_trees, thread_pool, **kwargs):
     """Extracts branches from the linkage hierarchies."""
     results = thread_pool(
-        delayed(_segment_branch_linkage_hierarchy)(
-            cluster_linkage_tree,
-            min_branch_size=min_branch_size,
-            max_branch_size=max_branch_size,
-            allow_single_branch=allow_single_branch,
-            branch_selection_method=branch_selection_method,
-            branch_selection_epsilon=branch_selection_epsilon,
-            branch_selection_persistence=branch_selection_persistence,
-        )
+        delayed(segment_branch_linkage_hierarchy)(cluster_linkage_tree, **kwargs)
         for cluster_linkage_tree in cluster_linkage_trees
     )
     if len(results):
@@ -611,14 +602,11 @@ def compute_branch_segmentation(
     return (), (), (), (), ()
 
 
-def _segment_branch_linkage_hierarchy(
+def segment_branch_linkage_hierarchy(
     single_linkage_tree,
-    min_branch_size=5,
-    max_branch_size=0,
-    allow_single_branch=False,
-    branch_selection_method="eom",
-    branch_selection_epsilon=0.0,
-    branch_selection_persistence=0.0,
+    allow_single_cluster=False,
+    cluster_selection_epsilon=0.0,
+    **kwargs,
 ):
     """Select branches within one cluster."""
     # Return component labels if the graph is disconnected
@@ -630,18 +618,15 @@ def _segment_branch_linkage_hierarchy(
             None,
             None,
         )
-    
+
     # Run normal branch detection
     (labels, probabilities, stabilities, condensed_tree, linkage_tree) = (
         _tree_to_labels(
             None,
             single_linkage_tree,
-            min_cluster_size=min_branch_size,
-            max_cluster_size=max_branch_size,
-            allow_single_cluster=allow_single_branch,
-            cluster_selection_method=branch_selection_method,
-            cluster_selection_epsilon=branch_selection_epsilon,
-            cluster_selection_persistence=branch_selection_persistence,
+            allow_single_cluster=allow_single_cluster,
+            cluster_selection_epsilon=cluster_selection_epsilon,
+            **kwargs,
         )
     )
     labels, probabilities = update_single_cluster_labels(
@@ -649,8 +634,8 @@ def _segment_branch_linkage_hierarchy(
         labels,
         probabilities,
         stabilities,
-        allow_single_cluster=allow_single_branch,
-        cluster_selection_epsilon=branch_selection_epsilon,
+        allow_single_cluster=allow_single_cluster,
+        cluster_selection_epsilon=cluster_selection_epsilon,
     )
     return (labels, probabilities, stabilities, condensed_tree, linkage_tree)
 
@@ -688,13 +673,13 @@ def update_labelling(
             labels[_points] = running_id
             running_id += 1
         else:
-            _labels[_labels == -1] = len(_pers)
-            labels[_points] = _labels + running_id
+            has_noise = int(-1 in _labels)
+            labels[_points] = _labels + running_id + has_noise
             branch_labels[_points] = _labels
             branch_probabilities[_points] = _probs
             probabilities[_points] += _probs
             probabilities[_points] /= 2
-            running_id += num_branches + 1
+            running_id += num_branches + has_noise
 
     # Reorder other parts
     return (
@@ -766,14 +751,6 @@ class BranchDetector(BaseEstimator, ClusterMixin):
 
     Parameters
     ----------
-    min_branch_size : int, optional (default=None)
-        The minimum number of samples in a group for that group to be
-        considered a branch; groupings smaller than this size will seen as
-        points falling out of a branch. Defaults to the clusterer's min_cluster_size.
-
-    allow_single_branch : bool, optional (default=False)
-        Analogous to ``allow_single_cluster``.
-
     branch_detection_method : str, optional (default=``full``)
         Determines which graph is constructed to detect branches with. Valid
         values are, ordered by increasing computation cost and decreasing
@@ -788,34 +765,42 @@ class BranchDetector(BaseEstimator, ClusterMixin):
           0-dimensional simplicial complex of each cluster at the first point in
           the filtration where they contain all their points.
 
-    branch_selection_method : str, optional (default='eom')
-        The method used to select branches from the cluster's condensed tree.
-        The standard approach for FLASC is to use the ``eom`` approach.
-        Options are:
-          * ``eom``
-          * ``leaf``
-
-    branch_selection_epsilon: float, optional (default=0.0)
-        A lower epsilon threshold. Only branches with a death above this value
-        will be considered.
-
-    branch_selection_persistence: float, optional (default=0.0)
-        An eccentricity persistence threshold. Branches with a persistence below
-        this value will be merged.
-
-    max_branch_size : int, optional (default=0)
-        A limit to the size of clusters returned by the ``eom`` algorithm. Has
-        no effect when using ``leaf`` clustering (where clusters are usually
-        small regardless). Note that this should not be used if we want to
-        predict the cluster labels for new points in future because
-        `approximate_predict` is not aware of this argument.
-
     label_sides_as_branches : bool, optional (default=False),
         When this flag is False, branches are only labelled for clusters with at
         least three branches (i.e., at least y-shapes). Clusters with only two
         branches represent l-shapes. The two branches describe the cluster's
         outsides growing towards each other. Enabling this flag separates these
         branches from each other in the produced labelling.
+
+    min_cluster_size : int, optional (default=None)
+        The minimum number of samples in a group for that group to be
+        considered a branch; groupings smaller than this size will seen as
+        points falling out of a branch. Defaults to the clusterer's min_cluster_size.
+
+    allow_single_cluster : bool, optional (default=None)
+        Analogous to ``allow_single_cluster``.
+
+    cluster_selection_method : str, optional (default=None)
+        The method used to select branches from the cluster's condensed tree.
+        The standard approach for FLASC is to use the ``eom`` approach.
+        Options are:
+          * ``eom``
+          * ``leaf``
+
+    cluster_selection_epsilon: float, optional (default=0.0)
+        A lower epsilon threshold. Only branches with a death above this value
+        will be considered.
+
+    cluster_selection_persistence: float, optional (default=0.0)
+        An eccentricity persistence threshold. Branches with a persistence below
+        this value will be merged.
+
+    max_cluster_size : int, optional (default=None)
+        A limit to the size of clusters returned by the ``eom`` algorithm. Has
+        no effect when using ``leaf`` clustering (where clusters are usually
+        small regardless). Note that this should not be used if we want to
+        predict the cluster labels for new points in future because
+        `approximate_predict` is not aware of this argument.
 
     Attributes
     ----------
@@ -890,23 +875,23 @@ class BranchDetector(BaseEstimator, ClusterMixin):
 
     def __init__(
         self,
-        min_branch_size=None,
-        allow_single_branch=False,
         branch_detection_method="full",
-        branch_selection_method="eom",
-        branch_selection_epsilon=0.0,
-        branch_selection_persistence=0.0,
-        max_branch_size=0,
         label_sides_as_branches=False,
+        min_cluster_size=None,
+        max_cluster_size=None,
+        allow_single_cluster=None,
+        cluster_selection_method=None,
+        cluster_selection_epsilon=0.0,
+        cluster_selection_persistence=0.0,
     ):
-        self.min_branch_size = min_branch_size
-        self.max_branch_size = max_branch_size
-        self.allow_single_branch = allow_single_branch
         self.branch_detection_method = branch_detection_method
-        self.branch_selection_method = branch_selection_method
-        self.branch_selection_epsilon = branch_selection_epsilon
-        self.branch_selection_persistence = branch_selection_persistence
         self.label_sides_as_branches = label_sides_as_branches
+        self.min_cluster_size = min_cluster_size
+        self.max_cluster_size = max_cluster_size
+        self.allow_single_cluster = allow_single_cluster
+        self.cluster_selection_method = cluster_selection_method
+        self.cluster_selection_epsilon = cluster_selection_epsilon
+        self.cluster_selection_persistence = cluster_selection_persistence
 
         self._approximation_graphs = None
         self._condensed_trees = None
@@ -1075,8 +1060,8 @@ class BranchDetector(BaseEstimator, ClusterMixin):
             self.cluster_probabilities_,
             self.branch_labels_,
             self.branch_probabilities_,
-            lens_name='centrality',
-            sub_cluster_name='branch',
+            lens_name="centrality",
+            sub_cluster_name="branch",
             raw_data=self._clusterer._raw_data,
         )
 
@@ -1087,14 +1072,19 @@ class BranchDetector(BaseEstimator, ClusterMixin):
             raise AttributeError(
                 "No condensed trees were generated; try running fit first."
             )
+
+        method = (
+            self._clusterer.cluster_selection_method
+            if self.cluster_selection_method is None
+            else self.cluster_selection_method
+        )
+        single = (
+            self._clusterer.allow_single_cluster
+            if self.allow_single_cluster is None
+            else self.allow_single_cluster
+        )
         return [
-            (
-                CondensedTree(
-                    tree, self.branch_selection_method, self.allow_single_branch
-                )
-                if tree is not None
-                else None
-            )
+            (CondensedTree(tree, method, single) if tree is not None else None)
             for tree in self._condensed_trees
         ]
 

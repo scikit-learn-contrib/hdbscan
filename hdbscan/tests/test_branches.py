@@ -213,29 +213,29 @@ def check_detected_groups(c, n_clusters=3, n_branches=6, overridden=False):
 def test_branch_detector():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector(
-        branch_detection_method="core", branch_selection_method="eom"
+        branch_detection_method="core", cluster_selection_method="eom"
     ).fit(c)
     check_detected_groups(b, n_branches=7)
 
     b = BranchDetector(
-        branch_detection_method="full", branch_selection_method="eom"
+        branch_detection_method="full", cluster_selection_method="eom"
     ).fit(c)
     check_detected_groups(b)
 
     b = BranchDetector(
-        branch_detection_method="core", branch_selection_method="leaf"
+        branch_detection_method="core", cluster_selection_method="leaf"
     ).fit(c)
     check_detected_groups(b, n_branches=9)
 
     b = BranchDetector(
-        branch_detection_method="full", branch_selection_method="leaf"
+        branch_detection_method="full", cluster_selection_method="leaf"
     ).fit(c)
     check_detected_groups(b)
 
 
-def test_min_branch_size():
+def test_min_cluster_size():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
-    b = BranchDetector(min_branch_size=7).fit(c)
+    b = BranchDetector(min_cluster_size=7).fit(c)
     labels, counts = np.unique(b.labels_, return_counts=True)
     assert (counts[labels >= 0] >= 7).all()
     check_detected_groups(b)
@@ -247,10 +247,10 @@ def test_label_sides_as_branches():
     check_detected_groups(b, n_branches=8)
 
 
-def test_max_branch_size():
+def test_max_cluster_size():
     """Suppresses one branch."""
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
-    b = BranchDetector(label_sides_as_branches=True, max_branch_size=50).fit(c)
+    b = BranchDetector(label_sides_as_branches=True, max_cluster_size=50).fit(c)
     check_detected_groups(b, n_branches=7)
 
 
@@ -263,7 +263,7 @@ def test_override_cluster_labels():
     check_detected_groups(b, n_clusters=1, n_branches=2, overridden=True)
 
 
-def test_allow_single_branch_with_filters():
+def test_allow_single_cluster_with_filters():
     # Generate single-cluster data
     np.random.seed(0)
     no_structure = np.random.rand(150, 2)
@@ -276,9 +276,9 @@ def test_allow_single_branch_with_filters():
 
     # Without persistence, find 6 branches
     b = BranchDetector(
-        min_branch_size=5,
+        min_cluster_size=5,
         branch_detection_method="core",
-        branch_selection_method="leaf",
+        cluster_selection_method="leaf",
     ).fit(c)
     unique_labels = np.unique(b.labels_)
     assert len(unique_labels) == 6
@@ -288,10 +288,10 @@ def test_allow_single_branch_with_filters():
 
     # Adding persistence removes some branches
     b = BranchDetector(
-        min_branch_size=5,
+        min_cluster_size=5,
         branch_detection_method="core",
-        branch_selection_method="leaf",
-        branch_selection_persistence=0.1,
+        cluster_selection_method="leaf",
+        cluster_selection_persistence=0.1,
     ).fit(c)
     unique_labels = np.unique(b.labels_)
     assert len(unique_labels) == 1
@@ -299,10 +299,10 @@ def test_allow_single_branch_with_filters():
 
     # Adding epsilon removes some branches
     b = BranchDetector(
-        min_branch_size=5,
+        min_cluster_size=5,
         branch_detection_method="core",
-        branch_selection_epsilon=1 / 0.39,
-        allow_single_branch=True,
+        cluster_selection_epsilon=1 / 0.39,
+        allow_single_cluster=True,
     ).fit(c)
     unique_labels = np.unique(b.labels_)
     assert len(unique_labels) == 1
@@ -329,23 +329,23 @@ def test_badargs():
     with pytest.raises(ValueError):
         detect_branches_in_clusters(c_nomst)
     with pytest.raises(ValueError):
-        detect_branches_in_clusters(c, min_branch_size=-1)
+        detect_branches_in_clusters(c, min_cluster_size=-1)
     with pytest.raises(ValueError):
-        detect_branches_in_clusters(c, min_branch_size=0)
+        detect_branches_in_clusters(c, min_cluster_size=0)
     with pytest.raises(ValueError):
-        detect_branches_in_clusters(c, min_branch_size=1)
+        detect_branches_in_clusters(c, min_cluster_size=1)
     with pytest.raises(ValueError):
-        detect_branches_in_clusters(c, min_branch_size=2.0)
+        detect_branches_in_clusters(c, min_cluster_size=2.0)
     with pytest.raises(ValueError):
-        detect_branches_in_clusters(c, min_branch_size="fail")
+        detect_branches_in_clusters(c, min_cluster_size="fail")
     with pytest.raises(ValueError):
-        detect_branches_in_clusters(c, branch_selection_persistence=-0.1)
+        detect_branches_in_clusters(c, cluster_selection_persistence=-0.1)
     with pytest.raises(ValueError):
-        detect_branches_in_clusters(c, branch_selection_epsilon=-0.1)
+        detect_branches_in_clusters(c, cluster_selection_epsilon=-0.1)
     with pytest.raises(ValueError):
         detect_branches_in_clusters(
             c,
-            branch_selection_method="something_else",
+            cluster_selection_method="something_else",
         )
     with pytest.raises(ValueError):
         detect_branches_in_clusters(
@@ -361,7 +361,7 @@ def test_caching():
     cachedir = mkdtemp()
     c = HDBSCAN(memory=cachedir, min_samples=5, branch_detection_data=True).fit(X)
     b1 = BranchDetector().fit(c)
-    b2 = BranchDetector(allow_single_branch=True).fit(c)
+    b2 = BranchDetector(allow_single_cluster=True).fit(c)
     n_groups1 = len(set(b1.labels_)) - int(-1 in b1.labels_)
     n_groups2 = len(set(b2.labels_)) - int(-1 in b2.labels_)
     assert n_groups1 == n_groups2

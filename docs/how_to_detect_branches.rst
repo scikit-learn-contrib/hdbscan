@@ -139,7 +139,7 @@ branches:
 .. code:: ipython3
 
     clusterer = HDBSCAN(min_cluster_size=15, branch_detection_data=True).fit(data)
-    branch_detector = BranchDetector(min_branch_size=15).fit(clusterer)
+    branch_detector = BranchDetector(min_cluster_size=15).fit(clusterer)
     plot(branch_detector.labels_)
 
 
@@ -151,38 +151,31 @@ Parameter selection
 -------------------
 
 The ``BranchDetector``\ ’s main parameters are very similar to
-HDBSCAN\*. Most guidelines for tuning HDBSCAN\* also apply for the
-branch detector:
+HDBSCAN\*. Most guidelines for tuning HDBSCAN\* also apply to the branch
+detector:
 
--  ``min_branch_size`` behaves like HDBSCAN\*’s ``min_cluster_size``. It
-   configures how many points branches need to contain. Values around 10
-   to 25 points tend to work well. Lower values are useful when looking
-   for smaller structures. Higher values can be used to suppress noise
-   if present.
--  ``max_branch_size`` behaves like HDBSCAN\*’s ``max_cluster_size`` and
-   mostly affects the EOM selection strategy. Branches with more than
-   the specified number of points are skipped, selecting their
-   descendants in the hierarchy instead.
--  ``branch_selection_method`` behaves like HDBSCAN\*’s
-   ``cluster_selection_method``. The leaf and Excess of Mass (EOM)
+-  ``min_cluster_size`` configures how many points branches need to
+   contain. Values around 10 to 25 points tend to work well. Lower
+   values are useful when looking for smaller structures. Higher values
+   can be used to suppress noise if present.
+-  ``max_cluster_size``. Branches with more than the specified number of
+   points are skipped, selecting their descendants in the hierarchy
+   instead.
+-  ``cluster_selection_method``. The leaf and Excess of Mass (EOM)
    strategies are used to select branches from the condensed
    hierarchies. By default, branches are only reflected in the final
    labelling for clusters that have 3 or more branches (at least one
    bifurcation).
--  ``branch_selection_epsilon`` replaces HDBSCAN\*’s
-   ``cluster_selection_epsilon``. This parameter can be used to suppress
-   branches that merge at low eccentricity values (y-value in the
-   condensed hierarchy plot).
--  ``branch_selection_persistence`` replaces HDBSCAN\*’s
-   ``cluster_selection_persistence``. This parameter can be used to
-   suppress branches with a short eccentricity range (y-range in the
-   condensed hierarchy plot).
--  ``allow_single_branch`` behaves like HDBSCAN\*’s
-   ``allow_single_cluster`` and mostly affects the EOM selection
-   strategy. When enabled, clusters with bifurcations will be given a
-   single label if the root segment contains most eccentricity mass
-   (i.e., branches already merge far from the center and most points are
-   central).
+-  ``cluster_selection_epsilon`` can be used to suppress branches that
+   merge at low eccentricity values (y-value in the condensed hierarchy
+   plot).
+-  ``cluster_selection_persistence`` can be used to suppress branches
+   with a short eccentricity range (y-range in the condensed hierarchy
+   plot).
+-  ``allow_single_cluster``. When enabled, clusters with bifurcations
+   will be given a single label if the root segment contains most
+   eccentricity mass (i.e., branches already merge far from the center
+   and most points are central).
 
 Two parameters are unique to the ``BranchDetector`` class:
 
@@ -276,7 +269,7 @@ Cluster approximation graphs
 
 Branches are detected using a graph that approximates the connectivity
 within a cluster. These graphs are available in the
-``cluster_approximation_graph_`` property and can be used to visualise
+``cluster_approximation_graph_`` property and can be used to visualize
 data and the branch-detection process. The plotting function is based on
 the networkx API and uses networkx functionality to compute a layout if
 positions are not provided. Using UMAP to compute positions can be
