@@ -323,6 +323,7 @@ def detect_branches_in_clusters(
         centralities,
     ) = memory.cache(update_labelling)(
         cluster_probabilities,
+        linkage_trees,
         points,
         centralities,
         branch_labels,
@@ -642,6 +643,7 @@ def segment_branch_linkage_hierarchy(
 
 def update_labelling(
     cluster_probabilities,
+    tree_list,
     points_list,
     centrality_list,
     branch_label_list,
@@ -660,7 +662,8 @@ def update_labelling(
 
     # Compute the labels and probabilities
     running_id = 0
-    for _points, _labels, _probs, _centrs, _pers in zip(
+    for tree, _points, _labels, _probs, _centrs, _pers in zip(
+        tree_list,
         points_list,
         branch_label_list,
         branch_prob_list,
@@ -669,7 +672,7 @@ def update_labelling(
     ):
         num_branches = len(_pers)
         branch_centralities[_points] = _centrs
-        if num_branches <= (1 if label_sides_as_branches else 2):
+        if num_branches <= (1 if label_sides_as_branches else 2) and tree is not None:
             labels[_points] = running_id
             running_id += 1
         else:
@@ -1158,7 +1161,7 @@ def approximate_predict_branch(branch_detector, points_to_predict):
     Parameters
     ----------
     branch_detector : BranchDetector
-        A clustering object that has been fit to vector inpt data.
+        A clustering object that has been fit to vector input data.
 
     points_to_predict : array, or array-like (n_samples, n_features)
         The new data points to predict cluster labels for. They should
