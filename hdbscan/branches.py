@@ -1077,8 +1077,11 @@ class BranchDetector(BaseEstimator, ClusterMixin):
             )
 
         return [
-            CondensedTree(tree, self.branch_labels_) if tree is not None else None
-            for tree in self._cluster_condensed_trees
+            CondensedTree(tree, self.branch_labels_[points])
+            for tree, points in zip(
+                self._condensed_trees, 
+                self.cluster_points_,
+            )
         ]
 
     @property

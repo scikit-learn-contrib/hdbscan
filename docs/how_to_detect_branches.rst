@@ -225,7 +225,7 @@ cluster.
 
     idx = np.argmax([len(x) for x in branch_detector.branch_persistences_])
     branch_detector.condensed_trees_[idx].plot(
-        select_clusters=True, selection_palette=["C3", "C4", "C5"]
+        select_clusters=True, selection_palette=["C4", "C5", "C6"]
     )
     plt.ylabel("Eccentricity")
     plt.title(f"Branches in cluster {idx}")
