@@ -322,7 +322,8 @@ cdef class KDTreeBoruvkaAlgorithm (object):
     cdef np.double_t *bounds_ptr
 
     cdef np.ndarray components
-    cdef np.ndarray core_distance_arr
+    cdef public np.ndarray neighbor_arr
+    cdef public np.ndarray core_distance_arr
     cdef np.ndarray bounds_arr
     cdef np.ndarray _centroid_distances_arr
     cdef np.ndarray component_of_point_arr
@@ -437,6 +438,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
                 dualtree=True,
                 breadth_first=True)
 
+        self.neighbor_arr = knn_indices[:, 1:]
         self.core_distance_arr = knn_dist[:, self.min_samples].copy()
         self.core_distance = (<np.double_t[:self.num_points:1]> (
             <np.double_t *> self.core_distance_arr.data))
@@ -931,7 +933,8 @@ cdef class BallTreeBoruvkaAlgorithm (object):
     cdef np.double_t *bounds_ptr
 
     cdef np.ndarray components
-    cdef np.ndarray core_distance_arr
+    cdef public np.ndarray core_distance_arr
+    cdef public np.ndarray neighbor_arr
     cdef np.ndarray bounds_arr
     cdef np.ndarray _centroid_distances_arr
     cdef np.ndarray component_of_point_arr
@@ -1041,6 +1044,7 @@ cdef class BallTreeBoruvkaAlgorithm (object):
                 dualtree=True,
                 breadth_first=True)
 
+        self.neighbor_arr = knn_indices[:, 1:]
         self.core_distance_arr = knn_dist[:, self.min_samples].copy()
         self.core_distance = (<np.double_t[:self.num_points:1]> (
             <np.double_t *> self.core_distance_arr.data))

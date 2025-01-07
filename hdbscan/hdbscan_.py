@@ -28,6 +28,7 @@ from ._hdbscan_tree import (
     compute_stability,
     get_clusters,
     outlier_scores,
+    simplify_hierarchy,
 )
 from ._hdbscan_reachability import mutual_reachability, sparse_mutual_reachability
 
@@ -36,7 +37,7 @@ from .dist_metrics import DistanceMetric
 
 from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 from .prediction import PredictionData
-from .branches import BranchDetectionData
+from .branch_data import BranchDetectionData
 
 KDTREE_VALID_METRICS = ["euclidean", "l2", "minkowski", "p", "manhattan", "cityblock", "l1", "chebyshev", "infinity"]
 BALLTREE_VALID_METRICS = KDTREE_VALID_METRICS + [
@@ -71,6 +72,7 @@ def _tree_to_labels(
     allow_single_cluster=False,
     match_reference_implementation=False,
     cluster_selection_epsilon=0.0,
+    cluster_selection_persistence=0.0,
     max_cluster_size=0,
     cluster_selection_epsilon_max=float('inf'),
 ):
@@ -78,6 +80,8 @@ def _tree_to_labels(
     set of labels and probabilities.
     """
     condensed_tree = condense_tree(single_linkage_tree, min_cluster_size)
+    if cluster_selection_persistence > 0.0:
+        condensed_tree = simplify_hierarchy(condensed_tree, cluster_selection_persistence)
     stability_dict = compute_stability(condensed_tree)
     labels, probabilities, stabilities = get_clusters(
         condensed_tree,
@@ -519,6 +523,7 @@ def hdbscan(
     min_samples=None,
     alpha=1.0,
     cluster_selection_epsilon=0.0,
+    cluster_selection_persistence=0.0,
     max_cluster_size=0,
     metric="minkowski",
     p=2,
@@ -560,6 +565,13 @@ def hdbscan(
         (e.g. using approximate_predict), as the approximate_predict function
         is not aware of this argument. This is the minimum epsilon allowed.
 
+    cluster_selection_persistence: float, optional (default=0.0)
+        A persistence threshold. Clusters with a persistence lower than this
+        value will be merged. Note that this should not be used if we want to
+        predict the cluster labels for new points in future (e.g. using
+        approximate_predict), as the approximate_predict function is not aware
+        of this argument.
+
     alpha : float, optional (default=1.0)
         A distance scaling parameter as used in robust single linkage.
         See [2]_ for more information.
@@ -586,10 +598,10 @@ def hdbscan(
 
     leaf_size : int, optional (default=40)
         Leaf size for trees responsible for fast nearest
-        neighbour queries.
+        neighbor queries.
 
     algorithm : string, optional (default='best')
-        Exactly which algorithm to use; hdbscan has variants specialised
+        Exactly which algorithm to use; hdbscan has variants specialized
         for different characteristics of the data. By default this is set
         to ``best`` which chooses the "best" algorithm given the nature of
         the data. You can force other options if you believe you know
@@ -670,7 +682,7 @@ def hdbscan(
         A score of how persistent each cluster is. A score of 1.0 represents
         a perfectly stable cluster that persists over all distance scales,
         while a score of 0.0 represents a perfectly ephemeral cluster. These
-        scores can be guage the relative coherence of the clusters output
+        scores can be gauge the relative coherence of the clusters output
         by the algorithm.
 
     condensed_tree : record array
@@ -720,6 +732,9 @@ def hdbscan(
 
     if type(cluster_selection_epsilon) is not float or cluster_selection_epsilon < 0.0:
         raise ValueError("Epsilon must be a float value greater than or equal to 0!")
+
+    if type(cluster_selection_persistence) is not float or cluster_selection_persistence < 0.0:
+        raise ValueError("Persistence must be a float value greater than or equal to 0!")
 
     if not isinstance(alpha, float) or alpha <= 0.0:
         raise ValueError("Alpha must be a positive float value greater than" " 0!")
@@ -906,6 +921,7 @@ def hdbscan(
             allow_single_cluster,
             match_reference_implementation,
             cluster_selection_epsilon,
+            cluster_selection_persistence,
             max_cluster_size,
             cluster_selection_epsilon_max,
         )
@@ -950,9 +966,13 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         See [3]_ for more information.
 
     cluster_selection_epsilon: float, optional (default=0.0)
-                A distance threshold. Clusters below this value will be merged.
-                This is the minimum epsilon allowed.
+        A distance threshold. Clusters below this value will be merged.
+        This is the minimum epsilon allowed.
         See [5]_ for more information.
+
+    cluster_selection_persistence: float, optional (default=0.0)
+        A persistence threshold. Clusters with a persistence lower than this
+        value will be merged.
 
     algorithm : string, optional (default='best')
         Exactly which algorithm to use; hdbscan has variants specialised
@@ -1057,7 +1077,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         A score of how persistent each cluster is. A score of 1.0 represents
         a perfectly stable cluster that persists over all distance scales,
         while a score of 0.0 represents a perfectly ephemeral cluster. These
-        scores can be guage the relative coherence of the clusters output
+        scores can be gauge the relative coherence of the clusters output
         by the algorithm.
 
     condensed_tree_ : CondensedTree object
@@ -1089,7 +1109,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
     branch_detection_data_ : BranchDetectionData object
         Cached data used for detecting branch-hierarchies within clusters.
-        Neccessary only if you are using funcotin from ``hdbscan.branches``.
+        Necessary only if you are using function from ``hdbscan.branches``.
 
     exemplars_ : list
         A list of exemplar points for clusters. Since HDBSCAN supports
@@ -1100,12 +1120,12 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
     relative_validity_ : float
         A fast approximation of the Density Based Cluster Validity (DBCV)
-        score [4]. The only differece, and the speed, comes from the fact
+        score [4]. The only difference, and the speed, comes from the fact
         that this relative_validity_ is computed using the mutual-
         reachability minimum spanning tree, i.e. minimum_spanning_tree_,
         instead of the all-points minimum spanning tree used in the
         reference. This score might not be an objective measure of the
-        goodness of clusterering. It may only be used to compare results
+        goodness of clustering. It may only be used to compare results
         across different choices of hyper-parameters, therefore is only a
         relative score.
 
@@ -1140,6 +1160,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         min_cluster_size=5,
         min_samples=None,
         cluster_selection_epsilon=0.0,
+        cluster_selection_persistence=0.0,
         max_cluster_size=0,
         metric="euclidean",
         alpha=1.0,
@@ -1163,6 +1184,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self.alpha = alpha
         self.max_cluster_size = max_cluster_size
         self.cluster_selection_epsilon = cluster_selection_epsilon
+        self.cluster_selection_persistence = cluster_selection_persistence
         self.metric = metric
         self.p = p
         self.algorithm = algorithm
@@ -1215,12 +1237,12 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             if ~self._all_finite:
                 # Pass only the purely finite indices into hdbscan
                 # We will later assign all non-finite points to the background -1 cluster
-                self._finite_index = get_finite_row_indices(X)
-                clean_data = X[self._finite_index]
+                finite_index = get_finite_row_indices(X)
+                clean_data = X[finite_index]
                 internal_to_raw = {
-                    x: y for x, y in zip(range(len(self._finite_index)), self._finite_index)
+                    x: y for x, y in zip(range(len(finite_index)), finite_index)
                 }
-                outliers = list(set(range(X.shape[0])) - set(self._finite_index))
+                outliers = list(set(range(X.shape[0])) - set(finite_index))
             else:
                 clean_data = X
         elif issparse(X):
@@ -1259,11 +1281,11 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                 self._single_linkage_tree, internal_to_raw, outliers
             )
             new_labels = np.full(X.shape[0], -1)
-            new_labels[self._finite_index] = self.labels_
+            new_labels[finite_index] = self.labels_
             self.labels_ = new_labels
 
             new_probabilities = np.zeros(X.shape[0])
-            new_probabilities[self._finite_index] = self.probabilities_
+            new_probabilities[finite_index] = self.probabilities_
             self.probabilities_ = new_probabilities
 
         if self.prediction_data:
@@ -1341,9 +1363,8 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
             self._branch_detection_data = BranchDetectionData(
                 self._raw_data,
-                self._all_finite,
-                None if self._all_finite else self._finite_index,
                 self.labels_,
+                self._condensed_tree,
                 min_samples,
                 tree_type=tree_type,
                 metric=self.metric,
@@ -1634,7 +1655,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
 
         # DSPC_wrt[Ci] might be infinite if the connected component for Ci is
         # an "island" in the MR-MST. Whereas for other clusters Cj and Ck, the
-        # MR-MST might contain an edge with one point in Cj and ther other one
+        # MR-MST might contain an edge with one point in Cj and the other one
         # in Ck. Here, we replace the infinite density separation of Ci by
         # another large enough value.
         #

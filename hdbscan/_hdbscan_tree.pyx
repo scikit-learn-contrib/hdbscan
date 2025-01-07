@@ -301,63 +301,11 @@ cdef max_lambdas(np.ndarray tree):
     return deaths_arr
 
 
-cdef max_eccentricities(np.ndarray tree, np.intp_t num_points):
-    """Maximum eccentricity for each segment in the branch hierarchy.
-    
-    Differs from max_lambda by using the max value in the sub-tree rather 
-    than per segment.
-    """
-    cdef np.ndarray sorted_parent_data
-    cdef np.ndarray[np.intp_t, ndim=1] sorted_parents
-    cdef np.ndarray[np.intp_t, ndim=1] sorted_children
-    cdef np.ndarray[np.double_t, ndim=1] sorted_lambdas
-    cdef np.intp_t[:] sorted_parents_view
-    cdef np.intp_t[:] sorted_child_view
-    cdef np.double_t[:] sorted_ecc_view
-
-    cdef np.intp_t parent, child
-    cdef np.intp_t current_parent
-    cdef np.float64_t eccentricity
-    cdef np.float64_t max_lambda
-
-    cdef np.ndarray[np.double_t, ndim=1] births_arr
-    cdef np.double_t[::1] births
-
-    cdef np.intp_t largest_parent = tree['parent'].max()
-
-    sorted_parent_data = np.sort(tree[['parent', 'lambda_val', 'child']], axis=0)
-    sorted_parents = sorted_parent_data['parent']
-    sorted_children = sorted_parent_data['child']
-    sorted_lambdas = sorted_parent_data['lambda_val']
-    sorted_parents_view = sorted_parents[::-1]
-    sorted_child_view = sorted_children[::-1]
-    sorted_ecc_view = sorted_lambdas[::-1]
-
-    births_arr = np.zeros(largest_parent + 1, dtype=np.double)
-    births = births_arr
-        
-    current_parent = -1
-    max_eccentricity = 0
-
-    for parent, child, eccentricity in zip(sorted_parents_view, sorted_child_view, sorted_ecc_view):
-        # Use maximum density (= eccentricity) within branch rather than
-        # the maximum density (= eccentricity) of this segment in the condensed tree.
-        # Need child to be process first -> iterate from high to low parent!
-        if child >= num_points:
-            eccentricity = births[child]
-        if parent == current_parent:
-            max_eccentricity = max(max_eccentricity, eccentricity)
-        elif current_parent != -1:
-            births[current_parent] = max_eccentricity
-            current_parent = parent
-            max_eccentricity = eccentricity
-        else:
-            # Initialize
-            current_parent = parent
-            max_eccentricity = eccentricity
-    
-    births[current_parent] = max_eccentricity # value for last parent
-    return births_arr
+cdef dict min_lambdas(np.ndarray cluster_tree, set clusters):
+    return {
+        c: cluster_tree['lambda_val'][np.searchsorted(cluster_tree['child'], c)]
+        for c in clusters
+    }
 
 
 cdef class TreeUnionFind (object):
@@ -718,74 +666,76 @@ cpdef set epsilon_search(set leaves, np.ndarray cluster_tree, np.double_t cluste
     return set(selected_clusters)
 
 
-cpdef np.ndarray simplify_branch_hierarchy(np.ndarray condensed_tree, 
-                                           np.double_t persistence_threshold): 
-    """Iteratively remove branches with persistence below threshold.
-    
-    Takes the place of epsilon_search which cannot deal with non-zero births.
-    """
-    cdef bint flag
-    cdef np.intp_t leaf, sibling, parent, leaf_idx, sibling_idx
-    cdef np.double_t persistence
-    cdef np.ndarray cluster_tree, child_ids
-    cdef list leaves, persistences
-    cdef set processed
+cpdef np.ndarray simplify_hierarchy(np.ndarray condensed_tree, 
+                                    np.double_t persistence_threshold): 
+    """Iteratively remove branches with persistence below threshold."""
+    cdef np.double_t merge_lambda
+    cdef np.intp_t point, leaf, sibling, parent, leaf_idx, sibling_idx
+    cdef set[np.intp] processed, leaves
+    cdef dict[np.double_] deaths
     cdef np.intp_t num_points = condensed_tree['parent'].min()
+    cdef np.ndarray[np.double_t, ndim=1] births
 
-    cdef np.ndarray[np.double_t, ndim=1] births_arr = max_eccentricities(condensed_tree, num_points)
-    cdef np.double_t[::1] births = births_arr
-
-    while True:
-        processed = set()
-        cluster_tree = condensed_tree[condensed_tree['child_size'] > 1]
-        leaves = get_cluster_tree_leaves(cluster_tree)
-        persistences = [
-            births[leaf] - cluster_tree['lambda_val'][cluster_tree['child'] == leaf][0]
-            for leaf in leaves
-        ]
-        flag = True
-        for leaf, persistence in zip(leaves, persistences):
-            if leaf in processed:
+    cdef np.ndarray cluster_tree = condensed_tree[condensed_tree['child_size'] > 1]
+    cdef np.ndarray cluster_mask, keep_mask, update_mask
+    keep_mask = np.ones(condensed_tree.shape[0], dtype=np.bool_)
+    processed = set()
+    while cluster_tree.shape[0] > 0:
+        leaves = set(get_cluster_tree_leaves(cluster_tree))
+        births = max_lambdas(condensed_tree)
+        deaths = min_lambdas(cluster_tree, leaves)
+        
+        cluster_mask = np.ones(cluster_tree.shape[0], dtype=np.bool_)
+        for leaf in sorted(leaves, reverse=True):
+            if leaf in processed or (births[leaf] - deaths[leaf]) >= persistence_threshold:
                 continue
-            if persistence < persistence_threshold:
-                flag = False
-                # Find parent and sibling
-                leaf_idx = np.argmax(condensed_tree['child'] == leaf)
-                parent = condensed_tree['parent'][leaf_idx]
-                child_ids = np.where((condensed_tree['parent'] == parent) & (condensed_tree['child_size'] > 1))[0]
-                sibling_idx = child_ids[1] if child_ids[0] == leaf_idx else child_ids[0]
-                sibling = condensed_tree['child'][sibling_idx]
+            # Find rows for leaf and sibling
+            leaf_idx = np.searchsorted(cluster_tree['child'], leaf)
+            parent = cluster_tree['parent'][leaf_idx]
+            if leaf_idx > 0 and cluster_tree['parent'][leaf_idx - 1] == parent:
+                sibling_idx = leaf_idx - 1 
+            else:
+                sibling_idx = leaf_idx + 1
+            sibling = cluster_tree['child'][sibling_idx]
 
-                # Reset leaf and sibling rows
-                condensed_tree['child'][leaf_idx] = -999
-                condensed_tree['child'][sibling_idx] = -999
-                condensed_tree['parent'][leaf_idx] = -999
-                condensed_tree['parent'][sibling_idx] = -999
-                
-                # Update parent-values to reflect the merge
-                condensed_tree['parent'][(condensed_tree['parent'] == leaf)] = parent
-                condensed_tree['parent'][(condensed_tree['parent'] == sibling)] = parent
-                
-                processed.add(leaf)
-                processed.add(sibling)
+            # Update parent values to the new parent
+            cluster_tree['parent'][cluster_tree['parent'] == leaf] = parent
+            cluster_tree['parent'][cluster_tree['parent'] == sibling] = parent
+            update_mask = condensed_tree['parent'] == leaf
+            condensed_tree['parent'][update_mask] = parent
+            condensed_tree['lambda_val'][update_mask] = deaths[leaf]
+            update_mask = condensed_tree['parent'] == sibling
+            condensed_tree['parent'][update_mask] = parent
+            condensed_tree['lambda_val'][update_mask] = deaths[leaf]
+
+            # Mark visited rows
+            processed.add(leaf)
+            processed.add(sibling)
+            cluster_mask[leaf_idx] = False
+            cluster_mask[sibling_idx] = False        
+            for point in [leaf, sibling]:
+                keep_mask[condensed_tree['child'] == point] = False
         
         # Remove marked rows
-        condensed_tree = condensed_tree[condensed_tree['parent'] != -999]
-        if flag:
+        if np.all(cluster_mask):
             break
-
+        cluster_tree = cluster_tree[cluster_mask]
+    condensed_tree = condensed_tree[keep_mask]
     return remap_cluster_ids(condensed_tree, num_points)
 
 
 cdef np.ndarray remap_cluster_ids(np.ndarray condensed_tree, np.intp_t num_points):
-    """Ensures segments are numbered consequetively from 0 to n_clusters-1.""" 
-    max_parent = condensed_tree['parent'].max()
-    id_map = np.empty(max_parent + 1)
-    id_map[:num_points] = np.arange(num_points)
-    remaining_parents = np.unique(condensed_tree['parent'])
-    id_map[remaining_parents] = num_points + np.arange(remaining_parents.shape[0])
-    condensed_tree['parent'] = id_map[condensed_tree['parent']]
-    condensed_tree['child'] = id_map[condensed_tree['child']]
+    """Ensures segments are numbered consecutively from 0 to n_clusters-1.""" 
+    cdef np.intp_t n_nodes = condensed_tree['parent'].max() + 1
+    cdef np.ndarray[np.intp_t, ndim=1] remaining_parents = np.unique(condensed_tree['parent'])
+    cdef np.ndarray[np.intp_t, ndim=1] id_map = np.empty(n_nodes, dtype=np.intp)
+    id_map[remaining_parents - num_points] = np.arange(
+        num_points, num_points + remaining_parents.shape[0]
+    )
+    cdef np.ndarray mask = condensed_tree['parent'] > num_points
+    condensed_tree['parent'][mask] = id_map[condensed_tree['parent'][mask] - num_points]
+    mask = condensed_tree['child'] > num_points
+    condensed_tree['child'][mask] = id_map[condensed_tree['child'][mask] - num_points]
     return condensed_tree
 
 
@@ -948,129 +898,5 @@ cpdef tuple get_clusters(np.ndarray tree, dict stability,
                           match_reference_implementation)
     probs = get_probabilities(tree, reverse_cluster_map, labels, deaths)
     stabilities = get_stability_scores(labels, clusters, stability, max_lambda)
-
-    return (labels, probs, stabilities)
-
-
-cpdef tuple get_branches(np.ndarray tree, 
-                         dict stability,
-                         branch_selection_method='eom',
-                         allow_single_branch=False,
-                         max_branch_size=0):
-    """Extracts branches from a branch condensed tree.
-    
-    Given a tree and stability dict, produce the branch labels
-    (and probabilities) for a flat "clustering" based on the chosen
-    branch selection method.
-
-    Parameters
-    ----------
-    tree : numpy recarray
-        The condensed tree to extract flat clusters from. 
-        Uses lambda_val key to store eccentricity values.
-    stability : dict
-        A dictionary mapping cluster_ids to stability values
-    branch_selection_method : string, optional (default 'eom')
-        The method of selecting clusters. The default is the
-        Excess of Mass algorithm specified by 'eom'. The alternate
-        option is 'leaf'.
-    allow_single_branch : boolean, optional (default False)
-        Whether to allow a single branch to be selected by the
-        Excess of Mass algorithm.
-    max_branch_size: int, optional (default 0)
-        The maximum size for clusters located by the EOM clusterer. Can
-        be overridden by the branch_selection_persistence parameter in
-        rare cases.
-
-    Returns
-    -------
-    labels : ndarray (n_samples,)
-        An integer array of branch labels, with -1 denoting noise.
-    probabilities : ndarray (n_samples,)
-        The cluster membership strength of each sample.
-    stabilities : ndarray (n_clusters,)
-        The cluster coherence strengths of each branch.
-    """
-    cdef list node_list
-    cdef np.ndarray cluster_tree
-    cdef np.ndarray child_selection
-    cdef dict is_cluster
-    cdef dict cluster_sizes
-    cdef float subtree_stability
-    cdef np.intp_t node
-    cdef np.intp_t sub_node
-    cdef np.intp_t cluster
-    cdef np.intp_t num_points
-    cdef np.ndarray labels
-    cdef np.double_t max_eccentricity
-    cdef np.ndarray[np.double_t, ndim=1] births
-
-    # Assume clusters are ordered by numeric id equivalent to
-    # a topological sort of the tree; This is valid given the
-    # current implementation above, so don't change that ... or
-    # if you do, change this accordingly!
-    if allow_single_branch:
-        node_list = sorted(stability.keys(), reverse=True)
-    else:
-        node_list = sorted(stability.keys(), reverse=True)[:-1] # (exclude root)
-    node_list = [int(n) for n in node_list]
-    
-    cluster_tree = tree[tree['child_size'] > 1]
-    is_cluster = {cluster: True for cluster in node_list}
-    num_points = np.min(tree['parent'])
-    max_eccentricity = np.max(tree['lambda_val'])
-    births = max_eccentricities(tree, num_points)
-
-    if max_branch_size <= 0:
-        max_branch_size = num_points + 1  # Set to a value that will never be triggered
-    cluster_sizes = {
-        child: child_size 
-        for child, child_size in zip(cluster_tree['child'], cluster_tree['child_size'])
-    }
-    if allow_single_branch:
-        # Compute cluster size for the root node
-        cluster_sizes[node_list[-1]] = np.sum(
-            cluster_tree[cluster_tree['parent'] == node_list[-1]]['child_size']
-        )
-
-    if branch_selection_method == 'eom':
-        for node in node_list:
-            child_selection = (cluster_tree['parent'] == node)
-            subtree_stability = np.sum([
-                stability[child] for
-                child in cluster_tree['child'][child_selection]])
-            if subtree_stability > stability[node] or cluster_sizes[node] > max_branch_size:
-                is_cluster[node] = False
-                stability[node] = subtree_stability
-            else:
-                for sub_node in bfs_from_cluster_tree(cluster_tree, node):
-                    if sub_node != node:
-                        is_cluster[sub_node] = False
-    elif branch_selection_method == 'leaf':
-        leaves = get_cluster_tree_leaves(cluster_tree)
-        selected_clusters = set(leaves)
-        
-        # Allow single leaf
-        if len(selected_clusters) == 0 and allow_single_branch:
-            for c in is_cluster:
-                is_cluster[c] = False
-            is_cluster[tree['parent'].min()] = True
-        else:
-            for c in is_cluster:
-                if c in selected_clusters:
-                    is_cluster[c] = True
-                else:
-                    is_cluster[c] = False
-    else:
-        raise ValueError('Invalid Cluster Selection Method: %s\n'
-                         'Should be one of: "eom", "leaf"\n')
-
-    clusters = set([c for c in is_cluster if is_cluster[c]])
-    cluster_map = {c: n for n, c in enumerate(sorted(list(clusters)))}
-    reverse_cluster_map = {n: c for c, n in cluster_map.items()}
-
-    labels = do_labelling(tree, clusters, cluster_map, allow_single_branch, 0.0, False)
-    probs = get_probabilities(tree, reverse_cluster_map, labels, births)
-    stabilities = get_stability_scores(labels, clusters, stability, max_eccentricity)
 
     return (labels, probs, stabilities)

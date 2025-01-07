@@ -2,134 +2,30 @@
 import numpy as np
 
 from sklearn.base import BaseEstimator, ClusterMixin
-from sklearn.neighbors import KDTree, BallTree
 from scipy.sparse import coo_array
-from scipy.sparse.csgraph import minimum_spanning_tree
+from scipy.sparse.csgraph import minimum_spanning_tree, connected_components
 from joblib import Memory
 from joblib import Parallel, delayed
 from joblib.parallel import cpu_count
-from .dist_metrics import DistanceMetric
 from ._hdbscan_linkage import label
 from .plots import CondensedTree, SingleLinkageTree, ApproximationGraph
 from .prediction import approximate_predict
-from ._hdbscan_tree import (
-    get_branches,
-    condense_tree,
-    recurse_leaf_dfs,
-    compute_stability,
-    simplify_branch_hierarchy,
-)
-
-
-class BranchDetectionData(object):
-    """Input data for branch detection functionality.
-
-    Recreates and caches internal data structures from the clustering stage.
-
-    Parameters
-    ----------
-
-    data : array (n_samples, n_features)
-        The original data set that was clustered.
-
-    labels : array (n_samples)
-        The cluster labels for every point in the data set.
-
-    min_samples : int
-        The min_samples value used in clustering.
-
-    tree_type : string, optional
-        Which type of space tree to use for core distance computation.
-        One of:
-            * ``kdtree``
-            * ``balltree``
-
-    metric : string, optional
-        The metric used to determine distance for the clustering.
-        This is the metric that will be used for the space tree to determine
-        core distances etc.
-
-    **kwargs :
-        Any further arguments to the metric.
-
-    Attributes
-    ----------
-
-    all_finite : bool
-        Whether the data set contains any infinite or NaN values.
-
-    finite_index : array (n_samples)
-        The indices of the finite data points in the original data set.
-
-    internal_to_raw : dict
-        A mapping from the finite data set indices to the original data set.
-
-    tree : KDTree or BallTree
-        A space partitioning tree that can be queried for nearest neighbors if
-        the metric is supported by a KDTree or BallTree.
-
-    neighbors : array (n_samples, min_samples)
-        The nearest neighbor for every non-noise point in the original data set.
-
-    core_distances : array (n_samples)
-        The core distance for every non-noise point in the original data set.
-
-    dist_metric : callable
-        Accelerated distance metric function.
-    """
-
-    _tree_type_map = {"kdtree": KDTree, "balltree": BallTree}
-
-    def __init__(
-        self,
-        data,
-        all_finite,
-        finite_index,
-        labels,
-        min_samples,
-        tree_type="kdtree",
-        metric="euclidean",
-        **kwargs,
-    ):
-        # Select finite data points
-        self.all_finite = all_finite
-        self.finite_index = finite_index
-        clean_data = data.astype(np.float64)
-        if not all_finite:
-            labels = labels[finite_index]
-            clean_data = clean_data[finite_index]
-            self.internal_to_raw = {
-                x: y for x, y in zip(range(len(finite_index)), finite_index)
-            }
-        else:
-            self.internal_to_raw = None
-
-        # Construct tree
-        self.tree = self._tree_type_map[tree_type](clean_data, metric=metric, **kwargs)
-        self.dist_metric = DistanceMetric.get_metric(metric, **kwargs)
-
-        # Allocate to maintain data point indices
-        self.core_distances = np.full(clean_data.shape[0], np.nan)
-        self.neighbors = np.full((clean_data.shape[0], min_samples), -1, dtype=np.int64)
-
-        # Find neighbours for non-noise points
-        noise_mask = labels != -1
-        if noise_mask.any():
-            distances, self.neighbors[noise_mask, :] = self.tree.query(
-                clean_data[noise_mask], k=min_samples
-            )
-            self.core_distances[noise_mask] = distances[:, -1]
+from ._hdbscan_tree import recurse_leaf_dfs
+from .hdbscan_ import _tree_to_labels
 
 
 def detect_branches_in_clusters(
     clusterer,
-    min_branch_size=None,
-    allow_single_branch=False,
+    cluster_labels=None,
+    cluster_probabilities=None,
     branch_detection_method="full",
-    branch_selection_method="eom",
-    branch_selection_persistence=0.0,
-    max_branch_size=0,
     label_sides_as_branches=False,
+    min_cluster_size=None,
+    max_cluster_size=None,
+    allow_single_cluster=None,
+    cluster_selection_method=None,
+    cluster_selection_epsilon=0.0,
+    cluster_selection_persistence=0.0,
 ):
     """
     Performs a flare-detection post-processing step to detect branches within
@@ -148,16 +44,17 @@ def detect_branches_in_clusters(
         The clusterer object that has been fit to the data with branch detection
         data generated.
 
-    min_branch_size : int, optional (default=None)
-        The minimum number of samples in a group for that group to be
-        considered a branch; groupings smaller than this size will seen as
-        points falling out of a branch. Defaults to the clusterer's min_cluster_size.
+    cluster_labels : np.ndarray, shape (n_samples, ), optional (default=None)
+        The cluster labels for each point in the data set. If not provided, the
+        clusterer's labels will be used.
 
-    allow_single_branch : bool, optional (default=False)
-        Analogous to ``allow_single_cluster``.
+    cluster_probabilities : np.ndarray, shape (n_samples, ), optional (default=None)
+        The cluster probabilities for each point in the data set. If not provided,
+        the clusterer's probabilities will be used, or all points will be given
+        1.0 probability if labels are overridden.
 
     branch_detection_method : str, optional (default=``full``)
-        Deteremines which graph is conctructed to detect branches with. Valid
+        Determines which graph is constructed to detect branches with. Valid
         values are, ordered by increasing computation cost and decreasing
         sensitivity to noise:
         - ``core``: Contains the edges that connect each point to all other
@@ -170,35 +67,51 @@ def detect_branches_in_clusters(
           0-dimensional simplicial complex of each cluster at the first point in
           the filtration where they contain all their points.
 
-    branch_selection_method : str, optional (default='eom')
+    label_sides_as_branches : bool, optional (default=False),
+        When this flag is False, branches are only labelled for clusters with at
+        least three branches (i.e., at least y-shapes). Clusters with only two
+        branches represent l-shapes. The two branches describe the cluster's
+        outsides growing towards each other. Enabling this flag separates these
+        branches from each other in the produced labelling.
+
+    min_cluster_size : int, optional (default=None)
+        The minimum number of samples in a group for that group to be
+        considered a branch; groupings smaller than this size will seen as
+        points falling out of a branch. Defaults to the clusterer's min_cluster_size.
+
+    allow_single_cluster : bool, optional (default=None)
+        Analogous to HDBSCAN's ``allow_single_cluster``.
+
+    cluster_selection_method : str, optional (default=None)
         The method used to select branches from the cluster's condensed tree.
         The standard approach for FLASC is to use the ``eom`` approach.
         Options are:
           * ``eom``
           * ``leaf``
 
-    branch_selection_persistence: float, optional (default=0.0)
+    cluster_selection_epsilon: float, optional (default=0.0)
+        A lower epsilon threshold. Only branches with a death above this value
+        will be considered. See [3]_ for more information. Note that this
+        should not be used if we want to predict the cluster labels for new
+        points in future (e.g. using approximate_predict), as the
+        :func:`~hdbscan.branches.approximate_predict` function is not aware of
+        this argument.
+
+    cluster_selection_persistence: float, optional (default=0.0)
         An eccentricity persistence threshold. Branches with a persistence below
         this value will be merged. See [3]_ for more information. Note that this
         should not be used if we want to predict the cluster labels for new
         points in future (e.g. using approximate_predict), as the
-        :func:`~flasc.prediction.approximate_predict` function is not aware of
+        :func:`~hdbscan.branches.approximate_predict` function is not aware of
         this argument.
 
-    max_branch_size : int, optional (default=0)
+    max_cluster_size : int, optional (default=0)
         A limit to the size of clusters returned by the ``eom`` algorithm.
         Has no effect when using ``leaf`` clustering (where clusters are
         usually small regardless). Note that this should not be used if we
         want to predict the cluster labels for new points in future (e.g. using
-        :func:`~flasc.prediction.approximate_predict`), as that function is
+        :func:`~hdbscan.branches.approximate_predict`), as that function is
         not aware of this argument.
-
-    label_sides_as_branches : bool, optional (default=False),
-        When this flag is False, branches are only labelled for clusters with at
-        least three branches (i.e., at least y-shapes). Clusters with only two
-        branches represent l-shapes. The two branches describe the cluster's
-        outsides growing towards each other. Enableing this flag separates these
-        branches from each other in the produced labelling.
 
     Returns
     -------
@@ -210,6 +123,14 @@ def detect_branches_in_clusters(
         Probabilities considering both cluster and branch membership. Noisy
         samples are assigned 0.
 
+    cluster_labels : np.ndarray, shape (n_samples, )
+        The cluster labels for each point in the data set. Noisy samples are
+        given the label -1.
+
+    cluster_probabilities : np.ndarray, shape (n_samples, )
+        The cluster probabilities for each point in the data set. Noisy samples
+        are assigned 1.0.
+
     branch_labels : np.ndarray, shape (n_samples, )
         Branch labels for each point. Noisy samples are given the label -1.
 
@@ -220,7 +141,7 @@ def detect_branches_in_clusters(
     branch_persistences : tuple (n_clusters)
         A branch persistence (eccentricity range) for each detected branch.
 
-    cluster_approximation_graphs : tuple (n_clusters)
+    approximation_graphs : tuple (n_clusters)
         The graphs used to detect branches in each cluster stored as a numpy
         array with four columns: source, target, centrality, mutual reachability
         distance. Points are labelled by their row-index into the input data.
@@ -237,17 +158,17 @@ def detect_branches_in_clusters(
           0-dimensional simplicial complex of each cluster at the first point in
           the filtration where they contain all their points.
 
-    cluster_condensed_trees : tuple (n_clusters)
+    condensed_trees : tuple (n_clusters)
         A condensed branch hierarchy for each cluster produced during the
         branch detection step. Data points are numbered with in-cluster ids.
 
-    cluster_linkage_trees : tuple (n_clusters)
+    linkage_trees : tuple (n_clusters)
         A single linkage tree for each cluster produced during the branch
         detection step, in the scipy hierarchical clustering format.
         (see http://docs.scipy.org/doc/scipy/reference/cluster.hierarchy.html).
         Data points are numbered with in-cluster ids.
 
-    cluster_centralities : np.ndarray, shape (n_samples, )
+    centralities : np.ndarray, shape (n_samples, )
         Centrality values for each point in a cluster. Overemphasizes points'
         eccentricity within the cluster as the values are based on minimum
         spanning trees that do not contain the equally distanced edges resulting
@@ -265,7 +186,7 @@ def detect_branches_in_clusters(
     # Check clusterer state
     if clusterer._min_spanning_tree is None:
         raise ValueError(
-            "Clusterer does not have an explicit minimum spannning tree!"
+            "Clusterer does not have an explicit minimum spanning tree!"
             " Try fitting with branch_detection_data=True or"
             " gen_min_span_tree=True set."
         )
@@ -277,25 +198,42 @@ def detect_branches_in_clusters(
         )
 
     # Validate parameters
-    if min_branch_size is None:
-        min_branch_size = clusterer.min_cluster_size
-    branch_selection_persistence = float(branch_selection_persistence)
-    if not (np.issubdtype(type(min_branch_size), np.integer) and min_branch_size >= 2):
-        raise ValueError(
-            f"min_branch_size must be an integer greater or equal "
-            f"to 2,  {min_branch_size} given."
-        )
+    if min_cluster_size is None:
+        min_cluster_size = clusterer.min_cluster_size
+    if max_cluster_size is None:
+        max_cluster_size = clusterer.max_cluster_size
+    if allow_single_cluster is None:
+        allow_single_cluster = clusterer.allow_single_cluster
+    if cluster_selection_method is None:
+        cluster_selection_method = clusterer.cluster_selection_method
+    cluster_selection_epsilon = float(cluster_selection_epsilon)
+    cluster_selection_persistence = float(cluster_selection_persistence)
     if not (
-        np.issubdtype(type(branch_selection_persistence), np.floating)
-        and branch_selection_persistence >= 0.0
+        np.issubdtype(type(min_cluster_size), np.integer) and min_cluster_size >= 2
     ):
         raise ValueError(
-            f"branch_selection_persistence must be a float greater or equal to "
-            f"0.0, {branch_selection_persistence} given."
+            f"min_cluster_size must be an integer greater or equal "
+            f"to 2,  {min_cluster_size} given."
         )
-    if branch_selection_method not in ("eom", "leaf"):
+    if not (
+        np.issubdtype(type(cluster_selection_persistence), np.floating)
+        and cluster_selection_persistence >= 0.0
+    ):
         raise ValueError(
-            f"Invalid branch_selection_method: {branch_selection_method}\n"
+            f"cluster_selection_persistence must be a float greater or equal to "
+            f"0.0, {cluster_selection_persistence} given."
+        )
+    if not (
+        np.issubdtype(type(cluster_selection_epsilon), np.floating)
+        and cluster_selection_epsilon >= 0.0
+    ):
+        raise ValueError(
+            f"cluster_selection_epsilon must be a float greater or equal to "
+            f"0.0, {cluster_selection_epsilon} given."
+        )
+    if cluster_selection_method not in ("eom", "leaf"):
+        raise ValueError(
+            f"Invalid cluster_selection_method: {cluster_selection_method}\n"
             f'Should be one of: "eom", "leaf"\n'
         )
     if branch_detection_method not in ("core", "full"):
@@ -308,13 +246,30 @@ def detect_branches_in_clusters(
     memory = clusterer.memory
     if isinstance(memory, str):
         memory = Memory(memory, verbose=0)
-    num_clusters = len(clusterer.cluster_persistence_)
-    labels = clusterer.labels_
-    probabilities = clusterer.probabilities_
+
+    if cluster_labels is None:
+        overridden_labels = False
+        num_clusters = len(clusterer.cluster_persistence_)
+        cluster_labels, _cluster_probabilities = update_single_cluster_labels(
+            clusterer._condensed_tree,
+            clusterer.labels_,
+            clusterer.probabilities_,
+            clusterer.cluster_persistence_,
+            allow_single_cluster=clusterer.allow_single_cluster,
+            cluster_selection_epsilon=clusterer.cluster_selection_epsilon,
+        )
+        if cluster_probabilities is None:
+            cluster_probabilities = _cluster_probabilities
+    else:
+        overridden_labels = True
+        num_clusters = cluster_labels.max() + 1
+        if cluster_probabilities is None:
+            cluster_probabilities = np.where(cluster_labels == -1, 0.0, 1.0)
+
     if not clusterer.branch_detection_data_.all_finite:
         finite_index = clusterer.branch_detection_data_.finite_index
-        labels = labels[finite_index]
-        probabilities = probabilities[finite_index]
+        cluster_labels = cluster_labels[finite_index]
+        cluster_probabilities = cluster_probabilities[finite_index]
 
     # Configure parallelization
     run_core = branch_detection_method == "core"
@@ -327,13 +282,13 @@ def detect_branches_in_clusters(
 
     # Detect branches
     (
-        cluster_points,
-        cluster_centralities,
-        cluster_linkage_trees,
-        cluster_approximation_graphs,
-    ) = memory.cache(_compute_branch_linkage, ignore=["thread_pool"])(
-        labels,
-        probabilities,
+        points,
+        centralities,
+        linkage_trees,
+        approximation_graphs,
+    ) = memory.cache(compute_branch_linkage, ignore=["thread_pool"])(
+        cluster_labels,
+        cluster_probabilities,
         clusterer._min_spanning_tree,
         clusterer.branch_detection_data_.tree,
         clusterer.branch_detection_data_.neighbors,
@@ -342,32 +297,35 @@ def detect_branches_in_clusters(
         num_clusters,
         thread_pool,
         run_core=run_core,
+        overridden_labels=overridden_labels,
     )
     (
         branch_labels,
         branch_probabilities,
         branch_persistences,
-        cluster_condensed_trees,
-    ) = memory.cache(_compute_branch_segmentation, ignore=["thread_pool"])(
-        cluster_linkage_trees,
+        condensed_trees,
+        linkage_trees,
+    ) = memory.cache(compute_branch_segmentation, ignore=["thread_pool"])(
+        linkage_trees,
         thread_pool,
-        min_branch_size=min_branch_size,
-        allow_single_branch=allow_single_branch,
-        branch_selection_method=branch_selection_method,
-        branch_selection_persistence=branch_selection_persistence,
-        max_branch_size=max_branch_size,
+        min_cluster_size=min_cluster_size,
+        allow_single_cluster=allow_single_cluster,
+        cluster_selection_method=cluster_selection_method,
+        cluster_selection_epsilon=cluster_selection_epsilon,
+        cluster_selection_persistence=cluster_selection_persistence,
+        max_cluster_size=max_cluster_size,
     )
     (
         labels,
         probabilities,
         branch_labels,
         branch_probabilities,
-        cluster_centralities,
-    ) = memory.cache(_update_labelling)(
-        labels,
-        probabilities,
-        cluster_points,
-        cluster_centralities,
+        centralities,
+    ) = memory.cache(update_labelling)(
+        cluster_probabilities,
+        linkage_trees,
+        points,
+        centralities,
         branch_labels,
         branch_probabilities,
         branch_persistences,
@@ -377,38 +335,62 @@ def detect_branches_in_clusters(
     # Maintain data indices for non-finite data
     if not clusterer.branch_detection_data_.all_finite:
         internal_to_raw = clusterer.branch_detection_data_.internal_to_raw
-        _remap_point_lists(cluster_points, internal_to_raw)
-        _remap_edge_lists(cluster_approximation_graphs, internal_to_raw)
+        _remap_point_lists(points, internal_to_raw)
+        _remap_edge_lists(approximation_graphs, internal_to_raw)
 
         num_points = len(clusterer.labels_)
         labels = _remap_labels(labels, finite_index, num_points)
         probabilities = _remap_probabilities(probabilities, finite_index, num_points)
-        branch_labels = _remap_labels(branch_labels, finite_index, num_points)
+        cluster_labels = _remap_labels(cluster_labels, finite_index, num_points)
+        cluster_probabilities = _remap_probabilities(
+            cluster_probabilities, finite_index, num_points
+        )
+        branch_labels = _remap_labels(branch_labels, finite_index, num_points, 0)
         branch_probabilities = _remap_probabilities(
             branch_probabilities, finite_index, num_points
         )
-        cluster_centralities = _remap_probabilities(
-            cluster_centralities, finite_index, num_points
-        )
+        centralities = _remap_probabilities(centralities, finite_index, num_points)
 
     return (
-        # Combined result
         labels,
         probabilities,
-        # Branching result
+        cluster_labels,
+        cluster_probabilities,
         branch_labels,
         branch_probabilities,
         branch_persistences,
-        # Clusters to branches
-        cluster_approximation_graphs,
-        cluster_condensed_trees,
-        cluster_linkage_trees,
-        cluster_centralities,
-        cluster_points,
+        approximation_graphs,
+        condensed_trees,
+        linkage_trees,
+        centralities,
+        points,
     )
 
 
-def _compute_branch_linkage(
+def update_single_cluster_labels(
+    condensed_tree,
+    labels,
+    probabilities,
+    persistences,
+    allow_single_cluster=False,
+    cluster_selection_epsilon=0.0,
+):
+    """Sets all points up to cluster_selection_epsilon to the zero-cluster if
+    a single cluster is detected."""
+    if allow_single_cluster and len(persistences) == 1:
+        labels = np.zeros_like(labels)
+        probabilities = np.ones_like(probabilities)
+        if cluster_selection_epsilon > 0.0:
+            size_mask = condensed_tree["child_size"] == 1
+            lambda_mask = condensed_tree["lambda_val"] < (1 / cluster_selection_epsilon)
+            noise_points = condensed_tree["child"][lambda_mask & size_mask]
+            labels[noise_points] = -1
+            probabilities[noise_points] = 0.0
+
+    return labels, probabilities
+
+
+def compute_branch_linkage(
     cluster_labels,
     cluster_probabilities,
     min_spanning_tree,
@@ -419,6 +401,7 @@ def _compute_branch_linkage(
     num_clusters,
     thread_pool,
     run_core=False,
+    overridden_labels=False,
 ):
     result = thread_pool(
         delayed(_compute_branch_linkage_of_cluster)(
@@ -430,6 +413,7 @@ def _compute_branch_linkage(
             core_distances,
             dist_metric,
             run_core,
+            overridden_labels,
             cluster_id,
         )
         for cluster_id in range(num_clusters)
@@ -448,6 +432,7 @@ def _compute_branch_linkage_of_cluster(
     core_distances,
     dist_metric,
     run_core,
+    overridden_labels,
     cluster_id,
 ):
     """Detect branches within one cluster."""
@@ -461,6 +446,8 @@ def _compute_branch_linkage_of_cluster(
     parent_mask = cluster_labels[min_spanning_tree[:, 0].astype(np.intp)] == cluster_id
     child_mask = cluster_labels[min_spanning_tree[:, 1].astype(np.intp)] == cluster_id
     cluster_mst = min_spanning_tree[parent_mask & child_mask]
+    cluster_mst[:, 0] = in_cluster_ids[cluster_mst[:, 0].astype(np.intp)]
+    cluster_mst[:, 1] = in_cluster_ids[cluster_mst[:, 1].astype(np.intp)]
 
     # Compute in cluster centrality
     points = space_tree.data.base[cluster_points]
@@ -470,42 +457,64 @@ def _compute_branch_linkage_of_cluster(
 
     # Construct cluster approximation graph
     if run_core:
-        edges = _extract_core_cluster_graph(
+        edges = extract_core_cluster_graph(
             cluster_mst, core_distances, neighbors[cluster_points], in_cluster_ids
         )
     else:
         max_dist = cluster_mst.T[2].max()
-        edges = _extract_full_cluster_graph(
+        edges = extract_full_cluster_graph(
             space_tree, core_distances, cluster_points, in_cluster_ids, max_dist
         )
+
+    # Compute linkage over the graph
+    return compute_branch_linkage_from_graph(
+        cluster_points, centralities, edges, overridden_labels
+    )
+
+
+def compute_branch_linkage_from_graph(
+    cluster_points, centralities, edges, overridden_labels
+):
+    # Set max centrality as 'distance'
     np.maximum(
         centralities[edges[:, 0].astype(np.intp)],
         centralities[edges[:, 1].astype(np.intp)],
         edges[:, 2],
     )
 
-    # Extract centrality MST and compute single linkage
+    # Extract MST edges
     centrality_mst = minimum_spanning_tree(
         coo_array(
             (edges[:, 2], (edges[:, 0].astype(np.int32), edges[:, 1].astype(np.int32))),
             shape=(len(cluster_points), len(cluster_points)),
-        )
-    ).tocoo()
-    centrality_mst = np.column_stack(
-        (centrality_mst.row, centrality_mst.col, centrality_mst.data)
+        ),
+        overwrite=True,
     )
-    centrality_mst = centrality_mst[np.argsort(centrality_mst.T[2]), :]
-    linkage_tree = label(centrality_mst)
 
     # Re-label edges with data ids
     edges[:, 0] = cluster_points[edges[:, 0].astype(np.intp)]
     edges[:, 1] = cluster_points[edges[:, 1].astype(np.intp)]
 
+    # Stop if the graph is disconnected, return component labels in
+    # place of linkage tree, which is detected later on!
+    if overridden_labels:
+        num_components, labels = connected_components(centrality_mst, directed=False)
+        if num_components > 1:
+            return cluster_points, centralities, labels, edges
+
+    # Compute linkage tree
+    centrality_mst = centrality_mst.tocoo()
+    centrality_mst = np.column_stack(
+        (centrality_mst.row, centrality_mst.col, centrality_mst.data)
+    )
+    centrality_mst = centrality_mst[np.argsort(centrality_mst[:, 2]), :]
+    linkage_tree = label(centrality_mst)
+
     # Return values
     return cluster_points, centralities, linkage_tree, edges
 
 
-def _extract_core_cluster_graph(
+def extract_core_cluster_graph(
     cluster_spanning_tree,
     core_distances,
     neighbors,
@@ -513,15 +522,14 @@ def _extract_core_cluster_graph(
 ):
     """Create a graph connecting all points within each point's core distance."""
     # Allocate output (won't be filled completely)
-    cluster_spanning_tree_view = cluster_spanning_tree
     num_points = neighbors.shape[0]
     num_neighbors = neighbors.shape[1]
-    count = cluster_spanning_tree_view.shape[0]
+    count = cluster_spanning_tree.shape[0]
     edges = np.zeros((count + num_points * num_neighbors, 4), dtype=np.double)
 
     # Fill (undirected) MST edges with within-cluster-ids
-    mst_parents = in_cluster_ids[cluster_spanning_tree[:, 0].astype(np.intp)]
-    mst_children = in_cluster_ids[cluster_spanning_tree[:, 1].astype(np.intp)]
+    mst_parents = cluster_spanning_tree[:, 0].astype(np.intp)
+    mst_children = cluster_spanning_tree[:, 1].astype(np.intp)
     np.minimum(mst_parents, mst_children, edges[:count, 0])
     np.maximum(mst_parents, mst_children, edges[:count, 1])
 
@@ -544,10 +552,10 @@ def _extract_core_cluster_graph(
     return edges
 
 
-def _extract_full_cluster_graph(
+def extract_full_cluster_graph(
     space_tree, core_distances, cluster_points, in_cluster_ids, max_dist
 ):
-    # Query KDTree/BallTree for neighours within the distance
+    # Query KDTree/BallTree for neighors within the distance
     children_map, distances_map = space_tree.query_radius(
         space_tree.data.base[cluster_points], r=max_dist + 1e-8, return_distance=True
     )
@@ -584,72 +592,68 @@ def _extract_full_cluster_graph(
     return edges
 
 
-def _compute_branch_segmentation(
-    cluster_linkage_trees,
-    thread_pool,
-    min_branch_size=5,
-    allow_single_branch=False,
-    branch_selection_method="eom",
-    branch_selection_persistence=0.0,
-    max_branch_size=0,
-):
+def compute_branch_segmentation(cluster_linkage_trees, thread_pool, **kwargs):
     """Extracts branches from the linkage hierarchies."""
     results = thread_pool(
-        delayed(_compute_branch_segmentation_of_cluster)(
-            cluster_linkage_tree,
-            min_branch_size=min_branch_size,
-            allow_single_branch=allow_single_branch,
-            branch_selection_method=branch_selection_method,
-            branch_selection_persistence=branch_selection_persistence,
-            max_branch_size=max_branch_size,
-        )
+        delayed(segment_branch_linkage_hierarchy)(cluster_linkage_tree, **kwargs)
         for cluster_linkage_tree in cluster_linkage_trees
     )
     if len(results):
         return tuple(zip(*results))
-    return (), (), (), ()
+    return (), (), (), (), ()
 
 
-def _compute_branch_segmentation_of_cluster(
-    cluster_linkage_tree,
-    min_branch_size=5,
-    allow_single_branch=False,
-    branch_selection_method="eom",
-    branch_selection_persistence=0.0,
-    max_branch_size=0,
+def segment_branch_linkage_hierarchy(
+    single_linkage_tree,
+    allow_single_cluster=False,
+    cluster_selection_epsilon=0.0,
+    **kwargs,
 ):
     """Select branches within one cluster."""
-    condensed_tree = condense_tree(cluster_linkage_tree, min_branch_size)
-    if branch_selection_persistence > 0.0:
-        condensed_tree = simplify_branch_hierarchy(
-            condensed_tree, branch_selection_persistence
+    # Return component labels if the graph is disconnected
+    if len(single_linkage_tree.shape) == 1:
+        return (
+            single_linkage_tree,
+            np.ones(single_linkage_tree.shape[0], dtype=np.double),
+            [0 for _ in range(single_linkage_tree.max() + 1)],
+            None,
+            None,
         )
-    stability = compute_stability(condensed_tree)
-    (labels, probabilities, persistences) = get_branches(
-        condensed_tree,
-        stability,
-        allow_single_branch=allow_single_branch,
-        branch_selection_method=branch_selection_method,
-        max_branch_size=max_branch_size,
+
+    # Run normal branch detection
+    (labels, probabilities, stabilities, condensed_tree, linkage_tree) = (
+        _tree_to_labels(
+            None,
+            single_linkage_tree,
+            allow_single_cluster=allow_single_cluster,
+            cluster_selection_epsilon=cluster_selection_epsilon,
+            **kwargs,
+        )
     )
-    # Reset noise labels to k-cluster
-    labels[labels < 0] = len(persistences)
-    return (labels, probabilities, persistences, condensed_tree)
+    labels, probabilities = update_single_cluster_labels(
+        condensed_tree,
+        labels,
+        probabilities,
+        stabilities,
+        allow_single_cluster=allow_single_cluster,
+        cluster_selection_epsilon=cluster_selection_epsilon,
+    )
+    return (labels, probabilities, stabilities, condensed_tree, linkage_tree)
 
 
-def _update_labelling(
-    cluster_labels,
+def update_labelling(
     cluster_probabilities,
-    cluster_points_,
-    cluster_centralities_,
-    branch_labels_,
-    branch_probabilities_,
-    branch_persistences_,
+    tree_list,
+    points_list,
+    centrality_list,
+    branch_label_list,
+    branch_prob_list,
+    branch_pers_list,
     label_sides_as_branches=False,
 ):
     """Updates the labelling with the detected branches."""
     # Allocate output
-    num_points = len(cluster_labels)
+    num_points = len(cluster_probabilities)
     labels = -1 * np.ones(num_points, dtype=np.intp)
     probabilities = cluster_probabilities.copy()
     branch_labels = np.zeros(num_points, dtype=np.intp)
@@ -658,25 +662,27 @@ def _update_labelling(
 
     # Compute the labels and probabilities
     running_id = 0
-    for _points, _centralities, _labels, _probs, _pers in zip(
-        cluster_points_,
-        cluster_centralities_,
-        branch_labels_,
-        branch_probabilities_,
-        branch_persistences_,
+    for tree, _points, _labels, _probs, _centrs, _pers in zip(
+        tree_list,
+        points_list,
+        branch_label_list,
+        branch_prob_list,
+        centrality_list,
+        branch_pers_list,
     ):
         num_branches = len(_pers)
-        branch_centralities[_points] = _centralities
-        if num_branches <= (1 if label_sides_as_branches else 2):
+        branch_centralities[_points] = _centrs
+        if num_branches <= (1 if label_sides_as_branches else 2) and tree is not None:
             labels[_points] = running_id
             running_id += 1
         else:
-            labels[_points] = _labels + running_id
+            has_noise = int(-1 in _labels)
+            labels[_points] = _labels + running_id + has_noise
             branch_labels[_points] = _labels
             branch_probabilities[_points] = _probs
             probabilities[_points] += _probs
             probabilities[_points] /= 2
-            running_id += num_branches + 1
+            running_id += num_branches + has_noise
 
     # Reorder other parts
     return (
@@ -722,9 +728,9 @@ def _remap_point_lists(point_lists, internal_to_raw):
             points[idx] = internal_to_raw[points[idx]]
 
 
-def _remap_labels(old_labels, finite_index, num_points):
+def _remap_labels(old_labels, finite_index, num_points, fill_value=-1):
     """Creates new label array with infinite points set to -1."""
-    new_labels = np.full(num_points, -1)
+    new_labels = np.full(num_points, fill_value)
     new_labels[finite_index] = old_labels
     return new_labels
 
@@ -748,16 +754,8 @@ class BranchDetector(BaseEstimator, ClusterMixin):
 
     Parameters
     ----------
-    min_branch_size : int, optional (default=None)
-        The minimum number of samples in a group for that group to be
-        considered a branch; groupings smaller than this size will seen as
-        points falling out of a branch. Defaults to the clusterer's min_cluster_size.
-
-    allow_single_branch : bool, optional (default=False)
-        Analogous to ``allow_single_cluster``.
-
     branch_detection_method : str, optional (default=``full``)
-        Deteremines which graph is conctructed to detect branches with. Valid
+        Determines which graph is constructed to detect branches with. Valid
         values are, ordered by increasing computation cost and decreasing
         sensitivity to noise:
         - ``core``: Contains the edges that connect each point to all other
@@ -770,35 +768,42 @@ class BranchDetector(BaseEstimator, ClusterMixin):
           0-dimensional simplicial complex of each cluster at the first point in
           the filtration where they contain all their points.
 
-    branch_selection_method : str, optional (default='eom')
+    label_sides_as_branches : bool, optional (default=False),
+        When this flag is False, branches are only labelled for clusters with at
+        least three branches (i.e., at least y-shapes). Clusters with only two
+        branches represent l-shapes. The two branches describe the cluster's
+        outsides growing towards each other. Enabling this flag separates these
+        branches from each other in the produced labelling.
+
+    min_cluster_size : int, optional (default=None)
+        The minimum number of samples in a group for that group to be
+        considered a branch; groupings smaller than this size will seen as
+        points falling out of a branch. Defaults to the clusterer's min_cluster_size.
+
+    allow_single_cluster : bool, optional (default=None)
+        Analogous to ``allow_single_cluster``.
+
+    cluster_selection_method : str, optional (default=None)
         The method used to select branches from the cluster's condensed tree.
         The standard approach for FLASC is to use the ``eom`` approach.
         Options are:
           * ``eom``
           * ``leaf``
 
-    branch_selection_persistence: float, optional (default=0.0)
+    cluster_selection_epsilon: float, optional (default=0.0)
+        A lower epsilon threshold. Only branches with a death above this value
+        will be considered.
+
+    cluster_selection_persistence: float, optional (default=0.0)
         An eccentricity persistence threshold. Branches with a persistence below
-        this value will be merged. See [3]_ for more information. Note that this
-        should not be used if we want to predict the cluster labels for new
-        points in future (e.g. using approximate_predict), as the
-        :func:`~flasc.prediction.approximate_predict` function is not aware of
-        this argument.
+        this value will be merged.
 
-    max_branch_size : int, optional (default=0)
-        A limit to the size of clusters returned by the ``eom`` algorithm.
-        Has no effect when using ``leaf`` clustering (where clusters are
-        usually small regardless). Note that this should not be used if we
-        want to predict the cluster labels for new points in future (e.g. using
-        :func:`~flasc.prediction.approximate_predict`), as that function is
-        not aware of this argument.
-
-    label_sides_as_branches : bool, optional (default=False),
-        When this flag is False, branches are only labelled for clusters with at
-        least three branches (i.e., at least y-shapes). Clusters with only two
-        branches represent l-shapes. The two branches describe the cluster's
-        outsides growing towards each other. Enableing this flag separates these
-        branches from each other in the produced labelling.
+    max_cluster_size : int, optional (default=None)
+        A limit to the size of clusters returned by the ``eom`` algorithm. Has
+        no effect when using ``leaf`` clustering (where clusters are usually
+        small regardless). Note that this should not be used if we want to
+        predict the cluster labels for new points in future because
+        `approximate_predict` is not aware of this argument.
 
     Attributes
     ----------
@@ -810,6 +815,14 @@ class BranchDetector(BaseEstimator, ClusterMixin):
         Probabilities considering both cluster and branch membership. Noisy
         samples are assigned 0.
 
+    cluster_labels_ : np.ndarray, shape (n_samples, )
+        The cluster labels for each point in the data set. Noisy samples are
+        given the label -1.
+
+    cluster_probabilities_ : np.ndarray, shape (n_samples, )
+        The cluster probabilities for each point in the data set. Noisy samples
+        are assigned 1.0.
+
     branch_labels_ : np.ndarray, shape (n_samples, )
         Branch labels for each point. Noisy samples are given the label -1.
 
@@ -820,7 +833,7 @@ class BranchDetector(BaseEstimator, ClusterMixin):
     branch_persistences_ : tuple (n_clusters)
         A branch persistence (eccentricity range) for each detected branch.
 
-    cluster_approximation_graphs_ : tuple (n_clusters)
+    approximation_graph_ : ApproximationGraph
         The graphs used to detect branches in each cluster stored as a numpy
         array with four columns: source, target, centrality, mutual reachability
         distance. Points are labelled by their row-index into the input data.
@@ -837,17 +850,17 @@ class BranchDetector(BaseEstimator, ClusterMixin):
           0-dimensional simplicial complex of each cluster at the first point in
           the filtration where they contain all their points.
 
-    cluster_condensed_trees_ : tuple (n_clusters)
+    condensed_trees_ : tuple (n_clusters)
         A condensed branch hierarchy for each cluster produced during the
         branch detection step. Data points are numbered with in-cluster ids.
 
-    cluster_linkage_trees_ : tuple (n_clusters)
+    linkage_trees_ : tuple (n_clusters)
         A single linkage tree for each cluster produced during the branch
         detection step, in the scipy hierarchical clustering format.
         (see http://docs.scipy.org/doc/scipy/reference/cluster.hierarchy.html).
         Data points are numbered with in-cluster ids.
 
-    cluster_centralities_ : np.ndarray, shape (n_samples, )
+    centralities_ : np.ndarray, shape (n_samples, )
         Centrality values for each point in a cluster. Overemphasizes points'
         eccentricity within the cluster as the values are based on minimum
         spanning trees that do not contain the equally distanced edges resulting
@@ -865,75 +878,97 @@ class BranchDetector(BaseEstimator, ClusterMixin):
 
     def __init__(
         self,
-        min_branch_size=None,
-        allow_single_branch=False,
         branch_detection_method="full",
-        branch_selection_method="eom",
-        branch_selection_persistence=0.0,
-        max_branch_size=0,
         label_sides_as_branches=False,
+        min_cluster_size=None,
+        max_cluster_size=None,
+        allow_single_cluster=None,
+        cluster_selection_method=None,
+        cluster_selection_epsilon=0.0,
+        cluster_selection_persistence=0.0,
     ):
-        self.min_branch_size = min_branch_size
-        self.allow_single_branch = allow_single_branch
         self.branch_detection_method = branch_detection_method
-        self.branch_selection_method = branch_selection_method
-        self.branch_selection_persistence = branch_selection_persistence
-        self.max_branch_size = max_branch_size
         self.label_sides_as_branches = label_sides_as_branches
+        self.min_cluster_size = min_cluster_size
+        self.max_cluster_size = max_cluster_size
+        self.allow_single_cluster = allow_single_cluster
+        self.cluster_selection_method = cluster_selection_method
+        self.cluster_selection_epsilon = cluster_selection_epsilon
+        self.cluster_selection_persistence = cluster_selection_persistence
 
-        self._cluster_approximation_graphs = None
-        self._cluster_condensed_trees = None
+        self._approximation_graphs = None
+        self._condensed_trees = None
         self._cluster_linkage_trees = None
         self._branch_exemplars = None
 
-    def fit(self, X, y=None):
+    def fit(self, clusterer, labels=None, probabilities=None):
         """
         Perform a flare-detection post-processing step to detect branches within
         clusters.
 
         Parameters
         ----------
-        X : HDBSCAN
+        clusterer : HDBSCAN
             A fitted HDBSCAN object with branch detection data generated.
+
+        labels : np.ndarray, shape (n_samples, ), optional (default=None)
+            The cluster labels for each point in the data set. If not provided, the
+            clusterer's labels will be used.
+
+        probabilities : np.ndarray, shape (n_samples, ), optional (default=None)
+            The cluster probabilities for each point in the data set. If not provided,
+            the clusterer's probabilities will be used, or all points will be given
+            1.0 probability if labels are overridden.
 
         Returns
         -------
         self : object
             Returns self.
         """
-        self._clusterer = X
+        self._clusterer = clusterer
         kwargs = self.get_params()
         (
             self.labels_,
             self.probabilities_,
+            self.cluster_labels_,
+            self.cluster_probabilities_,
             self.branch_labels_,
             self.branch_probabilities_,
             self.branch_persistences_,
-            self._cluster_approximation_graphs,
-            self._cluster_condensed_trees,
-            self._cluster_linkage_trees,
-            self.cluster_centralities_,
+            self._approximation_graphs,
+            self._condensed_trees,
+            self._linkage_trees,
+            self.centralities_,
             self.cluster_points_,
-        ) = detect_branches_in_clusters(X, **kwargs)
+        ) = detect_branches_in_clusters(clusterer, labels, probabilities, **kwargs)
 
         return self
 
-    def fit_predict(self, X, y=None):
+    def fit_predict(self, clusterer, labels=None, probabilities=None):
         """
         Perform a flare-detection post-processing step to detect branches within
         clusters [1]_.
 
         Parameters
         ----------
-        X : HDBSCAN
+        clusterer : HDBSCAN
             A fitted HDBSCAN object with branch detection data generated.
+
+        labels : np.ndarray, shape (n_samples, ), optional (default=None)
+            The cluster labels for each point in the data set. If not provided, the
+            clusterer's labels will be used.
+
+        probabilities : np.ndarray, shape (n_samples, ), optional (default=None)
+            The cluster probabilities for each point in the data set. If not provided,
+            the clusterer's probabilities will be used, or all points will be given
+            1.0 probability if labels are overridden.
 
         Returns
         -------
         labels : ndarray, shape (n_samples, )
             subgroup labels differentiated by cluster and branch.
         """
-        self.fit(X, y)
+        self.fit(clusterer, labels, probabilities)
         return self.labels_
 
     def weighted_centroid(self, label_id, data=None):
@@ -1013,47 +1048,63 @@ class BranchDetector(BaseEstimator, ClusterMixin):
         return cluster_data[medoid_index]
 
     @property
-    def cluster_approximation_graph_(self):
+    def approximation_graph_(self):
         """See :class:`~hdbscan.branches.BranchDetector` for documentation."""
-        if self._cluster_approximation_graphs is None:
+        if self._approximation_graphs is None:
             raise AttributeError(
-                "No cluster approximation graph was generated; try running fit first."
+                "No approximation graph was generated; try running fit first."
             )
         return ApproximationGraph(
-            self._cluster_approximation_graphs,
+            self._approximation_graphs,
             self.labels_,
             self.probabilities_,
-            self._clusterer.labels_,
-            self._clusterer.probabilities_,
-            self.cluster_centralities_,
+            self.centralities_,
+            self.cluster_labels_,
+            self.cluster_probabilities_,
             self.branch_labels_,
             self.branch_probabilities_,
-            self._clusterer._raw_data,
+            lens_name="centrality",
+            sub_cluster_name="branch",
+            raw_data=self._clusterer._raw_data,
         )
 
     @property
-    def cluster_condensed_trees_(self):
+    def condensed_trees_(self):
         """See :class:`~hdbscan.branches.BranchDetector` for documentation."""
-        if self._cluster_condensed_trees is None:
+        if self._condensed_trees is None:
             raise AttributeError(
-                "No cluster condensed trees were generated; try running fit first."
+                "No condensed trees were generated; try running fit first."
             )
+
+        method = (
+            self._clusterer.cluster_selection_method
+            if self.cluster_selection_method is None
+            else self.cluster_selection_method
+        )
+        single = (
+            self._clusterer.allow_single_cluster
+            if self.allow_single_cluster is None
+            else self.allow_single_cluster
+        )
         return [
-            CondensedTree(tree, self.branch_selection_method, self.allow_single_branch)
-            for tree in self._cluster_condensed_trees
+            (CondensedTree(tree, method, single) if tree is not None else None)
+            for tree in self._condensed_trees
         ]
 
     @property
-    def cluster_linkage_trees_(self):
+    def linkage_trees_(self):
         """See :class:`~hdbscan.branches.BranchDetector` for documentation."""
-        if self._cluster_linkage_trees is None:
+        if self._linkage_trees is None:
             raise AttributeError(
-                "No cluster linkage trees were generated; try running fit first."
+                "No linkage trees were generated; try running fit first."
             )
-        return [SingleLinkageTree(tree) for tree in self._cluster_linkage_trees]
+        return [
+            SingleLinkageTree(tree) if tree is not None else None
+            for tree in self._linkage_trees
+        ]
 
     @property
-    def branch_exemplars_(self):
+    def exemplars_(self):
         """See :class:`~hdbscan.branches.BranchDetector` for documentation."""
         if self._branch_exemplars is not None:
             return self._branch_exemplars
@@ -1061,17 +1112,17 @@ class BranchDetector(BaseEstimator, ClusterMixin):
             raise AttributeError(
                 "Branch exemplars not available with precomputed " "distances."
             )
-        if self._cluster_condensed_trees is None:
+        if self._condensed_trees is None:
             raise AttributeError("No branches detected; try running fit first.")
 
-        num_clusters = len(self._cluster_condensed_trees)
+        num_clusters = len(self._condensed_trees)
         branch_cluster_trees = [
             branch_tree[branch_tree["child_size"] > 1]
-            for branch_tree in self._cluster_condensed_trees
+            for branch_tree in self._condensed_trees
         ]
         selected_branch_ids = [
             sorted(branch_tree._select_clusters())
-            for branch_tree in self.cluster_condensed_trees_
+            for branch_tree in self.condensed_trees_
         ]
 
         self._branch_exemplars = [None] * num_clusters
@@ -1082,7 +1133,7 @@ class BranchDetector(BaseEstimator, ClusterMixin):
                 continue
 
             self._branch_exemplars[i] = []
-            raw_condensed_tree = self._cluster_condensed_trees[i]
+            raw_condensed_tree = self._condensed_trees[i]
 
             for branch in selected_branches:
                 _branch_exemplars = np.array([], dtype=np.intp)
@@ -1110,7 +1161,7 @@ def approximate_predict_branch(branch_detector, points_to_predict):
     Parameters
     ----------
     branch_detector : BranchDetector
-        A clustering object that has been fit to vector inpt data.
+        A clustering object that has been fit to vector input data.
 
     points_to_predict : array, or array-like (n_samples, n_features)
         The new data points to predict cluster labels for. They should

@@ -2,7 +2,6 @@ import numpy as np
 from scipy import stats
 from scipy import sparse
 from scipy.spatial import distance
-from sklearn.utils._testing import assert_raises
 from sklearn.utils.estimator_checks import check_estimator
 from hdbscan import (
     HDBSCAN,
@@ -149,7 +148,8 @@ def test_branch_detection_data_with_non_tree_metric():
         ).fit(X)
         assert "Metric cosine not supported for branch detection!" in str(w[-1].message)
         assert c.minimum_spanning_tree_ is not None
-        assert_raises(AttributeError, lambda: c.branch_detection_data)
+        with pytest.raises(AttributeError):
+            c.branch_detection_data
 
 
 def test_branch_detection_data_with_unsupported_input():
@@ -186,50 +186,56 @@ def test_generate_branch_detection_data():
     c = HDBSCAN(min_cluster_size=5).fit(X)
     c.generate_branch_detection_data()
     assert c.branch_detection_data_ is not None
-    assert_raises(AttributeError, lambda: c.minimum_spanning_tree_)
+    with pytest.raises(AttributeError):
+        c.minimum_spanning_tree_
 
 
 # --- Detecting Branches
 
 
-def check_detected_groups(c, n_clusters=3, n_branches=6):
+def check_detected_groups(c, n_clusters=3, n_branches=6, overridden=False):
     """Checks branch_detector output for main invariants."""
     assert len(np.unique(c.labels_)) - int(-1 in c.labels_) == n_branches
+    assert (
+        len(np.unique(c.cluster_labels_)) - int(-1 in c.cluster_labels_) == n_clusters
+    )
     noise_mask = c.labels_ == -1
     assert (c.branch_labels_[noise_mask] == 0).all()
     assert (c.branch_probabilities_[noise_mask] == 1.0).all()
-    assert (c.probabilities_[noise_mask] == 0).all()
-    assert len(c.cluster_points_) == n_clusters
-    assert len(c.branch_persistences_) == n_clusters
+    assert (c.probabilities_[noise_mask] == 0.0).all()
+    assert (c.cluster_probabilities_[noise_mask] == 0.0).all()
+    if not overridden:
+        assert len(c.cluster_points_) == n_clusters
+        assert len(c.branch_persistences_) == n_clusters
     assert sum(len(ps) for ps in c.branch_persistences_) >= (n_branches - n_clusters)
 
 
 def test_branch_detector():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector(
-        branch_detection_method="core", branch_selection_method="eom"
+        branch_detection_method="core", cluster_selection_method="eom"
     ).fit(c)
     check_detected_groups(b, n_branches=7)
 
     b = BranchDetector(
-        branch_detection_method="full", branch_selection_method="eom"
+        branch_detection_method="full", cluster_selection_method="eom"
     ).fit(c)
     check_detected_groups(b)
 
     b = BranchDetector(
-        branch_detection_method="core", branch_selection_method="leaf"
+        branch_detection_method="core", cluster_selection_method="leaf"
     ).fit(c)
     check_detected_groups(b, n_branches=9)
 
     b = BranchDetector(
-        branch_detection_method="full", branch_selection_method="leaf"
+        branch_detection_method="full", cluster_selection_method="leaf"
     ).fit(c)
     check_detected_groups(b)
 
 
-def test_min_branch_size():
+def test_min_cluster_size():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
-    b = BranchDetector(min_branch_size=7).fit(c)
+    b = BranchDetector(min_cluster_size=7).fit(c)
     labels, counts = np.unique(b.labels_, return_counts=True)
     assert (counts[labels >= 0] >= 7).all()
     check_detected_groups(b)
@@ -241,14 +247,23 @@ def test_label_sides_as_branches():
     check_detected_groups(b, n_branches=8)
 
 
-def test_max_branch_size():
+def test_max_cluster_size():
     """Suppresses one branch."""
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
-    b = BranchDetector(label_sides_as_branches=True, max_branch_size=50).fit(c)
+    b = BranchDetector(label_sides_as_branches=True, max_cluster_size=50).fit(c)
     check_detected_groups(b, n_branches=7)
 
 
-def test_allow_single_branch_with_persistence():
+def test_override_cluster_labels():
+    split_y = np.full_like(y, -1)
+    split_y[y == 0] = 0
+    split_y[y == 1] = 0
+    c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
+    b = BranchDetector(label_sides_as_branches=True).fit(c, split_y)
+    check_detected_groups(b, n_clusters=1, n_branches=2, overridden=True)
+
+
+def test_allow_single_cluster_with_filters():
     # Generate single-cluster data
     np.random.seed(0)
     no_structure = np.random.rand(150, 2)
@@ -261,22 +276,33 @@ def test_allow_single_branch_with_persistence():
 
     # Without persistence, find 6 branches
     b = BranchDetector(
-        min_branch_size=5,
+        min_cluster_size=5,
         branch_detection_method="core",
-        branch_selection_method="leaf",
+        cluster_selection_method="leaf",
     ).fit(c)
     unique_labels = np.unique(b.labels_)
     assert len(unique_labels) == 6
     # Mac & Windows give 71, Linux gives 72. Probably different random values.
     num_noise = np.sum(b.branch_probabilities_ == 0)
-    assert (num_noise == 71) | (num_noise == 72) 
+    assert (num_noise == 71) | (num_noise == 72)
 
-    # Adding presistence removes some branches
+    # Adding persistence removes some branches
     b = BranchDetector(
-        min_branch_size=5,
+        min_cluster_size=5,
         branch_detection_method="core",
-        branch_selection_method="leaf",
-        branch_selection_persistence=0.1,
+        cluster_selection_method="leaf",
+        cluster_selection_persistence=0.1,
+    ).fit(c)
+    unique_labels = np.unique(b.labels_)
+    assert len(unique_labels) == 1
+    assert np.sum(b.branch_probabilities_ == 0) == 0
+
+    # Adding epsilon removes some branches
+    b = BranchDetector(
+        min_cluster_size=5,
+        branch_detection_method="core",
+        cluster_selection_epsilon=1 / 0.39,
+        allow_single_cluster=True,
     ).fit(c)
     unique_labels = np.unique(b.labels_)
     assert len(unique_labels) == 1
@@ -290,35 +316,42 @@ def test_badargs():
     c_nomst = HDBSCAN(min_cluster_size=5).fit(X)
     c_nomst.generate_branch_detection_data()
 
-    assert_raises(AttributeError, detect_branches_in_clusters, "fail")
-    assert_raises(AttributeError, detect_branches_in_clusters, None)
-    assert_raises(AttributeError, detect_branches_in_clusters, "fail")
-    assert_raises(ValueError, detect_branches_in_clusters, c_nofit)
-    assert_raises(AttributeError, detect_branches_in_clusters, c_nobranch)
-    assert_raises(ValueError, detect_branches_in_clusters, c_nomst)
-    assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size=-1)
-    assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size=0)
-    assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size=1)
-    assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size=2.0)
-    assert_raises(ValueError, detect_branches_in_clusters, c, min_branch_size="fail")
-    assert_raises(
-        ValueError, detect_branches_in_clusters, c, branch_selection_persistence=-1
-    )
-    assert_raises(
-        ValueError, detect_branches_in_clusters, c, branch_selection_persistence=-0.1
-    )
-    assert_raises(
-        ValueError,
-        detect_branches_in_clusters,
-        c,
-        branch_selection_method="something_else",
-    )
-    assert_raises(
-        ValueError,
-        detect_branches_in_clusters,
-        c,
-        branch_detection_method="something_else",
-    )
+    with pytest.raises(AttributeError):
+        detect_branches_in_clusters("fail")
+    with pytest.raises(AttributeError):
+        detect_branches_in_clusters(None)
+    with pytest.raises(AttributeError):
+        detect_branches_in_clusters("fail")
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c_nofit)
+    with pytest.raises(AttributeError):
+        detect_branches_in_clusters(c_nobranch)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c_nomst)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, min_cluster_size=-1)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, min_cluster_size=0)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, min_cluster_size=1)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, min_cluster_size=2.0)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, min_cluster_size="fail")
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, cluster_selection_persistence=-0.1)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(c, cluster_selection_epsilon=-0.1)
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(
+            c,
+            cluster_selection_method="something_else",
+        )
+    with pytest.raises(ValueError):
+        detect_branches_in_clusters(
+            c,
+            branch_detection_method="something_else",
+        )
 
 
 # --- Branch Detector Functionality
@@ -328,7 +361,7 @@ def test_caching():
     cachedir = mkdtemp()
     c = HDBSCAN(memory=cachedir, min_samples=5, branch_detection_data=True).fit(X)
     b1 = BranchDetector().fit(c)
-    b2 = BranchDetector(allow_single_branch=True).fit(c)
+    b2 = BranchDetector(allow_single_cluster=True).fit(c)
     n_groups1 = len(set(b1.labels_)) - int(-1 in b1.labels_)
     n_groups2 = len(set(b2.labels_)) - int(-1 in b2.labels_)
     assert n_groups1 == n_groups2
@@ -357,11 +390,11 @@ def test_exemplars():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
 
-    branch_exemplars = b.branch_exemplars_
+    branch_exemplars = b.exemplars_
     assert branch_exemplars[0] is None
     assert branch_exemplars[1] is None
     assert len(branch_exemplars[2]) == 3
-    assert len(b.branch_exemplars_) == 3
+    assert len(b.exemplars_) == 3
 
 
 def test_approximate_predict():
@@ -397,31 +430,31 @@ def test_approximate_predict():
 def test_trees_numpy_output_formats():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
-    points, edges = b.cluster_approximation_graph_.to_numpy()
+    points, edges = b.approximation_graph_.to_numpy()
     assert points.shape[0] <= X.shape[0]  # Excludes noise points
-    for t in b.cluster_condensed_trees_:
+    for t in b.condensed_trees_:
         t.to_numpy()
-    for t in b.cluster_linkage_trees_:
+    for t in b.linkage_trees_:
         t.to_numpy()
 
 
 def test_trees_pandas_output_formats():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
-    if_pandas(b.cluster_approximation_graph_.to_pandas)()
-    for t in b.cluster_condensed_trees_:
+    if_pandas(b.approximation_graph_.to_pandas)()
+    for t in b.condensed_trees_:
         if_pandas(t.to_pandas)()
-    for t in b.cluster_linkage_trees_:
+    for t in b.linkage_trees_:
         if_pandas(t.to_pandas)()
 
 
 def test_trees_networkx_output_formats():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
-    if_networkx(b.cluster_approximation_graph_.to_networkx)()
-    for t in b.cluster_condensed_trees_:
+    if_networkx(b.approximation_graph_.to_networkx)()
+    for t in b.condensed_trees_:
         if_networkx(t.to_networkx)()
-    for t in b.cluster_linkage_trees_:
+    for t in b.linkage_trees_:
         if_networkx(t.to_networkx)()
 
 
@@ -431,7 +464,7 @@ def test_trees_networkx_output_formats():
 def test_condensed_tree_plot():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
-    for t in b.cluster_condensed_trees_:
+    for t in b.condensed_trees_:
         if_matplotlib(t.plot)(
             select_clusters=True,
             label_clusters=True,
@@ -444,7 +477,7 @@ def test_condensed_tree_plot():
 def test_single_linkage_tree_plot():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
-    for t in b.cluster_linkage_trees_:
+    for t in b.linkage_trees_:
         if_matplotlib(t.plot)(cmap="Reds")
         if_matplotlib(t.plot)(
             vary_line_width=False,
@@ -455,10 +488,10 @@ def test_single_linkage_tree_plot():
         )
 
 
-def test_cluster_approximation_graph_plot():
+def test_approximation_graph_plot():
     c = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(X)
     b = BranchDetector().fit(c)
-    g = b.cluster_approximation_graph_
+    g = b.approximation_graph_
     if_matplotlib(g.plot)(positions=X)
     if_pygraphviz(if_matplotlib(g.plot))(node_color="x", feature_names=["x", "y"])
     if_pygraphviz(if_matplotlib(g.plot))(node_color=X[:, 0])
@@ -471,4 +504,3 @@ def test_cluster_approximation_graph_plot():
 @pytest.mark.skip(reason="need to refactor to meet newer standards")
 def test_branch_detector_is_sklearn_estimator():
     check_estimator(BranchDetector)
-
