@@ -68,11 +68,9 @@ class CondensedTree(object):
         Whether to allow the root cluster as the only selected cluster
 
     """
-    def __init__(self, condensed_tree_array, cluster_selection_method='eom',
-                 allow_single_cluster=False):
+    def __init__(self, condensed_tree_array, labels):
         self._raw_tree = condensed_tree_array
-        self.cluster_selection_method = cluster_selection_method
-        self.allow_single_cluster = allow_single_cluster
+        self._labels = labels
 
     def get_plot_data(self,
                       leaf_separation=1,
@@ -235,38 +233,16 @@ class CondensedTree(object):
         }
 
     def _select_clusters(self):
-        if self.cluster_selection_method == 'eom':
-            stability = compute_stability(self._raw_tree)
-            if self.allow_single_cluster:
-                node_list = sorted(stability.keys(), reverse=True)
-            else:
-                node_list = sorted(stability.keys(), reverse=True)[:-1]
-            cluster_tree = self._raw_tree[self._raw_tree['child_size'] > 1]
-            is_cluster = {cluster: True for cluster in node_list}
+        selected_clusters = dict()
+        for row in self._raw_tree:
+            if row['child_size'] > 1 :
+                continue
+            label = self._labels[row['child']]
+            if label >= 0:
+                selected_clusters[label] = min(selected_clusters.get(label, np.inf), row['parent'])
 
-            for node in node_list:
-                child_selection = (cluster_tree['parent'] == node)
-                subtree_stability = np.sum([stability[child] for
-                                            child in cluster_tree['child'][child_selection]])
-
-                if subtree_stability > stability[node]:
-                    is_cluster[node] = False
-                    stability[node] = subtree_stability
-                else:
-                    for sub_node in _bfs_from_cluster_tree(cluster_tree, node):
-                        if sub_node != node:
-                            is_cluster[sub_node] = False
-
-            return sorted([cluster
-                           for cluster in is_cluster
-                           if is_cluster[cluster]])
-
-        elif self.cluster_selection_method == 'leaf':
-            return _get_leaves(self._raw_tree)
-        else:
-            raise ValueError('Invalid Cluster Selection Method: %s\n'
-                             'Should be one of: "eom", "leaf"\n')
-
+        return sorted(selected_clusters.values())
+        
     def plot(self, leaf_separation=1, cmap='viridis', select_clusters=False,
              label_clusters=False, selection_palette=None,
              axis=None, colorbar=True, log_size=False,

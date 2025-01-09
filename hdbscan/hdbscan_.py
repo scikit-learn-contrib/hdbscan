@@ -18,7 +18,6 @@ from joblib.parallel import cpu_count
 from scipy.sparse import csgraph
 
 from ._hdbscan_linkage import (
-    single_linkage,
     mst_linkage_core,
     mst_linkage_core_vector,
     label,
@@ -1340,8 +1339,8 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             )
         else:
             warn(
-                "Cannot generate prediction data for non-vector"
-                "space inputs -- access to the source data rather"
+                "Cannot generate prediction data for non-vector "
+                "space inputs -- access to the source data rather "
                 "than mere distances is required!"
             )
 
@@ -1523,8 +1522,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         if self._condensed_tree is not None:
             return CondensedTree(
                 self._condensed_tree,
-                self.cluster_selection_method,
-                self.allow_single_cluster,
+                self.labels_
             )
         else:
             raise AttributeError(
