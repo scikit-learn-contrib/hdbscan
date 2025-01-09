@@ -1128,7 +1128,7 @@ class ApproximationGraph:
                     g.add_edge(
                         row["parent"],
                         row["child"],
-                        weight=1 / row["mutual_reachability"],
+                        weight=1 / (1 + row["mutual_reachability"]),
                     )
                 self._pos = nx.nx_agraph.graphviz_layout(g, prog="sfdp")
             for k, v in self._pos.items():
@@ -1276,7 +1276,7 @@ class ApproximationGraph:
             - branch probability,
 
             Edge attributes:
-            - weight (1 / mutual_reachability),
+            - weight (1 / (1 + mutual_reachability)),
             - mutual_reachability,
             - centrality,
             - cluster label,
@@ -1293,7 +1293,7 @@ class ApproximationGraph:
         # Add edges
         for row in self._edges:
             attrs = dict(
-                weight=1 / row["mutual_reachability"],
+                weight=1 / (1 + row["mutual_reachability"]),
                 mutual_reachability=row["mutual_reachability"],
                 component=row["component"],
             )

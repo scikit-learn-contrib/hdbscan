@@ -453,7 +453,8 @@ def _compute_branch_linkage_of_cluster(
     points = space_tree.data.base[cluster_points]
     centroid = np.average(points, weights=cluster_probabilities[cluster_mask], axis=0)
     centralities = dist_metric.pairwise(centroid[None], points)[0, :]
-    centralities = 1 / centralities
+    with np.errstate(divide="ignore"):
+        centralities = 1 / centralities
 
     # Construct cluster approximation graph
     if run_core:
