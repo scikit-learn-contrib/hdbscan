@@ -117,6 +117,10 @@ def _hdbscan_generic(
         #   matrix to indicate missing distance information.
         # TODO: Check if copying is necessary
         distance_matrix = X.copy()
+    elif metric == "graph":
+        assert issparse(X), f"Graphs must be passed as sparse arrays, was a {type(X)}."
+
+        distance_matrix = X.copy()
     else:
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
 
@@ -183,37 +187,44 @@ def _hdbscan_sparse_distance_matrix(
     **kwargs
 ):
     assert issparse(X)
-    # Check for connected component on X
-    if csgraph.connected_components(X, directed=False, return_labels=False) > 1:
-        raise ValueError(
-            "Sparse distance matrix has multiple connected "
-            "components!\nThat is, there exist groups of points "
-            "that are completely disjoint -- there are no distance "
-            "relations connecting them\n"
-            "Run hdbscan on each component."
+
+    # if the metric is not graph, compute mutual_reachability of distance matrix
+    if metric == "graph":
+        mutual_reachability_ = X.tocsr()
+
+    else:
+        # Check for connected component on X
+        if csgraph.connected_components(X, directed=False, return_labels=False) > 1:
+            raise ValueError(
+                "Sparse distance matrix has multiple connected "
+                "components!\nThat is, there exist groups of points "
+                "that are completely disjoint -- there are no distance "
+                "relations connecting them\n"
+                "Run hdbscan on each component."
+            )
+
+        lil_matrix = X.tolil()
+
+        # Compute sparse mutual reachability graph
+        # if max_dist > 0, max distance to use when the reachability is infinite
+        max_dist = kwargs.get("max_dist", 0.0)
+        mutual_reachability_ = sparse_mutual_reachability(
+            lil_matrix, min_points=min_samples, max_dist=max_dist, alpha=alpha
         )
 
-    lil_matrix = X.tolil()
-
-    # Compute sparse mutual reachability graph
-    # if max_dist > 0, max distance to use when the reachability is infinite
-    max_dist = kwargs.get("max_dist", 0.0)
-    mutual_reachability_ = sparse_mutual_reachability(
-        lil_matrix, min_points=min_samples, max_dist=max_dist, alpha=alpha
-    )
     # Check connected component on mutual reachability
     # If more than one component, it means that even if the distance matrix X
     # has one component, there exists with less than `min_samples` neighbors
     if (
-        csgraph.connected_components(
-            mutual_reachability_, directed=False, return_labels=False
-        )
-        > 1
+            csgraph.connected_components(
+                mutual_reachability_, directed=False, return_labels=False
+            )
+            > 1
     ):
         raise ValueError(
             (
                 "There exists points with less than %s neighbors. "
-                "Ensure your distance matrix has non zeros values for "
+                "Ensure your distance matrix (or graph for metric= `graph`) has non zeros values for "
                 "at least `min_sample`=%s neighbors for each points (i.e. K-nn graph), "
                 "or specify a `max_dist` to use when distances are missing."
             )
