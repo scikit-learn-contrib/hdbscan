@@ -764,7 +764,7 @@ def hdbscan(
 
     # Checks input and converts to an nd-array where possible
     if metric != "precomputed" or issparse(X):
-        X = check_array(X, accept_sparse="csr", force_all_finite=False)
+        X = check_array(X, accept_sparse="csr", ensure_all_finite=False)
     else:
         # Only non-sparse, precomputed distance matrices are handled here
         #   and thereby allowed to contain numpy.inf for missing distances
@@ -1229,7 +1229,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         if self.metric != "precomputed":
             # Non-precomputed matrices may contain non-finite values.
             # Rows with these values
-            X = check_array(X, accept_sparse="csr", force_all_finite=False)
+            X = check_array(X, accept_sparse="csr", ensure_all_finite=False)
             self._raw_data = X
 
             self._all_finite = is_finite(X)
