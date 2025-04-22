@@ -179,9 +179,9 @@ def detect_branches_in_clusters(
 
     References
     ----------
-    .. [1] Bot, D. M., Peeters, J., Liesenborgs J., & Aerts, J. (2023, November).
-       FLASC: A Flare-Sensitive Clustering Algorithm: Extending HDBSCAN* for
-       Detecting Branches in Clusters. arXiv:2311.15887
+    .. [1] Bot D.M., Peeters J., Liesenborgs J., Aerts J. 2025. FLASC: a
+    flare-sensitive clustering algorithm. PeerJ Computer Science 11:e2792
+    https://doi.org/10.7717/peerj-cs.2792.
     """
     # Check clusterer state
     if clusterer._min_spanning_tree is None:
@@ -872,9 +872,9 @@ class BranchDetector(BaseEstimator, ClusterMixin):
 
     References
     ----------
-    .. [1] Bot, D. M., Peeters, J., Liesenborgs J., & Aerts, J. (2023, November).
-       FLASC: A Flare-Sensitive Clustering Algorithm: Extending HDBSCAN* for
-       Detecting Branches in Clusters. arXiv:2311.15887
+    .. [1] Bot D.M., Peeters J., Liesenborgs J., Aerts J. 2025. FLASC: a
+    flare-sensitive clustering algorithm. PeerJ Computer Science 11:e2792
+    https://doi.org/10.7717/peerj-cs.2792.
     """
 
     def __init__(

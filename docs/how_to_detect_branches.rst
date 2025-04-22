@@ -81,7 +81,7 @@ tell us how those clusters combine into a larger shape.
 
 This is where the branch detection post-processing step comes into play.
 The functionality is described in detail by `Bot et
-al <https://arxiv.org/abs/2311.15887>`__ (please reference this paper
+al <https://peerj.com/articles/cs-2792/>`__ (please cite this paper
 when using this functionality). It operates on the detected clusters and
 extracts a branch-hierarchy analogous to HDBSCAN\*’s condensed cluster
 hierarchy. The process is very similar to HDBSCAN\* clustering, except
@@ -388,3 +388,27 @@ branches!!
 
 .. image:: images/how_to_detect_branches_25_0.png
 
+
+Citing
+------
+
+If you used the branch-detection functionality in this library please cite our `PeerJ paper <https://peerj.com/articles/cs-2792/>`_: 
+
+    Bot DM, Peeters J, Liesenborgs J, Aerts J. 2025. FLASC: a flare-sensitive
+    clustering algorithm. PeerJ Computer Science 11:e2792
+    https://doi.org/10.7717/peerj-cs.2792 
+
+.. code:: bibtex
+
+    @article{bot2025flasc,
+        title   = {{FLASC: a flare-sensitive clustering algorithm}},
+        author  = {Bot, Dani{\"{e}}l M. and Peeters, Jannes and Liesenborgs, Jori and Aerts, Jan},
+        year    = {2025},
+        month   = {apr},
+        journal = {PeerJ Comput. Sci.},
+        volume  = {11},
+        pages   = {e2792},
+        issn    = {2376-5992},
+        doi     = {10.7717/peerj-cs.2792},
+        url     = {https://peerj.com/articles/cs-2792},
+    }
