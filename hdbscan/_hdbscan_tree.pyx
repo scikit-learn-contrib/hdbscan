@@ -301,13 +301,6 @@ cdef max_lambdas(np.ndarray tree):
     return deaths_arr
 
 
-cdef dict min_lambdas(np.ndarray cluster_tree, set clusters):
-    return {
-        c: cluster_tree['lambda_val'][np.searchsorted(cluster_tree['child'], c)]
-        for c in clusters
-    }
-
-
 cdef class TreeUnionFind (object):
 
     cdef np.ndarray _data_arr
@@ -668,75 +661,65 @@ cpdef set epsilon_search(set leaves, np.ndarray cluster_tree, np.double_t cluste
 
 cpdef np.ndarray simplify_hierarchy(np.ndarray condensed_tree, 
                                     np.double_t persistence_threshold): 
-    """Iteratively remove branches with persistence below threshold."""
-    cdef np.double_t merge_lambda
-    cdef np.intp_t point, leaf, sibling, parent, leaf_idx, sibling_idx
-    cdef set[np.intp] processed, leaves
-    cdef dict[np.double_] deaths
-    cdef np.intp_t num_points = condensed_tree['parent'].min()
-    cdef np.ndarray[np.double_t, ndim=1] births
+    """Remove leaves with persistence below threshold."""
+    cdef np.intp_t n_points = condensed_tree['parent'][0]
+    cdef np.ndarray cluster_tree = condensed_tree[condensed_tree['child'] >= n_points]
+    cdef np.intp_t n_nodes = cluster_tree['child'][-1] + 1
 
-    cdef np.ndarray cluster_tree = condensed_tree[condensed_tree['child_size'] > 1]
-    cdef np.ndarray cluster_mask, keep_mask, update_mask
-    keep_mask = np.ones(condensed_tree.shape[0], dtype=np.bool_)
-    processed = set()
-    while cluster_tree.shape[0] > 0:
-        leaves = set(get_cluster_tree_leaves(cluster_tree))
-        births = max_lambdas(condensed_tree)
-        deaths = min_lambdas(cluster_tree, leaves)
-        
-        cluster_mask = np.ones(cluster_tree.shape[0], dtype=np.bool_)
-        for leaf in sorted(leaves, reverse=True):
-            if leaf in processed or (births[leaf] - deaths[leaf]) >= persistence_threshold:
-                continue
-            # Find rows for leaf and sibling
-            leaf_idx = np.searchsorted(cluster_tree['child'], leaf)
-            parent = cluster_tree['parent'][leaf_idx]
-            if leaf_idx > 0 and cluster_tree['parent'][leaf_idx - 1] == parent:
-                sibling_idx = leaf_idx - 1 
-            else:
-                sibling_idx = leaf_idx + 1
-            sibling = cluster_tree['child'][sibling_idx]
+    # track state and changes
+    cdef np.ndarray leaf_indicator = np.ones(n_nodes - n_points, dtype=np.bool_)
+    leaf_indicator[cluster_tree['parent'] - n_points] = False
+    cdef np.ndarray max_births = np.empty(n_nodes - n_points, dtype=np.float32)
+    max_births[condensed_tree['parent'] - n_points] = condensed_tree['lambda_val']
+    cdef np.ndarray parent_map = np.arange(n_points, n_nodes, dtype=np.int64)
+    cdef dict lambda_map = dict()
 
-            # Update parent values to the new parent
-            cluster_tree['parent'][cluster_tree['parent'] == leaf] = parent
-            cluster_tree['parent'][cluster_tree['parent'] == sibling] = parent
-            update_mask = condensed_tree['parent'] == leaf
-            condensed_tree['parent'][update_mask] = parent
-            condensed_tree['lambda_val'][update_mask] = deaths[leaf]
-            update_mask = condensed_tree['parent'] == sibling
-            condensed_tree['parent'][update_mask] = parent
-            condensed_tree['lambda_val'][update_mask] = deaths[leaf]
+    # reverse order guarantees children are processed before parents
+    cdef float death
+    cdef np.intp_t idx, parent, child, sibling_idx
+    cdef np.ndarray births, children, node_indices
+    for idx in range(cluster_tree['parent'].shape[0] - 1, 0, -2):
+        parent = cluster_tree['parent'][idx]
+        children = cluster_tree['child'][idx - 1 : idx + 1]
+        death = cluster_tree['lambda_val'][idx]
+        node_indices = children - n_points
+        births = max_births[node_indices]
 
-            # Mark visited rows
-            processed.add(leaf)
-            processed.add(sibling)
-            cluster_mask[leaf_idx] = False
-            cluster_mask[sibling_idx] = False        
-            for point in [leaf, sibling]:
-                keep_mask[condensed_tree['child'] == point] = False
-        
-        # Remove marked rows
-        if np.all(cluster_mask):
-            break
-        cluster_tree = cluster_tree[cluster_mask]
-    condensed_tree = condensed_tree[keep_mask]
-    return remap_cluster_ids(condensed_tree, num_points)
+        # propagate max density so only leaves can fail the persistence threshold
+        max_births[parent - n_points] = max(max_births[parent - n_points], births.max())
+        if (births.min() - death) >= persistence_threshold:
+            continue
 
+        # sibling is the most persistent child
+        sibling_idx = np.int64(births[0] <= births[1])
+        if leaf_indicator[node_indices[sibling_idx]]:
+            leaf_indicator[parent - n_points] = True
+        else:
+            lambda_map[children[1 - sibling_idx]] = death
+        parent_map[node_indices] = parent
 
-cdef np.ndarray remap_cluster_ids(np.ndarray condensed_tree, np.intp_t num_points):
-    """Ensures segments are numbered consecutively from 0 to n_clusters-1.""" 
-    cdef np.intp_t n_nodes = condensed_tree['parent'].max() + 1
-    cdef np.ndarray[np.intp_t, ndim=1] remaining_parents = np.unique(condensed_tree['parent'])
-    cdef np.ndarray[np.intp_t, ndim=1] id_map = np.empty(n_nodes, dtype=np.intp)
-    id_map[remaining_parents - num_points] = np.arange(
-        num_points, num_points + remaining_parents.shape[0]
-    )
-    cdef np.ndarray mask = condensed_tree['parent'] > num_points
-    condensed_tree['parent'][mask] = id_map[condensed_tree['parent'][mask] - num_points]
-    mask = condensed_tree['child'] > num_points
-    condensed_tree['child'][mask] = id_map[condensed_tree['child'][mask] - num_points]
-    return condensed_tree
+    # propagate and relabel for consecutive numbering
+    cdef np.ndarray n_skipped = np.zeros(parent_map.shape[0], dtype=np.bool_)
+    for idx, parent in enumerate(parent_map):
+        parent_map[idx] = parent_map[parent - n_points]
+    for idx, parent in enumerate(parent_map):
+        n_skipped[idx] = parent != (idx + n_points)
+        parent_map[idx] = parent - n_skipped[: parent - n_points].sum()
+
+    # apply changes
+    cdef np.intp_t size
+    cdef np.ndarray keep_mask = np.ones(condensed_tree['parent'].shape[0], dtype=np.bool_)
+    for idx, (parent, child, death, size) in enumerate(condensed_tree):
+        keep_mask[idx] = not n_skipped[max(child - n_points, 0)]
+        if not keep_mask[idx]:
+            continue
+
+        condensed_tree['lambda_val'][idx] = lambda_map.get(parent, death)
+        condensed_tree['parent'][idx] = parent_map[parent - n_points]
+        if child >= n_points:
+            condensed_tree['child'][idx] = parent_map[child - n_points]
+
+    return condensed_tree[keep_mask]
 
 
 cpdef tuple get_clusters(np.ndarray tree, dict stability,
