@@ -26,9 +26,9 @@ def _bfs_from_cluster_tree(tree, bfs_root):
     result = []
     to_process = [bfs_root]
 
-    while to_process:
+    while len(to_process) > 0:
         result.extend(to_process)
-        to_process = tree['child'][np.isin(tree['parent'], to_process)].tolist()
+        to_process = tree['child'][np.isin(tree['parent'], to_process)]
 
     return result
 
@@ -233,15 +233,16 @@ class CondensedTree(object):
         }
 
     def _select_clusters(self):
-        selected_clusters = dict()
-        for row in self._raw_tree:
-            if row['child_size'] > 1 :
-                continue
-            label = self._labels[row['child']]
-            if label >= 0:
-                selected_clusters[label] = min(selected_clusters.get(label, np.inf), row['parent'])
-
-        return sorted(selected_clusters.values())
+        points_tree = self._raw_tree[self._raw_tree["child_size"] == 1]
+        
+        # Find lowest cluster segment id for each cluster label
+        segments = points_tree['parent']
+        labels = self._labels[points_tree['child']]
+        order = np.argsort(labels)
+        groups = np.split(segments[order], np.flatnonzero(np.diff(labels[order]) != 0) + 1)        
+        return [
+            groups[label].min() for label in range(int(labels[order[0]] == -1), len(groups))
+        ]
         
     def plot(self, leaf_separation=1, cmap='viridis', select_clusters=False,
              label_clusters=False, selection_palette=None,
