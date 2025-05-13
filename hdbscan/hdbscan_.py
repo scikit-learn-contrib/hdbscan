@@ -79,7 +79,7 @@ def _tree_to_labels(
     set of labels and probabilities.
     """
     condensed_tree = condense_tree(single_linkage_tree, min_cluster_size)
-    if cluster_selection_persistence > 0.0:
+    if cluster_selection_persistence > 0.0 and condensed_tree.shape[0] > 0:
         condensed_tree = simplify_hierarchy(condensed_tree, cluster_selection_persistence)
     stability_dict = compute_stability(condensed_tree)
     labels, probabilities, stabilities = get_clusters(
