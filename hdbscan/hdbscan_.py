@@ -37,7 +37,17 @@ from .dist_metrics import DistanceMetric
 from .plots import CondensedTree, SingleLinkageTree, MinimumSpanningTree
 from .prediction import PredictionData
 
-KDTREE_VALID_METRICS = ["euclidean", "l2", "minkowski", "p", "manhattan", "cityblock", "l1", "chebyshev", "infinity"]
+KDTREE_VALID_METRICS = [
+    "euclidean",
+    "l2",
+    "minkowski",
+    "p",
+    "manhattan",
+    "cityblock",
+    "l1",
+    "chebyshev",
+    "infinity",
+]
 BALLTREE_VALID_METRICS = KDTREE_VALID_METRICS + [
     "braycurtis",
     "canberra",
@@ -98,7 +108,7 @@ def _hdbscan_generic(
     p=2,
     leaf_size=None,
     gen_min_span_tree=False,
-    **kwargs
+    **kwargs,
 ):
     if metric == "minkowski":
         distance_matrix = pairwise_distances(X, metric=metric, p=p)
@@ -124,7 +134,7 @@ def _hdbscan_generic(
             p,
             leaf_size,
             gen_min_span_tree,
-            **kwargs
+            **kwargs,
         )
 
     mutual_reachability_ = mutual_reachability(distance_matrix, min_samples, alpha)
@@ -174,7 +184,7 @@ def _hdbscan_sparse_distance_matrix(
     p=2,
     leaf_size=40,
     gen_min_span_tree=False,
-    **kwargs
+    **kwargs,
 ):
     assert issparse(X)
     # Check for connected component on X
@@ -242,7 +252,7 @@ def _hdbscan_prims_kdtree(
     p=2,
     leaf_size=40,
     gen_min_span_tree=False,
-    **kwargs
+    **kwargs,
 ):
     if X.dtype != np.float64:
         X = X.astype(np.float64)
@@ -284,7 +294,7 @@ def _hdbscan_prims_balltree(
     p=2,
     leaf_size=40,
     gen_min_span_tree=False,
-    **kwargs
+    **kwargs,
 ):
     if X.dtype != np.float64:
         X = X.astype(np.float64)
@@ -325,7 +335,7 @@ def _hdbscan_boruvka_kdtree(
     approx_min_span_tree=True,
     gen_min_span_tree=False,
     core_dist_n_jobs=4,
-    **kwargs
+    **kwargs,
 ):
     if leaf_size < 3:
         leaf_size = 3
@@ -344,7 +354,7 @@ def _hdbscan_boruvka_kdtree(
         leaf_size=leaf_size // 3,
         approx_min_span_tree=approx_min_span_tree,
         n_jobs=core_dist_n_jobs,
-        **kwargs
+        **kwargs,
     )
     min_spanning_tree = alg.spanning_tree()
     # Sort edges of the min_spanning_tree by weight
@@ -369,7 +379,7 @@ def _hdbscan_boruvka_balltree(
     approx_min_span_tree=True,
     gen_min_span_tree=False,
     core_dist_n_jobs=4,
-    **kwargs
+    **kwargs,
 ):
     if leaf_size < 3:
         leaf_size = 3
@@ -388,7 +398,7 @@ def _hdbscan_boruvka_balltree(
         leaf_size=leaf_size // 3,
         approx_min_span_tree=approx_min_span_tree,
         n_jobs=core_dist_n_jobs,
-        **kwargs
+        **kwargs,
     )
     min_spanning_tree = alg.spanning_tree()
     # Sort edges of the min_spanning_tree by weight
@@ -403,7 +413,7 @@ def _hdbscan_boruvka_balltree(
 
 
 def check_precomputed_distance_matrix(X):
-    """Perform check_array(X) after removing infinite values (numpy.inf) from the given distance matrix."""
+    r"""Perform check_array(X) after removing infinite values (numpy.inf) from the given distance matrix."""
     tmp = X.copy()
     tmp[np.isinf(tmp)] = 1
     check_array(tmp)
@@ -528,9 +538,9 @@ def hdbscan(
     cluster_selection_method="eom",
     allow_single_cluster=False,
     match_reference_implementation=False,
-    **kwargs
+    **kwargs,
 ):
-    """Perform HDBSCAN clustering from a vector array or distance matrix.
+    r"""Perform HDBSCAN clustering from a vector array or distance matrix.
 
     Parameters
     ----------
@@ -689,14 +699,13 @@ def hdbscan(
     if min_samples is None:
         min_samples = min_cluster_size
 
-    if not np.issubdtype(type(min_samples), np.integer) or \
-       not np.issubdtype(type(min_cluster_size), np.integer):
+    if not np.issubdtype(type(min_samples), np.integer) or not np.issubdtype(
+        type(min_cluster_size), np.integer
+    ):
         raise ValueError("Min samples and min cluster size must be integers!")
 
     if min_samples <= 0 or min_cluster_size <= 0:
-        raise ValueError(
-            "Min samples and Min cluster size must be positive" " integers"
-        )
+        raise ValueError("Min samples and Min cluster size must be positive integers")
 
     if min_cluster_size == 1:
         raise ValueError("Min cluster size must be greater than one")
@@ -708,7 +717,7 @@ def hdbscan(
         raise ValueError("Epsilon must be a float value greater than or equal to 0!")
 
     if not isinstance(alpha, float) or alpha <= 0.0:
-        raise ValueError("Alpha must be a positive float value greater than" " 0!")
+        raise ValueError("Alpha must be a positive float value greater than 0!")
 
     if leaf_size < 1:
         raise ValueError("Leaf size must be greater than 0!")
@@ -717,9 +726,7 @@ def hdbscan(
         if p is None:
             raise TypeError("Minkowski metric given but no p value supplied!")
         if p < 0:
-            raise ValueError(
-                "Minkowski metric with negative p value is not" " defined!"
-            )
+            raise ValueError("Minkowski metric with negative p value is not defined!")
 
     if match_reference_implementation:
         min_samples = min_samples - 1
@@ -728,7 +735,7 @@ def hdbscan(
 
     if cluster_selection_method not in ("eom", "leaf"):
         raise ValueError(
-            "Invalid Cluster Selection Method: %s\n" 'Should be one of: "eom", "leaf"\n'
+            'Invalid Cluster Selection Method: %s\nShould be one of: "eom", "leaf"\n'
         )
 
     # Checks input and converts to an nd-array where possible
@@ -758,19 +765,19 @@ def hdbscan(
             )(X, min_samples, alpha, metric, p, leaf_size, gen_min_span_tree, **kwargs)
         elif algorithm == "prims_kdtree":
             if metric not in KDTREE_VALID_METRICS:
-                raise ValueError("Cannot use Prim's with KDTree for this" " metric!")
+                raise ValueError("Cannot use Prim's with KDTree for this metric!")
             (single_linkage_tree, result_min_span_tree) = memory.cache(
                 _hdbscan_prims_kdtree
             )(X, min_samples, alpha, metric, p, leaf_size, gen_min_span_tree, **kwargs)
         elif algorithm == "prims_balltree":
             if metric not in BALLTREE_VALID_METRICS:
-                raise ValueError("Cannot use Prim's with BallTree for this" " metric!")
+                raise ValueError("Cannot use Prim's with BallTree for this metric!")
             (single_linkage_tree, result_min_span_tree) = memory.cache(
                 _hdbscan_prims_balltree
             )(X, min_samples, alpha, metric, p, leaf_size, gen_min_span_tree, **kwargs)
         elif algorithm == "boruvka_kdtree":
             if metric not in BALLTREE_VALID_METRICS:
-                raise ValueError("Cannot use Boruvka with KDTree for this" " metric!")
+                raise ValueError("Cannot use Boruvka with KDTree for this metric!")
             (single_linkage_tree, result_min_span_tree) = memory.cache(
                 _hdbscan_boruvka_kdtree
             )(
@@ -783,11 +790,11 @@ def hdbscan(
                 approx_min_span_tree,
                 gen_min_span_tree,
                 core_dist_n_jobs,
-                **kwargs
+                **kwargs,
             )
         elif algorithm == "boruvka_balltree":
             if metric not in BALLTREE_VALID_METRICS:
-                raise ValueError("Cannot use Boruvka with BallTree for this" " metric!")
+                raise ValueError("Cannot use Boruvka with BallTree for this metric!")
             if (X.shape[0] // leaf_size) > 16000:
                 warn(
                     "A large dataset size and small leaf_size may induce excessive "
@@ -806,12 +813,11 @@ def hdbscan(
                 approx_min_span_tree,
                 gen_min_span_tree,
                 core_dist_n_jobs,
-                **kwargs
+                **kwargs,
             )
         else:
             raise TypeError("Unknown algorithm type %s specified" % algorithm)
     else:
-
         if issparse(X) or metric not in FAST_METRICS:
             # We can't do much with sparse matrices ...
             (single_linkage_tree, result_min_span_tree) = memory.cache(
@@ -831,7 +837,7 @@ def hdbscan(
                     p,
                     leaf_size,
                     gen_min_span_tree,
-                    **kwargs
+                    **kwargs,
                 )
             else:
                 (single_linkage_tree, result_min_span_tree) = memory.cache(
@@ -846,7 +852,7 @@ def hdbscan(
                     approx_min_span_tree,
                     gen_min_span_tree,
                     core_dist_n_jobs,
-                    **kwargs
+                    **kwargs,
                 )
         else:  # Metric is a valid BallTree metric
             # TO DO: Need heuristic to decide when to go to boruvka;
@@ -862,7 +868,7 @@ def hdbscan(
                     p,
                     leaf_size,
                     gen_min_span_tree,
-                    **kwargs
+                    **kwargs,
                 )
             else:
                 (single_linkage_tree, result_min_span_tree) = memory.cache(
@@ -877,27 +883,24 @@ def hdbscan(
                     approx_min_span_tree,
                     gen_min_span_tree,
                     core_dist_n_jobs,
-                    **kwargs
+                    **kwargs,
                 )
 
-    return (
-        _tree_to_labels(
-            X,
-            single_linkage_tree,
-            min_cluster_size,
-            cluster_selection_method,
-            allow_single_cluster,
-            match_reference_implementation,
-            cluster_selection_epsilon,
-            max_cluster_size,
-        )
-        + (result_min_span_tree,)
-    )
+    return _tree_to_labels(
+        X,
+        single_linkage_tree,
+        min_cluster_size,
+        cluster_selection_method,
+        allow_single_cluster,
+        match_reference_implementation,
+        cluster_selection_epsilon,
+        max_cluster_size,
+    ) + (result_min_span_tree,)
 
 
 # Inherits from sklearn
 class HDBSCAN(BaseEstimator, ClusterMixin):
-    """Perform HDBSCAN clustering from vector array or distance matrix.
+    r"""Perform HDBSCAN clustering from vector array or distance matrix.
 
     HDBSCAN - Hierarchical Density-Based Spatial Clustering of Applications
     with Noise. Performs DBSCAN over varying epsilon values and integrates
@@ -1116,7 +1119,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         allow_single_cluster=False,
         prediction_data=False,
         match_reference_implementation=False,
-        **kwargs
+        **kwargs,
     ):
         self.min_cluster_size = min_cluster_size
         self.min_samples = min_samples
@@ -1147,7 +1150,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self._relative_validity = None
 
     def fit(self, X, y=None):
-        """Perform HDBSCAN clustering from features or distance matrix.
+        r"""Perform HDBSCAN clustering from features or distance matrix.
 
         Parameters
         ----------
@@ -1226,7 +1229,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         return self
 
     def fit_predict(self, X, y=None):
-        """Performs clustering on X and returns cluster labels.
+        r"""Performs clustering on X and returns cluster labels.
 
         Parameters
         ----------
@@ -1266,7 +1269,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                 min_samples,
                 tree_type=tree_type,
                 metric=self.metric,
-                **self._metric_kwargs
+                **self._metric_kwargs,
             )
         else:
             warn(
@@ -1417,7 +1420,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             return SingleLinkageTree(self._single_linkage_tree)
         else:
             raise AttributeError(
-                "No single linkage tree was generated; try running fit" " first."
+                "No single linkage tree was generated; try running fit first."
             )
 
     @property

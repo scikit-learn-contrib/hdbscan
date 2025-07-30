@@ -4,6 +4,7 @@ from scipy.spatial.distance import cdist
 from ._hdbscan_linkage import mst_linkage_core
 from .hdbscan_ import isclose
 
+
 def all_points_core_distance(distance_matrix, d=2.0):
     """
     Compute the all-points-core-distance for all the points of a cluster.
@@ -27,15 +28,16 @@ def all_points_core_distance(distance_matrix, d=2.0):
     Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J.,
     2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
-    distance_matrix[distance_matrix != 0] = (1.0 / distance_matrix[
-        distance_matrix != 0]) ** d
+    distance_matrix[distance_matrix != 0] = (
+        1.0 / distance_matrix[distance_matrix != 0]
+    ) ** d
     result = distance_matrix.sum(axis=1)
     result /= distance_matrix.shape[0] - 1
 
     if result.sum() == 0:
         result = np.zeros(len(distance_matrix))
     else:
-        result **= (-1.0 / d)
+        result **= -1.0 / d
 
     return result
 
@@ -46,16 +48,23 @@ def max_ratio(stacked_distances):
         for j in range(stacked_distances.shape[1]):
             dist = stacked_distances[i][j][0]
             coredist = stacked_distances[i][j][1]
-            if dist == 0 or coredist/dist <= max_ratio:
+            if dist == 0 or coredist / dist <= max_ratio:
                 continue
-            max_ratio = coredist/dist
+            max_ratio = coredist / dist
 
     return max_ratio
 
 
-def distances_between_points(X, labels, cluster_id,
-                                    metric='euclidean', d=None, no_coredist=False,
-                                    print_max_raw_to_coredist_ratio=False, **kwd_args):
+def distances_between_points(
+    X,
+    labels,
+    cluster_id,
+    metric="euclidean",
+    d=None,
+    no_coredist=False,
+    print_max_raw_to_coredist_ratio=False,
+    **kwd_args,
+):
     """
     Compute pairwise distances for all the points of a cluster.
 
@@ -107,15 +116,13 @@ def distances_between_points(X, labels, cluster_id,
     Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J.,
     2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
-    if metric == 'precomputed':
+    if metric == "precomputed":
         if d is None:
-            raise ValueError('If metric is precomputed a '
-                             'd value must be provided!')
+            raise ValueError("If metric is precomputed a d value must be provided!")
         distance_matrix = X[labels == cluster_id, :][:, labels == cluster_id]
     else:
         subset_X = X[labels == cluster_id, :]
-        distance_matrix = pairwise_distances(subset_X, metric=metric,
-                                             **kwd_args)
+        distance_matrix = pairwise_distances(subset_X, metric=metric, **kwd_args)
         d = X.shape[1]
 
     if no_coredist:
@@ -125,10 +132,14 @@ def distances_between_points(X, labels, cluster_id,
         core_distances = all_points_core_distance(distance_matrix.copy(), d=d)
         core_dist_matrix = np.tile(core_distances, (core_distances.shape[0], 1))
         stacked_distances = np.dstack(
-            [distance_matrix, core_dist_matrix, core_dist_matrix.T])
+            [distance_matrix, core_dist_matrix, core_dist_matrix.T]
+        )
 
         if print_max_raw_to_coredist_ratio:
-            print("Max raw distance to coredistance ratio: " + str(max_ratio(stacked_distances)))
+            print(
+                "Max raw distance to coredistance ratio: "
+                + str(max_ratio(stacked_distances))
+            )
 
         return stacked_distances.max(axis=-1), core_distances
 
@@ -166,22 +177,27 @@ def internal_minimum_spanning_tree(mr_distances):
     min_span_tree = single_linkage_data.copy()
     for index, row in enumerate(min_span_tree[1:], 1):
         candidates = np.where(isclose(mr_distances[int(row[1])], row[2]))[0]
-        candidates = np.intersect1d(candidates,
-                                    single_linkage_data[:index, :2].astype(
-                                        int))
+        candidates = np.intersect1d(
+            candidates, single_linkage_data[:index, :2].astype(int)
+        )
         candidates = candidates[candidates != row[1]]
         assert len(candidates) > 0
         row[0] = candidates[0]
 
     vertices = np.arange(mr_distances.shape[0])[
-        np.bincount(min_span_tree.T[:2].flatten().astype(np.intp)) > 1]
+        np.bincount(min_span_tree.T[:2].flatten().astype(np.intp)) > 1
+    ]
     if not len(vertices):
         vertices = [0]
     # A little "fancy" we select from the flattened array reshape back
     # (Fortran format to get indexing right) and take the product to do an and
     # then convert back to boolean type.
-    edge_selection = np.prod(np.in1d(min_span_tree.T[:2], vertices).reshape(
-        (min_span_tree.shape[0], 2), order='F'), axis=1).astype(bool)
+    edge_selection = np.prod(
+        np.in1d(min_span_tree.T[:2], vertices).reshape(
+            (min_span_tree.shape[0], 2), order="F"
+        ),
+        axis=1,
+    ).astype(bool)
 
     # Density sparseness is not well defined if there are no
     # internal edges (as per the referenced paper). However
@@ -200,10 +216,19 @@ def internal_minimum_spanning_tree(mr_distances):
     return vertices, edges
 
 
-def density_separation(X, labels, cluster_id1, cluster_id2,
-                       internal_nodes1, internal_nodes2,
-                       core_distances1, core_distances2,
-                       metric='euclidean', no_coredist=False, **kwd_args):
+def density_separation(
+    X,
+    labels,
+    cluster_id1,
+    cluster_id2,
+    internal_nodes1,
+    internal_nodes2,
+    core_distances1,
+    core_distances2,
+    metric="euclidean",
+    no_coredist=False,
+    **kwd_args,
+):
     """
     Compute the density separation between two clusters. This is the minimum
     distance between pairs of points, one from internal nodes of MSTs of each cluster.
@@ -259,7 +284,7 @@ def density_separation(X, labels, cluster_id1, cluster_id2,
     Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J.,
     2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
-    if metric == 'precomputed':
+    if metric == "precomputed":
         sub_select = X[labels == cluster_id1, :][:, labels == cluster_id2]
         distance_matrix = sub_select[internal_nodes1, :][:, internal_nodes2]
     else:
@@ -271,20 +296,30 @@ def density_separation(X, labels, cluster_id1, cluster_id2,
         return distance_matrix.min()
 
     else:
-        core_dist_matrix1 = np.tile(core_distances1[internal_nodes1],
-                                    (distance_matrix.shape[1], 1)).T
-        core_dist_matrix2 = np.tile(core_distances2[internal_nodes2],
-                                    (distance_matrix.shape[0], 1))
+        core_dist_matrix1 = np.tile(
+            core_distances1[internal_nodes1], (distance_matrix.shape[1], 1)
+        ).T
+        core_dist_matrix2 = np.tile(
+            core_distances2[internal_nodes2], (distance_matrix.shape[0], 1)
+        )
 
-        mr_dist_matrix = np.dstack([distance_matrix,
-                                    core_dist_matrix1,
-                                    core_dist_matrix2]).max(axis=-1)
+        mr_dist_matrix = np.dstack(
+            [distance_matrix, core_dist_matrix1, core_dist_matrix2]
+        ).max(axis=-1)
 
         return mr_dist_matrix.min()
 
 
-def validity_index(X, labels, metric='euclidean',
-                    d=None, per_cluster_scores=False, mst_raw_dist=False, verbose=False,  **kwd_args):
+def validity_index(
+    X,
+    labels,
+    metric="euclidean",
+    d=None,
+    per_cluster_scores=False,
+    mst_raw_dist=False,
+    verbose=False,
+    **kwd_args,
+):
     """
     Compute the density based cluster validity index for the
     clustering specified by `labels` and for each cluster in `labels`.
@@ -348,17 +383,14 @@ def validity_index(X, labels, metric='euclidean',
     mst_edges = {}
 
     max_cluster_id = labels.max() + 1
-    density_sep = np.inf * np.ones((max_cluster_id, max_cluster_id),
-                                   dtype=np.float64)
+    density_sep = np.inf * np.ones((max_cluster_id, max_cluster_id), dtype=np.float64)
     cluster_validity_indices = np.empty(max_cluster_id, dtype=np.float64)
 
     for cluster_id in range(max_cluster_id):
-
         if np.sum(labels == cluster_id) == 0:
             continue
 
-        distances_for_mst, core_distances[
-            cluster_id] = distances_between_points(
+        distances_for_mst, core_distances[cluster_id] = distances_between_points(
             X,
             labels,
             cluster_id,
@@ -366,31 +398,36 @@ def validity_index(X, labels, metric='euclidean',
             d,
             no_coredist=mst_raw_dist,
             print_max_raw_to_coredist_ratio=verbose,
-            **kwd_args
+            **kwd_args,
         )
 
-        mst_nodes[cluster_id], mst_edges[cluster_id] = \
-            internal_minimum_spanning_tree(distances_for_mst)
+        mst_nodes[cluster_id], mst_edges[cluster_id] = internal_minimum_spanning_tree(
+            distances_for_mst
+        )
         density_sparseness[cluster_id] = mst_edges[cluster_id].T[2].max()
 
     for i in range(max_cluster_id):
-
         if np.sum(labels == i) == 0:
             continue
 
         internal_nodes_i = mst_nodes[i]
         for j in range(i + 1, max_cluster_id):
-
             if np.sum(labels == j) == 0:
                 continue
 
             internal_nodes_j = mst_nodes[j]
             density_sep[i, j] = density_separation(
-                X, labels, i, j,
-                internal_nodes_i, internal_nodes_j,
-                core_distances[i], core_distances[j],
-                metric=metric, no_coredist=mst_raw_dist,
-                **kwd_args
+                X,
+                labels,
+                i,
+                j,
+                internal_nodes_i,
+                internal_nodes_j,
+                core_distances[i],
+                core_distances[j],
+                metric=metric,
+                no_coredist=mst_raw_dist,
+                **kwd_args,
             )
             density_sep[j, i] = density_sep[i, j]
 
@@ -398,14 +435,12 @@ def validity_index(X, labels, metric='euclidean',
     result = 0
 
     for i in range(max_cluster_id):
-
         if np.sum(labels == i) == 0:
             continue
 
         min_density_sep = density_sep[i].min()
-        cluster_validity_indices[i] = (
-            (min_density_sep - density_sparseness[i]) /
-            max(min_density_sep, density_sparseness[i])
+        cluster_validity_indices[i] = (min_density_sep - density_sparseness[i]) / max(
+            min_density_sep, density_sparseness[i]
         )
 
         if verbose:

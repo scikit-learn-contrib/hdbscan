@@ -2,6 +2,7 @@
 Tests for HDBSCAN clustering algorithm
 Shamelessly based on (i.e. ripped off from) the DBSCAN test code
 """
+
 import numpy as np
 from scipy.spatial import distance
 from scipy import sparse
@@ -118,12 +119,15 @@ def if_networkx(func):
 
 def generate_noisy_data():
     blobs, _ = datasets.make_blobs(
-        n_samples=200, centers=[(-0.75, 2.25), (1.0, 2.0)], cluster_std=0.25, random_state=42
+        n_samples=200,
+        centers=[(-0.75, 2.25), (1.0, 2.0)],
+        cluster_std=0.25,
+        random_state=42,
     )
     moons, _ = datasets.make_moons(n_samples=200, noise=0.05, random_state=42)
     rng = np.random.default_rng(seed=42)
     noise = rng.uniform(-1.0, 3.0, (50, 2))
-    
+
     return np.vstack([blobs, moons, noise])
 
 
@@ -259,11 +263,13 @@ def test_hdbscan_generic():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_2 == n_clusters
 
+
 def test_hdbscan_dbscan_clustering():
     clusterer = HDBSCAN().fit(X)
     labels = clusterer.dbscan_clustering(0.3)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert(n_clusters == n_clusters_1)
+    assert n_clusters == n_clusters_1
+
 
 def test_hdbscan_high_dimensional():
     H, y = make_blobs(n_samples=50, random_state=0, n_features=64)
@@ -338,7 +344,6 @@ def test_hdbscan_input_lists():
 
 
 def test_hdbscan_boruvka_kdtree_matches():
-
     data = generate_noisy_data()
 
     labels_prims, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm="generic")
@@ -359,7 +364,6 @@ def test_hdbscan_boruvka_kdtree_matches():
 
 
 def test_hdbscan_boruvka_balltree_matches():
-
     data = generate_noisy_data()
 
     labels_prims, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm="generic")
@@ -422,7 +426,6 @@ def test_min_span_tree_plot():
 
 
 def test_tree_numpy_output_formats():
-
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
 
     clusterer.single_linkage_tree_.to_numpy()
@@ -431,7 +434,6 @@ def test_tree_numpy_output_formats():
 
 
 def test_tree_pandas_output_formats():
-
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
     if_pandas(clusterer.condensed_tree_.to_pandas)()
     if_pandas(clusterer.single_linkage_tree_.to_pandas)()
@@ -439,7 +441,6 @@ def test_tree_pandas_output_formats():
 
 
 def test_tree_networkx_output_formats():
-
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
     if_networkx(clusterer.condensed_tree_.to_networkx)()
     if_networkx(clusterer.single_linkage_tree_.to_networkx)()
@@ -584,7 +585,6 @@ def test_hdbscan_badargs():
 
 
 def test_hdbscan_sparse():
-
     sparse_X = sparse.csr_matrix(X)
 
     labels = HDBSCAN().fit(sparse_X).labels_
@@ -593,7 +593,6 @@ def test_hdbscan_sparse():
 
 
 def test_hdbscan_caching():
-
     cachedir = mkdtemp()
     labels1 = HDBSCAN(memory=cachedir, min_samples=5).fit(X).labels_
     labels2 = HDBSCAN(memory=cachedir, min_samples=5, min_cluster_size=6).fit(X).labels_

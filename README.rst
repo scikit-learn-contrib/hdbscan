@@ -305,3 +305,22 @@ Licensing
 ---------
 
 The hdbscan package is 3-clause BSD licensed. Enjoy.
+
+
+
+```
+podman run \
+-v ~//radcom-src/hdbscan/:/var/radcom-src/hdbscan/ \
+--tls-verify=false \
+--user root \
+-it --rm --entrypoint /bin/bash \
+nexus3-prod.radcom.co.il:32768/python:3.13.5-bookworm-2025-07-30
+```
+
+```
+cd /var/radcom-src/hdbscan/
+apt-get install gcc -y
+pip install build cython numpy scipy scikit-learn
+python -m build --wheel --outdir ./dist .
+```
+

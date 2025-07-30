@@ -20,6 +20,7 @@ create many clusters. Thus in this example its two parameters
 (damping and per-point preference) were set to to mitigate this
 behavior.
 """
+
 print(__doc__)
 
 import time
@@ -34,41 +35,54 @@ from sklearn.preprocessing import StandardScaler
 import hdbscan
 
 np.random.seed(0)
-plt.style.use('fivethirtyeight')
+plt.style.use("fivethirtyeight")
 
-def make_var_density_blobs(n_samples=750, centers=[[0,0]], cluster_std=[0.5], random_state=0):
+
+def make_var_density_blobs(
+    n_samples=750, centers=[[0, 0]], cluster_std=[0.5], random_state=0
+):
     samples_per_blob = n_samples // len(centers)
-    blobs = [datasets.make_blobs(n_samples=samples_per_blob, centers=[c], cluster_std=cluster_std[i])[0]
-             for i, c in enumerate(centers)]
+    blobs = [
+        datasets.make_blobs(
+            n_samples=samples_per_blob, centers=[c], cluster_std=cluster_std[i]
+        )[0]
+        for i, c in enumerate(centers)
+    ]
     labels = [i * np.ones(samples_per_blob) for i in range(len(centers))]
     return np.vstack(blobs), np.hstack(labels)
+
 
 # Generate datasets. We choose the size big enough to see the scalability
 # of the algorithms, but not too big to avoid too long running times
 n_samples = 1500
-noisy_circles = datasets.make_circles(n_samples=n_samples, factor=.5,
-                                      noise=.08)
-noisy_moons = datasets.make_moons(n_samples=n_samples, noise=.10)
-blobs = datasets.make_blobs(n_samples=n_samples-200, random_state=8)
-noisy_blobs = np.vstack((blobs[0], 25.0*np.random.rand(200, 2)-[10.0,10.0])), np.hstack((blobs[1], -1*np.ones(200))) 
-varying_blobs = make_var_density_blobs(n_samples,
-                                       centers=[[1, 1],
-                                                [-1, -1],
-                                                [1, -1]],
-                                       cluster_std=[0.2, 0.35, 0.5])
+noisy_circles = datasets.make_circles(n_samples=n_samples, factor=0.5, noise=0.08)
+noisy_moons = datasets.make_moons(n_samples=n_samples, noise=0.10)
+blobs = datasets.make_blobs(n_samples=n_samples - 200, random_state=8)
+noisy_blobs = (
+    np.vstack((blobs[0], 25.0 * np.random.rand(200, 2) - [10.0, 10.0])),
+    np.hstack((blobs[1], -1 * np.ones(200))),
+)
+varying_blobs = make_var_density_blobs(
+    n_samples, centers=[[1, 1], [-1, -1], [1, -1]], cluster_std=[0.2, 0.35, 0.5]
+)
 no_structure = np.random.rand(n_samples, 2), None
 
-colors = np.array([x for x in 'bgrcmykbgrcmykbgrcmykbgrcmyk'])
+colors = np.array([x for x in "bgrcmykbgrcmykbgrcmykbgrcmyk"])
 colors = np.hstack([colors] * 20)
 
 clustering_names = [
-    'MiniBatchKMeans', 'AffinityPropagation',
-    'SpectralClustering', 'AgglomerativeClustering',
-    'DBSCAN', 'HDBSCAN']
+    "MiniBatchKMeans",
+    "AffinityPropagation",
+    "SpectralClustering",
+    "AgglomerativeClustering",
+    "DBSCAN",
+    "HDBSCAN",
+]
 
 plt.figure(figsize=(len(clustering_names) * 2 + 3, 9.5))
-plt.subplots_adjust(left=.02, right=.98, bottom=.001, top=.96, wspace=.05,
-                    hspace=.01)
+plt.subplots_adjust(
+    left=0.02, right=0.98, bottom=0.001, top=0.96, wspace=0.05, hspace=0.01
+)
 
 plot_num = 1
 
@@ -88,28 +102,32 @@ for i_dataset, dataset in enumerate(datasets):
 
     # create clustering estimators
     two_means = cluster.MiniBatchKMeans(n_clusters=2)
-    spectral = cluster.SpectralClustering(n_clusters=2,
-                                          eigen_solver='arpack',
-                                          affinity="nearest_neighbors")
-    dbscan = cluster.DBSCAN(eps=.2)
-    affinity_propagation = cluster.AffinityPropagation(damping=.9,
-                                                       preference=-200)
+    spectral = cluster.SpectralClustering(
+        n_clusters=2, eigen_solver="arpack", affinity="nearest_neighbors"
+    )
+    dbscan = cluster.DBSCAN(eps=0.2)
+    affinity_propagation = cluster.AffinityPropagation(damping=0.9, preference=-200)
 
     average_linkage = cluster.AgglomerativeClustering(
-        linkage="average", affinity="cityblock", n_clusters=2,
-        connectivity=connectivity)
+        linkage="average", affinity="cityblock", n_clusters=2, connectivity=connectivity
+    )
 
     hdbscanner = hdbscan.HDBSCAN()
     clustering_algorithms = [
-        two_means, affinity_propagation, spectral, average_linkage,
-        dbscan, hdbscanner]
+        two_means,
+        affinity_propagation,
+        spectral,
+        average_linkage,
+        dbscan,
+        hdbscanner,
+    ]
 
     for name, algorithm in zip(clustering_names, clustering_algorithms):
         # predict cluster memberships
         t0 = time.time()
         algorithm.fit(X)
         t1 = time.time()
-        if hasattr(algorithm, 'labels_'):
+        if hasattr(algorithm, "labels_"):
             y_pred = algorithm.labels_.astype(np.int)
         else:
             y_pred = algorithm.predict(X)
@@ -120,17 +138,22 @@ for i_dataset, dataset in enumerate(datasets):
             plt.title(name, size=18)
         plt.scatter(X[:, 0], X[:, 1], color=colors[y_pred].tolist(), s=10)
 
-        if hasattr(algorithm, 'cluster_centers_'):
+        if hasattr(algorithm, "cluster_centers_"):
             centers = algorithm.cluster_centers_
-            center_colors = colors[:len(centers)]
+            center_colors = colors[: len(centers)]
             plt.scatter(centers[:, 0], centers[:, 1], s=100, c=center_colors)
         plt.xlim(-2, 2)
         plt.ylim(-2, 2)
         plt.xticks(())
         plt.yticks(())
-        plt.text(.99, .01, ('%.2fs' % (t1 - t0)).lstrip('0'),
-                 transform=plt.gca().transAxes, size=15,
-                 horizontalalignment='right')
+        plt.text(
+            0.99,
+            0.01,
+            ("%.2fs" % (t1 - t0)).lstrip("0"),
+            transform=plt.gca().transAxes,
+            size=15,
+            horizontalalignment="right",
+        )
         plot_num += 1
 
 plt.show()
