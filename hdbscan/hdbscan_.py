@@ -256,10 +256,12 @@ def _hdbscan_prims_kdtree(
     # The Cython routines used require contiguous arrays
     if not X.flags["C_CONTIGUOUS"]:
         X = np.array(X, dtype=np.double, order="C")
-
+	    
+    if p!= 2 and 'p' not in kwargs:
+        kwargs['p'] = p
+	    
     tree = KDTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
-
-    # TO DO: Deal with p for minkowski appropriately
+    
     dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
     # Get distance to kth nearest neighbour
@@ -298,7 +300,10 @@ def _hdbscan_prims_balltree(
     # The Cython routines used require contiguous arrays
     if not X.flags["C_CONTIGUOUS"]:
         X = np.array(X, dtype=np.double, order="C")
-
+	    
+    if p!= 2 and 'p' not in kwargs:
+        kwargs['p'] = p
+	    
     tree = BallTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
 
     dist_metric = DistanceMetric.get_metric(metric, **kwargs)
@@ -341,7 +346,10 @@ def _hdbscan_boruvka_kdtree(
 
     if X.dtype != np.float64:
         X = X.astype(np.float64)
-
+	    
+    if p!= 2 and 'p' not in kwargs:
+        kwargs['p'] = p
+	    
     tree = KDTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
     alg = KDTreeBoruvkaAlgorithm(
         tree,
@@ -385,7 +393,10 @@ def _hdbscan_boruvka_balltree(
 
     if X.dtype != np.float64:
         X = X.astype(np.float64)
-
+	    
+    if p!= 2 and 'p' not in kwargs:
+        kwargs['p'] = p
+	    
     tree = BallTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
     alg = BallTreeBoruvkaAlgorithm(
         tree,
@@ -1200,7 +1211,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         self.cluster_selection_epsilon_max = cluster_selection_epsilon_max
 
         self._metric_kwargs = kwargs
-
+	    
+        if p is not None:
+            self._metric_kwargs['p'] = p
+		
         self._condensed_tree = None
         self._single_linkage_tree = None
         self._min_spanning_tree = None
