@@ -14,7 +14,7 @@ jobs:
     container: quay.io/pypa/manylinux2014_x86_64
     strategy:
       matrix:
-        python: ["cp38-cp38", "cp39-cp39", "cp310-cp310", "cp311-cp311"]
+        python: ["cp38-cp38", "cp39-cp39", "cp310-cp310", "cp311-cp311", "cp312-cp312"]
     steps:
       - uses: actions/checkout@v1
         with:
