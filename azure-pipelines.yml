@@ -27,15 +27,6 @@ stages:
       - job: run_platform_tests
         strategy:
           matrix:
-            mac_py39:
-              imageName: 'macOS-latest'
-              python.version: '3.9'
-            linux_py39:
-              imageName: 'ubuntu-latest'
-              python.version: '3.9'
-            windows_py39:
-              imageName: 'windows-latest'
-              python.version: '3.9'
             mac_py310:
               imageName: 'macOS-latest'
               python.version: '3.10'
@@ -63,6 +54,15 @@ stages:
             windows_py312:
               imageName: 'windows-latest'
               python.version: '3.12'
+            mac_py313:
+              imageName: 'macOS-latest'
+              python.version: '3.13'
+            linux_py313:
+              imageName: 'ubuntu-latest'
+              python.version: '3.13'
+            windows_py313:
+              imageName: 'windows-latest'
+              python.version: '3.13'
         pool:
           vmImage: $(imageName)
 
@@ -81,19 +81,11 @@ stages:
             pip install -e .
             pip install pytest pytest-azurepipelines
             pip install pytest-cov
-            pip install coveralls
           displayName: 'Install package'
 
         - script: |
             pytest hdbscan/tests --show-capture=no -v --disable-warnings --junitxml=junit/test-results.xml --cov=hdbscan/ --cov-report=xml --cov-report=html
           displayName: 'Run tests'
-
-        - bash: |
-            coveralls
-          displayName: 'Publish to coveralls'
-          condition: and(succeeded(), eq(variables.triggeredByPullRequest, false)) # Don't run this for PRs because they can't access pipeline secrets
-          env:
-            COVERALLS_REPO_TOKEN: $(COVERALLS_TOKEN)
 
         - task: PublishTestResults@2
           inputs:
@@ -112,16 +104,14 @@ stages:
         container: quay.io/pypa/manylinux2014_x86_64:latest
         strategy:
           matrix:
-            linux_py38:
-              python.version: 'cp38-cp38'
-            linux_py39:
-              python.version: 'cp39-cp39'
             linux_py310:
               python.version: 'cp310-cp310'
             linux_py311:
               python.version: 'cp311-cp311'
             linux_py312:
               python.version: 'cp312-cp312'
+            linux_py313:
+              python.version: 'cp313-cp313'
         steps:
         - script: |
             "${PYBIN}/python" -m pip install --upgrade pip
@@ -159,18 +149,6 @@ stages:
         displayName: Build source dists and wheels for windows and macOS
         strategy:
           matrix:        
-            mac_py38:
-              imageName: 'macOS-latest'
-              python.version: '3.8'
-            windows_py38:
-              imageName: 'windows-latest'
-              python.version: '3.8'
-            mac_py39:
-              imageName: 'macOS-latest'
-              python.version: '3.9'
-            windows_py39:
-              imageName: 'windows-latest'
-              python.version: '3.9'
             mac_py310:
               imageName: 'macOS-latest'
               python.version: '3.10'
@@ -189,6 +167,12 @@ stages:
             windows_py312:
               imageName: 'windows-latest'
               python.version: '3.12'
+            mac_py313:
+              imageName: 'macOS-latest'
+              python.version: '3.13'
+            windows_py313:
+              imageName: 'windows-latest'
+              python.version: '3.13'
         pool:
           vmImage: $(imageName) 
 
@@ -234,6 +218,6 @@ stages:
 
         - script: |
             pip install twine
-            twine upload -r pypi --config-file $(PYPIRC_CONFIG.secureFilePath) --skip-existing  dist/* 
+            twine upload -r testpypi --config-file $(PYPIRC_CONFIG.secureFilePath) --skip-existing  dist/* 
           displayName: 'Upload to PyPI'
           condition: and(succeeded(), eq(variables['Build.SourceBranchName'], variables['packageVersionFormatted']))
