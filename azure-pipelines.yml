@@ -218,6 +218,6 @@ stages:
 
         - script: |
             pip install twine
-            twine upload -r testpypi --config-file $(PYPIRC_CONFIG.secureFilePath) --skip-existing  dist/* 
+            twine upload -r pypi --config-file $(PYPIRC_CONFIG.secureFilePath) --skip-existing  dist/* 
           displayName: 'Upload to PyPI'
           condition: and(succeeded(), eq(variables['Build.SourceBranchName'], variables['packageVersionFormatted']))
