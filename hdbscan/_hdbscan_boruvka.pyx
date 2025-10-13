@@ -1,3 +1,4 @@
+# distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 # cython: boundscheck=False
 # cython: nonecheck=False
 # cython: wraparound=False
@@ -89,7 +90,7 @@ cdef inline np.double_t balltree_min_dist_dual(
     np.double_t radius2,
     np.intp_t node1,
     np.intp_t node2,
-    np.double_t[:, ::1] centroid_dist) nogil except -1:
+    np.double_t[:, ::1] centroid_dist) except -1 nogil:
 
     cdef np.double_t dist_pt = centroid_dist[node1, node2]
     return max(0, (dist_pt - radius1 - radius2))
@@ -139,7 +140,7 @@ cdef inline np.double_t kdtree_min_rdist_dual(
     np.intp_t node1,
     np.intp_t node2,
     np.double_t[:, :, ::1] node_bounds,
-    np.intp_t num_features) nogil except -1:
+    np.intp_t num_features) except -1 nogil:
 
     cdef np.double_t d, d1, d2, rdist = 0.0
     cdef np.double_t zero = 0.0
@@ -603,7 +604,7 @@ cdef class KDTreeBoruvkaAlgorithm (object):
         return self.components.shape[0]
 
     cdef int dual_tree_traversal(self, np.intp_t node1,
-                                 np.intp_t node2) nogil except -1:
+                                 np.intp_t node2) except -1 nogil:
         """Perform a dual tree traversal, pruning wherever possible, to find
         the nearest neighbor not in the same component for each component.
         This is akin to a standard dual tree NN search, but we also prune
