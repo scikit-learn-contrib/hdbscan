@@ -62,7 +62,6 @@ configuration = {
         'Development Status :: 4 - Beta',
         'Intended Audience :: Science/Research',
         'Intended Audience :: Developers',
-        'License :: OSI Approved',
         'Programming Language :: C',
         'Programming Language :: Python',
         'Topic :: Software Development',
@@ -80,7 +79,7 @@ configuration = {
     'url': 'http://github.com/scikit-learn-contrib/hdbscan',
     'maintainer': 'Leland McInnes',
     'maintainer_email': 'leland.mcinnes@gmail.com',
-    'license': 'BSD',
+    'license-expression': 'BSD-3-Clause',
     'packages': ['hdbscan', 'hdbscan.tests'],
     'install_requires': requirements(),
     'ext_modules': cythonize([
@@ -91,8 +90,6 @@ configuration = {
                     _prediction_utils,
                     dist_metrics]),
     'cmdclass': {'build_ext': CustomBuildExtCommand},
-    'test_suite': 'nose.collector',
-    'tests_require': ['nose'],
     'data_files': ('hdbscan/dist_metrics.pxd',)
 }
 
