@@ -195,7 +195,7 @@ Based on the paper:
     D.M. Bot, J. Peeters, J. Liesenborgs and J. Aerts
     *FLASC: a flare-sensitive clustering algorithm.*
     PeerJ Computer Science, Vol 11, April 2025, e2792.
-    https://doi.org/10.7717/peerj-cs.2792/.
+    https://doi.org/10.7717/peerj-cs.2792.
 
 ----------
 Installing
