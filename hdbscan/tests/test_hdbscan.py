@@ -3,6 +3,7 @@ Tests for HDBSCAN clustering algorithm
 Shamelessly based on (i.e. ripped off from) the DBSCAN test code
 """
 import numpy as np
+import sklearn.metrics
 from scipy.spatial import distance
 from scipy import sparse
 from scipy import stats
@@ -260,11 +261,13 @@ def test_hdbscan_generic():
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_2 == n_clusters
 
+
 def test_hdbscan_dbscan_clustering():
     clusterer = HDBSCAN().fit(X)
     labels = clusterer.dbscan_clustering(0.3)
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
-    assert(n_clusters == n_clusters_1)
+    assert (n_clusters == n_clusters_1)
+
 
 def test_hdbscan_high_dimensional():
     H, y = make_blobs(n_samples=50, random_state=0, n_features=64)
@@ -276,8 +279,8 @@ def test_hdbscan_high_dimensional():
 
     labels = (
         HDBSCAN(algorithm="best", metric="seuclidean", V=np.ones(H.shape[1]))
-        .fit(H)
-        .labels_
+            .fit(H)
+            .labels_
     )
     n_clusters_2 = len(set(labels)) - int(-1 in labels)
     assert n_clusters_2 == n_clusters
@@ -339,7 +342,6 @@ def test_hdbscan_input_lists():
 
 
 def test_hdbscan_boruvka_kdtree_matches():
-
     data = generate_noisy_data()
 
     labels_prims, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm="generic")
@@ -360,7 +362,6 @@ def test_hdbscan_boruvka_kdtree_matches():
 
 
 def test_hdbscan_boruvka_balltree_matches():
-
     data = generate_noisy_data()
 
     labels_prims, p, persist, ctree, ltree, mtree = hdbscan(data, algorithm="generic")
@@ -423,7 +424,6 @@ def test_min_span_tree_plot():
 
 
 def test_tree_numpy_output_formats():
-
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
 
     clusterer.single_linkage_tree_.to_numpy()
@@ -432,7 +432,6 @@ def test_tree_numpy_output_formats():
 
 
 def test_tree_pandas_output_formats():
-
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
     if_pandas(clusterer.condensed_tree_.to_pandas)()
     if_pandas(clusterer.single_linkage_tree_.to_pandas)()
@@ -440,7 +439,6 @@ def test_tree_pandas_output_formats():
 
 
 def test_tree_networkx_output_formats():
-
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
     if_networkx(clusterer.condensed_tree_.to_networkx)()
     if_networkx(clusterer.single_linkage_tree_.to_networkx)()
@@ -597,7 +595,6 @@ def test_hdbscan_badargs():
 
 
 def test_hdbscan_sparse():
-
     sparse_X = sparse.csr_matrix(X)
 
     labels = HDBSCAN().fit(sparse_X).labels_
@@ -606,7 +603,6 @@ def test_hdbscan_sparse():
 
 
 def test_hdbscan_caching():
-
     cachedir = mkdtemp()
     labels1 = HDBSCAN(memory=cachedir, min_samples=5).fit(X).labels_
     labels2 = HDBSCAN(memory=cachedir, min_samples=5, min_cluster_size=6).fit(X).labels_
@@ -720,6 +716,34 @@ def test_hdbscan_parameters_do_not_trigger_errors():
 @pytest.mark.skip(reason="need to refactor to meet newer standards")
 def test_hdbscan_is_sklearn_estimator():
     check_estimator(HDBSCAN)
+
+
+def test_hdbscan_graph():
+    # create a distance matrix, see test_hdbscan_distance_matrix
+    D = distance.squareform(distance.pdist(X))
+    D /= np.max(D)
+
+    threshold = stats.scoreatpercentile(D.flatten(), 50)
+
+    D[D >= threshold] = 0.0
+    D = sparse.csr_matrix(D)
+    D.eliminate_zeros()
+
+    # create cluster labels using precomputed metric
+    dist_clusterer = HDBSCAN(metric="precomputed").fit(D)
+    labels_distance_matrix = dist_clusterer.labels_
+
+    # create a graph from the distance matrix and transform the graph to a csr adjacency matrix
+    from hdbscan._hdbscan_reachability import sparse_mutual_reachability
+
+    graph = sparse_mutual_reachability(D.tolil())
+
+    # create cluster labels using the graph metric
+    graph_clusterer = HDBSCAN(metric="graph").fit(graph)
+    labels_hdbscan_graph = graph_clusterer.labels_
+
+    assert sklearn.metrics.accuracy_score(labels_distance_matrix, labels_hdbscan_graph) == 1
+
 
 
 # Probably not applicable now #
