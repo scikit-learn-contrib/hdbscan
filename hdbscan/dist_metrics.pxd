@@ -1,7 +1,8 @@
 #!python
-#cython: boundscheck=False
-#cython: wraparound=False
-#cython: cdivision=True
+# distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
+# cython: boundscheck=False
+# cython: wraparound=False
+# cython: cdivision=True
 
 import cython
 cimport cython
@@ -33,7 +34,7 @@ DTYPE = np.double
 #  We use these for the default (euclidean) case so that they can be
 #  inlined.  This leads to faster computation for the most common case
 cdef inline DTYPE_t euclidean_dist(DTYPE_t* x1, DTYPE_t* x2,
-                                   ITYPE_t size) nogil except -1:
+                                   ITYPE_t size) except -1 nogil:
     cdef DTYPE_t tmp, d=0
     cdef np.intp_t j
     for j in range(size):
@@ -43,7 +44,7 @@ cdef inline DTYPE_t euclidean_dist(DTYPE_t* x1, DTYPE_t* x2,
 
 
 cdef inline DTYPE_t euclidean_rdist(DTYPE_t* x1, DTYPE_t* x2,
-                                    ITYPE_t size) nogil except -1:
+                                    ITYPE_t size) except -1 nogil:
     cdef DTYPE_t tmp, d=0
     cdef np.intp_t j
     for j in range(size):
@@ -52,7 +53,7 @@ cdef inline DTYPE_t euclidean_rdist(DTYPE_t* x1, DTYPE_t* x2,
     return d
 
 
-cdef inline DTYPE_t euclidean_dist_to_rdist(DTYPE_t dist) nogil except -1:
+cdef inline DTYPE_t euclidean_dist_to_rdist(DTYPE_t dist) except -1 nogil:
     return dist * dist
 
 
@@ -79,10 +80,10 @@ cdef class DistanceMetric:
     cdef object kwargs
 
     cdef DTYPE_t dist(self, DTYPE_t* x1, DTYPE_t* x2,
-                      ITYPE_t size) nogil except -1
+                      ITYPE_t size) except -1 nogil
 
     cdef DTYPE_t rdist(self, DTYPE_t* x1, DTYPE_t* x2,
-                       ITYPE_t size) nogil except -1
+                       ITYPE_t size) except -1 nogil
 
     cdef int pdist(self, DTYPE_t[:, ::1] X, DTYPE_t[:, ::1] D) except -1
 
@@ -91,4 +92,4 @@ cdef class DistanceMetric:
 
     cdef DTYPE_t _rdist_to_dist(self, DTYPE_t rdist) except -1
 
-    cdef DTYPE_t _dist_to_rdist(self, DTYPE_t dist) nogil except -1
+    cdef DTYPE_t _dist_to_rdist(self, DTYPE_t dist) except -1 nogil
