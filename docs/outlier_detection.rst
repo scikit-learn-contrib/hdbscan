@@ -69,10 +69,10 @@ plot.
 
 
 Note that not only are the outlying border points highlighted as
-outliers, but points at the edge of the central ball like cluster, and
+outliers, but points at the edge of the central ball-like cluster, and
 just below the vertical band cluster, are also designated as outliers.
 This is because those two clusters are extremely dense, and the points
 at the edge of this cluster are close enough to the cluster that they
-should be part of it, but far enough from the being core parts of the
+should be part of it, but far enough from being core parts of the
 cluster that they are extremely unlikely and hence anomalous.
 
