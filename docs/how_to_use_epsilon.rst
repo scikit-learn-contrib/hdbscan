@@ -58,7 +58,7 @@ same time avoid the abundance of micro-clusters in the original HDBSCAN\* cluste
 Note that for the given parameter setting, running HDBSCAN\* based on ``cluster_selection_method = 'eom'`` or ``cluster_selection_method = 'leaf'`` does not make
 any difference: the ``cluster_selection_epsilon`` threshold neutralizes the effect of HDBSCAN(eom)'s stability calculations.
 When using a lower threshold, some minor differences can be noticed. For example, an epsilon value of 3 meters with ``'eom'`` produces the same results as
-a the 5 meter value on the given data set, but 3 meters in combination with ``'leaf'`` achieves a slightly different result:
+a 5 meter value on the given data set, but 3 meters in combination with ``'leaf'`` achieves a slightly different result:
 	
 .. image:: images/epsilon_parameter_hdbscan_e3_leaf.png
 	:align: center
