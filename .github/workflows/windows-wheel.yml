@@ -1,0 +1,30 @@
+name: Build Windows wheel (latest commit)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build deps
+        run: |
+          python -m pip install -U pip
+          python -m pip install cibuildwheel numpy
+
+      - name: Build wheel
+        run: python -m cibuildwheel --output-dir dist
+        env:
+          CIBW_BUILD: cp312-win_amd64
+          CIBW_SKIP: "*-win32 pp*"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hdbscan-win-wheel
+          path: dist/*.whl
