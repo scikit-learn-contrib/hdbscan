@@ -172,7 +172,7 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
     alpha : float, optional (default=np.sqrt(2))
         Distance scaling for reachability distance computation. Reachability
         distance is computed as
-        $max \{ core_k(a), core_k(b), 1/\alpha d(a,b) \}$.
+        $max \\{ core_k(a), core_k(b), 1/\\alpha d(a,b) \\}$.
 
     gamma : int, optional (default=5)
         Ignore any clusters in the flat clustering with size less than gamma,
@@ -338,7 +338,7 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
     alpha : float, optional (default=np.sqrt(2))
         Distance scaling for reachability distance computation. Reachability
         distance is computed as
-        $max \{ core_k(a), core_k(b), 1/\alpha d(a,b) \}$.
+        $max \\{ core_k(a), core_k(b), 1/\\alpha d(a,b) \\}$.
 
     gamma : int, optional (default=5)
         Ignore any clusters in the flat clustering with size less than gamma,
