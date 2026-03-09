@@ -98,10 +98,10 @@ stages:
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/release-'), eq(variables.triggeredByPullRequest, false))
     jobs:
       # Need to use manylinux as ubuntu-latest is too new
-      - job: Manylinux2014Build
+      - job: Manylinux_2_28_Build
         pool:
           vmImage: 'ubuntu-latest'
-        container: quay.io/pypa/manylinux2014_x86_64:latest
+        container: quay.io/pypa/manylinux_2_28_x86_64:latest
         strategy:
           matrix:
             linux_py310:
@@ -128,7 +128,7 @@ stages:
           env:
             PYBIN: /opt/python/$(python.version)/bin
         - bash: |
-            auditwheel repair dist/*linux_x86_64.whl --plat manylinux2014_x86_64 -w wheelhouse-manylinux/
+            auditwheel repair dist/*linux_x86_64.whl --plat manylinux_2_28_x86_64 -w wheelhouse-manylinux/
           displayName: 'Audit wheels'
         
         - task: DownloadSecureFile@1
