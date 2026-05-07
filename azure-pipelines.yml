@@ -184,7 +184,6 @@ stages:
             pip install uv
             uv sync
           displayName: 'Install dependencies'
-
         
         - bash: |
             uv build --no-sources --sdist --wheel
@@ -210,6 +209,6 @@ stages:
 
         - script: |
             uvx twine check dist/*
-            uvx twine upload --repository testpypi --config-file $(PYPIRC_CONFIG.secureFilePath) dist/*
+            uvx twine upload --repository testpypi --config-file $(PYPIRC_CONFIG.secureFilePath) --skip-existing dist/*
           displayName: 'Upload to PyPI'
           condition: and(succeeded(), eq(variables['Build.SourceBranchName'], variables['packageVersionFormatted']))
