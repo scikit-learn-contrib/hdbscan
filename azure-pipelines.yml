@@ -74,17 +74,15 @@ stages:
 
         - script: |
             python -m pip install --upgrade pip
-            pip install -r requirements.txt
-          displayName: 'Install dependencies'
+          displayName: 'Upgrade pip'
 
         - script: |
-            pip install -e .
-            pip install pytest pytest-azurepipelines
-            pip install pytest-cov
-          displayName: 'Install package'
+            python -m pip install -U uv
+            uv sync --group cicd
+          displayName: 'Install package and dependencies'
 
         - script: |
-            pytest hdbscan/tests --show-capture=no -v --disable-warnings --junitxml=junit/test-results.xml --cov=hdbscan/ --cov-report=xml --cov-report=html
+            uv run pytest hdbscan/tests --show-capture=no -v --disable-warnings --junitxml=junit/test-results.xml --cov=hdbscan/ --cov-report=xml --cov-report=html
           displayName: 'Run tests'
 
         - task: PublishTestResults@2
@@ -115,15 +113,14 @@ stages:
         steps:
         - script: |
             "${PYBIN}/python" -m pip install --upgrade pip
+            "${PYBIN}/python" -m pip install uv
             "${PYBIN}/python" -m pip install wheel
-            "${PYBIN}/python" -m pip install -r requirements.txt
-            "${PYBIN}/python" -m pip install cython
-            "${PYBIN}/python" -m pip install setuptools
+            uv sync
           displayName: 'Install dependencies and build tools'
           env:
             PYBIN: /opt/python/$(python.version)/bin
         - script: |
-            "${PYBIN}/python" setup.py sdist bdist_wheel
+            uv build --no-sources --sdist --wheel
           displayName: 'Build wheels'
           env:
             PYBIN: /opt/python/$(python.version)/bin
@@ -139,8 +136,8 @@ stages:
         
         - bash: |
             "${PYBIN}/python" -m pip install twine
-            "${PYBIN}/python" -m twine upload -r pypi --config-file $(PYPIRC_CONFIG.secureFilePath) --skip-existing --disable-progress-bar wheelhouse-manylinux/*
-            "${PYBIN}/python" -m twine upload -r pypi --config-file $(PYPIRC_CONFIG.secureFilePath) --skip-existing --disable-progress-bar dist/*.tar.gz
+            "${PYBIN}/python" -m twine upload -r testpypi --config-file $(PYPIRC_CONFIG.secureFilePath) --skip-existing --disable-progress-bar wheelhouse-manylinux/*
+            "${PYBIN}/python" -m twine upload -r testpypi --config-file $(PYPIRC_CONFIG.secureFilePath) --skip-existing --disable-progress-bar dist/*.tar.gz
           displayName: 'Publish wheel to PyPi'
           env:
             PYBIN: /opt/python/$(python.version)/bin
@@ -184,22 +181,17 @@ stages:
 
         - script: |
             python -m pip install --upgrade pip
-            pip install wheel
-            pip install -r requirements.txt
-            pip install cython
-            pip install setuptools
+            pip install uv
+            uv sync
           displayName: 'Install dependencies'
 
-        - script: |
-            pip install -e .
-          displayName: 'Install package locally'
         
         - bash: |
-            python setup.py sdist bdist_wheel
+            uv build --no-sources --sdist --wheel
           displayName: 'Build package'
 
         - bash: |
-            export PACKAGE_VERSION="$(python setup.py --version)"
+            export PACKAGE_VERSION="$(uv version --short)"
             echo "Package Version: ${PACKAGE_VERSION}"
             echo "##vso[task.setvariable variable=packageVersionFormatted;]release-${PACKAGE_VERSION}"
           displayName: 'Get package version'
@@ -217,7 +209,7 @@ stages:
             secureFile: 'pypirc'  
 
         - script: |
-            pip install twine
-            twine upload -r pypi --config-file $(PYPIRC_CONFIG.secureFilePath) --skip-existing  dist/* 
+            uvx twine check dist/*
+            uvx twine upload --repository testpypi --config-file $(PYPIRC_CONFIG.secureFilePath) dist/*
           displayName: 'Upload to PyPI'
           condition: and(succeeded(), eq(variables['Build.SourceBranchName'], variables['packageVersionFormatted']))
