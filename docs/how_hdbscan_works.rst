@@ -257,7 +257,7 @@ data structure. We can view the result as a dendrogram as we see below:
 
 This brings us to the point where robust single linkage stops. We want
 more though; a cluster hierarchy is good, but we really want a set of
-flat clusters. We could do that by drawing a a horizontal line through
+flat clusters. We could do that by drawing a horizontal line through
 the above diagram and selecting the clusters that it cuts through. This
 is in practice what
 `DBSCAN <http://scikit-learn.org/stable/modules/clustering.html#dbscan>`__
