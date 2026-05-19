@@ -63,6 +63,15 @@ stages:
             windows_py313:
               imageName: 'windows-latest'
               python.version: '3.13'
+            mac_py314:
+              imageName: 'macOS-latest'
+              python.version: '3.14'
+            linux_py314:
+              imageName: 'ubuntu-latest'
+              python.version: '3.14'
+            windows_py314:
+              imageName: 'windows-latest'
+              python.version: '3.14'
         pool:
           vmImage: $(imageName)
 
