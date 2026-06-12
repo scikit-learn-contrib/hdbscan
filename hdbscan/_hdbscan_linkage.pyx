@@ -211,13 +211,17 @@ cdef class UnionFind (object):
         return
 
     cdef np.intp_t fast_find(self, np.intp_t n):
-        cdef np.intp_t p
+        cdef np.intp_t p, tmp
         p = n
-        while self.parent_arr[n] != -1:
-            n = self.parent_arr[n]
-        # label up to the root
-        while self.parent_arr[p] != n:
-            p, self.parent_arr[p] = self.parent_arr[p], n
+        # walk to the root using the cached C pointer (parent_arr is untyped,
+        # so indexing it goes through boxed Python getitem/setitem)
+        while self.parent[n] != -1:
+            n = self.parent[n]
+        # full path compression: point every node on the path at the root
+        while self.parent[p] != -1:
+            tmp = self.parent[p]
+            self.parent[p] = n
+            p = tmp
         return n
 
 
@@ -243,10 +247,10 @@ cpdef np.ndarray[np.double_t, ndim=2] label(np.ndarray[np.double_t, ndim=2] L):
 
         aa, bb = U.fast_find(a), U.fast_find(b)
 
-        result[index][0] = aa
-        result[index][1] = bb
-        result[index][2] = delta
-        result[index][3] = U.size[aa] + U.size[bb]
+        result[index, 0] = aa
+        result[index, 1] = bb
+        result[index, 2] = delta
+        result[index, 3] = U.size[aa] + U.size[bb]
 
         U.union(aa, bb)
 
