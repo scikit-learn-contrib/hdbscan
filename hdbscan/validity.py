@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.metrics import pairwise_distances
 from scipy.spatial.distance import cdist
+from scipy.special import logsumexp
 from ._hdbscan_linkage import mst_linkage_core
 from numpy import isclose
 
@@ -27,15 +28,24 @@ def all_points_core_distance(distance_matrix, d=2.0):
     Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J.,
     2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
-    distance_matrix[distance_matrix != 0] = (1.0 / distance_matrix[
-        distance_matrix != 0]) ** d
-    result = distance_matrix.sum(axis=1)
-    result /= distance_matrix.shape[0] - 1
+    # The all-points-core-distance of a point i is
+    #     ( mean_{j != i, dist_ij != 0} (1 / dist_ij) ** d ) ** (-1 / d).
+    # Computing (1 / dist) ** d directly overflows float64 for small distances
+    # and/or high dimension d, corrupting the result (see issue #665). Since
+    # log((1 / dist) ** d) = -d * log(dist), the mean is evaluated in log-space
+    # with logsumexp so the huge (1 / dist) ** d term is never materialized.
+    # Zero distances are excluded exactly as before by giving them a log-term of
+    # -inf, which contributes 0 to the sum.
+    nonzero = distance_matrix != 0
+    log_terms = np.full(distance_matrix.shape, -np.inf, dtype=np.float64)
+    log_terms[nonzero] = -d * np.log(distance_matrix[nonzero])
 
-    if result.sum() == 0:
+    log_result = logsumexp(log_terms, axis=1) - np.log(distance_matrix.shape[0] - 1)
+
+    if np.all(np.isneginf(log_result)):
         result = np.zeros(len(distance_matrix))
     else:
-        result **= (-1.0 / d)
+        result = np.exp((-1.0 / d) * log_result)
 
     return result
 

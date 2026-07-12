@@ -197,6 +197,55 @@ def test_hdbscan_feature_vector():
     assert validity >= 0.4
 
 
+def test_validity_index_overflow():
+    """Regression test for issue #665.
+
+    ``all_points_core_distance`` used to evaluate ``(1 / dist) ** d``
+    directly, which overflows float64 for small pairwise distances and/or
+    high dimension ``d``. The overflow raised a ``RuntimeWarning`` and
+    silently corrupted the core distances (they collapsed to 0), corrupting
+    ``validity_index``. It is now computed in log-space.
+    """
+    from hdbscan.validity import all_points_core_distance
+
+    # (a) High-dimensional data with small within-cluster distances used to
+    # overflow: validity_index must now be finite with no overflow warning.
+    rng = np.random.RandomState(0)
+    dim = 200
+    cluster0 = rng.normal(0.0, 5e-4, size=(25, dim))
+    cluster1 = rng.normal(0.0, 5e-4, size=(25, dim))
+    cluster1[:, 0] += 10.0  # separate the two clusters
+    X_highdim = np.vstack([cluster0, cluster1])
+    labels_highdim = np.array([0] * 25 + [1] * 25)
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        validity = validity_index(X_highdim, labels_highdim)
+    overflow_warnings = [
+        w for w in caught
+        if issubclass(w.category, RuntimeWarning) and "overflow" in str(w.message)
+    ]
+    assert not overflow_warnings, "overflow warning raised (issue #665)"
+    assert np.isfinite(validity)
+
+    # (b) On a non-overflowing distance matrix the result must stay
+    # numerically equal to the original ``(mean of (1/dist)**d)**(-1/d)``.
+    dist = np.array([
+        [0.0, 0.4, 0.8, 0.5],
+        [0.4, 0.0, 0.3, 0.9],
+        [0.8, 0.3, 0.0, 0.6],
+        [0.5, 0.9, 0.6, 0.0],
+    ])
+    d = 5.0
+    reference = dist.copy()
+    reference[reference != 0] = (1.0 / reference[reference != 0]) ** d
+    reference = reference.sum(axis=1) / (reference.shape[0] - 1)
+    reference **= (-1.0 / d)
+    assert_array_almost_equal(
+        all_points_core_distance(dist.copy(), d=d), reference, decimal=9
+    )
+
+
 def test_hdbscan_prims_kdtree():
     labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm="prims_kdtree")
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
