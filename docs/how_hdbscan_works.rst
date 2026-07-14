@@ -100,7 +100,7 @@ algorithm to be robust against noise so we need to find a way to help
 How can we characterize 'sea' and 'land' without doing a clustering? As
 long as we can get an estimate of density we can consider lower density
 points as the 'sea'. The goal here is not to perfectly distinguish 'sea'
-from 'land' -- this is an initial step in clustering, not the ouput --
+from 'land' -- this is an initial step in clustering, not the output --
 just to make our clustering core a little more robust to noise. So given
 an identification of 'sea' we want to lower the sea level. For practical
 purposes that means making 'sea' points more distant from each other and
@@ -172,7 +172,7 @@ blue and green as larger -- equal to the radius of the green circle
 
 .. image:: images/distance4a.svg
 
-On the other hand the mutual reachablity distance from red to green is
+On the other hand the mutual reachability distance from red to green is
 simply distance from red to green since that distance is greater than
 either core distance (i.e. the distance arrow passes through both
 circles).
@@ -257,7 +257,7 @@ data structure. We can view the result as a dendrogram as we see below:
 
 This brings us to the point where robust single linkage stops. We want
 more though; a cluster hierarchy is good, but we really want a set of
-flat clusters. We could do that by drawing a a horizontal line through
+flat clusters. We could do that by drawing a horizontal line through
 the above diagram and selecting the clusters that it cuts through. This
 is in practice what
 `DBSCAN <http://scikit-learn.org/stable/modules/clustering.html#dbscan>`__
