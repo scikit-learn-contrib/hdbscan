@@ -369,7 +369,7 @@ class CondensedTree(object):
             plot_range = np.hstack([plot_data['bar_tops'], plot_data['bar_bottoms']])
             plot_range = plot_range[np.isfinite(plot_range)]
             mean_y_center = np.mean([np.max(plot_range), np.min(plot_range)])
-            max_height = np.diff(np.percentile(plot_range, q=[10,90]))
+            max_height = np.diff(np.percentile(plot_range, q=[10,90])).item()
 
             for i, c in enumerate(chosen_clusters):
                 c_bounds = plot_data['cluster_bounds'][c]
@@ -486,12 +486,25 @@ class CondensedTree(object):
 
 
 def _get_dendrogram_ordering(parent, linkage, root):
+    # Iterative post-order traversal to avoid recursion depth limits.
+    ordering = []
+    stack = [(parent, False)]
+    
+    while stack:
+        node, visited = stack.pop()
+        if node < root:
+            continue
+        if visited:
+            ordering.append(node)
+        else:
+            idx = node - root
+            left = int(linkage[idx, 0])
+            right = int(linkage[idx, 1])
+            stack.append((node, True))
+            stack.append((right, False))
+            stack.append((left, False))
 
-    if parent < root:
-        return []
-
-    return _get_dendrogram_ordering(int(linkage[parent-root][0]), linkage, root) + \
-            _get_dendrogram_ordering(int(linkage[parent-root][1]), linkage, root) + [parent]
+    return ordering
 
 
 def _calculate_linewidths(ordering, linkage, root):
