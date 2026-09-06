@@ -369,7 +369,8 @@ class CondensedTree(object):
             plot_range = np.hstack([plot_data['bar_tops'], plot_data['bar_bottoms']])
             plot_range = plot_range[np.isfinite(plot_range)]
             mean_y_center = np.mean([np.max(plot_range), np.min(plot_range)])
-            max_height = np.diff(np.percentile(plot_range, q=[10,90]))
+            lo, hi = np.percentile(plot_range, q=[10, 90])
+            max_height = hi - lo
 
             for i, c in enumerate(chosen_clusters):
                 c_bounds = plot_data['cluster_bounds'][c]
