@@ -109,6 +109,7 @@ def _hdbscan_generic(
         distance_matrix = pairwise_distances(X, metric=metric, p=p)
     elif metric == "arccos":
         distance_matrix = pairwise_distances(X, metric="cosine", **kwargs)
+        distance_matrix = np.arccos(1.0 - distance_matrix) / np.pi
     elif metric == "precomputed":
         # Treating this case explicitly, instead of letting
         #   sklearn.metrics.pairwise_distances handle it,
@@ -831,8 +832,8 @@ def hdbscan(
             raise TypeError("Unknown algorithm type %s specified" % algorithm)
     else:
 
-        if issparse(X) or metric not in FAST_METRICS:
-            # We can't do much with sparse matrices ...
+        if issparse(X) or metric not in KDTREE_VALID_METRICS + BALLTREE_VALID_METRICS:
+            # Sparse inputs and non-tree metrics require generic distances.
             (single_linkage_tree, result_min_span_tree) = memory.cache(
                 _hdbscan_generic
             )(X, min_samples, alpha, metric, p, leaf_size, gen_min_span_tree, **kwargs)
