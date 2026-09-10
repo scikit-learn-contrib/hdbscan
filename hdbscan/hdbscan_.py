@@ -831,8 +831,8 @@ def hdbscan(
             raise TypeError("Unknown algorithm type %s specified" % algorithm)
     else:
 
-        if issparse(X) or metric not in FAST_METRICS:
-            # We can't do much with sparse matrices ...
+        if issparse(X) or metric not in KDTREE_VALID_METRICS + BALLTREE_VALID_METRICS:
+            # Sparse inputs and non-tree metrics require generic distances.
             (single_linkage_tree, result_min_span_tree) = memory.cache(
                 _hdbscan_generic
             )(X, min_samples, alpha, metric, p, leaf_size, gen_min_span_tree, **kwargs)
