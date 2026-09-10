@@ -109,6 +109,7 @@ def _hdbscan_generic(
         distance_matrix = pairwise_distances(X, metric=metric, p=p)
     elif metric == "arccos":
         distance_matrix = pairwise_distances(X, metric="cosine", **kwargs)
+        distance_matrix = np.arccos(1.0 - distance_matrix) / np.pi
     elif metric == "precomputed":
         # Treating this case explicitly, instead of letting
         #   sklearn.metrics.pairwise_distances handle it,

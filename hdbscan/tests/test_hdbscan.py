@@ -283,6 +283,36 @@ def test_hdbscan_best_cosine(metric, n_features, functional):
         )
 
 
+@pytest.mark.parametrize("sparse_input", [False, True])
+@pytest.mark.parametrize("functional", [False, True])
+def test_hdbscan_generic_arccos_distance(sparse_input, functional):
+    """Generic arccos uses normalized angles, as in ArccosDistance (issue #348)."""
+    data = np.array([[1., 0.], [0., 1.], [-1., 0.], [0., -1.]])
+    angular_distances = np.array([
+        [0., 0.5, 1., 0.5],
+        [0.5, 0., 0.5, 1.],
+        [1., 0.5, 0., 0.5],
+        [0.5, 1., 0.5, 0.],
+    ])
+    if sparse_input:
+        data = sparse.csr_matrix(data)
+    kwargs = dict(min_cluster_size=2, min_samples=1, algorithm="generic")
+    if functional:
+        expected = hdbscan(angular_distances, metric="precomputed", **kwargs)
+        actual = hdbscan(data, metric="arccos", **kwargs)
+        for result, reference in zip(actual[:-1], expected[:-1]):
+            assert_array_equal(result, reference)
+    else:
+        expected = HDBSCAN(metric="precomputed", **kwargs).fit(angular_distances)
+        actual = HDBSCAN(metric="arccos", **kwargs).fit(data)
+        assert_array_equal(actual.labels_, expected.labels_)
+        assert_array_equal(actual.probabilities_, expected.probabilities_)
+        assert_array_equal(
+            actual.single_linkage_tree_.to_numpy(),
+            expected.single_linkage_tree_.to_numpy(),
+        )
+
+
 def test_hdbscan_dbscan_clustering():
     clusterer = HDBSCAN().fit(X)
     labels = clusterer.dbscan_clustering(0.3)
