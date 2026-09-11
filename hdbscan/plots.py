@@ -90,9 +90,9 @@ class CondensedTree(object):
                    points in the cluster at a given lambda value).
                    (default False)
 
-        max_rectangles_per_icicle : int, optional
+        max_rectangle_per_icicle : int, optional
             To simplify the plot this method will only emit
-            ``max_rectangles_per_icicle`` bars per branch of the dendrogram.
+            ``max_rectangle_per_icicle`` bars per branch of the dendrogram.
             This ensures that we don't suffer from massive overplotting in
             cases with a lot of data points.
 
@@ -1041,19 +1041,19 @@ class ApproximationGraph:
         node_vmax : float, (default = None)
             The maximum value to use for normalizing node colors.
 
-        node_cmap : str, (default = 'tab10')
+        node_cmap : str, (default = 'viridis')
             The cmap to use for coloring nodes.
 
         node_alpha : float, (default = 1)
             The node transparency value.
 
-        node_size : float, (default = 5)
+        node_size : float, (default = 1)
             The node marker size value.
 
         node_marker : str, (default = 'o')
             The node marker string.
 
-        edge_color : str (default = 'label')
+        edge_color : str (default = 'k')
             The point attribute to to color the nodes by. Possible values:
             - weight
             - mutual reachability
