@@ -525,7 +525,7 @@ def membership_vector_flat(
             prediction_data.cluster_tree)
 
         # Merge the two probabilities to produce a single set of probabilities
-        result[i] = distance_vec ** 0.5 * outlier_vec ** 2.0
+        result[i] = distance_vec * outlier_vec
         result[i] /= result[i].sum()
 
         # Include probability that the nearest neighbor belongs to a cluster

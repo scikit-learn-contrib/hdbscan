@@ -694,7 +694,7 @@ def membership_vector(clusterer, points_to_predict):
             clusterer.prediction_data_.leaf_max_lambdas,
             clusterer.prediction_data_.cluster_tree)
 
-        result[i] = distance_vec ** 0.5 * outlier_vec ** 2.0
+        result[i] = distance_vec * outlier_vec
         result[i] /= result[i].sum()
 
         result[i] *= prob_in_some_cluster(
