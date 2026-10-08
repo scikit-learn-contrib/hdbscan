@@ -27,15 +27,23 @@ def all_points_core_distance(distance_matrix, d=2.0):
     Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J.,
     2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
-    distance_matrix[distance_matrix != 0] = (1.0 / distance_matrix[
-        distance_matrix != 0]) ** d
-    result = distance_matrix.sum(axis=1)
+    nonzero = (distance_matrix != 0) & (distance_matrix != np.inf)
+    nearest_distances = np.min(
+        np.where(nonzero, distance_matrix, np.inf), axis=1, initial=np.inf
+    )
+    # Scaling by the smallest positive distance keeps all powers at most one.
+    scaled_distances = np.zeros_like(distance_matrix)
+    np.divide(nearest_distances[:, None], distance_matrix,
+              out=scaled_distances, where=nonzero)
+    scaled_distances **= d
+    result = scaled_distances.sum(axis=1)
     result /= distance_matrix.shape[0] - 1
 
     if result.sum() == 0:
         result = np.zeros(len(distance_matrix))
     else:
         result **= (-1.0 / d)
+        result *= nearest_distances
 
     return result
 
