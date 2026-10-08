@@ -393,6 +393,31 @@ def test_condensed_tree_plot():
     )
 
 
+def test_condensed_tree_plot_select_clusters_thin_cluster():
+    # This crashed on numpy 2.x. Needs a cluster with a thin bar to hit
+    # the ellipse-height fallback in plots.py, so the regular test data
+    # above doesn't trigger it.
+    rng = np.random.default_rng(0)
+    big = rng.normal(loc=(0, 0), scale=1.0, size=(300, 2))
+    n_tiny = int(rng.integers(5, 30))
+    tiny_scale = 10 ** rng.uniform(-4, -1)
+    tiny = rng.normal(loc=(30, 30), scale=tiny_scale, size=(n_tiny, 2))
+    thin_cluster_data = np.vstack([big, tiny])
+
+    clusterer = HDBSCAN(min_cluster_size=10, gen_min_span_tree=True).fit(
+        thin_cluster_data
+    )
+
+    def plot_and_render():
+        import matplotlib.pyplot as plt
+
+        clusterer.condensed_tree_.plot(select_clusters=True)
+        # plot() alone doesn't trigger the bug, only drawing does
+        plt.gcf().canvas.draw()
+
+    if_matplotlib(plot_and_render)()
+
+
 def test_single_linkage_tree_plot():
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
     if_matplotlib(clusterer.single_linkage_tree_.plot)(cmap="Reds")
