@@ -86,3 +86,71 @@ def test_validity_index_scale_invariance(metric, scale):
     assert np.isfinite(actual)
     assert_allclose(actual, expected, rtol=1e-10, atol=1e-12)
     assert_allclose(actual_clusters, expected_clusters, rtol=1e-10, atol=1e-12)
+
+
+@pytest.fixture
+def validity_data():
+    data = np.array([[0., 0.], [1., 0.], [2., 0.], [10., 0.], [11., 0.], [12., 0.]])
+    labels = np.repeat([0, 1], 3)
+    return data, labels
+
+
+@pytest.mark.parametrize("metric", ["euclidean", "precomputed"])
+@pytest.mark.parametrize("mst_raw_dist", [False, True])
+@pytest.mark.parametrize("input_type", ["list", "float32", "integer"])
+def test_validity_index_array_like_inputs(validity_data, metric, mst_raw_dist, input_type):
+    data, labels = validity_data
+    if metric == "precomputed":
+        data = squareform(pdist(data))
+    if input_type == "list":
+        data = data.tolist()
+    elif input_type == "float32":
+        data = data.astype(np.float32)
+    else:
+        data = data.astype(np.int64)
+    original = np.asarray(data).copy()
+
+    score, cluster_scores = validity_index(
+        data, labels, metric=metric, d=2, mst_raw_dist=mst_raw_dist, per_cluster_scores=True
+    )
+
+    expected = .9 if mst_raw_dist else 1 - np.sqrt(1.6) / 10
+    assert_allclose(score, expected)
+    assert_allclose(cluster_scores, [expected, expected])
+    assert_allclose(data, original, rtol=0, atol=0)
+
+
+@pytest.mark.parametrize("metric", ["euclidean", "precomputed"])
+def test_validity_index_list_labels(validity_data, metric):
+    data, labels = validity_data
+    if metric == "precomputed":
+        data = squareform(pdist(data))
+
+    score = validity_index(data.tolist(), labels.tolist(), metric=metric, d=2)
+
+    assert_allclose(score, 1 - np.sqrt(1.6) / 10)
+
+
+@pytest.mark.parametrize("dtype", [np.float32, np.float64])
+@pytest.mark.parametrize("mst_raw_dist", [False, True])
+def test_validity_index_infinite_precomputed_distances(validity_data, dtype, mst_raw_dist):
+    data, labels = validity_data
+    distances = squareform(pdist(data)).astype(dtype)
+    distances[0, 2] = distances[2, 0] = np.inf
+
+    score = validity_index(distances, labels, metric="precomputed", d=2,
+                           mst_raw_dist=mst_raw_dist)
+
+    expected = .9 if mst_raw_dist else 1 - (np.sqrt(2) + np.sqrt(1.6)) / 20
+    assert_allclose(score, expected)
+
+
+@pytest.mark.parametrize("nonfinite", [np.nan, np.inf])
+def test_validity_index_nonfinite_noise(validity_data, nonfinite):
+    data, labels = validity_data
+    data = np.vstack([data, [nonfinite, nonfinite]])
+    labels = np.append(labels, -1)
+
+    score = validity_index(data, labels)
+
+    assert_allclose(score, (1 - np.sqrt(1.6) / 10) * 6 / 7)

@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.metrics import pairwise_distances
+from sklearn.utils import check_X_y
 from scipy.spatial.distance import cdist
 from ._hdbscan_linkage import mst_linkage_core
 from numpy import isclose
@@ -170,6 +171,7 @@ def internal_minimum_spanning_tree(mr_distances):
     Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J.,
     2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
+    mr_distances = np.ascontiguousarray(mr_distances, dtype=np.float64)
     single_linkage_data = mst_linkage_core(mr_distances)
     min_span_tree = single_linkage_data.copy()
     for index, row in enumerate(min_span_tree[1:], 1):
@@ -299,12 +301,12 @@ def validity_index(X, labels, metric='euclidean',
 
     Parameters
     ----------
-    X : array (n_samples, n_features) or (n_samples, n_samples)
+    X : array-like (n_samples, n_features) or (n_samples, n_samples)
         The input data of the clustering. This can be the data, or, if
         metric is set to `precomputed` the pairwise distance matrix used
         for the clustering.
 
-    labels : array (n_samples)
+    labels : array-like (n_samples)
         The label array output by the clustering, providing an integral
         cluster label to each data point, with -1 for noise points.
 
@@ -350,6 +352,9 @@ def validity_index(X, labels, metric='euclidean',
     Moulavi, D., Jaskowiak, P.A., Campello, R.J., Zimek, A. and Sander, J.,
     2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
+    # Precomputed distances may be infinite, and noise rows are ignored.
+    X, labels = check_X_y(X, labels, dtype=np.float64, ensure_all_finite=False)
+
     core_distances = {}
     density_sparseness = {}
     mst_nodes = {}
