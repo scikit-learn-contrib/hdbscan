@@ -75,7 +75,10 @@ jobs:
       fail-fast: false
       matrix:
         python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
-        os: [windows-2022, macos-14]
+        os: [windows-2022, macos-14, windows-11-arm]
+        exclude:
+          - os: windows-11-arm
+            python: "3.10"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
