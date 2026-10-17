@@ -541,6 +541,67 @@ def test_hdbscan_approximate_predict_score():
 #                                                    1.07356406e-001]))
 
 
+def test_membership_vector_combines_distance_and_outlier_as_a_product():
+    # Soft membership is the normalized product of the two vectors.
+    # sqrt(distance) * outlier**2 returned 0.902 and 0.098 for these inputs.
+    import hdbscan.prediction as pred
+    from types import SimpleNamespace
+
+    distance = np.array([0.25, 0.75])
+    outlier = np.array([0.8, 0.2])
+
+    class _Tree:
+        def query(self, points, k):
+            n = points.shape[0]
+            return np.ones((n, k)), np.zeros((n, k), dtype=int)
+
+    class _Condensed:
+        def _select_clusters(self):
+            return [1, 2]
+
+        _raw_tree = None
+
+    clusterer = SimpleNamespace(
+        condensed_tree_=_Condensed(),
+        min_samples=2,
+        min_cluster_size=5,
+        prediction_data_=SimpleNamespace(
+            tree=_Tree(),
+            core_distances=np.ones(5),
+            exemplars=[],
+            dist_metric=None,
+            leaf_max_lambdas={},
+            cluster_tree=None,
+        ),
+    )
+    originals = (
+        pred._find_neighbor_and_lambda,
+        pred.get_tree_row_with_child,
+        pred.dist_membership_vector,
+        pred.outlier_membership_vector,
+        pred.prob_in_some_cluster,
+    )
+    try:
+        pred._find_neighbor_and_lambda = lambda *args, **kwargs: (0, 1.0)
+        pred.get_tree_row_with_child = lambda *args, **kwargs: {"lambda_val": 10.0}
+        pred.dist_membership_vector = lambda *args, **kwargs: distance.copy()
+        pred.outlier_membership_vector = lambda *args, **kwargs: outlier.copy()
+        pred.prob_in_some_cluster = lambda *args, **kwargs: 1.0
+        got = membership_vector(clusterer, np.array([[0.0, 0.0]]))
+    finally:
+        (
+            pred._find_neighbor_and_lambda,
+            pred.get_tree_row_with_child,
+            pred.dist_membership_vector,
+            pred.outlier_membership_vector,
+            pred.prob_in_some_cluster,
+        ) = originals
+
+    expected = distance * outlier
+    expected = expected / expected.sum()
+    assert_array_almost_equal(got[0], expected)
+
+
 def test_hdbscan_all_points_membership_vectors():
     clusterer = HDBSCAN(prediction_data=True, min_cluster_size=200).fit(X)
     vects = all_points_membership_vectors(clusterer)
