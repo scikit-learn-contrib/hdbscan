@@ -164,6 +164,50 @@ def test_hdbscan_distance_matrix():
     assert validity >= 0.6
 
 
+@pytest.mark.parametrize("dtype", [np.float32, np.int64, np.float64])
+@pytest.mark.parametrize("alpha", [1.0, 1.5])
+def test_precomputed_distance_dtypes(dtype, alpha):
+    points = np.array([
+        [0, 0], [0, 1], [1, 0],
+        [10, 10], [10, 11], [11, 10],
+        [30, 0], [30, 1], [31, 0],
+    ])
+    distances = distance.squareform(distance.pdist(points, metric="cityblock"))
+    distances = distances.astype(dtype)
+    original = distances.copy()
+    expected_distances = distances.astype(np.float64)
+    kwargs = dict(metric="precomputed", min_cluster_size=3, min_samples=2,
+                  alpha=alpha)
+
+    expected = hdbscan(expected_distances, **kwargs)
+    result = hdbscan(distances, **kwargs)
+    fitted = HDBSCAN(**kwargs).fit(distances)
+
+    assert_array_equal(result[0], expected[0])
+    assert_array_almost_equal(result[1], expected[1])
+    assert_array_almost_equal(result[4], expected[4])
+    assert_array_equal(fitted.labels_, expected[0])
+    assert_array_almost_equal(fitted.probabilities_, expected[1])
+    assert_array_equal(distances, original)
+
+
+def test_precomputed_float32_missing_distances():
+    points = np.array([[0], [1], [2], [10], [11], [12]])
+    distances = distance.squareform(distance.pdist(points)).astype(np.float32)
+    distances[0, -1] = distances[-1, 0] = np.inf
+    original = distances.copy()
+    kwargs = dict(metric="precomputed", min_cluster_size=2, min_samples=2)
+
+    expected = hdbscan(distances.astype(np.float64), **kwargs)
+    result = hdbscan(distances, **kwargs)
+    fitted = HDBSCAN(**kwargs).fit(distances)
+
+    assert_array_equal(result[0], expected[0])
+    assert_array_almost_equal(result[4], expected[4])
+    assert_array_equal(fitted.labels_, expected[0])
+    assert_array_equal(distances, original)
+
+
 def test_hdbscan_sparse_distance_matrix():
     D = distance.squareform(distance.pdist(X))
     D /= np.max(D)
