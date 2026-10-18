@@ -429,7 +429,7 @@ def membership_vector_flat(
     :py:func:`hdbscan.predict.membership_vector`
     :py:func:`hdbscan.predict.all_points_membership_vectors`
     """
-    points_to_predict = points_to_predict.astype(np.float64)
+    points_to_predict = np.asarray(points_to_predict, dtype=np.float64)
     # Extract condensed tree for later use
     condensed_tree = clusterer.condensed_tree_
 
