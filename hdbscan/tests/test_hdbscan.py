@@ -494,6 +494,27 @@ def test_hdbscan_approximate_predict():
     assert cluster == -1
 
 
+def test_hdbscan_prediction_matches_labels_when_selected_cluster_splits():
+    # Grids A and B form one selected EOM cluster that splits into A and B
+    # before any point falls out of it directly; grid E is far away.
+    grid = np.array([(x, y) for x in range(8) for y in range(8)], dtype=float)
+    data = np.vstack([grid, grid - (100, 0), grid + (10.5, 0)])
+    clusterer = HDBSCAN(min_cluster_size=10, prediction_data=True).fit(data)
+    assert len(set(clusterer.labels_[:64])) == 1
+    assert clusterer.labels_[0] == clusterer.labels_[-1] != clusterer.labels_[64]
+
+    labels, _ = approximate_predict(clusterer, data)
+    assert_array_equal(labels, clusterer.labels_)
+    vectors = all_points_membership_vectors(clusterer)
+    assert_array_equal(vectors.argmax(axis=1), clusterer.labels_)
+    vectors = membership_vector(clusterer, data)
+    assert_array_equal(vectors.argmax(axis=1), clusterer.labels_)
+    assert len(clusterer.exemplars_) == clusterer.labels_.max() + 1
+    for label, exemplars in enumerate(clusterer.exemplars_):
+        rows = (data[:, None, :] == exemplars[None, :, :]).all(axis=2).any(axis=1)
+        assert set(clusterer.labels_[rows]) == {label}
+
+
 def test_hdbscan_approximate_predict_score():
     clusterer = HDBSCAN(min_cluster_size=200).fit(X)
     # no prediction data error
