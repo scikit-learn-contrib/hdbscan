@@ -1398,6 +1398,13 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         cluster_data = self._raw_data[mask]
         cluster_membership_strengths = self.probabilities_[mask]
 
+        if issparse(cluster_data):
+            weight_sum = cluster_membership_strengths.sum()
+            if weight_sum == 0:
+                raise ZeroDivisionError("Weights sum to zero, can't be normalized")
+            weighted_sum = cluster_data.T @ cluster_membership_strengths
+            return np.asarray(weighted_sum).ravel() / weight_sum
+
         return np.average(cluster_data, weights=cluster_membership_strengths, axis=0)
 
     def weighted_cluster_medoid(self, cluster_id):
