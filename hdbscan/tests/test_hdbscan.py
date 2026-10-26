@@ -47,6 +47,52 @@ X_missing_data[0] = [np.nan, 1]
 X_missing_data[5] = [np.nan, np.nan]
 
 
+@pytest.mark.parametrize("attribute", ["outlier_scores_", "relative_validity_"])
+@pytest.mark.parametrize("cache_before_refit", [False, True])
+def test_refit_lazy_cached_results(attribute, cache_before_refit):
+    first, _ = make_blobs(
+        n_samples=80, centers=3, cluster_std=0.25, random_state=8
+    )
+    second, _ = make_blobs(
+        n_samples=120, centers=2, cluster_std=0.5, random_state=21
+    )
+    clusterer = HDBSCAN(min_cluster_size=5, gen_min_span_tree=True).fit(first)
+    if cache_before_refit:
+        getattr(clusterer, attribute)
+
+    clusterer.fit(second)
+    fresh = HDBSCAN(min_cluster_size=5, gen_min_span_tree=True).fit(second)
+    assert_array_equal(clusterer.labels_, fresh.labels_)
+    assert_array_almost_equal(getattr(clusterer, attribute), getattr(fresh, attribute))
+
+
+@pytest.mark.parametrize("cache", ["prediction_data", "branch_detection_data"])
+@pytest.mark.parametrize("generate_on_fit", [False, True])
+def test_refit_optional_cached_data(cache, generate_on_fit):
+    first, _ = make_blobs(
+        n_samples=80, centers=3, cluster_std=0.25, random_state=8
+    )
+    second, _ = make_blobs(
+        n_samples=120, centers=2, cluster_std=0.5, random_state=21
+    )
+    clusterer = HDBSCAN(
+        min_cluster_size=5, gen_min_span_tree=True, **{cache: generate_on_fit}
+    ).fit(first)
+    if not generate_on_fit:
+        getattr(clusterer, "generate_" + cache)()
+    old_data = getattr(clusterer, cache + "_")
+
+    clusterer.fit(second)
+    if not generate_on_fit:
+        with pytest.raises(AttributeError, match="No .* data was generated"):
+            getattr(clusterer, cache + "_")
+        getattr(clusterer, "generate_" + cache)()
+
+    new_data = getattr(clusterer, cache + "_")
+    assert new_data is not old_data
+    assert_array_equal(np.asarray(new_data.tree.data), second)
+
+
 @pytest.mark.parametrize("predict", [membership_vector, membership_vector_flat])
 @pytest.mark.parametrize(
     "input_type", ["list", "tuple", "dataframe", "float32", "float64"]
@@ -76,6 +122,7 @@ def test_membership_vector_array_like(predict, input_type):
     assert result.shape == (4, 2)
     assert np.isfinite(result).all()
     np.testing.assert_allclose(result, expected)
+
 
 
 def test_missing_data():
