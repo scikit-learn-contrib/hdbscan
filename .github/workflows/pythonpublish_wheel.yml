@@ -1,6 +1,7 @@
 name: Upload Python Wheels
 
 on:
+  pull_request:
   workflow_dispatch:
     inputs:
       checkout_ref:
@@ -21,6 +22,7 @@ jobs:
           - "cp312-cp312"
           - "cp313-cp313"
           - "cp314-cp314"
+          - "cp315-cp315"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,7 +34,15 @@ jobs:
           $PYTHON -m pip install --upgrade setuptools wheel build "cython>=3.0.11,<4" "numpy>=2.0"
           $PYTHON -m build --no-isolation
           auditwheel repair dist/*linux_x86_64.whl
+      - name: Test the installed wheel
+        env:
+          PYTHON: /opt/python/${{ matrix.python }}/bin/python
+        run: |
+          $PYTHON -m pip install --only-binary=:all: wheelhouse/*.whl pytest matplotlib pandas networkx
+          cd "$RUNNER_TEMP"
+          $PYTHON -m pytest --pyargs hdbscan.tests -v
       - name: Publish to pypi
+        if: github.event_name == 'workflow_dispatch'
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
@@ -52,6 +62,7 @@ jobs:
           - "cp312-cp312"
           - "cp313-cp313"
           - "cp314-cp314"
+          - "cp315-cp315"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -63,7 +74,15 @@ jobs:
           $PYTHON -m pip install --upgrade setuptools wheel build "cython>=3.0.11,<4" "numpy>=2.0"
           $PYTHON -m build --no-isolation
           auditwheel repair dist/*linux_aarch64.whl
+      - name: Test the installed wheel
+        env:
+          PYTHON: /opt/python/${{ matrix.python }}/bin/python
+        run: |
+          $PYTHON -m pip install --only-binary=:all: wheelhouse/*.whl pytest matplotlib pandas networkx
+          cd "$RUNNER_TEMP"
+          $PYTHON -m pytest --pyargs hdbscan.tests -v
       - name: Publish to pypi
+        if: github.event_name == 'workflow_dispatch'
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
@@ -74,7 +93,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
         os: [windows-2022, macos-14]
     runs-on: ${{ matrix.os }}
     steps:
@@ -94,7 +113,14 @@ jobs:
       - name: Build wheel
         run: |
           python -m build --no-isolation
+      - name: Test the installed wheel
+        shell: bash
+        run: |
+          python -m pip install --only-binary=:all: dist/*.whl pytest matplotlib pandas networkx
+          cd "$RUNNER_TEMP"
+          python -m pytest --pyargs hdbscan.tests -v
       - name: Publish to pypi
+        if: github.event_name == 'workflow_dispatch'
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
