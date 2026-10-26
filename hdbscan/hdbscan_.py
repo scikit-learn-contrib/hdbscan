@@ -1275,6 +1275,11 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             new_probabilities[finite_index] = self.probabilities_
             self.probabilities_ = new_probabilities
 
+        self._outlier_scores = None
+        self._relative_validity = None
+        self._prediction_data = None
+        self._branch_detection_data = None
+
         if self.prediction_data:
             self.generate_prediction_data()
         if self.branch_detection_data:
