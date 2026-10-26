@@ -615,8 +615,11 @@ def approximate_predict_scores(clusterer, points_to_predict):
 
         max_lambda = max_lambdas[potential_cluster]
 
-        if max_lambda > 0.0:
-            scores[i] = (max_lambda - lambda_) / max_lambda
+        if max_lambda > 0.0 and np.isfinite(lambda_):
+            if np.isinf(max_lambda):
+                scores[i] = 1.0
+            else:
+                scores[i] = (max_lambda - lambda_) / max_lambda
         else:
             scores[i] = 0.0
 
