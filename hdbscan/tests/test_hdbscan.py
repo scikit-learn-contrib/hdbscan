@@ -20,6 +20,7 @@ from hdbscan import (
     membership_vector,
     all_points_membership_vectors,
 )
+from hdbscan.flat import membership_vector_flat
 
 # from sklearn.cluster.tests.common import generate_clustered_data
 from sklearn.datasets import make_blobs
@@ -90,6 +91,38 @@ def test_refit_optional_cached_data(cache, generate_on_fit):
     new_data = getattr(clusterer, cache + "_")
     assert new_data is not old_data
     assert_array_equal(np.asarray(new_data.tree.data), second)
+
+
+@pytest.mark.parametrize("predict", [membership_vector, membership_vector_flat])
+@pytest.mark.parametrize(
+    "input_type", ["list", "tuple", "dataframe", "float32", "float64"]
+)
+def test_membership_vector_array_like(predict, input_type):
+    train, _ = make_blobs(
+        n_samples=60,
+        centers=[[-2, -2], [2, 2]],
+        cluster_std=0.2,
+        random_state=42,
+    )
+    clusterer = HDBSCAN(min_cluster_size=5, prediction_data=True).fit(train)
+    points = np.array([[-2, -2], [-2.2, -2.1], [2, 2], [2.1, 2.2]])
+    if input_type == "list":
+        points = points.tolist()
+    elif input_type == "tuple":
+        points = tuple(map(tuple, points))
+    elif input_type == "dataframe":
+        pd = pytest.importorskip("pandas")
+        points = pd.DataFrame(points, columns=["x", "y"])
+    elif input_type == "float32":
+        points = points.astype(np.float32)
+
+    expected = predict(clusterer, np.asarray(points, dtype=np.float64))
+    result = predict(clusterer, points)
+
+    assert result.shape == (4, 2)
+    assert np.isfinite(result).all()
+    np.testing.assert_allclose(result, expected)
+
 
 
 def test_missing_data():
