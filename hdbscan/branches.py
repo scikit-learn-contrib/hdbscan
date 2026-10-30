@@ -105,7 +105,7 @@ def detect_branches_in_clusters(
         :func:`~hdbscan.branches.approximate_predict` function is not aware of
         this argument.
 
-    max_cluster_size : int, optional (default=0)
+    max_cluster_size : int, optional (default=None)
         A limit to the size of clusters returned by the ``eom`` algorithm.
         Has no effect when using ``leaf`` clustering (where clusters are
         usually small regardless). Note that this should not be used if we

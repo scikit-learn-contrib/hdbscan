@@ -415,8 +415,9 @@ def remap_condensed_tree(tree, internal_to_raw, outliers):
     tree: condensed_tree
     internal_to_raw: dict
         a mapping from internal integer index to the raw integer index
-    finite_index: ndarray
-        Boolean array of which entries in the raw data were finite
+    outliers: list of int
+        The raw indices of the non-finite entries that were removed from the
+        data before clustering
     """
     finite_count = len(internal_to_raw)
 
@@ -458,8 +459,9 @@ def remap_single_linkage_tree(tree, internal_to_raw, outliers):
     tree: single_linkage_tree
     internal_to_raw: dict
         a mapping from internal integer index to the raw integer index
-    finite_index: ndarray
-        Boolean array of which entries in the raw data were finite
+    outliers: list of int
+        The raw indices of the non-finite entries that were removed from the
+        data before clustering
     """
     finite_count = len(internal_to_raw)
 
