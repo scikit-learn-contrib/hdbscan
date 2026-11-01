@@ -213,11 +213,9 @@ cdef class UnionFind (object):
     cdef np.intp_t fast_find(self, np.intp_t n):
         cdef np.intp_t p, tmp
         p = n
-        # walk to the root using the cached C pointer (parent_arr is untyped,
-        # so indexing it goes through boxed Python getitem/setitem)
+        # Not parent_arr: it is untyped, so each index is a Python call.
         while self.parent[n] != -1:
             n = self.parent[n]
-        # full path compression: point every node on the path at the root
         while self.parent[p] != -1:
             tmp = self.parent[p]
             self.parent[p] = n
