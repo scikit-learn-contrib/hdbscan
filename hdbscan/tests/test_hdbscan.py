@@ -92,6 +92,38 @@ def test_refit_optional_cached_data(cache, generate_on_fit):
     assert_array_equal(np.asarray(new_data.tree.data), second)
 
 
+@pytest.mark.parametrize("missing", [False, True])
+def test_minimum_spanning_tree_original_indices(missing):
+    data = np.array([
+        [0, 0], [0.2, 0.1], [0.1, 0.4],
+        [10, 10], [10.3, 10.1], [10.1, 10.5],
+    ])
+    kwargs = dict(min_cluster_size=2, min_samples=1, algorithm="generic",
+                  gen_min_span_tree=True)
+    expected = HDBSCAN(**kwargs).fit(data).minimum_spanning_tree_.to_numpy()
+    if missing:
+        data = np.insert(data, [0, 3], [[np.nan, 0], [0, np.inf]], axis=0)
+    finite_index = np.flatnonzero(np.isfinite(data).all(axis=1))
+    expected[:, :2] = finite_index[expected[:, :2].astype(int)]
+    clusterer = HDBSCAN(**kwargs).fit(data)
+    private_tree = clusterer._min_spanning_tree.copy()
+
+    tree = clusterer.minimum_spanning_tree_
+    assert_array_equal(tree.to_numpy(), expected)
+    assert_array_equal(clusterer.minimum_spanning_tree_.to_numpy(), expected)
+    assert_array_equal(clusterer._min_spanning_tree, private_tree)
+    assert np.isin(tree.to_numpy()[:, :2], finite_index).all()
+
+    frame = if_pandas(tree.to_pandas)()
+    assert_array_equal(frame[["from", "to", "distance"]].to_numpy(), expected)
+    graph = if_networkx(tree.to_networkx)()
+    assert set(graph.nodes) == set(finite_index)
+    for index in graph.nodes:
+        assert_array_equal(graph.nodes[index]["data"], data[int(index)])
+    for source, target, weight in expected:
+        assert graph[source][target]["weight"] == weight
+
+
 def test_missing_data():
     """Tests if nan data are treated as infinite distance from all other points and assigned to -1 cluster"""
     model = HDBSCAN().fit(X_missing_data)

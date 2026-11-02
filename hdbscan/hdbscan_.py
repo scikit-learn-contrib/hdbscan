@@ -1543,7 +1543,15 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     def minimum_spanning_tree_(self):
         if self._min_spanning_tree is not None:
             if self._raw_data is not None:
-                return MinimumSpanningTree(self._min_spanning_tree, self._raw_data)
+                min_spanning_tree = self._min_spanning_tree
+                if not self._all_finite:
+                    # Keep internal indices for branch detection; expose raw-data indices.
+                    finite_index = get_finite_row_indices(self._raw_data)
+                    min_spanning_tree = min_spanning_tree.copy()
+                    min_spanning_tree[:, :2] = finite_index[
+                        min_spanning_tree[:, :2].astype(np.intp)
+                    ]
+                return MinimumSpanningTree(min_spanning_tree, self._raw_data)
             else:
                 warn(
                     "No raw data is available; this may be due to using"
