@@ -424,6 +424,53 @@ def test_approximate_predict():
     assert bp[0] == 1.0
 
 
+def test_approximate_predict_unsplit_cluster_after_branches():
+    # Splitting an earlier cluster shifts the combined labels of later clusters.
+    branches, _ = make_branches(n_samples=150, noise=0.04, random_state=3)
+    blob, _ = make_blobs(
+        n_samples=50, centers=[(4.0, 0.0)], cluster_std=0.15, random_state=3
+    )
+    data = np.vstack((branches, blob))
+    clusterer = HDBSCAN(
+        min_cluster_size=10, branch_detection_data=True, prediction_data=True
+    ).fit(data)
+    detector = BranchDetector().fit(clusterer)
+
+    branched_cluster = clusterer.labels_[0]
+    unsplit_cluster = clusterer.labels_[-1]
+    assert 0 <= branched_cluster < unsplit_cluster
+    assert len(detector.branch_persistences_[branched_cluster]) > 2
+    assert len(detector.branch_persistences_[unsplit_cluster]) <= 2
+    combined_labels = np.unique(
+        detector.labels_[clusterer.labels_ == unsplit_cluster]
+    )
+    assert len(combined_labels) == 1
+    assert combined_labels[0] != unsplit_cluster
+
+    labels, probabilities, clusters, cluster_probs, branches, branch_probs = (
+        approximate_predict_branch(
+            detector, np.array([[4.0, 0.0], [0.0, 1.0], [100.0, 100.0]])
+        )
+    )
+    # The third result retains the original cluster ID; the first is combined.
+    assert clusters[0] == unsplit_cluster
+    assert labels[0] == combined_labels[0]
+    assert probabilities[0] == cluster_probs[0]
+    assert branches[0] == 0
+    assert branch_probs[0] == 1.0
+
+    # Branched predictions still use a fitted combined label and branch score.
+    assert clusters[1] == branched_cluster
+    assert labels[1] in detector.labels_[clusterer.labels_ == branched_cluster]
+    assert probabilities[1] == (cluster_probs[1] + branch_probs[1]) / 2
+
+    # Noise retains the existing sentinel and probability conventions.
+    assert labels[2] == clusters[2] == -1
+    assert probabilities[2] == cluster_probs[2] == 0.0
+    assert branches[2] == 0
+    assert branch_probs[2] == 1.0
+
+
 # --- Attribute Output Formats
 
 
