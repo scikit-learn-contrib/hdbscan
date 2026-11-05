@@ -44,6 +44,9 @@ FAST_METRICS = KDTREE_VALID_METRICS + BALLTREE_VALID_METRICS
 def _rsl_generic(X, k=5, alpha=1.4142135623730951, metric='euclidean',
                  **kwargs):
     distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
+    if metric == 'precomputed':
+        # Mutual reachability is computed in place.
+        distance_matrix = distance_matrix.copy()
 
     mutual_reachability_ = mutual_reachability(distance_matrix, k)
 
