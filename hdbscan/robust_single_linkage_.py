@@ -75,6 +75,7 @@ def _rsl_prims_kdtree(X, k=5, alpha=1.4142135623730951, metric='euclidean',
     min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric,
                                                 alpha)
 
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree[:, 2])]
     single_linkage_tree = label(min_spanning_tree)
     single_linkage_tree = SingleLinkageTree(single_linkage_tree)
 
@@ -99,6 +100,7 @@ def _rsl_prims_balltree(X, k=5, alpha=1.4142135623730951, metric='euclidean',
     min_spanning_tree = mst_linkage_core_vector(X, core_distances, dist_metric,
                                                 alpha)
 
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree[:, 2])]
     single_linkage_tree = label(min_spanning_tree)
     single_linkage_tree = SingleLinkageTree(single_linkage_tree)
 
@@ -120,6 +122,7 @@ def _rsl_boruvka_kdtree(X, k=5, alpha=1.0,
                                  alpha=alpha, leaf_size=leaf_size, **kwargs)
     min_spanning_tree = alg.spanning_tree()
 
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree[:, 2])]
     single_linkage_tree = label(min_spanning_tree)
     single_linkage_tree = SingleLinkageTree(single_linkage_tree)
 
@@ -141,6 +144,7 @@ def _rsl_boruvka_balltree(X, k=5, alpha=1.0,
                                    alpha=alpha, leaf_size=leaf_size, **kwargs)
     min_spanning_tree = alg.spanning_tree()
 
+    min_spanning_tree = min_spanning_tree[np.argsort(min_spanning_tree[:, 2])]
     single_linkage_tree = label(min_spanning_tree)
     single_linkage_tree = SingleLinkageTree(single_linkage_tree)
 
