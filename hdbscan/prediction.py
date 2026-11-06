@@ -230,25 +230,55 @@ class PredictionData(object):
 
 # Same cutoff as the Boruvka core distance split (_hdbscan_boruvka.pyx).
 _MIN_ROWS_TO_SPLIT_QUERY = 16384
+_MAX_ROWS_PER_QUERY_CHUNK = 4096
+
+
+def _query_n_jobs(tree, n_rows, n_jobs):
+    if n_jobs < 1:
+        n_jobs = max(cpu_count() + 1 + n_jobs, 1)
+    # Only KDTree is split: its metrics keep no scratch state, while some
+    # BallTree metrics (e.g. mahalanobis) write a shared buffer per call.
+    if not isinstance(tree, KDTree) or n_rows <= _MIN_ROWS_TO_SPLIT_QUERY:
+        return 1
+    return min(n_jobs, n_rows)
+
+
+def _row_chunks(n_rows, n_jobs):
+    n_chunks = -(-n_rows // _MAX_ROWS_PER_QUERY_CHUNK)
+    n_chunks = n_jobs * -(-n_chunks // n_jobs)
+    bounds = np.linspace(0, n_rows, n_chunks + 1).astype(np.intp)
+    return [slice(start, stop) for start, stop in zip(bounds, bounds[1:])]
+
+
+def _query_neighbors(tree, points, k, n_jobs):
+    n_jobs = _query_n_jobs(tree, len(points), n_jobs)
+    if n_jobs == 1:
+        return tree.query(points, k=k)
+    distances = np.empty((len(points), k), dtype=np.float64)
+    indices = np.empty((len(points), k), dtype=np.intp)
+
+    def query(rows):
+        distances[rows], indices[rows] = tree.query(points[rows], k=k)
+
+    # sklearn releases the GIL only on the default single-tree, depth-first
+    # query path.
+    Parallel(n_jobs=n_jobs, require="sharedmem")(
+        delayed(query)(rows) for rows in _row_chunks(len(points), n_jobs))
+    return distances, indices
 
 
 def _query_core_distances(tree, data, min_samples, n_jobs):
-    if n_jobs < 1:
-        n_jobs = max(cpu_count() + 1 + n_jobs, 1)
-    n_jobs = min(n_jobs, len(data))
-    # Only KDTree is split: its metrics keep no scratch state, while some
-    # BallTree metrics (e.g. mahalanobis) write a shared buffer per call.
-    splittable = (isinstance(tree, KDTree)
-                  and len(data) > _MIN_ROWS_TO_SPLIT_QUERY)
-    if n_jobs <= 1 or not splittable:
+    n_jobs = _query_n_jobs(tree, len(data), n_jobs)
+    if n_jobs == 1:
         return tree.query(data, k=min_samples)[0][:, -1]
-    # sklearn releases the GIL only on the default single-tree, depth-first
-    # query path.
-    parts = Parallel(n_jobs=n_jobs, prefer="threads")(
-        delayed(tree.query)(chunk, k=min_samples)
-        for chunk in np.array_split(data, n_jobs)
-    )
-    return np.concatenate([distances[:, -1] for distances, _ in parts])
+    core_distances = np.empty(len(data), dtype=np.float64)
+
+    def query(rows):
+        core_distances[rows] = tree.query(data[rows], k=min_samples)[0][:, -1]
+
+    Parallel(n_jobs=n_jobs, require="sharedmem")(
+        delayed(query)(rows) for rows in _row_chunks(len(data), n_jobs))
+    return core_distances
 
 
 def _find_neighbor_and_lambda(neighbor_indices, neighbor_distances,
@@ -522,8 +552,9 @@ def approximate_predict(clusterer, points_to_predict, return_connecting_points=F
 
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
     neighbor_distances, neighbor_indices = \
-        clusterer.prediction_data_.tree.query(points_to_predict,
-                                              k=2 * min_samples)
+        _query_neighbors(
+            clusterer.prediction_data_.tree, points_to_predict,
+            2 * min_samples, clusterer.core_dist_n_jobs)
 
     cluster_tree = clusterer.prediction_data_.cluster_tree
     # Build the child -> (parent, lambda) lookup and root once, not per point.
@@ -612,8 +643,9 @@ def approximate_predict_scores(clusterer, points_to_predict):
 
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
     neighbor_distances, neighbor_indices = \
-        clusterer.prediction_data_.tree.query(points_to_predict,
-                                              k=2 * min_samples)
+        _query_neighbors(
+            clusterer.prediction_data_.tree, points_to_predict,
+            2 * min_samples, clusterer.core_dist_n_jobs)
 
     tree = clusterer.condensed_tree_._raw_tree
 
@@ -695,8 +727,9 @@ def membership_vector(clusterer, points_to_predict):
 
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
     neighbor_distances, neighbor_indices = \
-        clusterer.prediction_data_.tree.query(points_to_predict,
-                                              k=2 * min_samples)
+        _query_neighbors(
+            clusterer.prediction_data_.tree, points_to_predict,
+            2 * min_samples, clusterer.core_dist_n_jobs)
 
     for i in range(points_to_predict.shape[0]):
 
