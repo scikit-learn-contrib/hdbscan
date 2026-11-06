@@ -114,8 +114,12 @@ def _hdbscan_generic(
         #   sklearn.metrics.pairwise_distances handle it,
         #   enables the usage of numpy.inf in the distance
         #   matrix to indicate missing distance information.
-        # TODO: Check if copying is necessary
-        distance_matrix = X.copy()
+        # Keep the copy for in-place reachability updates, and use the double
+        # precision required by mst_linkage_core for dense distances.
+        distance_matrix = (
+            X.copy() if issparse(X)
+            else np.array(X, dtype=np.float64, copy=True, order="C")
+        )
     else:
         distance_matrix = pairwise_distances(X, metric=metric, **kwargs)
 
