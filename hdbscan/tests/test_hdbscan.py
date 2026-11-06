@@ -530,6 +530,80 @@ def test_hdbscan_outliers():
 #     assert tree is None
 
 
+@pytest.mark.parametrize("n_jobs", [3, 0, -1, 1000])
+def test_prediction_data_core_distances_split_across_jobs(n_jobs, monkeypatch):
+    from hdbscan import prediction
+    from hdbscan.prediction import PredictionData
+
+    monkeypatch.setattr(prediction, "_MIN_ROWS_TO_SPLIT_QUERY", 0)
+
+    data = X[:50]
+    clusterer = HDBSCAN().fit(data)
+    single = PredictionData(data, clusterer.condensed_tree_, 5)
+    split = PredictionData(
+        data, clusterer.condensed_tree_, 5, core_dist_n_jobs=n_jobs
+    )
+    assert_array_equal(split.core_distances, single.core_distances)
+
+
+@pytest.mark.parametrize("min_rows, expected_calls", [(0, 1), (16384, 0)])
+def test_prediction_data_splits_only_large_kdtree_queries(
+    min_rows, expected_calls, monkeypatch
+):
+    from hdbscan import prediction
+    from hdbscan.prediction import PredictionData
+
+    calls = []
+    original = prediction.Parallel
+
+    def spy(*args, **kwargs):
+        calls.append(kwargs)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(prediction, "_MIN_ROWS_TO_SPLIT_QUERY", min_rows)
+    monkeypatch.setattr(prediction, "Parallel", spy)
+    data = X[:50]
+    clusterer = HDBSCAN().fit(data)
+    PredictionData(data, clusterer.condensed_tree_, 5, core_dist_n_jobs=3)
+    assert calls == [{"n_jobs": 3, "prefer": "threads"}] * expected_calls
+
+
+def test_prediction_data_balltree_ignores_core_dist_n_jobs(monkeypatch):
+    from hdbscan import prediction
+    from hdbscan.prediction import PredictionData
+
+    monkeypatch.setattr(prediction, "_MIN_ROWS_TO_SPLIT_QUERY", 0)
+
+    rng = np.random.RandomState(0)
+    data = rng.normal(size=(300, 4))
+    V = np.cov(data.T)
+    clusterer = HDBSCAN(metric="mahalanobis", V=V).fit(data)
+    single = PredictionData(
+        data, clusterer.condensed_tree_, 5, tree_type="balltree",
+        metric="mahalanobis", V=V,
+    )
+    split = PredictionData(
+        data, clusterer.condensed_tree_, 5, tree_type="balltree",
+        metric="mahalanobis", V=V, core_dist_n_jobs=4,
+    )
+    assert_array_equal(split.core_distances, single.core_distances)
+
+
+def test_generate_prediction_data_forwards_core_dist_n_jobs(monkeypatch):
+    from hdbscan import prediction
+
+    seen = []
+    original = prediction._query_core_distances
+
+    def spy(tree, data, min_samples, n_jobs):
+        seen.append(n_jobs)
+        return original(tree, data, min_samples, n_jobs)
+
+    monkeypatch.setattr(prediction, "_query_core_distances", spy)
+    HDBSCAN(core_dist_n_jobs=2, prediction_data=True).fit(X)
+    assert seen == [2]
+
+
 def test_hdbscan_approximate_predict():
     clusterer = HDBSCAN(prediction_data=True).fit(X)
     cluster, prob = approximate_predict(clusterer, np.array([[-1.5, -1.0]]))
