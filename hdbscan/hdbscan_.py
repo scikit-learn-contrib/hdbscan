@@ -1328,6 +1328,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
                 min_samples,
                 tree_type=tree_type,
                 metric=self.metric,
+                core_dist_n_jobs=self.core_dist_n_jobs,
                 **self._metric_kwargs
             )
         else:

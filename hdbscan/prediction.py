@@ -5,6 +5,8 @@
 
 import numpy as np
 
+from joblib import Parallel, delayed
+from joblib.parallel import cpu_count
 from sklearn.neighbors import KDTree, BallTree
 from .dist_metrics import DistanceMetric
 from ._hdbscan_tree import recurse_leaf_dfs
@@ -113,6 +115,12 @@ class PredictionData(object):
         This is the metric that will be used for the space tree to determine
         core distances etc.
 
+    core_dist_n_jobs : int, optional (default=1)
+        Number of threads used to compute the core distances. Only used with
+        ``tree_type='kdtree'`` and more than 16384 rows; otherwise the query
+        runs on one thread. For ``core_dist_n_jobs`` below -1, (n_cpus + 1 +
+        core_dist_n_jobs) are used.
+
     **kwargs :
         Any further arguments to the metric.
 
@@ -164,11 +172,13 @@ class PredictionData(object):
                 [recurse_leaf_dfs(self.cluster_tree, child) for child in children], [])
 
     def __init__(self, data, condensed_tree, min_samples,
-                 tree_type='kdtree', metric='euclidean', **kwargs):
+                 tree_type='kdtree', metric='euclidean', core_dist_n_jobs=1,
+                 **kwargs):
         self.raw_data = data.astype(np.float64)
         self.tree = self._tree_type_map[tree_type](self.raw_data,
                                                    metric=metric, **kwargs)
-        self.core_distances = self.tree.query(data, k=min_samples)[0][:, -1]
+        self.core_distances = _query_core_distances(
+            self.tree, data, min_samples, core_dist_n_jobs)
         self.dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
         selected_clusters = sorted(condensed_tree._select_clusters())
@@ -216,6 +226,29 @@ class PredictionData(object):
             cluster_exemplars = (np.hstack(exemplar_parts) if exemplar_parts
                                  else np.array([], dtype=np.int64))
             self.exemplars.append(self.raw_data[cluster_exemplars])
+
+
+# Same cutoff as the Boruvka core distance split (_hdbscan_boruvka.pyx).
+_MIN_ROWS_TO_SPLIT_QUERY = 16384
+
+
+def _query_core_distances(tree, data, min_samples, n_jobs):
+    if n_jobs < 1:
+        n_jobs = max(cpu_count() + 1 + n_jobs, 1)
+    n_jobs = min(n_jobs, len(data))
+    # Only KDTree is split: its metrics keep no scratch state, while some
+    # BallTree metrics (e.g. mahalanobis) write a shared buffer per call.
+    splittable = (isinstance(tree, KDTree)
+                  and len(data) > _MIN_ROWS_TO_SPLIT_QUERY)
+    if n_jobs <= 1 or not splittable:
+        return tree.query(data, k=min_samples)[0][:, -1]
+    # sklearn releases the GIL only on the default single-tree, depth-first
+    # query path.
+    parts = Parallel(n_jobs=n_jobs, prefer="threads")(
+        delayed(tree.query)(chunk, k=min_samples)
+        for chunk in np.array_split(data, n_jobs)
+    )
+    return np.concatenate([distances[:, -1] for distances, _ in parts])
 
 
 def _find_neighbor_and_lambda(neighbor_indices, neighbor_distances,
