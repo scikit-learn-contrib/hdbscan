@@ -296,7 +296,7 @@ def robust_single_linkage(X, cut, k=5, alpha=1.4142135623730951,
             # Need heuristic to decide when to go to boruvka;
             # still debugging for now
             if X.shape[1] > 128:
-                single_linkage_tree = memory.cache(_rsl_prims_kdtree)(
+                single_linkage_tree = memory.cache(_rsl_prims_balltree)(
                     X, k, alpha, metric, **kwargs)
             else:
                 single_linkage_tree = \

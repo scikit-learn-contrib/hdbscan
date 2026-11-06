@@ -12,8 +12,9 @@ name = "hdbscan"
 version = "0.8.44"
 description = "Clustering based on density with variable density clusters"
 readme = "README.rst"
-requires-python = ">=3.10"
 license = "BSD-3-Clause"
+requires-python = ">=3.11"
+license = {text = "BSD"}
 authors = [
   {name = "Leland McInnes", email = "leland.mcinnes@gmail.com"}
 ]
