@@ -609,6 +609,8 @@ cpdef np.ndarray[np.double_t, ndim=1] outlier_scores(np.ndarray tree):
 
         if lambda_max == 0.0 or not np.isfinite(lambda_array[n]):
             result[point] = 0.0
+        elif lambda_max == INFTY:
+            result[point] = 1.0
         else:
             result[point] = (lambda_max - lambda_array[n]) / lambda_max
 
