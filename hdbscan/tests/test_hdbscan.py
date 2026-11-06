@@ -674,6 +674,50 @@ def test_hdbscan_centroids_medoids():
         assert_array_almost_equal(medoid, center, decimal=1)
 
 
+@pytest.mark.parametrize("readonly", [False, True])
+@pytest.mark.parametrize("sparse_type", [sparse.csr_matrix, sparse.csr_array])
+def test_hdbscan_sparse_weighted_centroid(readonly, sparse_type, monkeypatch):
+    data, _ = make_blobs(
+        n_samples=60,
+        centers=[(0.0, 0.0), (8.0, 8.0)],
+        cluster_std=0.2,
+        random_state=10,
+    )
+    data = np.column_stack((data, np.zeros((len(data), 3))))
+    sparse_data = sparse_type(data)
+    clusterer = HDBSCAN(min_cluster_size=5).fit(sparse_data)
+    original_data = sparse_data.copy()
+    assert_array_equal(np.unique(clusterer.labels_), [0, 1])
+    if readonly:
+        for buffer in [sparse_data.data, sparse_data.indices, sparse_data.indptr]:
+            buffer.flags.writeable = False
+
+    def refuse_dense(*args, **kwargs):
+        raise AssertionError("The cluster data should remain sparse")
+
+    monkeypatch.setattr(sparse_type, "toarray", refuse_dense)
+    for cluster_id in [0, 1]:
+        mask = clusterer.labels_ == cluster_id
+        weights = clusterer.probabilities_[mask]
+        assert np.ptp(weights) > 0
+        expected = np.average(data[mask], weights=weights, axis=0)
+        centroid = clusterer.weighted_cluster_centroid(cluster_id)
+        assert isinstance(centroid, np.ndarray)
+        assert centroid.shape == (data.shape[1],)
+        np.testing.assert_allclose(centroid, expected, rtol=1e-6, atol=1e-8)
+
+    assert_array_equal(sparse_data.data, original_data.data)
+    assert_array_equal(sparse_data.indices, original_data.indices)
+    assert_array_equal(sparse_data.indptr, original_data.indptr)
+
+
+@pytest.mark.parametrize("sparse_type", [sparse.csr_matrix, sparse.csr_array])
+def test_hdbscan_sparse_centroid_missing_cluster(sparse_type):
+    clusterer = HDBSCAN().fit(sparse_type(X))
+    with pytest.raises(ZeroDivisionError, match="Weights sum to zero"):
+        clusterer.weighted_cluster_centroid(100)
+
+
 def test_hdbscan_no_centroid_medoid_for_noise():
     clusterer = HDBSCAN().fit(X)
     with pytest.raises(ValueError):
