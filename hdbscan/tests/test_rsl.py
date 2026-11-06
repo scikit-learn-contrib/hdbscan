@@ -173,3 +173,19 @@ def test_rsl_badargs():
 @pytest.mark.skip(reason="need to refactor to meet newer standards")
 def test_rsl_is_sklearn_estimator():
     check_estimator(RobustSingleLinkage)
+
+
+@pytest.mark.parametrize('n_features', [128, 129])
+@pytest.mark.parametrize('metric', ['canberra', 'braycurtis', 'euclidean'])
+def test_rsl_best_metric_dispatch(n_features, metric):
+    data = np.random.RandomState(42).uniform(0.1, 1.0, size=(20, n_features))
+    tree_type = 'kdtree' if metric == 'euclidean' else 'balltree'
+    algorithm = ('prims_' if n_features > 128 else 'boruvka_') + tree_type
+
+    expected_labels, expected_tree = robust_single_linkage(
+        data, cut=5.0, metric=metric, algorithm=algorithm
+    )
+    labels, tree = robust_single_linkage(data, cut=5.0, metric=metric)
+
+    np.testing.assert_array_equal(labels, expected_labels)
+    np.testing.assert_allclose(tree, expected_tree)
