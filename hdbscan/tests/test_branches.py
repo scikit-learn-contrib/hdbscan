@@ -136,6 +136,23 @@ def test_branch_detection_data_with_missing():
     assert branch_data.finite_index is not None
 
 
+def test_branch_detection_after_public_mst_with_missing():
+    clusterer = HDBSCAN(min_cluster_size=5, branch_detection_data=True).fit(
+        X_missing_data
+    )
+    private_tree = clusterer._min_spanning_tree.copy()
+    before = BranchDetector().fit(clusterer)
+    public_tree = clusterer.minimum_spanning_tree_.to_numpy()
+    assert np.isfinite(X_missing_data[public_tree[:, :2].astype(int)]).all()
+    assert_array = np.testing.assert_array_equal
+    assert_array(clusterer._min_spanning_tree, private_tree)
+    assert_array(clusterer.minimum_spanning_tree_.to_numpy(), public_tree)
+    after = BranchDetector().fit(clusterer)
+    for attribute in ("labels_", "probabilities_", "branch_labels_",
+                      "branch_probabilities_", "cluster_labels_"):
+        assert_array(getattr(before, attribute), getattr(after, attribute))
+
+
 @pytest.mark.skip(reason="Unreachable code-branch cannot be tested.")
 def test_branch_detection_data_with_non_tree_metric():
     """Check warning on unsupported metric."""
