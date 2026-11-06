@@ -12,6 +12,7 @@ name = "hdbscan"
 version = "0.8.44"
 description = "Clustering based on density with variable density clusters"
 readme = "README.rst"
+license = "BSD-3-Clause"
 requires-python = ">=3.11"
 license = {text = "BSD"}
 authors = [
@@ -23,7 +24,6 @@ classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
   "Intended Audience :: Developers",
-  "License :: OSI Approved",
   "Programming Language :: C",
   "Programming Language :: Python",
   "Topic :: Software Development",
