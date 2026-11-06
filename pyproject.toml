@@ -14,7 +14,6 @@ description = "Clustering based on density with variable density clusters"
 readme = "README.rst"
 license = "BSD-3-Clause"
 requires-python = ">=3.11"
-license = {text = "BSD"}
 authors = [
   {name = "Leland McInnes", email = "leland.mcinnes@gmail.com"}
 ]
