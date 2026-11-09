@@ -541,9 +541,14 @@ def hdbscan(
         as noise.
 
     min_samples : int, optional (default=None)
-        The number of samples in a neighborhood for a point
-        to be considered as a core point. This includes the point itself.
-        defaults to the min_cluster_size.
+        The number of neighbours, not counting the point itself, used to
+        compute a point's core distance (with
+        ``match_reference_implementation=True`` the point itself is counted).
+        ``sklearn.cluster.HDBSCAN`` counts the point itself, so
+        ``min_samples=k`` here corresponds to ``min_samples=k + 1`` there.
+        Defaults to min_cluster_size. Small changes of min_samples can drop
+        or merge selected clusters whose size is close to min_cluster_size;
+        see :ref:`min_samples_label`.
 
     cluster_selection_epsilon: float, optional (default=0.0)
         A distance threshold. Clusters below this value will be merged.
@@ -934,8 +939,14 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         cluster rather than a cluster splitting into two new clusters.
 
     min_samples : int, optional (default=None)
-        The number of samples in a neighborhood for a point to be considered as a core point.
-	This includes the point itself. When None, defaults to min_cluster_size.
+        The number of neighbours, not counting the point itself, used to
+        compute a point's core distance (with
+        ``match_reference_implementation=True`` the point itself is counted).
+        ``sklearn.cluster.HDBSCAN`` counts the point itself, so
+        ``min_samples=k`` here corresponds to ``min_samples=k + 1`` there.
+        When None, defaults to min_cluster_size. Small changes of
+        min_samples can drop or merge selected clusters whose size is close
+        to min_cluster_size; see :ref:`min_samples_label`.
 
     metric : string, or callable, optional (default='euclidean')
         The metric to use when calculating distance between instances in a

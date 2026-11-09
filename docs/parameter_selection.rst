@@ -168,6 +168,15 @@ above, make the clustering progressively more conservative, culminating
 in the example above where ``min_samples`` was set to 60 and we had only
 two clusters with most points declared as noise.
 
+Small changes of ``min_samples`` can matter too. A selected cluster whose
+size is close to ``min_cluster_size`` can shrink below it when
+``min_samples`` is raised slightly; it is then no longer a candidate, and its
+points become noise or join a neighbouring cluster. Since ``min_samples``
+defaults to ``min_cluster_size``, changing ``min_cluster_size`` also changes
+``min_samples`` unless you set it explicitly. If a particular set of clusters
+matters for your analysis, rerun with a few nearby values of ``min_samples``
+and check that those clusters hold.
+
 .. _epsilon_label:
 
 Selecting ``cluster_selection_epsilon``
