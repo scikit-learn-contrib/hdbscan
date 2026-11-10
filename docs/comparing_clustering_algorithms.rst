@@ -573,11 +573,9 @@ So, in summary:
 -  **Intuitive parameters**: Choosing a minimum cluster size is very
    reasonable. The only remaining parameter is ``min_samples`` inherited
    from DBSCAN for the density based space transformation. Sadly
-   ``min_samples`` is not that intuitive; HDBSCAN is usually not that
-   sensitive to it and we can choose some sensible defaults, but a small
-   change can still drop or merge clusters close to ``min_cluster_size``
-   (see :ref:`min_samples_label`), and this remains the biggest weakness
-   of the algorithm.
+   ``min_samples`` is not that intuitive; HDBSCAN is not that sensitive
+   to it and we can choose some sensible defaults, but this remains the
+   biggest weakness of the algorithm.
 -  **Stability**: HDBSCAN is stable over runs and subsampling (since the
    variable density clustering will still cluster sparser subsampled
    clusters with the same parameter choices), and has good stability

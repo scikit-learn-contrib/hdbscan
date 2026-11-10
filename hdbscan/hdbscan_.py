@@ -546,9 +546,7 @@ def hdbscan(
         ``match_reference_implementation=True`` the point itself is counted).
         ``sklearn.cluster.HDBSCAN`` counts the point itself, so
         ``min_samples=k`` here corresponds to ``min_samples=k + 1`` there.
-        Defaults to min_cluster_size. Small changes of min_samples can drop
-        or merge selected clusters whose size is close to min_cluster_size;
-        see :ref:`min_samples_label`.
+        Defaults to min_cluster_size.
 
     cluster_selection_epsilon: float, optional (default=0.0)
         A distance threshold. Clusters below this value will be merged.
@@ -944,9 +942,7 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
         ``match_reference_implementation=True`` the point itself is counted).
         ``sklearn.cluster.HDBSCAN`` counts the point itself, so
         ``min_samples=k`` here corresponds to ``min_samples=k + 1`` there.
-        When None, defaults to min_cluster_size. Small changes of
-        min_samples can drop or merge selected clusters whose size is close
-        to min_cluster_size; see :ref:`min_samples_label`.
+        When None, defaults to min_cluster_size.
 
     metric : string, or callable, optional (default='euclidean')
         The metric to use when calculating distance between instances in a
