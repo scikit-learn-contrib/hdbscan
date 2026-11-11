@@ -297,6 +297,55 @@ def test_hdbscan_boruvka_balltree():
         hdbscan(X, algorithm="boruvka_balltree", metric="cosine")
 
 
+@pytest.mark.parametrize("alpha", [0.5, 2.0])
+@pytest.mark.parametrize(
+    "algorithm, metric",
+    [
+        ("best", "euclidean"),
+        ("best", "canberra"),
+        ("boruvka_kdtree", "euclidean"),
+        ("boruvka_balltree", "canberra"),
+    ],
+)
+def test_hdbscan_non_unit_alpha(algorithm, metric, alpha):
+    data, _ = make_blobs(
+        n_samples=100, centers=4, cluster_std=[0.5, 1.0, 1.5, 2.5], random_state=0
+    )
+    min_samples = 5
+    distances = distance.cdist(data, data, metric=metric)
+    # Each row includes a zero distance to the point itself.
+    core_distances = np.partition(distances, min_samples, axis=1)[:, min_samples]
+    reachability = np.maximum(
+        np.maximum(core_distances[:, None], core_distances[None, :]), distances / alpha
+    )
+    expected = sparse.csgraph.minimum_spanning_tree(reachability)
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        clusterer = HDBSCAN(
+            alpha=alpha,
+            algorithm=algorithm,
+            metric=metric,
+            min_samples=min_samples,
+            gen_min_span_tree=True,
+            approx_min_span_tree=False,
+        ).fit(data)
+
+    edges = clusterer.minimum_spanning_tree_.to_numpy()
+    np.testing.assert_allclose(np.sort(edges[:, 2]), np.sort(expected.data))
+
+    fallback_warnings = [
+        str(warning.message)
+        for warning in caught
+        if "does not support alpha" in str(warning.message)
+    ]
+    if algorithm == "best":
+        assert not fallback_warnings
+    else:
+        assert len(fallback_warnings) == 1
+        assert algorithm.replace("boruvka_", "prims_") in fallback_warnings[0]
+
+
 def test_hdbscan_generic():
     labels, p, persist, ctree, ltree, mtree = hdbscan(X, algorithm="generic")
     n_clusters_1 = len(set(labels)) - int(-1 in labels)
