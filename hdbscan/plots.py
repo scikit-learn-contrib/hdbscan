@@ -61,12 +61,6 @@ class CondensedTree(object):
         The raw numpy rec array version of the condensed tree as produced
         internally by hdbscan.
 
-    cluster_selection_method : string, optional (default 'eom')
-        The method of selecting clusters. One of 'eom' or 'leaf'
-
-    allow_single_cluster : Boolean, optional (default False)
-        Whether to allow the root cluster as the only selected cluster
-
     """
     def __init__(self, condensed_tree_array, labels):
         self._raw_tree = condensed_tree_array
@@ -90,9 +84,9 @@ class CondensedTree(object):
                    points in the cluster at a given lambda value).
                    (default False)
 
-        max_rectangles_per_icicle : int, optional
+        max_rectangle_per_icicle : int, optional
             To simplify the plot this method will only emit
-            ``max_rectangles_per_icicle`` bars per branch of the dendrogram.
+            ``max_rectangle_per_icicle`` bars per branch of the dendrogram.
             This ensures that we don't suffer from massive overplotting in
             cases with a lot of data points.
 
