@@ -37,7 +37,8 @@ from .prediction import (PredictionData,
                          _cluster_tree_lookup,
                          _find_cluster_and_probability,
                          _find_neighbor_and_lambda,
-                         _group_by_parent)
+                         _group_by_parent,
+                         _query_neighbors)
 from ._prediction_utils import (get_tree_row_with_child,
                                 dist_membership_vector,
                                 outlier_membership_vector,
@@ -348,9 +349,9 @@ def approximate_predict_flat(clusterer,
     probabilities = np.empty(points_to_predict.shape[0], dtype=np.float64)
 
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
-    neighbor_distances, neighbor_indices = prediction_data.tree.query(
-                                              points_to_predict,
-                                              k=2 * min_samples)
+    neighbor_distances, neighbor_indices = _query_neighbors(
+        prediction_data.tree, points_to_predict, 2 * min_samples,
+        clusterer.core_dist_n_jobs)
 
     cluster_tree = prediction_data.cluster_tree
     # Build the child -> (parent, lambda) lookup and root once, not per point.
@@ -481,8 +482,8 @@ def membership_vector_flat(
     # k-NN for prediciton points to training set
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
     neighbor_distances, neighbor_indices = \
-        prediction_data.tree.query(points_to_predict,
-                                   k=2*min_samples)
+        _query_neighbors(prediction_data.tree, points_to_predict,
+                         2 * min_samples, clusterer.core_dist_n_jobs)
 
     # Loop over prediction points to compute probabilities
     for i in range(points_to_predict.shape[0]):
