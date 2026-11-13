@@ -119,7 +119,8 @@ def distances_between_points(X, labels, cluster_id,
         if d is None:
             raise ValueError('If metric is precomputed a '
                              'd value must be provided!')
-        distance_matrix = X[labels == cluster_id, :][:, labels == cluster_id]
+        members = np.flatnonzero(labels == cluster_id)
+        distance_matrix = X[np.ix_(members, members)]
     else:
         subset_X = X[labels == cluster_id, :]
         distance_matrix = pairwise_distances(subset_X, metric=metric,
@@ -268,8 +269,10 @@ def density_separation(X, labels, cluster_id1, cluster_id2,
     2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
     if metric == 'precomputed':
-        sub_select = X[labels == cluster_id1, :][:, labels == cluster_id2]
-        distance_matrix = sub_select[internal_nodes1, :][:, internal_nodes2]
+        members1 = np.flatnonzero(labels == cluster_id1)
+        members2 = np.flatnonzero(labels == cluster_id2)
+        distance_matrix = X[np.ix_(members1[internal_nodes1],
+                                   members2[internal_nodes2])]
     else:
         cluster1 = X[labels == cluster_id1][internal_nodes1]
         cluster2 = X[labels == cluster_id2][internal_nodes2]

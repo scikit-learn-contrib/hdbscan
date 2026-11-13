@@ -86,3 +86,14 @@ def test_validity_index_scale_invariance(metric, scale):
     assert np.isfinite(actual)
     assert_allclose(actual, expected, rtol=1e-10, atol=1e-12)
     assert_allclose(actual_clusters, expected_clusters, rtol=1e-10, atol=1e-12)
+
+
+def test_validity_index_precomputed_mst_raw_dist():
+    positions = np.array([0., .5, 1., 1.5, 2., 15., 15.5, 16., 16.5, 17.])[:, None]
+    labels = np.repeat([0, 1], 5)
+
+    expected = validity_index(positions, labels, mst_raw_dist=True)
+    actual = validity_index(squareform(pdist(positions)), labels,
+                            metric="precomputed", d=1, mst_raw_dist=True)
+
+    assert_allclose(actual, expected, rtol=1e-12, atol=0)
