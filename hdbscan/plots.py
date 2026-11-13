@@ -3,6 +3,8 @@
 #
 # License: BSD 3 clause
 
+import heapq
+
 import numpy as np
 
 from scipy.cluster.hierarchy import dendrogram
@@ -234,15 +236,35 @@ class CondensedTree(object):
 
     def _select_clusters(self):
         points_tree = self._raw_tree[self._raw_tree["child_size"] == 1]
-        
-        # Find lowest cluster segment id for each cluster label
+        cluster_tree = self._raw_tree[self._raw_tree["child_size"] > 1]
+        parent_of = dict(zip(cluster_tree["child"].tolist(),
+                             cluster_tree["parent"].tolist()))
+
+        # The selected segment of a label is the lowest common ancestor of
+        # the segments its points fall out of. A selected cluster can split
+        # into child clusters before any point leaves it directly, so the
+        # smallest segment id among its points may belong to one child only.
         segments = points_tree['parent']
         labels = self._labels[points_tree['child']]
         order = np.argsort(labels)
-        groups = np.split(segments[order], np.flatnonzero(np.diff(labels[order]) != 0) + 1)        
-        return [
-            groups[label].min() for label in range(int(labels[order[0]] == -1), len(groups))
-        ]
+        groups = np.split(segments[order], np.flatnonzero(np.diff(labels[order]) != 0) + 1)
+        selected = []
+        for group in groups[int(labels[order[0]] == -1):]:
+            remaining = set(group.tolist())
+            # Condensed-tree children have larger ids than their parents.
+            # Collapse the largest segment first, stopping at the common
+            # ancestor instead of walking shared paths all the way to root.
+            pending = [-segment for segment in remaining]
+            heapq.heapify(pending)
+            while len(remaining) > 1:
+                segment = -heapq.heappop(pending)
+                remaining.remove(segment)
+                parent = parent_of[segment]
+                if parent not in remaining:
+                    remaining.add(parent)
+                    heapq.heappush(pending, -parent)
+            selected.append(remaining.pop())
+        return selected
         
     def plot(self, leaf_separation=1, cmap='viridis', select_clusters=False,
              label_clusters=False, selection_palette=None,
