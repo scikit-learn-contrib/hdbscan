@@ -499,6 +499,39 @@ def test_hdbscan_outliers():
     assert scores is not None
 
 
+@pytest.mark.parametrize("algorithm", ["best", "generic"])
+@pytest.mark.parametrize("add_distinct_points", [False, True])
+@pytest.mark.parametrize("predict", [False, True])
+def test_hdbscan_outlier_scores_duplicate_points(
+    algorithm, add_distinct_points, predict
+):
+    data = np.repeat([[0.0, 0.0], [10.0, 10.0]], 10, axis=0)
+    distinct_points = np.array([[0.1, 0.1], [9.9, 9.9]])
+    expected = np.zeros(len(data))
+    if add_distinct_points:
+        data = np.vstack([data, distinct_points])
+        expected = np.concatenate([expected, np.ones(len(distinct_points))])
+
+    clusterer = HDBSCAN(
+        min_cluster_size=5,
+        min_samples=2,
+        algorithm=algorithm,
+        prediction_data=True,
+    ).fit(data)
+    assert_array_equal(np.unique(clusterer.labels_), [0, 1])
+
+    with np.errstate(invalid="raise", divide="raise"):
+        if predict:
+            scores = approximate_predict_scores(
+                clusterer, np.vstack([data, distinct_points])
+            )
+            expected = np.concatenate([expected, np.ones(len(distinct_points))])
+        else:
+            scores = clusterer.outlier_scores_
+
+    assert_array_equal(scores, expected)
+
+
 # def test_hdbscan_unavailable_attributes():
 #     clusterer = HDBSCAN(gen_min_span_tree=False)
 #     with warnings.catch_warnings(record=True) as w:
