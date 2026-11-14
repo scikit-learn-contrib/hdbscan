@@ -640,7 +640,7 @@ cpdef np.ndarray get_stability_scores(np.ndarray labels, set clusters,
     return result
 
 
-cdef dict _build_parent_to_children(np.ndarray cluster_tree):
+cpdef dict _build_parent_to_children(np.ndarray cluster_tree):
     cdef dict result = {}
     cdef np.intp_t i, p, c
     cdef np.ndarray[np.intp_t, ndim=1] parents = cluster_tree['parent']
@@ -666,7 +666,7 @@ cdef dict _build_child_lookup(np.ndarray cluster_tree):
     return result
 
 
-cdef list _bfs_from_dict(dict parent_to_children, np.intp_t bfs_root):
+cpdef list _bfs_from_dict(dict parent_to_children, np.intp_t bfs_root):
     cdef list result = []
     cdef list to_process = [bfs_root]
     cdef list next_level
@@ -677,18 +677,23 @@ cdef list _bfs_from_dict(dict parent_to_children, np.intp_t bfs_root):
         for node in to_process:
             if node in parent_to_children:
                 next_level.extend(<list>parent_to_children[node])
+        # condense_tree numbers clusters in row order, so sorting keeps each
+        # level in tree row order, as a full-tree scan per level would.
+        next_level.sort()
         to_process = next_level
     return result
 
 
-cdef list _get_leaves_from_dict(dict parent_to_children, np.intp_t root):
+cpdef list _get_leaves_from_dict(dict parent_to_children, np.intp_t root):
     cdef list leaves = []
     cdef list stack = [root]
     cdef np.intp_t node
     while stack:
         node = stack.pop()
         if node in parent_to_children:
-            stack.extend(<list>parent_to_children[node])
+            # Push the children reversed so they pop in row order: leaves come
+            # out in the same order as recurse_leaf_dfs.
+            stack.extend(reversed(<list>parent_to_children[node]))
         else:
             leaves.append(node)
     return leaves
@@ -757,7 +762,7 @@ cpdef list get_cluster_tree_leaves(np.ndarray cluster_tree):
     if cluster_tree.shape[0] == 0:
         return []
     root = cluster_tree['parent'].min()
-    return recurse_leaf_dfs(cluster_tree, root)
+    return _get_leaves_from_dict(_build_parent_to_children(cluster_tree), root)
 
 
 cpdef np.intp_t traverse_upwards(np.ndarray cluster_tree, np.double_t cluster_selection_epsilon, np.intp_t leaf, np.intp_t allow_single_cluster):

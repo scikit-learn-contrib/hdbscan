@@ -9,7 +9,8 @@ from joblib import Parallel, delayed
 from joblib.parallel import cpu_count
 from sklearn.neighbors import KDTree, BallTree
 from .dist_metrics import DistanceMetric
-from ._hdbscan_tree import recurse_leaf_dfs
+from ._hdbscan_tree import (recurse_leaf_dfs, _build_parent_to_children,
+                            _bfs_from_dict, _get_leaves_from_dict)
 from ._prediction_utils import (get_tree_row_with_child,
                                 dist_membership_vector,
                                 outlier_membership_vector,
@@ -199,6 +200,8 @@ class PredictionData(object):
         # Group the raw tree by parent once instead of re-scanning it per
         # cluster/leaf below (see _group_by_parent).
         group_max_lambda, group_rows = _group_by_parent(raw_condensed_tree)
+        # Index the cluster tree once instead of scanning it at every node walked.
+        parent_to_children = _build_parent_to_children(self.cluster_tree)
 
         for cluster in all_clusters:
             self.leaf_max_lambdas[cluster] = group_max_lambda[cluster]
@@ -206,7 +209,7 @@ class PredictionData(object):
         for cluster in selected_clusters:
             self.max_lambdas[cluster] = group_max_lambda[cluster]
 
-            for sub_cluster in self._clusters_below(cluster):
+            for sub_cluster in _bfs_from_dict(parent_to_children, cluster):
                 self.cluster_map[sub_cluster] = self.cluster_map[cluster]
                 self.max_lambdas[sub_cluster] = self.max_lambdas[cluster]
 
@@ -214,7 +217,7 @@ class PredictionData(object):
             # code re-hstacked the growing array every iteration, copying all
             # accumulated points each time (O(k^2) in the exemplar count).
             exemplar_parts = []
-            for leaf in self._recurse_leaf_dfs(cluster):
+            for leaf in _get_leaves_from_dict(parent_to_children, cluster):
                 leaf_rows = group_rows[leaf]
                 leaf_max_lambda = group_max_lambda[leaf]
                 points = raw_condensed_tree['child'][
