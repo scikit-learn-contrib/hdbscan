@@ -999,7 +999,11 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
     core_dist_n_jobs : int, optional (default=4)
         Number of parallel jobs to run in core distance computations (if
         supported by the specific algorithm). For ``core_dist_n_jobs``
-        below -1, (n_cpus + 1 + core_dist_n_jobs) are used.
+        below -1, (n_cpus + 1 + core_dist_n_jobs) are used. It also splits the
+        neighbor query of ``approximate_predict``, ``membership_vector``,
+        ``approximate_predict_scores`` and ``hdbscan.flat``'s
+        ``approximate_predict_flat`` and ``membership_vector_flat`` when more
+        than 16384 points are predicted and the prediction tree is a KDTree.
 
     cluster_selection_method : string, optional (default='eom')
         The method used to select clusters from the condensed tree. The
