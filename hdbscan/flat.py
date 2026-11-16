@@ -30,7 +30,9 @@ import copy
 from warnings import warn
 
 import numpy as np
-from ._hdbscan_tree import compute_stability, get_cluster_tree_leaves
+from ._hdbscan_tree import (compute_stability, get_cluster_tree_leaves,
+                            _build_parent_to_children, _bfs_from_dict,
+                            _get_leaves_from_dict)
 from .hdbscan_ import HDBSCAN, _tree_to_labels
 from .plots import _bfs_from_cluster_tree, _get_leaves
 from .prediction import (PredictionData,
@@ -810,6 +812,8 @@ def re_init(predData, condensed_tree,
     # Group the raw tree by parent once instead of re-scanning it per
     # cluster/leaf below (see hdbscan.prediction._group_by_parent).
     group_max_lambda, group_rows = _group_by_parent(raw_condensed_tree)
+    # Index the cluster tree by parent once (see PredictionData.__init__).
+    parent_to_children = _build_parent_to_children(predData.cluster_tree)
 
     for cluster in selected_clusters:
         # max_lambda <=> smallest distance <=> most persistent point(s)
@@ -818,7 +822,7 @@ def re_init(predData, condensed_tree,
         # Map all sub-clusters of selected cluster to the selected cluster's
         #       label in output.
         # Map lambdas too...
-        for sub_cluster in predData._clusters_below(cluster):
+        for sub_cluster in _bfs_from_dict(parent_to_children, cluster):
             predData.cluster_map[sub_cluster] = predData.cluster_map[cluster]
             predData.max_lambdas[sub_cluster] = predData.max_lambdas[cluster]
 
@@ -827,7 +831,7 @@ def re_init(predData, condensed_tree,
         cluster_exemplars = np.array([], dtype=np.int64)
         # For each selected cluster, get all of its leaves,
         #       and leaves of leaves, and so on...
-        for leaf in predData._recurse_leaf_dfs(cluster):
+        for leaf in _get_leaves_from_dict(parent_to_children, cluster):
             # Largest lambda => Most persistent points
             leaf_rows = group_rows[leaf]
             leaf_max_lambda = group_max_lambda[leaf]
