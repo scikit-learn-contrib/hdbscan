@@ -116,32 +116,57 @@ cpdef np.ndarray[np.float64_t, ndim=2] all_points_dist_membership_vector(
 
     return result
 
-cdef np.ndarray[np.float64_t, ndim=1] merge_height(
+cdef tuple _cluster_parent_lookup(np.ndarray cluster_tree):
+    # Index the cluster tree by child id (offset by the root) so a step to
+    # the parent is an array read instead of a scan over every row.
+    cdef np.ndarray[np.intp_t, ndim=1] parents = \
+        cluster_tree['parent'].astype(np.intp, copy=False)
+    cdef np.ndarray[np.intp_t, ndim=1] children = \
+        cluster_tree['child'].astype(np.intp, copy=False)
+    cdef np.ndarray[np.float64_t, ndim=1] lambdas = \
+        cluster_tree['lambda_val'].astype(np.float64, copy=False)
+    cdef np.ndarray[np.intp_t, ndim=1] parent_of
+    cdef np.ndarray[np.float64_t, ndim=1] lambda_of
+    cdef np.intp_t i
+    cdef np.intp_t root = 0
+    cdef np.intp_t max_child = -1
+
+    if children.shape[0] > 0:
+        root = parents[0]
+    for i in range(children.shape[0]):
+        if parents[i] < root:
+            root = parents[i]
+        if children[i] > max_child:
+            max_child = children[i]
+
+    # The root's slot stays unset: the root has no parent and, being the
+    # smallest cluster id, merge_height never steps up from it.
+    parent_of = np.empty(max_child - root + 1, dtype=np.intp)
+    lambda_of = np.empty(max_child - root + 1, dtype=np.float64)
+    for i in range(children.shape[0]):
+        parent_of[children[i] - root] = parents[i]
+        lambda_of[children[i] - root] = lambdas[i]
+
+    return root, parent_of, lambda_of
+
+cdef np.ndarray[np.float64_t, ndim=1] _merge_height_from_lookup(
         np.intp_t point_cluster,
         np.float64_t point_lambda,
         np.ndarray[np.intp_t, ndim=1] clusters,
-        np.ndarray cluster_tree):
+        np.intp_t root,
+        np.ndarray[np.intp_t, ndim=1] parent_of,
+        np.ndarray[np.float64_t, ndim=1] lambda_of):
 
     cdef np.intp_t i
-    cdef np.intp_t j
 
     cdef np.intp_t left_cluster
     cdef np.intp_t right_cluster
+    cdef np.intp_t last_cluster
     cdef int took_right_parent
     cdef int took_left_parent
-    cdef np.intp_t cluster
 
     cdef np.ndarray[np.float64_t, ndim=1] result = np.empty(clusters.shape[0],
                                                             dtype=np.float64)
-    cdef np.ndarray[np.intp_t, ndim=1] parents
-    cdef np.ndarray[np.intp_t, ndim=1] children
-    cdef np.ndarray[np.float64_t, ndim=1] lambdas
-
-    # convert the cluster tree for fast direct access
-    parents = cluster_tree['parent'].astype(np.intp)
-    children = cluster_tree['child'].astype(np.intp)
-    lambdas = cluster_tree['lambda_val'].astype(np.float64)
-
 
     for i in range(clusters.shape[0]):
 
@@ -155,32 +180,29 @@ cdef np.ndarray[np.float64_t, ndim=1] merge_height(
             if left_cluster > right_cluster:
                 took_left_parent = True
                 last_cluster = left_cluster
-
-                # Set left_cluster to be its parent
-                for j in range(children.shape[0]):
-                    if children[j] == left_cluster:
-                        left_cluster = parents[j]
-                        break
+                left_cluster = parent_of[left_cluster - root]
             else:
                 took_right_parent = True
                 last_cluster = right_cluster
-
-                # Set right_cluster to be its parent
-                for j in range(children.shape[0]):
-                    if children[j] == right_cluster:
-                        right_cluster = parents[j]
-                        break
+                right_cluster = parent_of[right_cluster - root]
 
         if took_left_parent and took_right_parent:
             # Take the lambda value of last_cluster merging in
-            for j in range(children.shape[0]):
-                if children[j] == last_cluster:
-                    result[i] = lambdas[j]
-                    break
+            result[i] = lambda_of[last_cluster - root]
         else:
             result[i] = point_lambda
 
     return result
+
+cdef np.ndarray[np.float64_t, ndim=1] merge_height(
+        np.intp_t point_cluster,
+        np.float64_t point_lambda,
+        np.ndarray[np.intp_t, ndim=1] clusters,
+        np.ndarray cluster_tree):
+
+    root, parent_of, lambda_of = _cluster_parent_lookup(cluster_tree)
+    return _merge_height_from_lookup(point_cluster, point_lambda, clusters,
+                                     root, parent_of, lambda_of)
 
 
 cpdef np.float64_t safe_always_positive_division(
@@ -303,6 +325,7 @@ cpdef np.ndarray[np.float64_t, ndim=2] all_points_per_cluster_scores(
                  (<np.float64_t *> result_arr.data))
 
     point_tree = tree[tree['child_size'] == 1]
+    root, parent_of, lambda_of = _cluster_parent_lookup(cluster_tree)
 
     for i in range(point_tree.shape[0]):
         point_row = point_tree[i]
@@ -311,9 +334,8 @@ cpdef np.ndarray[np.float64_t, ndim=2] all_points_per_cluster_scores(
         point_lambda = point_row['lambda_val']
         max_lambda = max_lambda_dict[point_cluster] + 1e-8 # avoid zero lambda
 
-        # Can we not do a faster merge height operation here?
-        result_arr[point] = merge_height(point_cluster, point_lambda,
-                                          clusters, cluster_tree)
+        result_arr[point] = _merge_height_from_lookup(
+            point_cluster, point_lambda, clusters, root, parent_of, lambda_of)
 
         # Cythonize: result = np.exp(-(max_lambda / height))
         for j in range(result_arr.shape[1]):
@@ -367,6 +389,7 @@ cpdef all_points_prob_in_some_cluster(
     result = np.empty(num_points, dtype=np.float64)
 
     point_tree = tree[tree['child_size'] == 1]
+    root, parent_of, lambda_of = _cluster_parent_lookup(cluster_tree)
 
     for i in range(point_tree.shape[0]):
         point_row = point_tree[i]
@@ -374,9 +397,8 @@ cpdef all_points_prob_in_some_cluster(
         point_cluster = point_row['parent']
         point_lambda = point_row['lambda_val']
 
-        # Can we not do a faster merge height operation here?
-        heights = merge_height(point_cluster, point_lambda,
-                               clusters, cluster_tree)
+        heights = _merge_height_from_lookup(
+            point_cluster, point_lambda, clusters, root, parent_of, lambda_of)
         max_lambda = max(max_lambda_dict[clusters[heights.argmax()]],
                          point_lambda)
         result[point] = (heights.max() / max_lambda)

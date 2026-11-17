@@ -5,9 +5,12 @@
 
 import numpy as np
 
+from joblib import Parallel, delayed
+from joblib.parallel import cpu_count
 from sklearn.neighbors import KDTree, BallTree
 from .dist_metrics import DistanceMetric
-from ._hdbscan_tree import recurse_leaf_dfs
+from ._hdbscan_tree import (recurse_leaf_dfs, _build_parent_to_children,
+                            _bfs_from_dict, _get_leaves_from_dict)
 from ._prediction_utils import (get_tree_row_with_child,
                                 dist_membership_vector,
                                 outlier_membership_vector,
@@ -113,6 +116,12 @@ class PredictionData(object):
         This is the metric that will be used for the space tree to determine
         core distances etc.
 
+    core_dist_n_jobs : int, optional (default=1)
+        Number of threads used to compute the core distances. Only used with
+        ``tree_type='kdtree'`` and more than 16384 rows; otherwise the query
+        runs on one thread. For ``core_dist_n_jobs`` below -1, (n_cpus + 1 +
+        core_dist_n_jobs) are used.
+
     **kwargs :
         Any further arguments to the metric.
 
@@ -164,11 +173,13 @@ class PredictionData(object):
                 [recurse_leaf_dfs(self.cluster_tree, child) for child in children], [])
 
     def __init__(self, data, condensed_tree, min_samples,
-                 tree_type='kdtree', metric='euclidean', **kwargs):
+                 tree_type='kdtree', metric='euclidean', core_dist_n_jobs=1,
+                 **kwargs):
         self.raw_data = data.astype(np.float64)
         self.tree = self._tree_type_map[tree_type](self.raw_data,
                                                    metric=metric, **kwargs)
-        self.core_distances = self.tree.query(data, k=min_samples)[0][:, -1]
+        self.core_distances = _query_core_distances(
+            self.tree, data, min_samples, core_dist_n_jobs)
         self.dist_metric = DistanceMetric.get_metric(metric, **kwargs)
 
         selected_clusters = sorted(condensed_tree._select_clusters())
@@ -189,6 +200,8 @@ class PredictionData(object):
         # Group the raw tree by parent once instead of re-scanning it per
         # cluster/leaf below (see _group_by_parent).
         group_max_lambda, group_rows = _group_by_parent(raw_condensed_tree)
+        # Index the cluster tree once instead of scanning it at every node walked.
+        parent_to_children = _build_parent_to_children(self.cluster_tree)
 
         for cluster in all_clusters:
             self.leaf_max_lambdas[cluster] = group_max_lambda[cluster]
@@ -196,7 +209,7 @@ class PredictionData(object):
         for cluster in selected_clusters:
             self.max_lambdas[cluster] = group_max_lambda[cluster]
 
-            for sub_cluster in self._clusters_below(cluster):
+            for sub_cluster in _bfs_from_dict(parent_to_children, cluster):
                 self.cluster_map[sub_cluster] = self.cluster_map[cluster]
                 self.max_lambdas[sub_cluster] = self.max_lambdas[cluster]
 
@@ -204,7 +217,7 @@ class PredictionData(object):
             # code re-hstacked the growing array every iteration, copying all
             # accumulated points each time (O(k^2) in the exemplar count).
             exemplar_parts = []
-            for leaf in self._recurse_leaf_dfs(cluster):
+            for leaf in _get_leaves_from_dict(parent_to_children, cluster):
                 leaf_rows = group_rows[leaf]
                 leaf_max_lambda = group_max_lambda[leaf]
                 points = raw_condensed_tree['child'][
@@ -216,6 +229,59 @@ class PredictionData(object):
             cluster_exemplars = (np.hstack(exemplar_parts) if exemplar_parts
                                  else np.array([], dtype=np.int64))
             self.exemplars.append(self.raw_data[cluster_exemplars])
+
+
+# Same cutoff as the Boruvka core distance split (_hdbscan_boruvka.pyx).
+_MIN_ROWS_TO_SPLIT_QUERY = 16384
+_MAX_ROWS_PER_QUERY_CHUNK = 4096
+
+
+def _query_n_jobs(tree, n_rows, n_jobs):
+    if n_jobs < 1:
+        n_jobs = max(cpu_count() + 1 + n_jobs, 1)
+    # Only KDTree is split: its metrics keep no scratch state, while some
+    # BallTree metrics (e.g. mahalanobis) write a shared buffer per call.
+    if not isinstance(tree, KDTree) or n_rows <= _MIN_ROWS_TO_SPLIT_QUERY:
+        return 1
+    return min(n_jobs, n_rows)
+
+
+def _row_chunks(n_rows, n_jobs):
+    n_chunks = -(-n_rows // _MAX_ROWS_PER_QUERY_CHUNK)
+    n_chunks = n_jobs * -(-n_chunks // n_jobs)
+    bounds = np.linspace(0, n_rows, n_chunks + 1).astype(np.intp)
+    return [slice(start, stop) for start, stop in zip(bounds, bounds[1:])]
+
+
+def _query_neighbors(tree, points, k, n_jobs):
+    n_jobs = _query_n_jobs(tree, len(points), n_jobs)
+    if n_jobs == 1:
+        return tree.query(points, k=k)
+    distances = np.empty((len(points), k), dtype=np.float64)
+    indices = np.empty((len(points), k), dtype=np.intp)
+
+    def query(rows):
+        distances[rows], indices[rows] = tree.query(points[rows], k=k)
+
+    # sklearn releases the GIL only on the default single-tree, depth-first
+    # query path.
+    Parallel(n_jobs=n_jobs, require="sharedmem")(
+        delayed(query)(rows) for rows in _row_chunks(len(points), n_jobs))
+    return distances, indices
+
+
+def _query_core_distances(tree, data, min_samples, n_jobs):
+    n_jobs = _query_n_jobs(tree, len(data), n_jobs)
+    if n_jobs == 1:
+        return tree.query(data, k=min_samples)[0][:, -1]
+    core_distances = np.empty(len(data), dtype=np.float64)
+
+    def query(rows):
+        core_distances[rows] = tree.query(data[rows], k=min_samples)[0][:, -1]
+
+    Parallel(n_jobs=n_jobs, require="sharedmem")(
+        delayed(query)(rows) for rows in _row_chunks(len(data), n_jobs))
+    return core_distances
 
 
 def _find_neighbor_and_lambda(neighbor_indices, neighbor_distances,
@@ -489,8 +555,9 @@ def approximate_predict(clusterer, points_to_predict, return_connecting_points=F
 
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
     neighbor_distances, neighbor_indices = \
-        clusterer.prediction_data_.tree.query(points_to_predict,
-                                              k=2 * min_samples)
+        _query_neighbors(
+            clusterer.prediction_data_.tree, points_to_predict,
+            2 * min_samples, clusterer.core_dist_n_jobs)
 
     cluster_tree = clusterer.prediction_data_.cluster_tree
     # Build the child -> (parent, lambda) lookup and root once, not per point.
@@ -579,8 +646,9 @@ def approximate_predict_scores(clusterer, points_to_predict):
 
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
     neighbor_distances, neighbor_indices = \
-        clusterer.prediction_data_.tree.query(points_to_predict,
-                                              k=2 * min_samples)
+        _query_neighbors(
+            clusterer.prediction_data_.tree, points_to_predict,
+            2 * min_samples, clusterer.core_dist_n_jobs)
 
     tree = clusterer.condensed_tree_._raw_tree
 
@@ -662,8 +730,9 @@ def membership_vector(clusterer, points_to_predict):
 
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
     neighbor_distances, neighbor_indices = \
-        clusterer.prediction_data_.tree.query(points_to_predict,
-                                              k=2 * min_samples)
+        _query_neighbors(
+            clusterer.prediction_data_.tree, points_to_predict,
+            2 * min_samples, clusterer.core_dist_n_jobs)
 
     for i in range(points_to_predict.shape[0]):
 

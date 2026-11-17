@@ -30,14 +30,17 @@ import copy
 from warnings import warn
 
 import numpy as np
-from ._hdbscan_tree import compute_stability, get_cluster_tree_leaves
+from ._hdbscan_tree import (compute_stability, get_cluster_tree_leaves,
+                            _build_parent_to_children, _bfs_from_dict,
+                            _get_leaves_from_dict)
 from .hdbscan_ import HDBSCAN, _tree_to_labels
 from .plots import _bfs_from_cluster_tree, _get_leaves
 from .prediction import (PredictionData,
                          _cluster_tree_lookup,
                          _find_cluster_and_probability,
                          _find_neighbor_and_lambda,
-                         _group_by_parent)
+                         _group_by_parent,
+                         _query_neighbors)
 from ._prediction_utils import (get_tree_row_with_child,
                                 dist_membership_vector,
                                 outlier_membership_vector,
@@ -348,9 +351,9 @@ def approximate_predict_flat(clusterer,
     probabilities = np.empty(points_to_predict.shape[0], dtype=np.float64)
 
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
-    neighbor_distances, neighbor_indices = prediction_data.tree.query(
-                                              points_to_predict,
-                                              k=2 * min_samples)
+    neighbor_distances, neighbor_indices = _query_neighbors(
+        prediction_data.tree, points_to_predict, 2 * min_samples,
+        clusterer.core_dist_n_jobs)
 
     cluster_tree = prediction_data.cluster_tree
     # Build the child -> (parent, lambda) lookup and root once, not per point.
@@ -481,8 +484,8 @@ def membership_vector_flat(
     # k-NN for prediciton points to training set
     min_samples = clusterer.min_samples or clusterer.min_cluster_size
     neighbor_distances, neighbor_indices = \
-        prediction_data.tree.query(points_to_predict,
-                                   k=2*min_samples)
+        _query_neighbors(prediction_data.tree, points_to_predict,
+                         2 * min_samples, clusterer.core_dist_n_jobs)
 
     # Loop over prediction points to compute probabilities
     for i in range(points_to_predict.shape[0]):
@@ -810,6 +813,8 @@ def re_init(predData, condensed_tree,
     # Group the raw tree by parent once instead of re-scanning it per
     # cluster/leaf below (see hdbscan.prediction._group_by_parent).
     group_max_lambda, group_rows = _group_by_parent(raw_condensed_tree)
+    # Index the cluster tree by parent once (see PredictionData.__init__).
+    parent_to_children = _build_parent_to_children(predData.cluster_tree)
 
     for cluster in selected_clusters:
         # max_lambda <=> smallest distance <=> most persistent point(s)
@@ -818,7 +823,7 @@ def re_init(predData, condensed_tree,
         # Map all sub-clusters of selected cluster to the selected cluster's
         #       label in output.
         # Map lambdas too...
-        for sub_cluster in predData._clusters_below(cluster):
+        for sub_cluster in _bfs_from_dict(parent_to_children, cluster):
             predData.cluster_map[sub_cluster] = predData.cluster_map[cluster]
             predData.max_lambdas[sub_cluster] = predData.max_lambdas[cluster]
 
@@ -827,7 +832,7 @@ def re_init(predData, condensed_tree,
         cluster_exemplars = np.array([], dtype=np.int64)
         # For each selected cluster, get all of its leaves,
         #       and leaves of leaves, and so on...
-        for leaf in predData._recurse_leaf_dfs(cluster):
+        for leaf in _get_leaves_from_dict(parent_to_children, cluster):
             # Largest lambda => Most persistent points
             leaf_rows = group_rows[leaf]
             leaf_max_lambda = group_max_lambda[leaf]

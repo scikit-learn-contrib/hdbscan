@@ -1208,7 +1208,7 @@ def approximate_predict_branch(branch_detector, points_to_predict):
         if label < 0:
             labels[i] = -1
         elif len(branch_detector.branch_persistences_[label]) <= min_num_branches:
-            labels[i] = label
+            labels[i] = branch_detector.labels_[connecting_point]
             probabilities[i] = prob
         else:
             labels[i] = branch_detector.labels_[connecting_point]

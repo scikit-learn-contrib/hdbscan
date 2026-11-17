@@ -119,7 +119,8 @@ def distances_between_points(X, labels, cluster_id,
         if d is None:
             raise ValueError('If metric is precomputed a '
                              'd value must be provided!')
-        distance_matrix = X[labels == cluster_id, :][:, labels == cluster_id]
+        members = np.flatnonzero(labels == cluster_id)
+        distance_matrix = X[np.ix_(members, members)]
     else:
         subset_X = X[labels == cluster_id, :]
         distance_matrix = pairwise_distances(subset_X, metric=metric,
@@ -130,15 +131,17 @@ def distances_between_points(X, labels, cluster_id,
         return distance_matrix, None
 
     else:
-        core_distances = all_points_core_distance(distance_matrix.copy(), d=d)
-        core_dist_matrix = np.tile(core_distances, (core_distances.shape[0], 1))
-        stacked_distances = np.dstack(
-            [distance_matrix, core_dist_matrix, core_dist_matrix.T])
+        core_distances = all_points_core_distance(distance_matrix, d=d)
+        mr_distances = np.maximum(distance_matrix, core_distances[np.newaxis, :])
+        np.maximum(mr_distances, core_distances[:, np.newaxis], out=mr_distances)
 
         if print_max_raw_to_coredist_ratio:
+            stacked_distances = np.dstack([
+                distance_matrix,
+                np.broadcast_to(core_distances, distance_matrix.shape)])
             print("Max raw distance to coredistance ratio: " + str(max_ratio(stacked_distances)))
 
-        return stacked_distances.max(axis=-1), core_distances
+        return mr_distances, core_distances
 
 
 def internal_minimum_spanning_tree(mr_distances):
@@ -268,8 +271,10 @@ def density_separation(X, labels, cluster_id1, cluster_id2,
     2014. Density-Based Clustering Validation. In SDM (pp. 839-847).
     """
     if metric == 'precomputed':
-        sub_select = X[labels == cluster_id1, :][:, labels == cluster_id2]
-        distance_matrix = sub_select[internal_nodes1, :][:, internal_nodes2]
+        members1 = np.flatnonzero(labels == cluster_id1)
+        members2 = np.flatnonzero(labels == cluster_id2)
+        distance_matrix = X[np.ix_(members1[internal_nodes1],
+                                   members2[internal_nodes2])]
     else:
         cluster1 = X[labels == cluster_id1][internal_nodes1]
         cluster2 = X[labels == cluster_id2][internal_nodes2]
@@ -279,14 +284,10 @@ def density_separation(X, labels, cluster_id1, cluster_id2,
         return distance_matrix.min()
 
     else:
-        core_dist_matrix1 = np.tile(core_distances1[internal_nodes1],
-                                    (distance_matrix.shape[1], 1)).T
-        core_dist_matrix2 = np.tile(core_distances2[internal_nodes2],
-                                    (distance_matrix.shape[0], 1))
-
-        mr_dist_matrix = np.dstack([distance_matrix,
-                                    core_dist_matrix1,
-                                    core_dist_matrix2]).max(axis=-1)
+        mr_dist_matrix = np.maximum(
+            distance_matrix, core_distances1[internal_nodes1][:, np.newaxis])
+        np.maximum(mr_dist_matrix, core_distances2[internal_nodes2][np.newaxis, :],
+                   out=mr_dist_matrix)
 
         return mr_dist_matrix.min()
 

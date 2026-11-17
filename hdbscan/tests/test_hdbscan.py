@@ -20,7 +20,7 @@ from hdbscan import (
     membership_vector,
     all_points_membership_vectors,
 )
-from hdbscan.flat import membership_vector_flat
+from hdbscan.flat import approximate_predict_flat, membership_vector_flat
 
 # from sklearn.cluster.tests.common import generate_clustered_data
 from sklearn.datasets import make_blobs
@@ -561,6 +561,130 @@ def test_hdbscan_outliers():
 #     HDBSCAN(metric='precomputed').fit(D)
 #     tree = clusterer.minimum_spanning_tree_
 #     assert tree is None
+
+
+@pytest.mark.parametrize("n_jobs", [3, 0, -1, 1000])
+def test_prediction_data_core_distances_split_across_jobs(n_jobs, monkeypatch):
+    from hdbscan import prediction
+    from hdbscan.prediction import PredictionData
+
+    monkeypatch.setattr(prediction, "_MIN_ROWS_TO_SPLIT_QUERY", 0)
+    monkeypatch.setattr(prediction, "cpu_count", lambda: 4)
+
+    data = X[:50]
+    clusterer = HDBSCAN().fit(data)
+    single = PredictionData(data, clusterer.condensed_tree_, 5)
+    split = PredictionData(
+        data, clusterer.condensed_tree_, 5, core_dist_n_jobs=n_jobs
+    )
+    assert_array_equal(split.core_distances, single.core_distances)
+    assert split.core_distances.base is None
+
+
+@pytest.mark.parametrize("min_rows, expected_calls", [(0, 1), (16384, 0)])
+def test_prediction_data_splits_only_large_kdtree_queries(
+    min_rows, expected_calls, monkeypatch
+):
+    from hdbscan import prediction
+    from hdbscan.prediction import PredictionData
+
+    calls = []
+    original = prediction.Parallel
+
+    def spy(*args, **kwargs):
+        calls.append(kwargs)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(prediction, "_MIN_ROWS_TO_SPLIT_QUERY", min_rows)
+    monkeypatch.setattr(prediction, "Parallel", spy)
+    data = X[:50]
+    clusterer = HDBSCAN().fit(data)
+    PredictionData(data, clusterer.condensed_tree_, 5, core_dist_n_jobs=3)
+    assert calls == [{"n_jobs": 3, "require": "sharedmem"}] * expected_calls
+
+
+def test_prediction_data_balltree_ignores_core_dist_n_jobs(monkeypatch):
+    from hdbscan import prediction
+    from hdbscan.prediction import PredictionData
+
+    monkeypatch.setattr(prediction, "_MIN_ROWS_TO_SPLIT_QUERY", 0)
+
+    rng = np.random.RandomState(0)
+    data = rng.normal(size=(300, 4))
+    V = np.cov(data.T)
+    clusterer = HDBSCAN(metric="mahalanobis", V=V).fit(data)
+    single = PredictionData(
+        data, clusterer.condensed_tree_, 5, tree_type="balltree",
+        metric="mahalanobis", V=V,
+    )
+    split = PredictionData(
+        data, clusterer.condensed_tree_, 5, tree_type="balltree",
+        metric="mahalanobis", V=V, core_dist_n_jobs=4,
+    )
+    assert_array_equal(split.core_distances, single.core_distances)
+
+
+def test_generate_prediction_data_forwards_core_dist_n_jobs(monkeypatch):
+    from hdbscan import prediction
+
+    seen = []
+    original = prediction._query_core_distances
+
+    def spy(tree, data, min_samples, n_jobs):
+        seen.append(n_jobs)
+        return original(tree, data, min_samples, n_jobs)
+
+    monkeypatch.setattr(prediction, "_query_core_distances", spy)
+    HDBSCAN(core_dist_n_jobs=2, prediction_data=True).fit(X)
+    assert seen == [2]
+
+
+@pytest.mark.parametrize("predict", [
+    approximate_predict,
+    approximate_predict_scores,
+    membership_vector,
+    approximate_predict_flat,
+    membership_vector_flat,
+])
+def test_prediction_neighbor_queries_split_across_core_dist_n_jobs(
+    predict, monkeypatch
+):
+    from hdbscan import prediction
+
+    clusterer = HDBSCAN(prediction_data=True, core_dist_n_jobs=1).fit(X)
+    points = X[:40] + 0.05
+    single = predict(clusterer, points)
+
+    calls = []
+    original = prediction.Parallel
+
+    def spy(*args, **kwargs):
+        calls.append(kwargs)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(prediction, "_MIN_ROWS_TO_SPLIT_QUERY", 0)
+    monkeypatch.setattr(prediction, "Parallel", spy)
+    clusterer.core_dist_n_jobs = 3
+    split = predict(clusterer, points)
+
+    assert calls == [{"n_jobs": 3, "require": "sharedmem"}]
+    assert_array_equal(split, single)
+
+
+def test_prediction_neighbor_query_chunks_cover_every_row(monkeypatch):
+    from sklearn.neighbors import KDTree
+    from hdbscan import prediction
+
+    monkeypatch.setattr(prediction, "_MIN_ROWS_TO_SPLIT_QUERY", 0)
+    monkeypatch.setattr(prediction, "_MAX_ROWS_PER_QUERY_CHUNK", 8)
+    tree = KDTree(X)
+    rows = prediction._row_chunks(40, 3)
+    assert [(r.start, r.stop) for r in rows] == [
+        (0, 6), (6, 13), (13, 20), (20, 26), (26, 33), (33, 40)]
+    distances, indices = prediction._query_neighbors(tree, X[:40], 5, 3)
+    want_distances, want_indices = tree.query(X[:40], k=5)
+    assert_array_equal(distances, want_distances)
+    assert_array_equal(indices, want_indices)
 
 
 def test_hdbscan_approximate_predict():
