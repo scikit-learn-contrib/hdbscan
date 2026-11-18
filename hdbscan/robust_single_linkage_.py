@@ -322,11 +322,6 @@ class RobustSingleLinkage(BaseEstimator, ClusterMixin):
 
     Parameters
     ----------
-    X : array or sparse (CSR) matrix of shape (n_samples, n_features), or \
-            array of shape (n_samples, n_samples)
-        A feature array, or array of distances between samples if
-        ``metric='precomputed'``.
-
     cut : float
         The reachability distance value to cut the cluster heirarchy at
         to derive a flat cluster labelling.
