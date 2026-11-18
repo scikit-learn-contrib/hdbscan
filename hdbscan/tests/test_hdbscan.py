@@ -93,6 +93,41 @@ def test_refit_optional_cached_data(cache, generate_on_fit):
     assert_array_equal(np.asarray(new_data.tree.data), second)
 
 
+@pytest.mark.parametrize("algorithm", [
+    "best", "generic", "prims_kdtree", "prims_balltree",
+    "boruvka_kdtree", "boruvka_balltree",
+])
+@pytest.mark.parametrize("n_features", [4, 65])
+@pytest.mark.parametrize("layout", ["C", "F", "memmap"])
+def test_read_only_input_matches_writable(algorithm, n_features, layout, tmp_path):
+    data, _ = make_blobs(
+        n_samples=60, centers=3, n_features=n_features, random_state=42
+    )
+    if layout == "memmap":
+        path = tmp_path / "data.npy"
+        np.save(path, data)
+        read_only = np.load(path, mmap_mode="r")
+    else:
+        read_only = np.array(data, order=layout)
+        read_only.setflags(write=False)
+
+    writable = np.array(read_only, order="K", copy=True)
+    expected = hdbscan(writable, algorithm=algorithm, gen_min_span_tree=True)
+    actual = hdbscan(read_only, algorithm=algorithm, gen_min_span_tree=True)
+    for result, reference in zip(actual, expected):
+        assert_array_equal(result, reference)
+
+    expected_model = HDBSCAN(algorithm=algorithm).fit(writable)
+    actual_model = HDBSCAN(algorithm=algorithm).fit(read_only)
+    assert_array_equal(actual_model.labels_, expected_model.labels_)
+    assert_array_equal(actual_model.probabilities_, expected_model.probabilities_)
+    assert_array_equal(
+        actual_model.cluster_persistence_, expected_model.cluster_persistence_
+    )
+    assert_array_equal(read_only, data)
+    assert not read_only.flags.writeable
+
+
 def test_missing_data():
     """Tests if nan data are treated as infinite distance from all other points and assigned to -1 cluster"""
     model = HDBSCAN().fit(X_missing_data)
