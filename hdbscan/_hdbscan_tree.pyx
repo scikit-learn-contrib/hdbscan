@@ -13,33 +13,34 @@ from libc.math cimport isfinite, isnan
 cdef np.double_t INFTY = np.inf
 
 
-cdef list bfs_from_hierarchy(np.ndarray[np.double_t, ndim=2] hierarchy,
-                             np.intp_t bfs_root):
+cdef np.intp_t bfs_from_hierarchy(const np.double_t[:, :] hierarchy,
+                                 np.intp_t bfs_root,
+                                 np.intp_t num_points,
+                                 np.intp_t[::1] result) noexcept nogil:
     """
-    Perform a breadth first search on a tree in scipy hclust format.
+    Perform a breadth first search on a tree in scipy hclust format. Writes
+    the visited nodes to ``result`` and returns how many there are, or -1
+    if a node id is out of range or the walk would overflow ``result``.
     """
 
-    cdef list to_process
-    cdef np.intp_t max_node
-    cdef np.intp_t num_points
-    cdef np.intp_t dim
+    cdef np.intp_t next_to_visit = 0
+    cdef np.intp_t num_found = 1
+    cdef np.intp_t node
 
-    dim = hierarchy.shape[0]
-    max_node = 2 * dim
-    num_points = max_node - dim + 1
+    result[0] = bfs_root
+    while next_to_visit < num_found:
+        node = result[next_to_visit]
+        next_to_visit += 1
+        if node < 0 or node - num_points >= hierarchy.shape[0]:
+            return -1
+        if node >= num_points:
+            if num_found + 2 > result.shape[0]:
+                return -1
+            result[num_found] = <np.intp_t> hierarchy[node - num_points, 0]
+            result[num_found + 1] = <np.intp_t> hierarchy[node - num_points, 1]
+            num_found += 2
 
-    to_process = [bfs_root]
-    result = []
-
-    while to_process:
-        result.extend(to_process)
-        to_process = [x - num_points for x in
-                      to_process if x >= num_points]
-        if to_process:
-            to_process = hierarchy[to_process,
-                                   :2].flatten().astype(np.intp).tolist()
-
-    return result
+    return num_found
 
 
 cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
@@ -69,11 +70,16 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     cdef np.intp_t root
     cdef np.intp_t num_points
     cdef np.intp_t next_label
-    cdef list node_list
+    cdef const np.double_t[:, :] hierarchy_view = hierarchy
+    cdef np.intp_t[::1] node_list
+    cdef np.intp_t[::1] sub_nodes
+    cdef np.intp_t num_nodes
+    cdef np.intp_t num_sub_nodes
+    cdef np.intp_t i
+    cdef np.intp_t j
 
     cdef np.ndarray[np.intp_t, ndim=1] relabel
     cdef np.ndarray[np.int8_t, ndim=1] ignore
-    cdef np.ndarray[np.double_t, ndim=1] children
 
     cdef np.intp_t node
     cdef np.intp_t sub_node
@@ -87,11 +93,18 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     num_points = root // 2 + 1
     next_label = num_points + 1
 
-    node_list = bfs_from_hierarchy(hierarchy, root)
+    if hierarchy.shape[1] != 4:
+        raise ValueError("hierarchy is not a valid single linkage tree")
+
+    node_list = np.empty(root + 1, dtype=np.intp)
+    sub_nodes = np.empty(root + 1, dtype=np.intp)
+    num_nodes = bfs_from_hierarchy(hierarchy_view, root, num_points, node_list)
+    if num_nodes != root + 1:
+        raise ValueError("hierarchy is not a valid single linkage tree")
 
     relabel = np.empty(root + 1, dtype=np.intp)
     relabel[root] = num_points
-    ignore = np.zeros(len(node_list), dtype=np.int8)
+    ignore = np.zeros(num_nodes, dtype=np.int8)
 
     cdef np.intp_t max_result_size = 2 * num_points
     cdef np.ndarray[np.intp_t, ndim=1] res_parent = np.empty(max_result_size, dtype=np.intp)
@@ -100,25 +113,25 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     cdef np.ndarray[np.intp_t, ndim=1] res_size = np.empty(max_result_size, dtype=np.intp)
     cdef np.intp_t pos = 0
 
-    for node in node_list:
+    for i in range(num_nodes):
+        node = node_list[i]
         if ignore[node] or node < num_points:
             continue
 
-        children = hierarchy[node - num_points]
-        left = <np.intp_t> children[0]
-        right = <np.intp_t> children[1]
-        if children[2] > 0.0:
-            lambda_value = 1.0 / children[2]
+        left = <np.intp_t> hierarchy[node - num_points, 0]
+        right = <np.intp_t> hierarchy[node - num_points, 1]
+        if hierarchy[node - num_points, 2] > 0.0:
+            lambda_value = 1.0 / hierarchy[node - num_points, 2]
         else:
             lambda_value = INFTY
 
         if left >= num_points:
-            left_count = <np.intp_t> int(hierarchy[left - num_points][3])
+            left_count = <np.intp_t> hierarchy[left - num_points, 3]
         else:
             left_count = 1
 
         if right >= num_points:
-            right_count = <np.intp_t> int(hierarchy[right - num_points][3])
+            right_count = <np.intp_t> hierarchy[right - num_points, 3]
         else:
             right_count = 1
 
@@ -136,14 +149,18 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
             pos += 1
 
         elif left_count < min_cluster_size and right_count < min_cluster_size:
-            for sub_node in bfs_from_hierarchy(hierarchy, left):
+            num_sub_nodes = bfs_from_hierarchy(hierarchy_view, left, num_points, sub_nodes)
+            for j in range(num_sub_nodes):
+                sub_node = sub_nodes[j]
                 if sub_node < num_points:
                     res_parent[pos] = relabel[node]; res_child[pos] = sub_node
                     res_lambda[pos] = lambda_value; res_size[pos] = 1
                     pos += 1
                 ignore[sub_node] = True
 
-            for sub_node in bfs_from_hierarchy(hierarchy, right):
+            num_sub_nodes = bfs_from_hierarchy(hierarchy_view, right, num_points, sub_nodes)
+            for j in range(num_sub_nodes):
+                sub_node = sub_nodes[j]
                 if sub_node < num_points:
                     res_parent[pos] = relabel[node]; res_child[pos] = sub_node
                     res_lambda[pos] = lambda_value; res_size[pos] = 1
@@ -152,7 +169,9 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
 
         elif left_count < min_cluster_size:
             relabel[right] = relabel[node]
-            for sub_node in bfs_from_hierarchy(hierarchy, left):
+            num_sub_nodes = bfs_from_hierarchy(hierarchy_view, left, num_points, sub_nodes)
+            for j in range(num_sub_nodes):
+                sub_node = sub_nodes[j]
                 if sub_node < num_points:
                     res_parent[pos] = relabel[node]; res_child[pos] = sub_node
                     res_lambda[pos] = lambda_value; res_size[pos] = 1
@@ -161,7 +180,9 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
 
         else:
             relabel[left] = relabel[node]
-            for sub_node in bfs_from_hierarchy(hierarchy, right):
+            num_sub_nodes = bfs_from_hierarchy(hierarchy_view, right, num_points, sub_nodes)
+            for j in range(num_sub_nodes):
+                sub_node = sub_nodes[j]
                 if sub_node < num_points:
                     res_parent[pos] = relabel[node]; res_child[pos] = sub_node
                     res_lambda[pos] = lambda_value; res_size[pos] = 1

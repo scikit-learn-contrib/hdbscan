@@ -427,6 +427,24 @@ def test_hdbscan_boruvka_balltree_matches():
     assert (num_mismatches / float(data.shape[0])) < 0.15
 
 
+@pytest.mark.parametrize(
+    "rows",
+    [
+        [[0, 1, 1.0, 2], [3, 3, 2.0, 4]],
+        [[0, 1, 1.0, 2], [9, 2, 2.0, 3]],
+        [[0, 1, 1.0, 2], [0, 1, 2.0, 2]],
+        [[0, 1, 1.0], [3, 2, 2.0]],
+    ],
+    ids=["shared_child", "child_out_of_range", "unreachable_row", "three_columns"],
+)
+def test_condense_tree_rejects_malformed_hierarchy(rows):
+    from hdbscan._hdbscan_tree import condense_tree
+
+    hierarchy = np.array(rows, dtype=np.float64)
+    with pytest.raises(ValueError, match="not a valid single linkage tree"):
+        condense_tree(hierarchy, 2)
+
+
 def test_condensed_tree_plot():
     clusterer = HDBSCAN(gen_min_span_tree=True).fit(X)
     if_matplotlib(clusterer.condensed_tree_.plot)(
