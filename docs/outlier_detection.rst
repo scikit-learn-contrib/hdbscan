@@ -34,6 +34,12 @@ higher the score, the more likely the point is to be an outlier. In
 practice it is often best to look at the distributions of outlier
 scores.
 
+When enough duplicate points have zero mutual-reachability distance, their
+local density is infinite and their outlier score is 0. Points with finite
+density relative to an infinite maximum density receive a score of 1.
+``hdbscan.approximate_predict_scores`` uses the same convention when scoring
+new points against an existing clustering.
+
 .. code:: python
 
     clusterer.outlier_scores_
