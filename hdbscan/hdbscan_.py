@@ -330,6 +330,10 @@ def _hdbscan_boruvka_kdtree(
     if X.dtype != np.float64:
         X = X.astype(np.float64)
 
+    # Boruvka's Cython memoryviews require writable buffers.
+    if not X.flags.writeable:
+        X = X.copy(order="C")
+
     tree = KDTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
     alg = KDTreeBoruvkaAlgorithm(
         tree,
@@ -373,6 +377,10 @@ def _hdbscan_boruvka_balltree(
 
     if X.dtype != np.float64:
         X = X.astype(np.float64)
+
+    # Boruvka's Cython memoryviews require writable buffers.
+    if not X.flags.writeable:
+        X = X.copy(order="C")
 
     tree = BallTree(X, metric=metric, leaf_size=leaf_size, **kwargs)
     alg = BallTreeBoruvkaAlgorithm(
