@@ -19,7 +19,7 @@ cdef np.intp_t bfs_from_hierarchy(const np.double_t[:, :] hierarchy,
     """
     Perform a breadth first search on a tree in scipy hclust format. Writes
     the visited nodes to ``result`` and returns how many there are, or -1
-    if the tree is malformed and the walk would overflow ``result``.
+    if a node id is out of range or the walk would overflow ``result``.
     """
 
     cdef np.intp_t next_to_visit = 0
@@ -92,10 +92,13 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
     num_points = root // 2 + 1
     next_label = num_points + 1
 
+    if hierarchy.shape[1] != 4:
+        raise ValueError("hierarchy is not a valid single linkage tree")
+
     node_list = np.empty(root + 1, dtype=np.intp)
     sub_nodes = np.empty(root + 1, dtype=np.intp)
     num_nodes = bfs_from_hierarchy(hierarchy_view, root, num_points, node_list)
-    if num_nodes < 0:
+    if num_nodes != root + 1:
         raise ValueError("hierarchy is not a valid single linkage tree")
 
     relabel = np.empty(root + 1, dtype=np.intp)
