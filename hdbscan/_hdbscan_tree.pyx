@@ -8,6 +8,7 @@
 
 import numpy as np
 cimport numpy as np
+from libc.math cimport isfinite, isnan
 
 cdef np.double_t INFTY = np.inf
 
@@ -181,21 +182,18 @@ cpdef np.ndarray condense_tree(np.ndarray[np.double_t, ndim=2] hierarchy,
 cpdef dict compute_stability(np.ndarray condensed_tree):
 
     cdef np.ndarray[np.double_t, ndim=1] result_arr
-    cdef np.ndarray sorted_child_data
-    cdef np.ndarray[np.intp_t, ndim=1] sorted_children
-    cdef np.ndarray[np.double_t, ndim=1] sorted_lambdas
 
+    cdef np.ndarray[np.intp_t, ndim=1] children
     cdef np.ndarray[np.intp_t, ndim=1] parents
     cdef np.ndarray[np.intp_t, ndim=1] sizes
     cdef np.ndarray[np.double_t, ndim=1] lambdas
 
+    cdef np.intp_t row
     cdef np.intp_t child
     cdef np.intp_t parent
     cdef np.intp_t child_size
     cdef np.intp_t result_index
-    cdef np.intp_t current_child
     cdef np.float64_t lambda_
-    cdef np.float64_t min_lambda
 
     cdef np.ndarray[np.double_t, ndim=1] births_arr
     cdef np.double_t *births
@@ -208,37 +206,20 @@ cpdef dict compute_stability(np.ndarray condensed_tree):
     if largest_child < smallest_cluster:
         largest_child = smallest_cluster
 
-    sorted_child_data = np.sort(condensed_tree[['child', 'lambda_val']],
-                                axis=0)
     births_arr = np.nan * np.ones(largest_child + 1, dtype=np.double)
     births = (<np.double_t *> births_arr.data)
-    sorted_children = sorted_child_data['child'].copy()
-    sorted_lambdas = sorted_child_data['lambda_val'].copy()
 
+    children = condensed_tree['child']
     parents = condensed_tree['parent']
     sizes = condensed_tree['child_size']
     lambdas = condensed_tree['lambda_val']
 
-    current_child = -1
-    min_lambda = 0
+    for row in range(children.shape[0]):
+        child = children[row]
+        lambda_ = lambdas[row]
+        if isnan(births[child]) or lambda_ < births[child]:
+            births[child] = lambda_
 
-    for row in range(sorted_child_data.shape[0]):
-        child = <np.intp_t> sorted_children[row]
-        lambda_ = sorted_lambdas[row]
-
-        if child == current_child:
-            min_lambda = min(min_lambda, lambda_)
-        elif current_child != -1:
-            births[current_child] = min_lambda
-            current_child = child
-            min_lambda = lambda_
-        else:
-            # Initialize
-            current_child = child
-            min_lambda = lambda_
-
-    if current_child != -1:
-        births[current_child] = min_lambda
     births[smallest_cluster] = 0.0
 
     result_arr = np.zeros(num_clusters, dtype=np.double)
@@ -275,45 +256,19 @@ cdef list bfs_from_cluster_tree(np.ndarray tree, np.intp_t bfs_root):
 
 cdef max_lambdas(np.ndarray tree):
 
-    cdef np.ndarray sorted_parent_data
-    cdef np.ndarray[np.intp_t, ndim=1] sorted_parents
-    cdef np.ndarray[np.double_t, ndim=1] sorted_lambdas
-
-    cdef np.intp_t parent
-    cdef np.intp_t current_parent
-    cdef np.float64_t lambda_
-    cdef np.float64_t max_lambda
-
+    cdef np.ndarray[np.intp_t, ndim=1] parents = tree['parent']
+    cdef np.ndarray[np.double_t, ndim=1] lambdas = tree['lambda_val']
     cdef np.ndarray[np.double_t, ndim=1] deaths_arr
-    cdef np.double_t *deaths
 
-    cdef np.intp_t largest_parent = tree['parent'].max()
+    cdef np.intp_t row
+    cdef np.intp_t parent
 
-    sorted_parent_data = np.sort(tree[['parent', 'lambda_val']], axis=0)
-    deaths_arr = np.zeros(largest_parent + 1, dtype=np.double)
-    deaths = (<np.double_t *> deaths_arr.data)
-    sorted_parents = sorted_parent_data['parent']
-    sorted_lambdas = sorted_parent_data['lambda_val']
+    deaths_arr = np.zeros(parents.max() + 1, dtype=np.double)
 
-    current_parent = -1
-    max_lambda = 0
-
-    for row in range(sorted_parent_data.shape[0]):
-        parent = <np.intp_t> sorted_parents[row]
-        lambda_ = sorted_lambdas[row]
-
-        if parent == current_parent:
-            max_lambda = max(max_lambda, lambda_)
-        elif current_parent != -1:
-            deaths[current_parent] = max_lambda
-            current_parent = parent
-            max_lambda = lambda_
-        else:
-            # Initialize
-            current_parent = parent
-            max_lambda = lambda_
-    
-    deaths[current_parent] = max_lambda # value for last parent
+    for row in range(parents.shape[0]):
+        parent = parents[row]
+        if lambdas[row] > deaths_arr[parent]:
+            deaths_arr[parent] = lambdas[row]
 
     return deaths_arr
 
@@ -516,7 +471,9 @@ cdef np.ndarray[np.intp_t, ndim=1] do_labelling(
     return result_arr
 
 
-cdef get_probabilities(np.ndarray tree, dict cluster_map, np.ndarray labels, np.ndarray deaths):
+cdef get_probabilities(np.ndarray tree, dict cluster_map,
+                       np.ndarray[np.intp_t, ndim=1] labels,
+                       np.ndarray[np.double_t, ndim=1] deaths):
     cdef np.ndarray[np.double_t, ndim=1] result
     cdef np.ndarray[np.double_t, ndim=1] lambda_array
     cdef np.ndarray[np.intp_t, ndim=1] child_array
@@ -548,7 +505,7 @@ cdef get_probabilities(np.ndarray tree, dict cluster_map, np.ndarray labels, np.
 
         cluster = cluster_map[cluster_num]
         max_lambda = deaths[cluster]
-        if max_lambda == 0.0 or not np.isfinite(lambda_array[n]):
+        if max_lambda == 0.0 or not isfinite(lambda_array[n]):
             result[point] = 1.0
         else:
             lambda_ = min(lambda_array[n], max_lambda)
@@ -578,6 +535,7 @@ cpdef np.ndarray[np.double_t, ndim=1] outlier_scores(np.ndarray tree):
     cdef np.ndarray[np.intp_t, ndim=1] child_array
     cdef np.ndarray[np.intp_t, ndim=1] parent_array
     cdef np.intp_t root_cluster
+    cdef np.intp_t n
     cdef np.intp_t point
     cdef np.intp_t parent
     cdef np.intp_t cluster
@@ -607,7 +565,7 @@ cpdef np.ndarray[np.double_t, ndim=1] outlier_scores(np.ndarray tree):
         lambda_max = deaths[cluster]
 
 
-        if lambda_max == 0.0 or not np.isfinite(lambda_array[n]):
+        if lambda_max == 0.0 or not isfinite(lambda_array[n]):
             result[point] = 0.0
         else:
             result[point] = (lambda_max - lambda_array[n]) / lambda_max
