@@ -105,8 +105,45 @@ cpdef np.ndarray[np.float64_t, ndim=2] all_points_dist_membership_vector(
     cdef np.ndarray[np.float64_t, ndim=2] result
     cdef np.intp_t i
 
-    result = np.empty((all_points.shape[0], len(exemplars_list)),
-                      dtype=np.float64)
+    cdef np.intp_t j, k
+    cdef np.intp_t num_clusters = len(exemplars_list)
+    cdef np.intp_t num_features = all_points.shape[1]
+    cdef np.float64_t distance, min_distance, row_sum
+    cdef np.float64_t *point_ptr
+    cdef np.float64_t *exemplar_ptr
+    cdef np.ndarray[np.float64_t, ndim=2] points
+    cdef np.ndarray[np.float64_t, ndim=2] exemplars
+    cdef np.float64_t[:, ::1] result_view
+
+    result = np.empty((all_points.shape[0], num_clusters), dtype=np.float64)
+
+    if not softmax:
+        # Same arithmetic as dist_membership_vector, written straight into
+        # the output instead of allocating several vectors per point.
+        points = np.ascontiguousarray(all_points)
+        contiguous_exemplars = [np.ascontiguousarray(e) for e in exemplars_list]
+        result_view = result
+        for i in range(points.shape[0]):
+            point_ptr = <np.float64_t *> points.data + i * num_features
+            row_sum = 0.0
+            for j in range(num_clusters):
+                exemplars = contiguous_exemplars[j]
+                exemplar_ptr = <np.float64_t *> exemplars.data
+                min_distance = DBL_MAX
+                for k in range(exemplars.shape[0]):
+                    distance = dist_metric.dist(point_ptr,
+                                                exemplar_ptr + k * num_features,
+                                                num_features)
+                    if distance < min_distance:
+                        min_distance = distance
+                if min_distance != 0:
+                    result_view[i, j] = 1.0 / min_distance
+                else:
+                    result_view[i, j] = DBL_MAX / num_clusters
+                row_sum += result_view[i, j]
+            for j in range(num_clusters):
+                result_view[i, j] = result_view[i, j] / row_sum
+        return result
 
     for i in range(all_points.shape[0]):
         result[i] = dist_membership_vector(all_points[i],
