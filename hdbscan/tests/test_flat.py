@@ -383,3 +383,15 @@ def test_all_points_mem_vec_diff_clusters():
     # and all probabilities are <= 1.
     assert_array_less(memberships, np.ones(memberships.shape)+1.e-14)
     return
+
+
+def test_epsilon_search_edge_cases():
+    from hdbscan.flat import epsilon_search
+    tree_dtype = [('parent', np.intp), ('child', np.intp),
+                  ('lambda_val', float), ('child_size', np.intp)]
+    empty_tree = np.array([], dtype=tree_dtype)
+    assert epsilon_search([], empty_tree, 0.5, False) == set()
+
+    tree = np.array([(10, 11, 0.0, 5), (10, 12, 2.0, 5)], dtype=tree_dtype)
+    with np.errstate(divide='ignore'):
+        assert epsilon_search([11, 12], tree, 1.0, False) == {11, 12}

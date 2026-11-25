@@ -927,12 +927,14 @@ def epsilon_search(leaves, cluster_tree, cluster_selection_epsilon,
                    allow_single_cluster):
     selected_clusters = []
     processed = set()
+    if len(leaves) == 0:
+        return set()
     root = cluster_tree['parent'].min()
     child_lookup = {
         child: (parent, lambda_val)
         for parent, child, lambda_val in zip(cluster_tree['parent'].tolist(),
                                              cluster_tree['child'].tolist(),
-                                             cluster_tree['lambda_val'].tolist())
+                                             cluster_tree['lambda_val'])
     }
 
     for leaf in leaves:
