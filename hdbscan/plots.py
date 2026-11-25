@@ -115,6 +115,15 @@ class CondensedTree(object):
         last_leaf = self._raw_tree['parent'].max()
         root = self._raw_tree['parent'].min()
 
+        rows_by_parent = self._raw_tree[np.argsort(self._raw_tree['parent'], kind='stable')]
+        cluster_ids = np.arange(root, last_leaf + 1)
+        starts = np.searchsorted(rows_by_parent['parent'], cluster_ids, side='left')
+        ends = np.searchsorted(rows_by_parent['parent'], cluster_ids, side='right')
+
+        def children_of(cluster):
+            offset = cluster - root
+            return rows_by_parent[starts[offset]:ends[offset]]
+
         # We want to get the x and y coordinates for the start of each cluster
         # Initialize the leaves, since we know where they go, the iterate
         # through everything from the leaves back, setting coords as we go
@@ -126,9 +135,8 @@ class CondensedTree(object):
         cluster_y_coords = {root: 0.0}
 
         for cluster in range(last_leaf, root - 1, -1):
-            split = self._raw_tree[['child', 'lambda_val']]
-            split = split[(self._raw_tree['parent'] == cluster) &
-                          (self._raw_tree['child_size'] > 1)]
+            split = children_of(cluster)
+            split = split[split['child_size'] > 1]
             if len(split['child']) > 1:
                 left_child, right_child = split['child']
                 cluster_x_coords[cluster] = np.mean([cluster_x_coords[left_child],
@@ -155,7 +163,7 @@ class CondensedTree(object):
 
             cluster_bounds[c] = [0, 0, 0, 0]
 
-            c_children = self._raw_tree[self._raw_tree['parent'] == c]
+            c_children = children_of(c)
             current_size = np.sum(c_children['child_size'])
             current_lambda = cluster_y_coords[c]
             cluster_max_size = current_size
