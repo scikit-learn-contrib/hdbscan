@@ -926,45 +926,49 @@ def _new_select_clusters(condensed_tree,
 def epsilon_search(leaves, cluster_tree, cluster_selection_epsilon,
                    allow_single_cluster):
     selected_clusters = []
-    processed = []
+    processed = set()
+    root = cluster_tree['parent'].min()
+    child_lookup = {
+        child: (parent, lambda_val)
+        for parent, child, lambda_val in zip(cluster_tree['parent'].tolist(),
+                                             cluster_tree['child'].tolist(),
+                                             cluster_tree['lambda_val'].tolist())
+    }
 
     for leaf in leaves:
-        eps = 1/cluster_tree['lambda_val'][cluster_tree['child'] == leaf][0]
+        eps = 1/child_lookup[leaf][1]
         if eps < cluster_selection_epsilon:
             if leaf not in processed:
                 epsilon_child = traverse_upwards(
-                        cluster_tree, cluster_selection_epsilon,
+                        child_lookup, root, cluster_selection_epsilon,
                         leaf, allow_single_cluster)
-                if hasattr(epsilon_child, '__len__'):
-                    epsilon_child = epsilon_child[0]
 
                 selected_clusters.append(epsilon_child)
 
                 for sub_node in _bfs_from_cluster_tree(cluster_tree,
                                                        epsilon_child):
                     if sub_node != epsilon_child:
-                        processed.append(sub_node)
+                        processed.add(sub_node)
         else:
             selected_clusters.append(leaf)
 
     return set(selected_clusters)
 
 
-def traverse_upwards(cluster_tree, cluster_selection_epsilon,
+def traverse_upwards(child_lookup, root, cluster_selection_epsilon,
                      leaf, allow_single_cluster):
-    root = cluster_tree['parent'].min()
-    parent = cluster_tree[cluster_tree['child'] == leaf]['parent']
+    parent = child_lookup[leaf][0]
     if parent == root:
         if allow_single_cluster:
             return parent
         else:
             return leaf  # return node closest to root
 
-    parent_eps = 1/cluster_tree[cluster_tree['child'] == parent]['lambda_val']
+    parent_eps = 1/child_lookup[parent][1]
     if parent_eps > cluster_selection_epsilon:
         return parent
     else:
-        return traverse_upwards(cluster_tree, cluster_selection_epsilon,
+        return traverse_upwards(child_lookup, root, cluster_selection_epsilon,
                                 parent, allow_single_cluster)
 
 
