@@ -925,10 +925,10 @@ def _new_select_clusters(condensed_tree,
 
 def epsilon_search(leaves, cluster_tree, cluster_selection_epsilon,
                    allow_single_cluster):
-    selected_clusters = []
-    processed = set()
     if len(leaves) == 0:
         return set()
+    selected_clusters = []
+    processed = set()
     root = cluster_tree['parent'].min()
     child_lookup = {
         child: (parent, lambda_val)
