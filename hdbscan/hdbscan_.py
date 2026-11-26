@@ -600,6 +600,10 @@ def hdbscan(
             * ``boruvka_kdtree``
             * ``boruvka_balltree``
 
+        For ``alpha != 1.0``, ``best`` selects Prim's for tree-based metrics.
+        Explicit Boruvka selections warn and fall back to the corresponding
+        Prim's algorithm, which may be slower.
+
     memory : instance of joblib.Memory or string, optional
         Used to cache the output of the computation of the tree.
         By default, no caching is done. If a string is given, it is the
@@ -771,6 +775,15 @@ def hdbscan(
         if metric != "precomputed" and issparse(X) and algorithm != "generic":
             raise ValueError("Sparse data matrices only support algorithm 'generic'.")
 
+        if alpha != 1.0 and algorithm in ("boruvka_kdtree", "boruvka_balltree"):
+            prims_algorithm = algorithm.replace("boruvka_", "prims_", 1)
+            warn(
+                f"{algorithm} does not support alpha={alpha}. "
+                f"Using {prims_algorithm} instead.",
+                stacklevel=2,
+            )
+            algorithm = prims_algorithm
+
         if algorithm == "generic":
             (single_linkage_tree, result_min_span_tree) = memory.cache(
                 _hdbscan_generic
@@ -839,7 +852,7 @@ def hdbscan(
         elif metric in KDTREE_VALID_METRICS:
             # TO DO: Need heuristic to decide when to go to boruvka;
             # still debugging for now
-            if X.shape[1] > 60:
+            if alpha != 1.0 or X.shape[1] > 60:
                 (single_linkage_tree, result_min_span_tree) = memory.cache(
                     _hdbscan_prims_kdtree
                 )(
@@ -870,7 +883,7 @@ def hdbscan(
         else:  # Metric is a valid BallTree metric
             # TO DO: Need heuristic to decide when to go to boruvka;
             # still debugging for now
-            if X.shape[1] > 60:
+            if alpha != 1.0 or X.shape[1] > 60:
                 (single_linkage_tree, result_min_span_tree) = memory.cache(
                     _hdbscan_prims_balltree
                 )(
@@ -973,6 +986,10 @@ class HDBSCAN(BaseEstimator, ClusterMixin):
             * ``prims_balltree``
             * ``boruvka_kdtree``
             * ``boruvka_balltree``
+
+        For ``alpha != 1.0``, ``best`` selects Prim's for tree-based metrics.
+        Explicit Boruvka selections warn and fall back to the corresponding
+        Prim's algorithm, which may be slower.
 
     leaf_size: int, optional (default=40)
         If using a space tree algorithm (kdtree, or balltree) the number
