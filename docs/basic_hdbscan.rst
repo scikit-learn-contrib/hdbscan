@@ -265,7 +265,10 @@ from sklearn we get a large number of metrics readily available.
      'seuclidean': hdbscan.dist_metrics.SEuclideanDistance,
      'sokalmichener': hdbscan.dist_metrics.SokalMichenerDistance,
      'sokalsneath': hdbscan.dist_metrics.SokalSneathDistance,
-     'wminkowski': hdbscan.dist_metrics.WMinkowskiDistance}
+     'wminkowski': hdbscan.dist_metrics.WMinkowskiDistance,
+     'cosine': ArccosDistance,
+     'arccos': ArccosDistance
+}
 
 
 
