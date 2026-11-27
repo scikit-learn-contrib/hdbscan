@@ -131,7 +131,7 @@ point for each cluster to measure distance to. This is tricky since our
 clusters may have off shapes. In practice there isn't really any single
 clear exemplar for a cluster. The right solution, then, is to have a set
 of exemplar points for each cluster? How do we determine which points
-those should be? They should be the points that persist in the the
+those should be? They should be the points that persist in the
 cluster (and it's children in the HDBSCAN condensed tree) for the
 longest range of lambda values -- such points represent the "heart" of
 the cluster around which the ultimate cluster forms.
@@ -188,7 +188,7 @@ clusters having several subclusters stretched along their length.
 Now to compute a cluster membership score for a point we need to simply
 compute the distance to each of the cluster exemplar sets and scale
 membership scores accordingly. In practice we work with the inverse
-distance (just as HDBCSAN handles things with lambda values in the
+distance (just as HDBSCAN handles things with lambda values in the
 tree). Whether we do a softmax or simply normalize by dividing by the
 sum is "to be determined" as there isn't necessarily a clear answer.
 We'll leave it as an option in the code.
@@ -242,7 +242,7 @@ the red and green clusters, and the purple and blue clusters in a way
 that is not really ideal. This is because we are using pure distance
 (rather than any sort of cluster/manifold/density aware distance) and
 latching on to whatever is closest. What we need is an approach the
-understands the cluster structure better -- something based off the the
+understands the cluster structure better -- something based off the
 actual structure (and lambda values therein) of the condensed tree.
 This is exactly the sort of approach something based on outlier scores
 can provide.

@@ -13,7 +13,7 @@ choosing them effectively.
 Selecting ``min_cluster_size``
 ------------------------------
 
-The primary parameter to effect the resulting clustering is
+The primary parameter to affect the resulting clustering is
 ``min_cluster_size``. Ideally this is a relatively intuitive parameter
 to select -- set it to the smallest size grouping that you wish to
 consider a cluster. It can have slightly non-obvious effects however.
@@ -188,7 +188,7 @@ has on the resulting clustering.
 Selecting ``alpha``
 -----------------
 
-A further parameter that effects the resulting clustering is ``alpha``.
+A further parameter that affects the resulting clustering is ``alpha``.
 In practice it is best not to mess with this parameter -- ultimately it
 is part of the ``RobustSingleLinkage`` code, but flows naturally into
 HDBSCAN\*. If, for some reason, ``min_samples`` or ``cluster_selection_epsilon`` is not providing you
@@ -225,7 +225,7 @@ Leaf clustering
 HDBSCAN supports an extra parameter ``cluster_selection_method`` to determine
 how it selects flat clusters from the cluster tree hierarchy. The default
 method is ``'eom'`` for Excess of Mass, the algorithm described in
-:doc:`how_hdbscan_works`. This is not always the most desireable approach to
+:doc:`how_hdbscan_works`. This is not always the most desirable approach to
 cluster selection. If you are more interested in having small homogeneous
 clusters then you may find Excess of Mass has a tendency to pick one or two
 large clusters and then a number of small extra clusters. In this situation

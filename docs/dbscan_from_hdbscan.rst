@@ -104,7 +104,7 @@ be some minor discrepancies between core point results largely due to implementa
 details and optimizations with the code base.
 
 Why might one just extract the DBSCAN* clustering results from a single HDBSCAN* run
-instead of making use of sklearns DBSSCAN code?  The short answer is efficiency.
+instead of making use of sklearn's DBSCAN code?  The short answer is efficiency.
 If you aren't sure what epsilon parameter to select for DBSCAN then you may have to
 run the algorithm many times on your data set.  While those runs can be inexpensive for
 very small epsilon values they can get quite expensive for large parameter values.

@@ -8,7 +8,7 @@ the implementation as the underlying algorithm. Obviously a well written
 implementation in C or C++ will beat a naive implementation on pure
 Python, but there is more to it than just that. The internals and data
 structures used can have a large impact on performance, and can even
-significanty change asymptotic performance. All of this means that,
+significantly change asymptotic performance. All of this means that,
 given some amount of data that you want to cluster your options as to
 algorithm and implementation maybe significantly constrained. I'm both
 lazy, and prefer empirical results for this sort of thing, so rather
@@ -139,7 +139,7 @@ datapoints.
     dataset_sizes = np.hstack([np.arange(1, 6) * 500, np.arange(3,7) * 1000, np.arange(4,17) * 2000])
 
 Now it is just a matter of running all the clustering algorithms via our
-benchmark function to collect up all the requsite data. This could be
+benchmark function to collect up all the requisite data. This could be
 prettier, rolled up into functions appropriately, but sometimes brute
 force is good enough. More importantly (for me) since this can take a
 significant amount of compute time, I wanted to be able to comment out
@@ -342,7 +342,7 @@ before.
 
 
 Clearly something has gone woefully wrong with the curve fitting for the
-scipy single linkage implementation, but what exactly? If we look at the
+Scipy single linkage implementation, but what exactly? If we look at the
 raw data we can see.
 
 .. code:: python
@@ -448,7 +448,7 @@ array in RAM then clearly we are going to spend time paging out the
 distance array to disk and back and hence we will see the runtimes
 increase dramatically as we become disk IO bound. If we just leave off
 the last element we can get a better idea of the curve, but keep in mind
-that the scipy single linkage implementation does not scale past a limit
+that the Scipy single linkage implementation does not scale past a limit
 set by your available RAM.
 
 .. code:: python
@@ -491,12 +491,12 @@ set by your available RAM.
 .. image:: images/performance_and_scalability_20_2.png
 
 
-If we're looking for scaling we can write off the scipy single linkage
+If we're looking for scaling we can write off the Scipy single linkage
 implementation -- if even we didn't hit the RAM limit the :math:`O(n^2)`
 scaling is going to quickly catch up with us. Fastcluster has the same
 asymptotic scaling, but is heavily optimized to being the constant down
 much lower -- at this point it is still keeping close to the faster
-algorithms. It's asymtotics will still catch up with it eventually
+algorithms. It's asymptotic will still catch up with it eventually
 however.
 
 In practice this is going to mean that for larger datasets you are going
@@ -505,7 +505,7 @@ enough datapoints only K-Means, DBSCAN, and HDBSCAN will be left. This
 is somewhat disappointing, paritcularly as `K-Means is not a
 particularly good clustering
 algorithm <http://nbviewer.jupyter.org/github/scikit-learn-contrib/hdbscan/blob/master/notebooks/Comparing%20Clustering%20Algorithms.ipynb>`__,
-paricularly for exploratory data analysis.
+particularly for exploratory data analysis.
 
 With this in mind it is worth looking at how these last several
 implementations perform at much larger sizes, to see, for example, when
@@ -585,7 +585,7 @@ DBSCAN, while having sub-\ :math:`O(n^2)` complexity, can't achieve
 :math:`O(n \log(n))` at this dataset dimension, and start to curve
 upward precipitously. Finally it demonstrates again how much of a
 difference implementation can make: the sklearn implementation of
-K-Means is far better than the scipy implementation. Since HDBSCAN
+K-Means is far better than the Scipy implementation. Since HDBSCAN
 clustering is a lot better than K-Means (unless you have good reasons to
 assume that the clusters partition your data and are all drawn from
 Gaussian distributions) and the scaling is still pretty good I would
@@ -600,7 +600,7 @@ thing to know in practice is, given a dataset, what can I run
 interactively? What can I run while I go and grab some coffee? How about
 a run over lunch? What if I'm willing to wait until I get in tomorrow
 morning? Each of these represent significant breaks in productivity --
-once you aren't working interactively anymore your productivity drops
+once you aren't working interactively any more your productivity drops
 measurably, and so on.
 
 We can build a table for this. To start we'll need to be able to
@@ -641,7 +641,7 @@ Now we run that for each of our pre-existing datasets to extrapolate out
 predicted performance on the relevant dataset sizes. A little pandas
 wrangling later and we've produced a table of roughly how large a
 dataset you can tackle in each time frame with each implementation. I
-had to leave out the scipy KMeans timings because the noise in timing
+had to leave out the Scipy KMeans timings because the noise in timing
 results caused the model to be unrealistic at larger data sizes. Note
 how the :math:`O(n\log n)` algorithms utterly dominate here. In the
 meantime, for medium sizes data sets you can still get quite a lot done
